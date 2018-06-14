@@ -8,6 +8,8 @@
 
 > [Swift加密](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/Swift加密相关.md)
 
+> [Swift基础](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/Swift%20基础知识.md)
+
 ## ReactNative
 
 ## AutoLayout
