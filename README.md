@@ -16,9 +16,7 @@
 
 > [原生AutoLayout](https://github.com/aTreey/aTreey.github.io/issues/1)
 
-> [Masonry](https://github.com/aTreey/aTreey.github.io/issues/1)
-
-> [Snapkit](https://github.com/aTreey/aTreey.github.io/issues/1)
+> [Masonry/Snapkit](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/Masonry:Snapkit%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93.md)
 
 
 
