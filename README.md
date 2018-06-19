@@ -2,7 +2,7 @@
 
 开发过程中学习积累
 
-## 知识小结
+## 知识小集
 
 > [开发小结](https://github.com/aTreey/aTreey.github.io/issues/3)
 
@@ -15,7 +15,7 @@
 
 ## ReactNative
 
-> []
+> [RN](https://github.com/aTreey/aTreey.github.io/issues/3)
 
 ## AutoLayout
 
