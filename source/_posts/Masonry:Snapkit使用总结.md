@@ -48,7 +48,7 @@
 	**设置不透明，设置可以扩展此时从坐标的（0，0）点开始布局**
 	![](https://ws2.sinaimg.cn/large/006tNc79ly1fsggem13mjj30ow0j83zy.jpg)	
 
-- `inset` 的使用，不用再考虑正负值的问题
+- `inset` 的使用，当约束控件的属性相同时不用再考虑正负值的问题，例如要约束一个控件左边距离另一控件的右边位置时还需要使用负值情况
 	
 	```
 	[yellowdView makeConstraints:^(MASConstraintMaker *make) {
