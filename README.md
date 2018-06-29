@@ -9,9 +9,18 @@
 
 ## Swift
 
-> [Swift加密](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/Swift加密相关.md)
+
+> [Swift基础语法1](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/Swift3.0学习(一).md)
+> [Swift基础语法2](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/Swift3.0学习(二).md)
+> [Swift基础语法3](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/Swift3.0学习(三).md)
+> [Swift基础语法4](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/Swift3.0学习(四).md)
+> [Swift基础语法5](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/Swift3.0学习(五).md)
 
 > [Swift基础](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/Swift%20基础知识.md)
+
+> [Swift加密](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/Swift加密相关.md)
+
+
 
 ## ReactNative
 
