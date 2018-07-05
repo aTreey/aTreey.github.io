@@ -211,6 +211,69 @@ let test3 = Location3(coordinateString: "12,45")
 
 ## 类
 
+#### 继承
+#### 多态
+#### 属性和方法的重载
+子类的属性或者方法，如果父类有，就会用`override`标记重载，执行子类中的属性或者方法
+
+#### 子类的构造函数
+- 子类构造函数分为两段，第一段是构造自己，第二段是构造父类
+	- 父类中构造函数
+	- 子类要设置一个自己的构造函数
+	- 子类构造函数中需要先初始化自己的属性
+	- 然后在构造函数中调用父类初始化父类构造函数中的相关属性
+
+	父类
+	
+	```
+	class Father {
+	    var name: String
+	    var sex: Int = 0
+	    var old: Int = 32
+	    var desc: String {
+	        return "我是\(name)"
+	    }
+	    init(name: String) {
+	        self.name = name
+	    }
+	    
+	    func run() {
+	        print("Father can Running")
+	    }
+	}
+	```
+	
+	子类
+	
+	```
+	class Son: Father {
+	
+	    var isSwimming = true
+	    
+	    var computer: String
+	    
+	    override var desc: String {
+	        return "Son is \(name)"
+	    }
+	    
+	    init(name: String, computer: String) {
+	        self.computer = computer
+	        super.init(name: name)
+	    }
+	}
+	
+	```
+- 子类两段构造都完成后子类的初始化才完成，可以使用`self`调用属性或者方法
+	
+	```
+	init(name: String, computer: String) {
+        self.computer = computer
+        self.getToys() // 此代码报错，子类初始化未完成
+        super.init(name: name)
+	}
+	
+	```
+
 
 ## 属性和方法
 
