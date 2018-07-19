@@ -42,7 +42,7 @@ mySwitch.topAnchor.constraint(equalTo: view.bottomAnchor, constant: 10).isActive
 mySwitch.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
 
 // 调用
-myTextField.shakeAnimation()
+mySwitch.shakeAnimation()
 ```
 
 
