@@ -39,7 +39,12 @@
 
 ## ReactNative
 
-> [RN](https://github.com/aTreey/aTreey.github.io/issues/3)
+> [ReactNative](https://github.com/aTreey/aTreey.github.io/issues/3)
+
+> [ReactNative ref使用](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/ReactNative ref使用.md)
+
+> [ES6 语法](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/ES6 语法.md)
+
 
 ## AutoLayout
 
