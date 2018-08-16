@@ -9,7 +9,7 @@
 > [TableHeaderView动态高度](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/iOS%20%E5%8A%A8%E6%80%81%E8%AE%BE%E7%BD%AETableHeaderView%E9%AB%98%E5%BA%A6.md)
 
 ## GCD信号量用法
-> [Swift基础语法1](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/GCD信号量用法.md)
+> [GCD信号量用法](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/GCD信号量用法.md)
 
 
 ## Swift
