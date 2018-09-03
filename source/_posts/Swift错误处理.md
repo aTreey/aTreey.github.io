@@ -25,4 +25,4 @@ releas 模式程序也会退出
 public func precondition(_ condition: @autoclosure () -> Bool, _ message: @autoclosure () -> String = default, file: StaticString = #file, line: UInt = #line)
 ```
 
-### 
+### throw 
