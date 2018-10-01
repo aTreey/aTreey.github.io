@@ -8,6 +8,10 @@
 
 > [TableHeaderView动态高度](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/iOS%20%E5%8A%A8%E6%80%81%E8%AE%BE%E7%BD%AETableHeaderView%E9%AB%98%E5%BA%A6.md)
 
+## 《52个方法学习整理》
+
+> [52个方法第一章](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/%E3%80%8A52%E4%B8%AA%E6%96%B9%E6%B3%95%E7%AC%AC%E4%B8%80%E7%AB%A0%E3%80%8B.md)
+
 ## GCD信号量用法
 > [GCD信号量用法](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/GCD信号量用法.md)
 
