@@ -52,6 +52,8 @@
 
 > [ES6语法](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/ES6语法.md)
 
+> [ReactNative集成报错及解决方法](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/RN%E6%8A%A5%E9%94%99.md)
+
 
 ## AutoLayout
 
