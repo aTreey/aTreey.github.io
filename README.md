@@ -54,6 +54,7 @@
 
 > [ReactNative集成报错及解决方法](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/RN%E6%8A%A5%E9%94%99.md)
 
+> [Swift项目中集成RN](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/Swift%E9%A1%B9%E7%9B%AE%E4%B8%AD%E9%9B%86%E6%88%90RN.md)
 
 ## AutoLayout
 
