@@ -2,7 +2,7 @@ RN学习中遇到的错误总结
 
 ### 执行 npm install 时报错
 
-#### `Unexpected end of JSON input while parsing near '...er":"0.4.0"},"bin":{"'`
+#### 错误1. `Unexpected end of JSON input while parsing near '...er":"0.4.0"},"bin":{"'`
 
 本地有`package.json`文件，执行 npm install 报错，或者clone 的项目执行npm install 也报同样的错误, 可能是因为缓存导致，
 
@@ -28,7 +28,7 @@ RN学习中遇到的错误总结
 	
 	
 	
-### `xcrun: error: unable to find utility "simctl", not a developer tool or in PATH`
+#### 错误2. `xcrun: error: unable to find utility "simctl", not a developer tool or in PATH`
 
 可能是因为 Xcode 版本问题引起，XCode 偏好设置中 Command line Tools 中为选择版本问题导致（我的情况是安装了Xcode 10 beta版导致的）
 
@@ -53,6 +53,14 @@ Print: Entry, ":CFBundleIdentifier", Does Not Exist
 
 ```
 
+#### 错误3. `Error: Cannot find module '../lib/utils/unsupported.js'`
+
+安装的node 版本不是稳定的版本，需要删除后重新安装
+
+```
+sudo rm -rf /usr/local/lib/node_modules/npm
+brew reinstall node
+```
 
 ### 已有项目集成RN
 
@@ -96,3 +104,5 @@ Print: Entry, ":CFBundleIdentifier", Does Not Exist
 解决方法：
 
 [修改头文件导入方式](https://github.com/facebook/react-native/issues/13198)
+
+
