@@ -3,7 +3,18 @@ ReactNative 中使用 TypeScript
 
 >从RN0.57版本开始已经可以直接支持typescript，无需任何配置。在保留根入口文件index.js的前提下，其他文件都可以直接使用.ts或.tsx后缀。但这一由babel进行的转码过程并不进行实际的类型检查，因此仍然需要编辑器和插件来共同进行类型检查
 
-###TypeScript
+
+### TypeScript和JavaScript对比
+
+[两者深度对比](https://juejin.im/entry/5a52ed336fb9a01cbd586f9f)
+
+最大的区别：
+
+- TypeScript是强类型语⾔和静态类型语⾔（需要指定类型）
+- JavaScript是弱类型语⾔和动态类型语⾔（不需要指定类型）
+
+
+### TypeScript
 
 由微软开发的自由和开源的编程语言，是JavaScript的一个严格超集，并添加了可选的静态类型和基于类的面向对象编程
 
@@ -52,6 +63,8 @@ yarn add --dev react-native-typescript-transformer typescript
 	tsc --init
 	```
 - 修改 tsconfig.json 文件 
+
+	如果一个目录下存在一个tsconfig.json文件，那么它意味着这个目录是TypeScript项目的根目录。 tsconfig.json文件中指定了用来编译这个项目的根文件和编译选项
 
 	[tsconfig.json文件配置详解](https://www.tslang.cn/docs/handbook/tsconfig-json.html)
 	
@@ -146,6 +159,119 @@ module.exports = {
 		import HelloWorld from "./src/HelloWorld";
 		```	
 
+### 配置jsconfig
+
+`jsconfig.json`目录中存在文件表明该目录是JavaScript项目的根目录。该jsconfig.json文件指定根文件和JavaScript语言服务提供的功能选项
+
+[jsconfig详解](https://code.visualstudio.com/docs/languages/jsconfig)
+
+[jsconfig.json](https://jeasonstudio.gitbooks.io/vscode-cn-doc/content/md/%E8%AF%AD%E8%A8%80/javascript.html?q=)
+
+
+##### 新建 `jsconfig.json` 文件
+
+```
+touch jsconfig.json
+```
+
+##### 编辑 `jsconfig.json` 文件
+
+```
+{
+    "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true
+    },
+    "exclude": [
+    "node_modules",
+    "rnApp/Tools" // 项目根目录下新建的存放RN中所用的一些工具类
+    ]
+}
+
+```
+
+
+### package.json 文件配置
+
+```
+{
+  "name": "RNProject",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": { // 通过设置这个可以使npm调用一些命令脚本，封装一些功能
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": { // 发布后依赖的包
+    "@types/react": "^16.4.16",
+    "@types/react-native": "^0.57.4",
+    "react": "16.5.0",
+    "react-native": "0.57.2",
+    "react-transform-hmr": "^1.0.4",
+    "tslib": "^1.9.3"
+  },
+
+  "devDependencies": { // 开发中依赖的其它包
+    "babel-jest": "23.6.0",
+    "jest": "23.6.0",
+    "metro-react-native-babel-preset": "0.48.0",
+    "react-native-typescript-transformer": "^1.2.10",
+    "react-test-renderer": "16.5.0",
+    "typescript": "^3.1.2"
+  },
+
+
+  "jest": { // JavaScript 的单元测试框架
+    "preset": "react-native"
+  }
+}
+```
+
+##### `–save` 和 `-–save-dev` 区别
+
+- --save参数表示将该模块写入dependencies属性，
+- --save-dev表示将该模块写入devDependencies属性。
+
+##### 添加开发依赖库
+
+- 类型检查
+
+	```
+	npm install @types/jest --save-dev
+	npm install @types/react --save-dev
+	npm install @types/react-native --save-dev 
+
+	```
+- 装饰器转化核心插件
+
+	```
+	npm install babel-plugin-transform-decorators-legacy --save-dev
+	```	
+	
+- 测试框架
+	
+	```
+	npm install react-addons-test-utils --save-dev
+	npm install react-native-mock --save-dev
+	```	
+
+##### 删除依赖库
+
+```
+npm uninstall @types/jest --save
+```
+
+```
+npm uninstall @types/jest --save-dev
+```
+
+##### 彻底删除，-d 表示 devDependencies， -O 表示 optionalDependencies 中
+
+```
+npm uninstall -s -D -O @types/jest
+
+```
 
 ### 报错汇总
 

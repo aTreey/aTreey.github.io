@@ -17,7 +17,7 @@ RN学习中遇到的错误总结
 2. 清除缓存
 
 	```
-	npm cache clean –force
+	npm cache clean –-force
 	```
 
 3. 如果提示失败，使用`sudo`
