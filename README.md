@@ -56,6 +56,13 @@
 
 > [Swift项目中集成RN](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/Swift%E9%A1%B9%E7%9B%AE%E4%B8%AD%E9%9B%86%E6%88%90RN.md)
 
+> [ReactNative 中使用 TypeScript](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/typescripe%20%E5%AE%89%E8%A3%85%E5%8F%8A%E8%AF%AD%E6%B3%95.md)
+
+> [ReactNative配置.npmrc相关](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/npm%E5%92%8Ccnpm.md)
+
+> [React-Native开发iOS打包](https://github.com/aTreey/aTreey.github.io/blob/hexo/source/_posts/React-Native%E5%BC%80%E5%8F%91iOS%E6%89%93%E5%8C%85.md)
+
+
 ## AutoLayout
 
 > [原生AutoLayout](https://github.com/aTreey/aTreey.github.io/issues/1)
