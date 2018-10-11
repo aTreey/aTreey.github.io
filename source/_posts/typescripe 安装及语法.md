@@ -1,4 +1,4 @@
-ReactNative 中使用 TypeScript
+## ReactNative 中使用 TypeScript
 
 
 >从RN0.57版本开始已经可以直接支持typescript，无需任何配置。在保留根入口文件index.js的前提下，其他文件都可以直接使用.ts或.tsx后缀。但这一由babel进行的转码过程并不进行实际的类型检查，因此仍然需要编辑器和插件来共同进行类型检查
@@ -290,8 +290,7 @@ npm uninstall -s -D -O @types/jest
 - 清除缓存重新启动服务
 
 	```
-	npm start -- --reset-cache
+	npm start --reset-cache
 	```
-
 
 

@@ -62,6 +62,11 @@ sudo rm -rf /usr/local/lib/node_modules/npm
 brew reinstall node
 ```
 
+#### 错误4. `Couldn't find preset "module:metro-react-native-babel-preset" when running jest`
+
+[解决方法](https://github.com/facebook/metro/issues/242)
+
+
 ### 已有项目集成RN
 
 
@@ -103,6 +108,45 @@ brew reinstall node
 
 解决方法：
 
+将
+
+```
+#import <RCTAnimation/RCTValueAnimatedNode.h>
+```
+替换为
+
+```
+#import "RCTValueAnimatedNode.h"
+
+```
+
 [修改头文件导入方式](https://github.com/facebook/react-native/issues/13198)
 
 
+#### 报错3 版本不匹配 `react native version mismatch javascript version 0.54.3 native 0.57.2` 
+
+- 关闭所有的 terminal，或者是集成开发环境的命令行窗口
+
+	```
+	watchman watch-del-all
+	react-native start --reset-cache
+	```
+- 重新打开一个terminal窗口
+
+	```
+	react-native run-ios
+	```
+
+ [问题描述和解决1](https://blog.csdn.net/awy1988/article/details/80336913)
+ 
+ [问题描述和解决2](https://stackoverflow.com/questions/47763824/react-native-version-mismatch)
+
+#### 报错4 `Unable to resolve module "schedule/tracking"`
+
+缺少一些开发依赖的库
+	
+	npm i schedule@0.4.0 --save-dev
+	
+	
+[问题描述和解决](https://github.com/facebook/react-native/issues/21150)
+ 
