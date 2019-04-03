@@ -1,4 +1,4 @@
-ReactNative配置.npmrc相关
+# ReactNative配置.npm 和cnpm 相关
 
 ### npm
 Nodejs的包管理工具
