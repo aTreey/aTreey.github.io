@@ -1,6 +1,4 @@
 
-# 数据结构
-
 
 
 ## UITableView 相关
@@ -150,18 +148,3 @@ CALayer 的 contents 是位图
 ###异步绘制
 
 ![](https://ws3.sinaimg.cn/large/006tKfTcly1g1osowi1dtj31l70u0ag5.jpg)
-
-## 内存管理
-
-![](https://ws2.sinaimg.cn/large/006tKfTcly1g1mabhcs20j31cb0u0n2p.jpg)
-
-- stack 栈是从高地址向低地址扩展，所以栈是向下增长的，对象和block copy 后都会放在堆上
-- heap 堆区向上增长
-
-
-- 散列表方式
-	
-	- 自旋锁
-		- 自旋锁是“忙等” 的锁
-	- 引用计数表
-	- 弱应用表
