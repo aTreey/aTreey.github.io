@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>SQL 使用 | aTreey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="常用SQL 语句创建一张表 create table if not exists t_product(productId integer, productName text, productPrice real); 删除一张表 drop table if exists t_product; 插入一条记录 如果不写某个字段和对应值就会为NUll insert into t_product(produ">
+<meta name="keywords" content="SQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL 使用">
+<meta property="og:url" content="https://github.com/aTreey/2016/10/13/SQlite使用学习/index.html">
+<meta property="og:site_name" content="aTreey&#39;s Blog">
+<meta property="og:description" content="常用SQL 语句创建一张表 create table if not exists t_product(productId integer, productName text, productPrice real); 删除一张表 drop table if exists t_product; 插入一条记录 如果不写某个字段和对应值就会为NUll insert into t_product(produ">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://i1.piimg.com/567571/588e899a67c1cce6.png">
+<meta property="og:image" content="http://p1.bpimg.com/567571/54d2c6ade469b653.png">
+<meta property="og:image" content="http://p1.bqimg.com/567571/c8cd40b4271ec880.png">
+<meta property="og:image" content="http://i1.piimg.com/567571/a6b404e93f8bc0eb.png">
+<meta property="og:image" content="http://i1.piimg.com/567571/29e2799f64db4884.png">
+<meta property="og:image" content="http://p1.bqimg.com/567571/c69e4c2790b900b6.png">
+<meta property="og:image" content="http://i1.piimg.com/567571/4727877c1b85cb0e.png">
+<meta property="og:image" content="http://p1.bqimg.com/567571/6b8c31aca88003d0.png">
+<meta property="og:image" content="http://p1.bpimg.com/567571/4e0c9af7ec980748.png">
+<meta property="og:image" content="http://p1.bqimg.com/567571/29459ada951407a8.png">
+<meta property="og:image" content="http://i1.piimg.com/567571/0636fdca9e552d99.png">
+<meta property="og:image" content="http://i1.piimg.com/567571/fd184b9d631bb19f.png">
+<meta property="og:image" content="http://i1.piimg.com/567571/d5bd63824decf7f6.png">
+<meta property="og:image" content="http://i1.piimg.com/567571/b326df9d3150885d.png">
+<meta property="og:updated_time" content="2019-06-03T13:54:52.592Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SQL 使用">
+<meta name="twitter:description" content="常用SQL 语句创建一张表 create table if not exists t_product(productId integer, productName text, productPrice real); 删除一张表 drop table if exists t_product; 插入一条记录 如果不写某个字段和对应值就会为NUll insert into t_product(produ">
+<meta name="twitter:image" content="http://i1.piimg.com/567571/588e899a67c1cce6.png">
+  
+    <link rel="alternate" href="/atom.xml" title="aTreey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">aTreey&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://github.com/aTreey"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-SQlite使用学习" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/10/13/SQlite使用学习/" class="article-date">
+  <time datetime="2016-10-13T14:30:54.000Z" itemprop="datePublished">2016-10-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      SQL 使用
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="常用SQL-语句"><a href="#常用SQL-语句" class="headerlink" title="常用SQL 语句"></a>常用SQL 语句</h2><p>创建一张表</p>
+<pre><code>create table if not exists t_product(productId integer, productName text, productPrice real);
+</code></pre><p>删除一张表</p>
+<pre><code>drop table if exists t_product;
+</code></pre><p>插入一条记录</p>
+<p>如果不写某个字段和对应值就会为NUll</p>
+<pre><code>insert into t_product(productId, productName, productPrice) values (0001, &apos;iPhone7&apos;, 6100.8);
+</code></pre><p>修改记录</p>
+<pre><code>update t_product set productId = 20002 where productName = &apos;iPhone5s&apos;;
+</code></pre><p>删除</p>
+<pre><code>delete from t_product where productName = &apos;iphone5s&apos;;
+</code></pre><p><strong>注意：条件语句不能单独存在，只能在修改／删除／查询之后</strong></p>
+<h2 id="简单查询"><a href="#简单查询" class="headerlink" title="简单查询"></a>简单查询</h2><p>准备数据生成sql语句文件</p>
+<pre><code>NSMutableString *mutableString = [NSMutableString string];
+int productIdValue = arc4random_uniform(1000);
+NSString *productNameValue = [NSString stringWithFormat:@&quot;iPhone_%d&quot;,1 + arc4random_uniform(8)];
+CGFloat productPriceValue = 3000 + arc4random_uniform(1000);
+
+for (NSInteger i = 0; i &lt; 1000; i++) {
+    [mutableString appendFormat:@&quot;insert into t_product(productId, productName, productPrice) values (%d, %@, %f); \r\n&quot;, productIdValue, productNameValue, productPriceValue];
+}
+
+// 写入文件
+[mutableString writeToFile:@&quot;/Users/Apeng/work/Demo/Sqlite/products.sql&quot; atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+</code></pre><p>生成的sql语句文件</p>
+<p><img src="http://i1.piimg.com/567571/588e899a67c1cce6.png" alt></p>
+<p>SQL 查询语句</p>
+<pre><code>select *（表示字段）from t_product（表名）where(条件语句) productId &gt; 100 (字段满足的条件) ;
+
+select * from t_product where productPrice &lt; 5000; 
+</code></pre><p><img src="http://p1.bpimg.com/567571/54d2c6ade469b653.png" alt><br>or: 或</p>
+<p><img src="http://p1.bqimg.com/567571/c8cd40b4271ec880.png" alt></p>
+<p>and: 且</p>
+<p><img src="http://i1.piimg.com/567571/a6b404e93f8bc0eb.png" alt></p>
+<p>分页查询</p>
+<p>limit 0,5 （ limit 索引，每页取得数据条数 ）</p>
+<p>第一页 limit 0,5;</p>
+<p>第二页 limit 5,5;</p>
+<p>第三页 limit 10,5;</p>
+<p>第四页 limit 15,5;</p>
+<p>第N页 limit （N - 1）* 5</p>
+<pre><code>select * from t_product where productName = &apos;iPhone_8&apos; and productPrice &lt; 3300 order by productPrice limit 5,5;
+</code></pre><p><img src="http://i1.piimg.com/567571/29e2799f64db4884.png" alt></p>
+<p>排序查询</p>
+<p>order by 默认是从小到大，一般是在某一个结果之后</p>
+<p>默认升序</p>
+<pre><code>// 默认升序
+select * from t_product where productName = &apos;iPhone_8&apos; and productPrice &lt; 3300 order by productPrice;
+
+// 降序
+select * from t_product where productName = &apos;iPhone_8&apos; and productPrice &lt; 3300 order by productPrice desc;
+</code></pre><p><img src="http://p1.bqimg.com/567571/c69e4c2790b900b6.png" alt></p>
+<p>模糊查询</p>
+<p>关键字搜索 ，% 是指通配符</p>
+<p>SQL 顺序</p>
+<pre><code>select * from 表名 条件语句（模糊匹配）排序语句 分页语句
+
+select * from t_product where productName like &apos;%_4&apos; order by productPrice limit 0,5;
+</code></pre><p><img src="http://i1.piimg.com/567571/4727877c1b85cb0e.png" alt></p>
+<p>主键</p>
+<p>数据库的约定俗称,自增长,建议创建表时增加主键，也可以之后再设计表</p>
+<pre><code>CREATE TABLE IF NOT EXISTS t_class (id integer PRIMARY KEY, className text, classNO integer); 
+</code></pre><p>外键约束</p>
+<p>当两张表有关联时，需要使用外键约束，一张表中的字段名所对应的值只能来自于另一张表中</p>
+<p><img src="http://p1.bqimg.com/567571/6b8c31aca88003d0.png" alt></p>
+<p>添加外键约束之后的变化</p>
+<p><img src="http://p1.bpimg.com/567571/4e0c9af7ec980748.png" alt></p>
+<p>多表查询</p>
+<p>有 <code>t_department</code>（部门表）和 <code>t_employee</code>(员工表)两张表</p>
+<p>需求：在 <code>t_employee</code> 表中查出部门研发部的人员</p>
+<p>1 嵌套查询：</p>
+<p>先查根据部门名称查出部ID，</p>
+<p><img src="http://p1.bqimg.com/567571/29459ada951407a8.png" alt></p>
+<p>然后再用部门ID查出员工表中的员工<br><img src="http://i1.piimg.com/567571/0636fdca9e552d99.png" alt></p>
+<p>以上两步的代码可合并</p>
+<p>根据部门名称查出部门ID</p>
+<pre><code>SELECT id from t_department WHERE departmentName = &apos;研发部&apos;;
+</code></pre><p>根据部门id查出这个部门的人员</p>
+<pre><code>SELECT * from t_employee WHERE departmentID = 1;
+</code></pre><p>合并后为</p>
+<pre><code>select * from t_employee where departmentID = (SELECT id from t_department WHERE departmentName = &apos;研发部&apos;); 
+</code></pre><p>结果为：</p>
+<p><img src="http://i1.piimg.com/567571/fd184b9d631bb19f.png" alt></p>
+<ol start="2">
+<li>链接查询</li>
+</ol>
+<p>给表起别名，给字段起别名</p>
+<pre><code>select employee.*, depart.departmentName deptN from t_department depart, t_employee employee;
+</code></pre><p>/*<em>多表查询之链接查询</em>/</p>
+<pre><code>select t_employee.*, t_department.departmentName FROM t_department, t_employee;
+</code></pre><p><img src="http://i1.piimg.com/567571/d5bd63824decf7f6.png" alt></p>
+<p>消除笛卡尔积</p>
+<pre><code>select employee.*, depart.departmentName deptN from t_department depart, t_employee employee where employee.departmentID = depart.id and employee.departmentID = 1;
+</code></pre><p><img src="http://i1.piimg.com/567571/b326df9d3150885d.png" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2016/10/13/SQlite使用学习/" data-id="cjwgh854q000voi81qbl0u8tm" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL/">SQL</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/10/20/本地缓存/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          本地缓存
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/03/第十二章架构和框架面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十四章第三方库面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十章网络相关/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第四章OC语言特性面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第八章多线程面试/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 aTreey<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

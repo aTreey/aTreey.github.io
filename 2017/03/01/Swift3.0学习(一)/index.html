@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Swift 3.0 学习 | aTreey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="和OC区别 没有了.h 和 .m 文件，没有main.m 文件 程序入口发生变化 在appdelegate中的 @UIApplicationMain 每行代码可以不写 ‘;’ self可以不写，建议不写self，因为闭包中必须要写 真假表示只有 true／ false，没有非0即真的概念 类型自动推到  类型自动推到提前指定类型12let float :Double = 9.6 print(flo">
+<meta name="keywords" content="Swift">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Swift 3.0 学习">
+<meta property="og:url" content="https://github.com/aTreey/2017/03/01/Swift3.0学习(一)/index.html">
+<meta property="og:site_name" content="aTreey&#39;s Blog">
+<meta property="og:description" content="和OC区别 没有了.h 和 .m 文件，没有main.m 文件 程序入口发生变化 在appdelegate中的 @UIApplicationMain 每行代码可以不写 ‘;’ self可以不写，建议不写self，因为闭包中必须要写 真假表示只有 true／ false，没有非0即真的概念 类型自动推到  类型自动推到提前指定类型12let float :Double = 9.6 print(flo">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-03T13:54:52.593Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Swift 3.0 学习">
+<meta name="twitter:description" content="和OC区别 没有了.h 和 .m 文件，没有main.m 文件 程序入口发生变化 在appdelegate中的 @UIApplicationMain 每行代码可以不写 ‘;’ self可以不写，建议不写self，因为闭包中必须要写 真假表示只有 true／ false，没有非0即真的概念 类型自动推到  类型自动推到提前指定类型12let float :Double = 9.6 print(flo">
+  
+    <link rel="alternate" href="/atom.xml" title="aTreey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">aTreey&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://github.com/aTreey"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Swift3.0学习(一)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/01/Swift3.0学习(一)/" class="article-date">
+  <time datetime="2017-03-01T14:39:10.000Z" itemprop="datePublished">2017-03-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Swift 3.0 学习
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="和OC区别"><a href="#和OC区别" class="headerlink" title="和OC区别"></a>和OC区别</h2><ul>
+<li>没有了.h 和 .m 文件，没有main.m 文件</li>
+<li>程序入口发生变化 在appdelegate中的 @UIApplicationMain</li>
+<li>每行代码可以不写 ‘;’</li>
+<li>self可以不写，建议不写self，因为闭包中必须要写</li>
+<li>真假表示只有 true／ false，没有非0即真的概念</li>
+<li>类型自动推到</li>
+</ul>
+<h2 id="类型自动推到"><a href="#类型自动推到" class="headerlink" title="类型自动推到"></a>类型自动推到</h2><h2 id="提前指定类型"><a href="#提前指定类型" class="headerlink" title="提前指定类型"></a>提前指定类型</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let float :Double = 9.6 </span><br><span class="line">print(float)</span><br></pre></td></tr></table></figure>
+<h2 id="常量和变量"><a href="#常量和变量" class="headerlink" title="常量和变量"></a>常量和变量</h2><ul>
+<li>let 声明常量，有且只有一次赋值机会</li>
+<li>var 声明变量</li>
+<li>尽量选择使用let如需修改值再使用var 系统会报警告</li>
+</ul>
+<h2 id="可选项"><a href="#可选项" class="headerlink" title="可选项"></a>可选项</h2><ul>
+<li>Optional: 表示一个常量或者是变量可能有值可能为nil，在打印的时候会带有Optional字样</li>
+<li>? 表示是一个可选项</li>
+<li>可选项不能参与运算</li>
+<li><p>! 表示可选项中一定要有值，可以强制解包,解包时如果没有值会boom</p>
+</li>
+<li><p>?? 合并空选项 快速判断可选项是否为nil, 如果为nil取后面的默认值，在基本数据类型和字符串使用较多</p>
+</li>
+</ul>
+<h2 id="条件分支"><a href="#条件分支" class="headerlink" title="条件分支"></a>条件分支</h2><ul>
+<li>if let</li>
+</ul>
+<p>快速赋值，判断赋值对象是否为nil，如果不为nil，就赋值进入分支<br>生成request是url是一个可选项，需要强制解包或者合并空选项</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let urlString = &quot;http://www.baidu.com&quot;</span><br><span class="line">let url = NSURL(string: urlString)</span><br><span class="line">let request = NSURLRequest(URL: url!)</span><br><span class="line">print(request)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>以上代码使用if let实现</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if let u = NSURL(string: urlString) &#123;</span><br><span class="line">    let request = NSURLRequest(URL: u)</span><br><span class="line">    print(request)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>where条件语句配合多重判断</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if url != nil  &#123;</span><br><span class="line">    if url?.host == &quot;www.baidu.com&quot; &#123;</span><br><span class="line">        let request = NSURLRequest(URL: url!)</span><br><span class="line">        print(request)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用if let</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if let u = url where u.host == &quot;www.baidu.com&quot; &#123;</span><br><span class="line">    let request = NSURLRequest(URL: u)</span><br><span class="line">    print(request)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>多重判断</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if let u = url, s = string &#123;</span><br><span class="line">    let request = NSURLRequest(URL: u)</span><br><span class="line">    print(request)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>guard let 和 if let 相反如果为nil，可以直接返回</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let urlString  = &quot;http://www.baidi.com&quot;</span><br><span class="line">let url = NSURL(string: urlString)</span><br><span class="line">guard let u = url else &#123; return &#125;</span><br><span class="line">    </span><br><span class="line">//程序走到这个地方就表示 u 一定有值</span><br><span class="line">let request = NSURLRequest(URL: u)</span><br><span class="line">print(request)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>swith语句</p>
+<ul>
+<li>swift语句中可以case任意类型，</li>
+<li>在OC中只能case整数</li>
+<li>不需要写break,会自动跳出，</li>
+<li>如果需要实现case穿透，需要加入fallthrough语句</li>
+<li>case语句中临时变量不需要写‘{ }’</li>
+<li>可同时case多个值    </li>
+<li>每句case语句中至少要有一行可执行的代码</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">let string = &quot;string1&quot;</span><br><span class="line">       switch string &#123;</span><br><span class="line">       case &quot;string&quot;, &quot;string1&quot;:</span><br><span class="line">           let str = &quot;stringOne&quot;</span><br><span class="line">           print(str)</span><br><span class="line">           </span><br><span class="line">       case &quot;string2&quot;:</span><br><span class="line">           let str = &quot;stringTWO&quot;</span><br><span class="line">           print(str)</span><br><span class="line">           </span><br><span class="line">       case &quot;string3&quot;:</span><br><span class="line">           print(string)</span><br><span class="line">           </span><br><span class="line">       case &quot;string4&quot;:</span><br><span class="line">           print(string)</span><br><span class="line">       default:</span><br><span class="line">           print(&quot;empty&quot;)</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>switch 中同样能够赋值和使用 where 子句</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">let point = CGPoint(x: 10, y: 10)</span><br><span class="line">switch point &#123;</span><br><span class="line">case let p where p.x == 0 &amp;&amp; p.y == 0:</span><br><span class="line">    print(&quot;中心点&quot;)</span><br><span class="line">case let p where p.x == 0:</span><br><span class="line">    print(&quot;Y轴&quot;)</span><br><span class="line">case let p where p.y == 0:</span><br><span class="line">    print(&quot;X轴&quot;)</span><br><span class="line">case let p where abs(p.x) == abs(p.y):</span><br><span class="line">    print(&quot;对角线&quot;)</span><br><span class="line">default:</span><br><span class="line">    print(&quot;其他&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>循环语句</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">for i in 0 ..&lt; 10 &#123; // 不包含10  循环范围中两边的值格式必须一直（空格问题）</span><br><span class="line">       print(i)</span><br><span class="line">   &#125;</span><br><span class="line">       </span><br><span class="line">for _ in 0...5 &#123;// 包含5  _ 表示忽略，不关心，只占位</span><br><span class="line">    print(&quot;循环语句&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2017/03/01/Swift3.0学习(一)/" data-id="cjwgh854t0014oi81dybrscel" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/03/05/Swift3.0学习(二)/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Swift3.0学习(二)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/02/20/OC与js交互学习/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">OC和JS交互</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/03/第十二章架构和框架面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十四章第三方库面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十章网络相关/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第四章OC语言特性面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第八章多线程面试/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 aTreey<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

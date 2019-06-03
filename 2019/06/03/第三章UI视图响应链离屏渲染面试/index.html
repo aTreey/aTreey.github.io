@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>aTreey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="UITableView 相关 重用机制 并发访问，数据拷贝问题：主线程删除了一条数据，子线程数据由删除之前的数据源copy而来，子线程网络请求，数据解析，预排版等操作后，回到主线程刷新时已经删除的数据又会重现  主线程数据源删除时对数据进行记录，子线程的数据回来后再进行一次同步删除操作，然后再刷新数据  使用GCD中的串行队列，将数据删除和数据解析在此队列中进行     UIView 和CALay">
+<meta property="og:type" content="article">
+<meta property="og:title" content="aTreey&#39;s Blog">
+<meta property="og:url" content="https://github.com/aTreey/2019/06/03/第三章UI视图响应链离屏渲染面试/index.html">
+<meta property="og:site_name" content="aTreey&#39;s Blog">
+<meta property="og:description" content="UITableView 相关 重用机制 并发访问，数据拷贝问题：主线程删除了一条数据，子线程数据由删除之前的数据源copy而来，子线程网络请求，数据解析，预排版等操作后，回到主线程刷新时已经删除的数据又会重现  主线程数据源删除时对数据进行记录，子线程的数据回来后再进行一次同步删除操作，然后再刷新数据  使用GCD中的串行队列，将数据删除和数据解析在此队列中进行     UIView 和CALay">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tKfTcly1g1omq41fi4j31hn0u0n3a.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tKfTcly1g1onklz0k8j309q0a674h.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tKfTcly1g1oqxcw9dvj32260n041w.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tKfTcly1g1osowi1dtj31l70u0ag5.jpg">
+<meta property="og:updated_time" content="2019-06-03T13:54:52.600Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="aTreey&#39;s Blog">
+<meta name="twitter:description" content="UITableView 相关 重用机制 并发访问，数据拷贝问题：主线程删除了一条数据，子线程数据由删除之前的数据源copy而来，子线程网络请求，数据解析，预排版等操作后，回到主线程刷新时已经删除的数据又会重现  主线程数据源删除时对数据进行记录，子线程的数据回来后再进行一次同步删除操作，然后再刷新数据  使用GCD中的串行队列，将数据删除和数据解析在此队列中进行     UIView 和CALay">
+<meta name="twitter:image" content="https://ws3.sinaimg.cn/large/006tKfTcly1g1omq41fi4j31hn0u0n3a.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="aTreey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">aTreey&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://github.com/aTreey"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-第三章UI视图响应链离屏渲染面试" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/03/第三章UI视图响应链离屏渲染面试/" class="article-date">
+  <time datetime="2019-06-03T13:54:52.600Z" itemprop="datePublished">2019-06-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="UITableView-相关"><a href="#UITableView-相关" class="headerlink" title="UITableView 相关"></a>UITableView 相关</h2><ul>
+<li>重用机制</li>
+<li><p>并发访问，数据拷贝问题：主线程删除了一条数据，子线程数据由删除之前的数据源copy而来，子线程网络请求，数据解析，预排版等操作后，回到主线程刷新时已经删除的数据又会重现</p>
+<ul>
+<li><p>主线程数据源删除时对数据进行记录，子线程的数据回来后再进行一次同步删除操作，然后再刷新数据</p>
+</li>
+<li><p>使用GCD中的串行队列，将数据删除和数据解析在此队列中进行</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="UIView-和CALayer-的关系"><a href="#UIView-和CALayer-的关系" class="headerlink" title="UIView 和CALayer 的关系"></a>UIView 和CALayer 的关系</h2><ul>
+<li>UIView 为 CALayer 提供内容，负责处理触摸事件，参与响应链</li>
+<li>CALayer 负责显示内容，分工明确，UIView 的Layer 实际上就是CALayer， backgroundColor 等属性本质是对CALayer 做了一层包装</li>
+</ul>
+<h2 id="事件传递"><a href="#事件传递" class="headerlink" title="事件传递"></a>事件传递</h2><p><img src="https://ws3.sinaimg.cn/large/006tKfTcly1g1omq41fi4j31hn0u0n3a.jpg" alt></p>
+<ul>
+<li>hitTest 方法是返回响应时间的试图</li>
+<li>pointInside withEvent 方法判断点击位置是否在当前视图范围内</li>
+<li>倒序遍历最终响应事件的试图，最后添加的试图会最优先被遍历到</li>
+</ul>
+<p><strong>需求案例</strong></p>
+<p>只让正方形的view中圆形区域内可以响应事件，四个角的位置不响应事件<br><img src="https://ws1.sinaimg.cn/large/006tKfTcly1g1onklz0k8j309q0a674h.jpg" alt></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">class CircularAreaResponseButton: UIButton &#123;</span><br><span class="line">    </span><br><span class="line">    override func hitTest(_ point: CGPoint, with event: UIEvent?) -&gt; UIView? &#123;</span><br><span class="line">        if self.isHidden || !self.isUserInteractionEnabled ||  self.alpha &lt;= 0.01 &#123;</span><br><span class="line">            return nil</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        var hitView: UIView?</span><br><span class="line">        if self.point(inside: point, with: event) &#123;</span><br><span class="line">            // 遍历当前视图的子试图</span><br><span class="line">            for subView in subviews &#123;</span><br><span class="line">                // 坐标转换</span><br><span class="line">                let convertPoint = self.convert(point, to: subView)</span><br><span class="line">                if let hitTestView = subView.hitTest(convertPoint, with: event) &#123;</span><br><span class="line">                    // 找到了最终响应事件的试图</span><br><span class="line">                    hitView = hitTestView</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            if hitView != nil &#123;</span><br><span class="line">                return hitView</span><br><span class="line">            &#125;</span><br><span class="line">            return self</span><br><span class="line">        &#125;</span><br><span class="line">        return nil</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    override func point(inside point: CGPoint, with event: UIEvent?) -&gt; Bool &#123;</span><br><span class="line">        let x1 = point.x</span><br><span class="line">        let y1 = point.y</span><br><span class="line">        </span><br><span class="line">        let x2 = self.frame.width / 2.0</span><br><span class="line">        let y2 = self.frame.height / 2.0</span><br><span class="line">        // 使用平面内两点见距离公式计算距离, 并且判断是否 &lt;= 圆的半径</span><br><span class="line">        return sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)) &lt;= x2</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="视图响应"><a href="#视图响应" class="headerlink" title="视图响应"></a>视图响应</h2><p>UIView 都继承于 UIResponder，都有以下方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func touchesBegan(_ touches: Set&lt;UITouch&gt;, with event: UIEvent?)</span><br><span class="line">func touchesMoved(_ touches: Set&lt;UITouch&gt;, with event: UIEvent?) </span><br><span class="line">func touchesEnded(_ touches: Set&lt;UITouch&gt;, with event: UIEvent?)</span><br><span class="line">func touchesCancelled(_ touches: Set&lt;UITouch&gt;, with event: UIEvent?)</span><br></pre></td></tr></table></figure>
+<p>如果事件沿着视图响应链一直传递到 UIApplicationDelegate 仍然没有任何一个视图处理事件，程序将会发生什么？</p>
+<ul>
+<li>忽略掉了这个事件当作什么都没有发生</li>
+</ul>
+<h2 id="图像显示原理"><a href="#图像显示原理" class="headerlink" title="图像显示原理"></a>图像显示原理</h2><p>CALayer 的 contents 是位图</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tKfTcly1g1oqxcw9dvj32260n041w.jpg" alt></p>
+<ul>
+<li><p>CPU的工作</p>
+<p>  Layout   | Display   | Prepare    | Commite |<br>  ———|———–|————|———|<br>  UI布局      | 绘制         | 图片编解码  | 提交位图 |<br>  文本计算  | </p>
+</li>
+<li><p>GPU渲染管线</p>
+<p>  定点着色 | 图元转配 | 光栅化 | 片段着色 | 片段处理 |<br>  ——–|——–|——-|———|———|</p>
+</li>
+</ul>
+<pre><code>提交到帧缓冲区（frameBuffer）
+</code></pre><h2 id="UI卡顿掉帧的原因"><a href="#UI卡顿掉帧的原因" class="headerlink" title="UI卡顿掉帧的原因"></a>UI卡顿掉帧的原因</h2><p>1/60 ms 时间内， 由cpu 和GPU 协同产生最终的数据，当 CPU UI布局，文本计算所用的时间较长时，留给GPU渲染，提交到帧缓冲区的时间就会变短，这样以来就会发生掉帧情况</p>
+<h3 id="UIView-的绘制原理"><a href="#UIView-的绘制原理" class="headerlink" title="UIView 的绘制原理"></a>UIView 的绘制原理</h3><p><strong>CPU优化方案</strong></p>
+<ul>
+<li>对象的创建、调整、销毁放在子线程，节省cpu的一部分时间</li>
+<li>预排版（布局计算，文本计算）放在子线程中</li>
+<li>预渲染（文本等异步绘制，图片编解码）等</li>
+</ul>
+<p><strong>GPU优化方案</strong></p>
+<h2 id="在屏渲染"><a href="#在屏渲染" class="headerlink" title="在屏渲染"></a>在屏渲染</h2><p>指GPU的渲染操作是在当前用于显示的屏幕缓冲区域中进行</p>
+<h2 id="离屏渲染"><a href="#离屏渲染" class="headerlink" title="离屏渲染"></a>离屏渲染</h2><p>指GPU在当前屏幕缓冲区域外新开劈了一个缓冲区域进行渲染操作<br>指定了UI视图图层的某些属性，标记为视图在未预合成之前不能用于在当前屏幕上直接显示的时候就会发生离屏渲染，例如图层的圆角设置和蒙层设置</p>
+<ul>
+<li><p>离屏渲染何时触发</p>
+<ul>
+<li>设置layer 的圆角并且和 maskToBounds 一起使用时</li>
+<li>图层蒙版</li>
+<li>阴影</li>
+<li>光栅化</li>
+</ul>
+</li>
+<li><p>为何要避免离屏渲染</p>
+<ul>
+<li>离屏渲染，会增加 GPU 的工作量，GPU工作量的增加就很有可能导致CPU和GPU的总耗时超过1/60s，导致UI卡顿和掉帧 </li>
+</ul>
+</li>
+<li><p>避免离屏渲染</p>
+</li>
+</ul>
+<p>###异步绘制</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tKfTcly1g1osowi1dtj31l70u0ag5.jpg" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/03/第三章UI视图响应链离屏渲染面试/" data-id="cjwgh855n002xoi814zy8ekt9" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/03/第七章Blocks面试/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/03/第九章Runloop面试/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/03/第十二章架构和框架面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十四章第三方库面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十章网络相关/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第四章OC语言特性面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第八章多线程面试/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 aTreey<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

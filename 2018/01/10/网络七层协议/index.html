@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>iOS 即使通讯网络知识篇 | aTreey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="网络七层协议读《图解TCP/IP》第5版以及看过的关于网络文章之后自己的理解 OSI (Open System Interconnec) 译为 开发式系统互联 七层模型从下到上一次是：物理层 -&amp;gt; 数据链路层 —&amp;gt; 网络层 -&amp;gt; 传输层 -&amp;gt; 会话层 -&amp;gt; 表示层 -》 应用层 数据每次经过一层之后就会在数据头部增加一个首部信息 物理层：网卡,网线,集线器,中继器,调">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 即使通讯网络知识篇">
+<meta property="og:url" content="https://github.com/aTreey/2018/01/10/网络七层协议/index.html">
+<meta property="og:site_name" content="aTreey&#39;s Blog">
+<meta property="og:description" content="网络七层协议读《图解TCP/IP》第5版以及看过的关于网络文章之后自己的理解 OSI (Open System Interconnec) 译为 开发式系统互联 七层模型从下到上一次是：物理层 -&amp;gt; 数据链路层 —&amp;gt; 网络层 -&amp;gt; 传输层 -&amp;gt; 会话层 -&amp;gt; 表示层 -》 应用层 数据每次经过一层之后就会在数据头部增加一个首部信息 物理层：网卡,网线,集线器,中继器,调">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-03T13:54:52.602Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS 即使通讯网络知识篇">
+<meta name="twitter:description" content="网络七层协议读《图解TCP/IP》第5版以及看过的关于网络文章之后自己的理解 OSI (Open System Interconnec) 译为 开发式系统互联 七层模型从下到上一次是：物理层 -&amp;gt; 数据链路层 —&amp;gt; 网络层 -&amp;gt; 传输层 -&amp;gt; 会话层 -&amp;gt; 表示层 -》 应用层 数据每次经过一层之后就会在数据头部增加一个首部信息 物理层：网卡,网线,集线器,中继器,调">
+  
+    <link rel="alternate" href="/atom.xml" title="aTreey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">aTreey&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://github.com/aTreey"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-网络七层协议" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/10/网络七层协议/" class="article-date">
+  <time datetime="2018-01-10T15:26:18.000Z" itemprop="datePublished">2018-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS 即使通讯网络知识篇
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="网络七层协议"><a href="#网络七层协议" class="headerlink" title="网络七层协议"></a>网络七层协议</h2><p>读《图解TCP/IP》第5版以及看过的关于网络文章之后自己的理解</p>
+<p>OSI (Open System Interconnec) 译为 开发式系统互联 七层模型从下到上一次是：物理层 -&gt; 数据链路层 —&gt; 网络层 -&gt; 传输层 -&gt; 会话层 -&gt; 表示层 -》 应用层</p>
+<p>数据每次经过一层之后就会在数据头部增加一个首部信息</p>
+<h5 id="物理层：网卡-网线-集线器-中继器-调制解调器"><a href="#物理层：网卡-网线-集线器-中继器-调制解调器" class="headerlink" title="物理层：网卡,网线,集线器,中继器,调制解调器"></a>物理层：网卡,网线,集线器,中继器,调制解调器</h5><ul>
+<li>定义设备标准，如网线，光纤接口类型，将0和1转化为电信号的强和弱，达到传输<strong>比特流</strong>目的，这层数据叫比特</li>
+</ul>
+<h5 id="数据链路层：网桥-交换机"><a href="#数据链路层：网桥-交换机" class="headerlink" title="数据链路层：网桥,交换机"></a>数据链路层：网桥,交换机</h5><ul>
+<li>传输的地址帧，并且有检测错误功能，保证数据可靠传输， 这层数据叫帧</li>
+</ul>
+<h5 id="网络层：路由器"><a href="#网络层：路由器" class="headerlink" title="网络层：路由器"></a>网络层：路由器</h5><ul>
+<li>两个计算机通信时可能会经过多个数据链路或者通信子网，网络层将数据链路层的帧组成数据包，包中有封装好的包头，其中含有逻辑地址信息（源站点和目的站点），此层为数据包选择合适的路由和交换结点,IP协议产生，这层数据叫着数据包</li>
+</ul>
+<h5 id="传输层："><a href="#传输层：" class="headerlink" title="传输层："></a>传输层：</h5><ul>
+<li>解决数据如何在网络中传输，这个层负责获取全部信息，因此，它必须跟踪数据单元碎片、乱序到达的 数据包和其它在传输过程中可能发生的危险。第4层为上层提供端到端（最终用户到最终用户）的透明的、可靠的数据传输服务。所为透明的传输是指在通信过程中 传输层对上层屏蔽了通信传输系统的具体细节。传输层协议的代表包括：TCP、UDP、SPX等</li>
+</ul>
+<h5 id="会话层："><a href="#会话层：" class="headerlink" title="会话层："></a>会话层：</h5><ul>
+<li>这一层也可以称为会晤层或对话层，在会话层及以上的高层次中，数据传送的单位不再另外命名，而是统称为报文。会话层不参与具体的传输，它提供包括访问验证和会话管理在内的建立和维护应用之间通信的机制。如服务器验证用户登录便是由会话层完成的</li>
+</ul>
+<h5 id="表示层："><a href="#表示层：" class="headerlink" title="表示层："></a>表示层：</h5><ul>
+<li>这一层主要解决拥护信息的语法表示问题。它将欲交换的数据从适合于某一用户的抽象语法，转换为适合于OSI系统内部使用的传送语法。即提供格式化的表示和转换数据服务。数据的压缩和解压缩， 加密和解密等工作都由表示层负责。</li>
+</ul>
+<h5 id="应用层：HTTP-协议"><a href="#应用层：HTTP-协议" class="headerlink" title="应用层：HTTP 协议"></a>应用层：HTTP 协议</h5><ul>
+<li>如何包装数据</li>
+</ul>
+<p><strong>通常从上到下会分成四层</strong></p>
+<p>TCP/IP 通常是指TCP/IP协议族,是一组不同协议组合在一起构成的协议族</p>
+<ul>
+<li>应用层：FTP 应用层协议</li>
+<li>传输层：TCP,UDP 传输层协议,TCP 提供了一个可靠的服务</li>
+<li>网络层：IP,ICMP 网络层协议，传输时不可靠的</li>
+<li>链路层：以太网协议</li>
+</ul>
+<h2 id="Socket"><a href="#Socket" class="headerlink" title="Socket"></a>Socket</h2><p><strong>为了解决不同计算机上进程间通信问题</strong><br>服务器在指定的端口上监听，然后生成一对儿新的socket 进行通讯，一个线程对应一个socket</p>
+<p>英文翻译为“插座”通常称为”套接字”, 本质是对于TCP/IP的封装，有客户端 socket 和 服务端socket </p>
+<ul>
+<li>流式 Socket (STREAM): 是一种面向连接的socket，针对于面向连接的TCP服务应用，因为安全所以效率低</li>
+<li>数据报式Socket (DATAGRAM): 是一种无连接的SOcket，正对于无连接的UDP服务应用，无序，不安全，需要在接收端分析重排或者要求重发，所以效率高</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2018/01/10/网络七层协议/" data-id="cjwgh855w0039oi815njog7k6" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/01/12/iOS即时通讯实现二/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          iOS即时通讯实现二
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/08/Swift加密相关/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Swift加密相关</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/03/第十二章架构和框架面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十四章第三方库面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十章网络相关/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第四章OC语言特性面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第八章多线程面试/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 aTreey<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

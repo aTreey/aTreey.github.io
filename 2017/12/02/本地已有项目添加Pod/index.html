@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>本地已有项目添加Pod | aTreey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="上一篇中主要记录了如何使用 pod 工具自动创建 pod 库并且生成一个测试Demo，这边主要记录给已有的项目添加 pod 创建 .podsepc 文件 cd 到已有项目的根目录执行命令： pod spec create [ProjectName].podspec   1pod spec create EmotionKeyboard.podspec   修改编辑 .podsepc 文件123456">
+<meta property="og:type" content="article">
+<meta property="og:title" content="本地已有项目添加Pod">
+<meta property="og:url" content="https://github.com/aTreey/2017/12/02/本地已有项目添加Pod/index.html">
+<meta property="og:site_name" content="aTreey&#39;s Blog">
+<meta property="og:description" content="上一篇中主要记录了如何使用 pod 工具自动创建 pod 库并且生成一个测试Demo，这边主要记录给已有的项目添加 pod 创建 .podsepc 文件 cd 到已有项目的根目录执行命令： pod spec create [ProjectName].podspec   1pod spec create EmotionKeyboard.podspec   修改编辑 .podsepc 文件123456">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-03T13:54:52.600Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="本地已有项目添加Pod">
+<meta name="twitter:description" content="上一篇中主要记录了如何使用 pod 工具自动创建 pod 库并且生成一个测试Demo，这边主要记录给已有的项目添加 pod 创建 .podsepc 文件 cd 到已有项目的根目录执行命令： pod spec create [ProjectName].podspec   1pod spec create EmotionKeyboard.podspec   修改编辑 .podsepc 文件123456">
+  
+    <link rel="alternate" href="/atom.xml" title="aTreey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">aTreey&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://github.com/aTreey"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-本地已有项目添加Pod" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/02/本地已有项目添加Pod/" class="article-date">
+  <time datetime="2017-12-01T16:38:18.000Z" itemprop="datePublished">2017-12-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      本地已有项目添加Pod
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>上一篇中主要记录了如何使用 <code>pod</code> 工具自动创建 <code>pod</code> 库并且生成一个测试Demo，这边主要记录给已有的项目添加 <code>pod</code></p>
+<h2 id="创建-podsepc-文件"><a href="#创建-podsepc-文件" class="headerlink" title="创建 .podsepc 文件"></a>创建 .podsepc 文件</h2><ul>
+<li><p><code>cd</code> 到已有项目的根目录执行命令： <code>pod spec create [ProjectName].podspec</code></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod spec create EmotionKeyboard.podspec</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="修改编辑-podsepc-文件"><a href="#修改编辑-podsepc-文件" class="headerlink" title="修改编辑 .podsepc 文件"></a>修改编辑 <code>.podsepc</code> 文件</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">	s.name         = &quot;EmotionKeyboard&quot;</span><br><span class="line">  	s.version      = &quot;0.0.1&quot;</span><br><span class="line">  	s.summary      = &quot;A  Emotional Keyboard.&quot;</span><br><span class="line">  	</span><br><span class="line">  	# 此处的格式不能修改</span><br><span class="line">  	s.description  = &lt;&lt;-DESC</span><br><span class="line"></span><br><span class="line">	Swift Emotional Keyboard</span><br><span class="line">                   DESC</span><br><span class="line"></span><br><span class="line">	s.homepage     = &quot;https://github.com/aTreey/EmotionKeyboard&quot;</span><br><span class="line">	</span><br><span class="line">	# 两种写法，使用下面第二种  </span><br><span class="line">	# s.license      = &quot;MIT (example)&quot;</span><br><span class="line">	s.license      = &#123; :type =&gt; &quot;MIT&quot;, :file =&gt; &quot;LICENSE&quot; &#125;</span><br><span class="line">	</span><br><span class="line">	s.author             = &#123; &quot;aTree&quot; =&gt; &quot;480814177@qq.com&quot; &#125;</span><br><span class="line">	</span><br><span class="line">	s.platform     = :ios, &quot;8.0&quot;</span><br><span class="line">	</span><br><span class="line">	s.source       = &#123; :git =&gt; &quot;https://github.com/aTreey/EmotionKeyboard.git&quot;, :tag =&gt; &quot;#&#123;s.version&#125;&quot; &#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	# 从 .podspec 同级别的目录下起匹配 </span><br><span class="line">	s.source_files  = &quot;EmotionKeyboard&quot;, &quot;EmotionKeyboard/Classes/**/*.&#123;h,m&#125;&quot;</span><br><span class="line">	</span><br><span class="line">	# 设置自己项目中依赖的系统库</span><br><span class="line">	s.framework  = &quot;UIKit&quot;</span><br><span class="line">  	</span><br><span class="line">	``` </span><br><span class="line">	</span><br><span class="line">## 调整文件的目录结构</span><br><span class="line">	</span><br><span class="line">- 在项目根目录下新建一个放组件代码的文件夹</span><br><span class="line">- 如果项目中包含 `bundle` 文件, 需要在组件文件夹下新建一个 `Assets` 文件夹，用来存放组件中的资源</span><br><span class="line"></span><br><span class="line">	最终结果如下:</span><br><span class="line">	</span><br><span class="line">	![](https://ws1.sinaimg.cn/large/a1641e1bly1fm2jl7ykslj21gc0o80xt.jpg))</span><br><span class="line"></span><br><span class="line">- 创建并添加必要文件</span><br><span class="line">	</span><br><span class="line">	- `LICENSE` 文件: 开源许可文件, 如果创建项目的时候选择了开源许可就可以自动生成忽略此步骤,如果没有直接拷贝一份其他的工程中的即可</span><br><span class="line">	- `README.md` 文件: 主要用来说明你开源库的信息及使用方法</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">## 验证本地 `.podspec` 文件</span><br><span class="line"></span><br><span class="line">- 错误1: `.podspec `中的文件路径设置错误</span><br><span class="line">	</span><br><span class="line">	![](https://ws1.sinaimg.cn/large/a1641e1bly1fm2jlboq82j20v807ejug.jpg)</span><br><span class="line">	</span><br><span class="line">- 错误2: bundle 文件资源路径错误</span><br><span class="line"></span><br><span class="line">	![](https://ws1.sinaimg.cn/large/a1641e1bly1fm2jl4shnnj20zq0cwgqf.jpg)</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">- 本地验证结果</span><br><span class="line"></span><br><span class="line"> - **EmotionKeyboard passed validation.** 本地验证验证通过</span><br><span class="line"></span><br><span class="line">## 网络验证 `.podspec` 文件 </span><br><span class="line">	</span><br><span class="line">- 给 `master` 分支打上 `.podspec` 文件中对应的 `tag` 标签, 提交推送, </span><br><span class="line">- 执行命令</span><br></pre></td></tr></table></figure>
+
+pod spec lint
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- 网络验证结果</span><br></pre></td></tr></table></figure>
+
+EmotionKeyboard.podspec passed validation.
+```
+</code></pre><p><strong>本文参考</strong></p>
+<p><a href="http://blog.xianqu.org/2015/08/pod-resources/" target="_blank" rel="noopener">给 Pod 添加资源文件</a></p>
+<p><a href="http://swift.gg/2016/12/15/cocoapods-making-guide/" target="_blank" rel="noopener">基于 Swift 创建 CocoaPods 完全指南</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2017/12/02/本地已有项目添加Pod/" data-id="cjwgh855k002qoi81qdoklftb" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/14/Mac-安装MySQL/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Mac 安装MySQL
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/11/29/CocoaPods制作私有pod/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">CocoaPods制作私有pod</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/03/第十二章架构和框架面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十四章第三方库面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十章网络相关/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第四章OC语言特性面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第八章多线程面试/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 aTreey<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

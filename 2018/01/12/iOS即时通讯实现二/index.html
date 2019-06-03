@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>iOS即时通讯实现二 | aTreey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="实现IM通信所用协议几个协议理解 xmpp 是基于xml协议主要是易于扩展，早起用于PC时代的产品使用，流量大，耗电大交互复杂其实并不适合移动互联网时代的IM产品 MQTT 协议 适配多平台，需自己扩展好友，群组等功能 protobut 协议 封装socket，自己实现所要考虑的问题  传输协议选择   TCP ？ 一般公司都选用（技术不是很成熟） UDP ？QQ 腾讯增加自己的私有协议，保证数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS即时通讯实现二">
+<meta property="og:url" content="https://github.com/aTreey/2018/01/12/iOS即时通讯实现二/index.html">
+<meta property="og:site_name" content="aTreey&#39;s Blog">
+<meta property="og:description" content="实现IM通信所用协议几个协议理解 xmpp 是基于xml协议主要是易于扩展，早起用于PC时代的产品使用，流量大，耗电大交互复杂其实并不适合移动互联网时代的IM产品 MQTT 协议 适配多平台，需自己扩展好友，群组等功能 protobut 协议 封装socket，自己实现所要考虑的问题  传输协议选择   TCP ？ 一般公司都选用（技术不是很成熟） UDP ？QQ 腾讯增加自己的私有协议，保证数据">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://www.jianshu.com/p/fdd3d429bdb3">
+<meta property="og:updated_time" content="2019-06-03T13:54:52.596Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS即时通讯实现二">
+<meta name="twitter:description" content="实现IM通信所用协议几个协议理解 xmpp 是基于xml协议主要是易于扩展，早起用于PC时代的产品使用，流量大，耗电大交互复杂其实并不适合移动互联网时代的IM产品 MQTT 协议 适配多平台，需自己扩展好友，群组等功能 protobut 协议 封装socket，自己实现所要考虑的问题  传输协议选择   TCP ？ 一般公司都选用（技术不是很成熟） UDP ？QQ 腾讯增加自己的私有协议，保证数据">
+<meta name="twitter:image" content="https://www.jianshu.com/p/fdd3d429bdb3">
+  
+    <link rel="alternate" href="/atom.xml" title="aTreey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">aTreey&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://github.com/aTreey"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-iOS即时通讯实现二" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/12/iOS即时通讯实现二/" class="article-date">
+  <time datetime="2018-01-12T13:54:26.000Z" itemprop="datePublished">2018-01-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS即时通讯实现二
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="实现IM通信所用协议"><a href="#实现IM通信所用协议" class="headerlink" title="实现IM通信所用协议"></a>实现IM通信所用协议</h2><p>几个协议理解</p>
+<p>xmpp 是基于xml协议主要是易于扩展，早起用于PC时代的产品使用，流量大，耗电大交互复杂其实并不适合移动互联网时代的IM产品</p>
+<p>MQTT 协议 适配多平台，需自己扩展好友，群组等功能</p>
+<p>protobut 协议</p>
+<h2 id="封装socket，自己实现"><a href="#封装socket，自己实现" class="headerlink" title="封装socket，自己实现"></a>封装socket，自己实现</h2><p>所要考虑的问题</p>
+<ul>
+<li><p>传输协议选择 </p>
+<ul>
+<li>TCP ？ 一般公司都选用（技术不是很成熟）</li>
+<li>UDP ？QQ 腾讯增加自己的私有协议，保证数据传递的可靠性，解决了丢包，乱序的问题</li>
+</ul>
+</li>
+<li><p>聊天协议选择及代表框架</p>
+<ul>
+<li>Socket ？ CocoaAsyncSocket </li>
+<li>WebSockt ？是传输通讯协议，基于socket封装的一个协议 SocketRocket</li>
+<li>MQTT ？MQTTKit 聊天协议为上层协议</li>
+<li>protobut 协议 ？</li>
+<li>XMPP ？XMPPFramework  聊天协议为上层协议</li>
+<li>自定义</li>
+</ul>
+</li>
+<li><p>传输数据格式</p>
+<ul>
+<li>Json？</li>
+<li>XML？</li>
+<li>ProtocolBuffer？</li>
+</ul>
+</li>
+<li><p>细节相关</p>
+<ul>
+<li>TCP 长连接如何保持，</li>
+<li>心跳机制</li>
+<li>重连机制</li>
+<li>数据安全机制</li>
+</ul>
+</li>
+</ul>
+<h3 id="CocoaAsyncSocket"><a href="#CocoaAsyncSocket" class="headerlink" title="CocoaAsyncSocket"></a>CocoaAsyncSocket</h3><ul>
+<li>CocoaAsyncSocket 的 delegate 用来设置代理处理各个回调</li>
+<li>delegateQueue </li>
+<li>socketQueue 串行队列，贯穿全类并没有任何加锁，确保了socket 操作中每一步都是线程安全的</li>
+<li><p>创建了两个读写队列（本质是数组）</p>
+<ul>
+<li><code>NSMutableArray *readQueue;</code> </li>
+<li><code>NSMutableArray *writeQueue;</code></li>
+</ul>
+</li>
+<li><p>全局数据缓冲: 当前socket未获取完的数据大小</p>
+<ul>
+<li><code>GCDAsyncSocketPreBuffer *preBuffer;</code></li>
+</ul>
+</li>
+<li><p>交替延时变量: 用于进行另一服务端地址请求的延时 </p>
+<ul>
+<li><code>alternateAddressDelay</code></li>
+</ul>
+</li>
+<li><p>connect</p>
+</li>
+<li><p>disconnect</p>
+</li>
+</ul>
+<h2 id="数据粘包-断包"><a href="#数据粘包-断包" class="headerlink" title="数据粘包,断包"></a>数据粘包,断包</h2><ul>
+<li><p>粘包: 如果客户端同一时间发送几条数据，而服务器只收到一大条数据</p>
+<ul>
+<li>原因：</li>
+<li><p>由于传输的是数据流，经过TCP传输后，TCP使用了优化算法将多次间隔较小且数据量小的数据合并成一个大的数据块，因此三条数据合并成了一条</p>
+<p>  <strong>TCP,UDP都可能造成粘包的原因</strong></p>
+</li>
+<li><p>发送端需要等缓冲区满了才发送出去，做成粘包</p>
+</li>
+<li>接收方不及时接收缓冲区的包，造成多个包接收</li>
+</ul>
+</li>
+<li><p>断包: 因为一次发送很大的数据包，缓冲区有限，会分段发送或读取数据</p>
+</li>
+</ul>
+<h2 id="CocoaAsyncSocket的封包，拆包处理"><a href="#CocoaAsyncSocket的封包，拆包处理" class="headerlink" title="CocoaAsyncSocket的封包，拆包处理"></a>CocoaAsyncSocket的封包，拆包处理</h2><ul>
+<li><p>读取数据方法：</p>
+<pre><code>// 有数据时调用，读取当前消息队列中的未读消息
+- (void)readDataWithTimeout:(NSTimeInterval)timeout tag:(long)tag
+</code></pre></li>
+</ul>
+<pre><code>**每次读取数据，每次都必须手动调用上述 readData 方法超时设置为不超时才能触发消息回调的代理**
+
+**因此在第一连接时调用，再在接到消息时调用，上述方法就可以达到每次收到消息都会触发读取消息的代理**
+
+以上做法存在的问题就是没有考虑数据的拆包会有粘包情况，这时候需要用下面两个`read`方法，1. 读取指定长度、2.读取指定边界
+
+    // 读取特定长度数据时调用
+    - (void)readDataToLength:(NSUInteger)length withTimeout:(NSTimeInterval)timeout tag:(long)tag
+
+    // 读到特定的 data 边界时调用
+    - (void)readDataToData:(NSData *)data withTimeout:(NSTimeInterval)timeout tag:(long)tag
+
+
+**解决办法及具体思路**
+
+- 封包：给每个数据包增加一个长度或者加一个开始结束标记，表明数据的长度和类型（根据自己的项目：文本、图片、语音、红包、视频、话题、提问等等）
+    - 可以在数据包之后加一个结束标识符，解决了传输过程中丢包，丢失头部信息的错误包读取，读到这样的就丢弃直接读下一个数据包
+
+- 拆包：获取每个包的标记，根据标记的数据长度获取数据，最后根据类型处理数据,最后读取数据包头部的边界
+</code></pre><ul>
+<li><p>利用缓冲区对数据进行读取</p>
+<ul>
+<li>创建读取数据包</li>
+<li>添加到读取的队列中</li>
+<li>从队列中取出读取任务包 </li>
+<li><p>使用偏移量 <code>maxLength</code> 读取数据 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">		- (void)readDataWithTimeout:(NSTimeInterval)timeout</span><br><span class="line">                     buffer:(NSMutableData *)buffer</span><br><span class="line">               bufferOffset:(NSUInteger)offset</span><br><span class="line">                  maxLength:(NSUInteger)length</span><br><span class="line">                        tag:(long)tag</span><br><span class="line">&#123;</span><br><span class="line">	if (offset &gt; [buffer length]) &#123;</span><br><span class="line">		LogWarn(@&quot;Cannot read: offset &gt; [buffer length]&quot;);</span><br><span class="line">		return;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	// 1. 创建读取数据包</span><br><span class="line">	GCDAsyncReadPacket *packet = [[GCDAsyncReadPacket alloc] initWithData:buffer</span><br><span class="line">	                                                          startOffset:offset</span><br><span class="line">	                                                            maxLength:length</span><br><span class="line">	                                                              timeout:timeout</span><br><span class="line">	                                                           readLength:0</span><br><span class="line">	                                                           terminator:nil</span><br><span class="line">	                                                                  tag:tag];</span><br><span class="line">	</span><br><span class="line">	dispatch_async(socketQueue, ^&#123; @autoreleasepool &#123;</span><br><span class="line">		</span><br><span class="line">		LogTrace();</span><br><span class="line">		</span><br><span class="line">		if ((flags &amp; kSocketStarted) &amp;&amp; !(flags &amp; kForbidReadsWrites))</span><br><span class="line">		&#123;</span><br><span class="line">			// 2. 向读的队列添加任务包</span><br><span class="line">			[readQueue addObject:packet];</span><br><span class="line">			// 3. 从队列中取出读取任务包 </span><br><span class="line">			[self maybeDequeueRead];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;&#125;);</span><br><span class="line">	</span><br><span class="line">	// Do not rely on the block being run in order to release the packet,</span><br><span class="line">	// as the queue might get released without the block completing.</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<p>doReadData 方法时读取数据的核心方法</p>
+<ul>
+<li>如果读取对列中没有数据，就去判是否是上次已经读取了数据，但是因为没有目前还没有读取到数据的标记，这是正好设置了 read 方法中的超时时间，所以要断开socket 连接</li>
+</ul>
+<p><img src="https://www.jianshu.com/p/fdd3d429bdb3" alt>                </p>
+<ul>
+<li>接收到数据后在 socket系统进程的数据缓冲区中<ul>
+<li>（基于TLS的分为两种）他们在各自管道中流动，完成数据解密后又流向了全局数据缓冲区<ul>
+<li>CFStreem </li>
+<li>SSLPrebuffer</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>处理数据逻辑： 如果当前读取包长度给明了，则直接流向currentRead，如果数据长度不清楚，那么则去判断这一次读取的长度，和currentRead可用空间长度去对比，如果长度比currentRead可用空间小，则流向currentRead，否则先用prebuffer来缓冲。</p>
+<h3 id="心跳机制"><a href="#心跳机制" class="headerlink" title="心跳机制"></a>心跳机制</h3><ul>
+<li>TCP 自带的keep-alive 使用空闲时间来发并且默认超时时间太长是2 小时，</li>
+<li>如果应用使用了socks ，socks proxy会让tcp keep-alive失效，因为socks 协议只管转发TCP层具体的数据包，并不会转发TCP协议内的实现具体细节数据包</li>
+<li><p>TCP 的长连接理论上是一直保持连接的，可以设置 TCP keep-alive的时间 但是实际情况下中，可能出现故障或者是因为防火墙的原因会自动把一定时间段内没有数据交互的连接给断开，心跳机制就可以维持长连接，保持活跃状态</p>
+</li>
+<li><p>iOS 中使用 NSTimer  <code>scheduledTimerWithTimeInterval</code> 需要在调用之前的关键位置设置 fireDate 为未来的某个时间, 然后再需要的时候开启</p>
+</li>
+<li>或者直接使用 <code>timerWithTimeInterval</code> 创建，然后添加到<code>runloop</code>中</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2018/01/12/iOS即时通讯实现二/" data-id="cjwgh85590025oi8154eiqrf9" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/01/17/面试中常见问题总结/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          面试中常见问题总结
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/10/网络七层协议/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">iOS 即使通讯网络知识篇</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/03/第十二章架构和框架面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十四章第三方库面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十章网络相关/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第四章OC语言特性面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第八章多线程面试/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 aTreey<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>WKWebiView 使用 | aTreey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="iOS中静态库动态库介绍及编译 静态库  iOS中根据源码的公开情况可分为2种  开源库源代码公开，能够看到具体的代码实现  比如 SDWebImage AFNetworking。。。  闭源库不公开源代码， 是经过编译后的二进制文件， 看不到具体实现主要分为：静态库、动态库  存在形式   静态库： .a 和 .framework动态库：.tbd 和 .framework (iOS 9 之前是">
+<meta name="keywords" content="WKWebView">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WKWebiView 使用">
+<meta property="og:url" content="https://github.com/aTreey/2017/02/02/iOS静态库动态库/index.html">
+<meta property="og:site_name" content="aTreey&#39;s Blog">
+<meta property="og:description" content="iOS中静态库动态库介绍及编译 静态库  iOS中根据源码的公开情况可分为2种  开源库源代码公开，能够看到具体的代码实现  比如 SDWebImage AFNetworking。。。  闭源库不公开源代码， 是经过编译后的二进制文件， 看不到具体实现主要分为：静态库、动态库  存在形式   静态库： .a 和 .framework动态库：.tbd 和 .framework (iOS 9 之前是">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-03T13:54:52.598Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="WKWebiView 使用">
+<meta name="twitter:description" content="iOS中静态库动态库介绍及编译 静态库  iOS中根据源码的公开情况可分为2种  开源库源代码公开，能够看到具体的代码实现  比如 SDWebImage AFNetworking。。。  闭源库不公开源代码， 是经过编译后的二进制文件， 看不到具体实现主要分为：静态库、动态库  存在形式   静态库： .a 和 .framework动态库：.tbd 和 .framework (iOS 9 之前是">
+  
+    <link rel="alternate" href="/atom.xml" title="aTreey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">aTreey&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://github.com/aTreey"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-iOS静态库动态库" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/02/iOS静态库动态库/" class="article-date">
+  <time datetime="2017-02-02T14:15:40.000Z" itemprop="datePublished">2017-02-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      WKWebiView 使用
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="iOS中静态库动态库介绍及编译"><a href="#iOS中静态库动态库介绍及编译" class="headerlink" title="iOS中静态库动态库介绍及编译"></a>iOS中静态库动态库介绍及编译</h3><ul>
+<li>静态库</li>
+</ul>
+<p>iOS中根据源码的公开情况可分为2种</p>
+<ul>
+<li>开源库<br>源代码公开，能够看到具体的代码实现</li>
+</ul>
+<p>比如 SDWebImage AFNetworking。。。</p>
+<ul>
+<li><p>闭源库<br>不公开源代码， 是经过编译后的二进制文件， 看不到具体实现<br>主要分为：静态库、动态库</p>
+</li>
+<li><p>存在形式</p>
+</li>
+</ul>
+<p>静态库： .a 和 .framework<br>动态库：.tbd 和 .framework (iOS 9 之前是 .dylib, iOS 9 之后取消了 .dylib 而使用 .tbd 来代替 .dylib )</p>
+<p>.framework 的库可以是静态库也可以是静态库， 凡是系统的 .framework 都是动态库，第三方的基本上全是静态中</p>
+<ul>
+<li>两者区别</li>
+</ul>
+<p>静态库：链接时会被完整的复制到可执行文件中，每次被使用都会被复制<br>动态库：链接时不复制，程序运行时由系统动态加载到内存中，供程序调用，系统只加载一次，多个程序可以公用，节省内存</p>
+<h3 id="静态库编译"><a href="#静态库编译" class="headerlink" title="静态库编译"></a>静态库编译</h3><p>编译时如果使用的是模拟器，生成的 .a 只能模拟器用，真机不可用，生成的 .a 文件在 Debug-iphonesimulator 文件夹下</p>
+<p>编译时如果使用 generic iOS Device，生成的 .a 只能真机而模拟器不可用，生成的 .a 文件在 Debug-iphoneos 文件夹下</p>
+<p>编译静态库时，自己手动创建的类的头文件不会被导出，只是默认导出创建工程时类的头文件</p>
+<p>导出手动添加类的头文件，点击工程名称 –&gt; build Phases –&gt; Copy Files 添加头文件，然后编译</p>
+<ul>
+<li>架构种类</li>
+</ul>
+<p>模拟器：i386 32位架构 (4s~5) ／ x86_64 64位架构 (5s以后机型)<br>真机：armv7 32位架构 (4~4s) ／ armv7s 特殊架构 (5~5C) ／ arm64 64位架构 (5s 以后机型)</p>
+<ul>
+<li><p>架构查看<br>lipo -info xxxx.a<br>默认生成模拟器只生成一种架构 i386 x86_64；真机默认导出两种架构 armv7 ／ arm64</p>
+</li>
+<li><p>合并多个架构</p>
+</li>
+</ul>
+<p>将模拟器的多个架构合并，项目名称–&gt;Build Settings –&gt; Achitectures –&gt; Build Active Architecture Only –&gt; Debug设置为NO<br>合并真机多个架构 按照以上方法运行真机即可<br>合并真机和模拟器架构 cd products lipo -create Debug-iphoneos/xxx.a Debug-iphonessimulator/xxx.a -output xx.a<br>合成 5 个架构 在Build Setting –&gt; Architectures 中手动添加三种架构,再编译合并</p>
+<ul>
+<li>静态库报错</li>
+</ul>
+<p>Undefined symbols for architecture （arm64 ／ armv7 ／ armv7s ／ i386 ／ x86_64），架构包导入出错，静态库有真机与模拟器</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2017/02/02/iOS静态库动态库/" data-id="cjwgh855c002doi8180wc3ciu" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WKWebView/">WKWebView</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/02/08/SDWebImage学习/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          SDWebImage的用法及原理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/01/18/异步下载图片/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">异步下载图片</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/03/第十二章架构和框架面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十四章第三方库面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十章网络相关/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第四章OC语言特性面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第八章多线程面试/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 aTreey<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Swift3.0学习(二) | aTreey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="字符串 字符串遍历字符串字节长度字符串长度 let string = “我是switf,语言”    // 字符串遍历   for s in string.characters {       print(s)   }    // 字符串的长度   let length = string.characters.count;   print(length)    // 字符串字节长度 汉字对应3个字">
+<meta name="keywords" content="swift">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Swift3.0学习(二)">
+<meta property="og:url" content="https://github.com/aTreey/2017/03/05/Swift3.0学习(二)/index.html">
+<meta property="og:site_name" content="aTreey&#39;s Blog">
+<meta property="og:description" content="字符串 字符串遍历字符串字节长度字符串长度 let string = “我是switf,语言”    // 字符串遍历   for s in string.characters {       print(s)   }    // 字符串的长度   let length = string.characters.count;   print(length)    // 字符串字节长度 汉字对应3个字">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-03T13:54:52.594Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Swift3.0学习(二)">
+<meta name="twitter:description" content="字符串 字符串遍历字符串字节长度字符串长度 let string = “我是switf,语言”    // 字符串遍历   for s in string.characters {       print(s)   }    // 字符串的长度   let length = string.characters.count;   print(length)    // 字符串字节长度 汉字对应3个字">
+  
+    <link rel="alternate" href="/atom.xml" title="aTreey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">aTreey&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://github.com/aTreey"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Swift3.0学习(二)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/05/Swift3.0学习(二)/" class="article-date">
+  <time datetime="2017-03-05T15:36:21.000Z" itemprop="datePublished">2017-03-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Swift3.0学习(二)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>字符串</p>
+<p>字符串遍历<br>字符串字节长度<br>字符串长度</p>
+<p>let string = “我是switf,语言”</p>
+<p>   // 字符串遍历<br>   for s in string.characters {<br>       print(s)<br>   }</p>
+<p>   // 字符串的长度<br>   let length = string.characters.count;<br>   print(length)</p>
+<p>   // 字符串字节长度 汉字对应3个字节，英文是1个字节<br>   let characterLength = string.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)<br>   print(characterLength)</p>
+<p>字符串拼接</p>
+<pre><code>let str1 = &quot;你好&quot;
+   let str2 = &quot;不好&quot;
+   let a = 20
+
+   // 第一种拼接
+   print(&quot;\(str1)\(str2)\(a)&quot;)
+
+   // 第二种拼接
+   let str = str1 + str2
+   let strA = str1 + String(a)
+   print(str)
+   print(strA)
+</code></pre><p>截取子串 as 的使用</p>
+<pre><code>let subString = str1.substringToIndex(&quot;小程生生世世&quot;.endIndex);
+   print(subString)
+
+   let subStr = str1.substringFromIndex(&quot;听说&quot;.startIndex)
+   print(subStr)
+
+   let range = str1.rangeOfString(&quot;小程序&quot;)
+   let subStr1 = str1.substringWithRange(range!)
+
+   print(subStr1)
+
+   // 截取到某一个位置
+   let subStr2 = str1.substringFromIndex(str1.endIndex.advancedBy(-2))
+   print(subStr2)
+
+   // 限制截取几个字符
+   let subStr3 = str1.substringToIndex(str1.startIndex.advancedBy(5, limit: str1.characters.endIndex))
+   print(subStr3)
+String 和 NSString 之间的 使用 as 无缝转换
+let helloString = &quot;我们一起飞&quot;
+(helloString as NSString).substringWithRange(NSMakeRange(2, 3))
+数组
+</code></pre><p>可以放不同类型的元素<br>let不可变数组,var可变数组</p>
+<pre><code>// 初始化一个空数组 [String]声明是一个装有字符串的数组类型
+   var emptyArray: [String] = [String]()
+
+// 可变数组
+   var array = [&quot;哈哈&quot;,&quot;呵呵&quot;,&quot;嘿嘿&quot;]
+   array.append(&quot;咯咯&quot;)
+   print(&quot;array = \(array)&quot;)
+
+   // 不可变数组
+   let array2 = [&quot;可可&quot;,&quot;噗噗&quot;]
+
+   // 数组拼接
+   let arr = array + array2
+   print(&quot;arr = \(arr)&quot;)
+
+   array += array2
+   print(&quot;array = \(array)&quot;)
+</code></pre><p>数组遍历</p>
+<pre><code>// 1. 
+   for i in 0 ..&lt; tempArray.count {
+       print(tempArray[i])
+   }
+
+
+   // 2. 
+   for obj in tempArray {
+       print(&quot;第二种方法:\(obj)&quot;)
+   }
+
+
+   // 3. 快速便利
+   for (index,value) in tempArray.enumerate() {
+       print(&quot;index = \(index), value = \(value)&quot;)
+   }
+</code></pre><p>字典和OC类似</p>
+<p>函数调用</p>
+<p>必须在函数声明的下面调用内部函数</p>
+<p>可以定义函数的外部参数和内部参数</p>
+<p>可以在参数前面加上 ‘# ’ 表明函数的外部参数和内部参数名称一样 swift3.0 以后废弃</p>
+<p>无参无返回值<br>三种写法</p>
+<pre><code>func demo9() -&gt; Void {
+       print(&quot;无参无返回值第一种写法&quot;)
+   }
+
+
+   func demo_9() -&gt; () {
+       print(&quot;无参无返回值第二种写法&quot;)
+   }
+
+   func demo_99() {
+       print(&quot;无参无返回值第三种写法&quot;)
+   }
+</code></pre><p>有参有返回值</p>
+<pre><code>func demo10(width a: Int, height b: Int) -&gt; Int {
+   return a * b
+</code></pre><p>   }</p>
+<p>闭包</p>
+<p>和OC中block类似，<br>和在函数中调用一个内部函数原理相同<br>可当作参数传递<br>在需要时执行闭包实现回调</p>
+<pre><code>// 定义闭包
+let closure = {() -&gt; () in
+       print(&quot;闭包实现&quot;)
+   }
+
+   // 执行闭包
+   closure()
+</code></pre><p>注意循环引用</p>
+<p>只有两个对象相互强引用或者三个对象相互强引用形成闭环时才会形成循环引用</p>
+<p>weak 和 unsafe_unretained的区别</p>
+<p>__weak iOS5.0 推出，当对象被系统回收时，对象的地址会自动指向nil</p>
+<p>____unsafe_unretained iOS4.0 推出，当对象被系统回收时，对象的地址不会自动指向nil,会造成野指针访问<br>解决办法：(官方推荐)weak - strong -dance 解决循环引用，AFNetworking中</p>
+<p>尾随闭包</p>
+<p>函数的最后一个参数时闭包的时候，函数的参数 ‘()’可以提前关闭，闭包写在 ‘（）’后面，当作尾随闭包来使用</p>
+<p>swift 和 OC 区别</p>
+<p>swift 和 OC语法的快速的对比</p>
+<p>XXX.init(xxx) ==&gt; XXX.(xxx)<br>selector 类型 ==&gt; ‘函数名’<br>对象方法的调用 是 ‘.’ self是可以省略的<br>枚举 枚举名 + 枚举值的名 =&gt; .枚举值的名<br>常量 和变量</p>
+<p>let 声明常量 var 声明变量<br>变量/常量的类型是自动推到的<br>不同类型之间不能够直接运算 需要手动转换数据类型<br>可选项<br>‘?’ 表示表示可选项 可能有值 可能为 nil<br>可选项会自动带上 Optional 字样<br>可选项不能够直接参与运算 需要强制解包<br>‘!’ 表示强制解包 获取可选项中具体的值<br>‘??’ 快速判断可选项是否为nil 如果为 nil 就去取 ‘??’后面的默认值<br>控制流<br>if 没有非零即真的概念 必须制定明确的条件<br>if let 快速赋值 并且判断赋值对象是否为 nil 如果不为nil 就进入分之执行相关逻辑代码<br>guard let 作用和 if let 相反 好处: 可以减少一层分支嵌套<br>where 多重判断 注意 和 &amp;&amp; || 不一样的<br>循环</p>
+<p>for in<br>0..&lt;10<br>0…10<br>字符串</p>
+<p>更加轻量级 更加高效 是 结构体<br>支持快速遍历<br>长度<br>拼接<br>截取 as<br>集合 let 声明不可变的集合 var 声明可变的集合</p>
+<p>声明 []<br>声明一个 空的集合<br>增删改查<br>合并<br>遍历<br>函数</p>
+<p>func 函数名称(外部参数1 内部参数1: 类型, 外部参数2 内部参数2: 类型) -&gt; Int {执行的代码}<br>函数没有返回值的三种方式<br>函数内部函数<br>闭包 () -&gt; () 没有参数没有返回值的闭包类型</p>
+<p>提前准备好的一段可以执行代码块<br>可以当做参数传递<br>在需要的时候执行闭包产生回调的效果<br>在闭包中使用self 需要考虑循环引用<br>函数是一种特殊的闭包</p>
+<p>block 的循环引用的解除<br><strong>weak 和 weak关键字作用类似 当属性对象被回收是 会自动指向nil<br>_</strong>unsafeunretained 和 assgin关键字作用类似 当属性对象被回收是 不会自动指向nil, 会造成野指针访问 weak -strong - dance</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2017/03/05/Swift3.0学习(二)/" data-id="cjwgh854v0018oi81a31484rp" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/03/08/Swift3.0学习(三)/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Swift3.0学习(三)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/01/Swift3.0学习(一)/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Swift 3.0 学习</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/03/第十二章架构和框架面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十四章第三方库面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十章网络相关/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第四章OC语言特性面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第八章多线程面试/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 aTreey<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

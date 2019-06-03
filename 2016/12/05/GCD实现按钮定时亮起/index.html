@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>GCD实现按钮定时亮起 | aTreey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="某些时候需要按钮不能连续点击，需要在一定的时间之后才可以允许交互，或者是实现类似发送验证码的按钮效果，具体做法是采用定时器 使用GCD定时器创建定时器对象__block NSInteger time = 30; // 需要强应用 创建队列dispatch_queue_t queue = dispatch_get_global_queue(0, 0); 创建dispatch源(定时器)(dispat">
+<meta name="keywords" content="GCD">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GCD实现按钮定时亮起">
+<meta property="og:url" content="https://github.com/aTreey/2016/12/05/GCD实现按钮定时亮起/index.html">
+<meta property="og:site_name" content="aTreey&#39;s Blog">
+<meta property="og:description" content="某些时候需要按钮不能连续点击，需要在一定的时间之后才可以允许交互，或者是实现类似发送验证码的按钮效果，具体做法是采用定时器 使用GCD定时器创建定时器对象__block NSInteger time = 30; // 需要强应用 创建队列dispatch_queue_t queue = dispatch_get_global_queue(0, 0); 创建dispatch源(定时器)(dispat">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-03T13:54:52.588Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GCD实现按钮定时亮起">
+<meta name="twitter:description" content="某些时候需要按钮不能连续点击，需要在一定的时间之后才可以允许交互，或者是实现类似发送验证码的按钮效果，具体做法是采用定时器 使用GCD定时器创建定时器对象__block NSInteger time = 30; // 需要强应用 创建队列dispatch_queue_t queue = dispatch_get_global_queue(0, 0); 创建dispatch源(定时器)(dispat">
+  
+    <link rel="alternate" href="/atom.xml" title="aTreey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">aTreey&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://github.com/aTreey"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-GCD实现按钮定时亮起" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/05/GCD实现按钮定时亮起/" class="article-date">
+  <time datetime="2016-12-05T15:59:45.000Z" itemprop="datePublished">2016-12-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      GCD实现按钮定时亮起
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>某些时候需要按钮不能连续点击，需要在一定的时间之后才可以允许交互，或者是实现类似发送验证码的按钮效果，具体做法是采用定时器</strong></p>
+<h2 id="使用GCD定时器"><a href="#使用GCD定时器" class="headerlink" title="使用GCD定时器"></a>使用GCD定时器</h2><h3 id="创建定时器对象"><a href="#创建定时器对象" class="headerlink" title="创建定时器对象"></a>创建定时器对象</h3><pre><code>__block NSInteger time = 30; // 需要强应用
+</code></pre><h3 id="创建队列"><a href="#创建队列" class="headerlink" title="创建队列"></a>创建队列</h3><pre><code>dispatch_queue_t queue = dispatch_get_global_queue(0, 0);
+</code></pre><h3 id="创建dispatch源-定时器"><a href="#创建dispatch源-定时器" class="headerlink" title="创建dispatch源(定时器)"></a>创建dispatch源(定时器)</h3><pre><code>(dispatach_source…timer..)
+</code></pre><ul>
+<li><p>01参数:要创建的source 是什么类型的， </p>
+<p>  <code>(DISPATCH_SOURCE_TYPE_TIMER)定时器</code></p>
+</li>
+<li><p>04参数:队列 —-线程 决定block 在哪个线程中调用</p>
+</li>
+</ul>
+<p>代码</p>
+<pre><code>dispatch_source_t _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+</code></pre><h3 id="设置定时器"><a href="#设置定时器" class="headerlink" title="设置定时器"></a>设置定时器</h3><ul>
+<li><p>01参数:定时器对象</p>
+</li>
+<li><p>02参数:开始时间 (DISPATCH_TIME_NOW) 什么时候开始执行第一次任务</p>
+</li>
+<li><p>03参数:间隔时间 GCD时间单位:纳秒</p>
+</li>
+<li><p>04参数:leewayInSeconds精准度:允许的误差: 0 表示绝对精准</p>
+</li>
+</ul>
+<p>code:</p>
+<pre><code>dispatch_source_set_timer(_timer, dispatch_walltime(NULL, 0), 1.0 * NSEC_PER_SEC, 0);
+</code></pre><h3 id="定时器每隔一段时间就要执行任务-block回调"><a href="#定时器每隔一段时间就要执行任务-block回调" class="headerlink" title="定时器每隔一段时间就要执行任务(block回调)"></a>定时器每隔一段时间就要执行任务(block回调)</h3><pre><code>dispatch_source_set_event_handler(_timer, ^{
+    if (time &lt;= 0) {
+        dispatch_source_cancel(_timer);
+        dispatch_async(dispatch_get_main_queue(), ^{
+
+            // 设置按钮的样式
+            [self.button setTitle:@&quot;重新获取验证码&quot; forState:UIControlStateNormal];
+            [self.button setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            [self.button setUserInteractionEnabled:YES];
+        });
+    } else {
+
+        NSInteger seconds = time;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.button setTitle:[NSString stringWithFormat:@&quot;重新发送(%.2ld)&quot;, seconds] forState:UIControlStateNormal];
+            [self.button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+            [self.button setUserInteractionEnabled:NO];
+        });
+        time--;
+    }
+});
+</code></pre><h3 id="启动定时器-默认是停止的"><a href="#启动定时器-默认是停止的" class="headerlink" title="启动定时器(默认是停止的)"></a>启动定时器(默认是停止的)</h3><pre><code>dispatch_resume(timer);
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2016/12/05/GCD实现按钮定时亮起/" data-id="cjwgh85470008oi814d6dkdct" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GCD/">GCD</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/12/10/Quartz2D绘制形状/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Quartz 2D绘制形状(二)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/12/04/Quartz2D绘制曲线/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Quartz2D绘制曲线</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/03/第十二章架构和框架面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十四章第三方库面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十章网络相关/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第四章OC语言特性面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第八章多线程面试/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 aTreey<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

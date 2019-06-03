@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Quartz 2D绘制形状(二) | aTreey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="使用Quartz 2D绘制圆弧，扇形，下载进度以及绘制的图形的填充和描边属性的设置.将贝塞尔路径添加到图形上下文中图形上下文中的状态保存和恢复对图形上下文进行矩阵操作（平移，缩放，选转），实现一些特殊效果 使用贝塞尔曲线绘制矩形1234567&amp;#123;    UIBezierPath *path = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0">
+<meta name="keywords" content="Quartz 2D">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Quartz 2D绘制形状(二)">
+<meta property="og:url" content="https://github.com/aTreey/2016/12/10/Quartz2D绘制形状/index.html">
+<meta property="og:site_name" content="aTreey&#39;s Blog">
+<meta property="og:description" content="使用Quartz 2D绘制圆弧，扇形，下载进度以及绘制的图形的填充和描边属性的设置.将贝塞尔路径添加到图形上下文中图形上下文中的状态保存和恢复对图形上下文进行矩阵操作（平移，缩放，选转），实现一些特殊效果 使用贝塞尔曲线绘制矩形1234567&amp;#123;    UIBezierPath *path = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-03T13:54:52.591Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Quartz 2D绘制形状(二)">
+<meta name="twitter:description" content="使用Quartz 2D绘制圆弧，扇形，下载进度以及绘制的图形的填充和描边属性的设置.将贝塞尔路径添加到图形上下文中图形上下文中的状态保存和恢复对图形上下文进行矩阵操作（平移，缩放，选转），实现一些特殊效果 使用贝塞尔曲线绘制矩形1234567&amp;#123;    UIBezierPath *path = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0">
+  
+    <link rel="alternate" href="/atom.xml" title="aTreey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">aTreey&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://github.com/aTreey"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Quartz2D绘制形状" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/10/Quartz2D绘制形状/" class="article-date">
+  <time datetime="2016-12-10T13:58:31.000Z" itemprop="datePublished">2016-12-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Quartz 2D绘制形状(二)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用Quartz 2D绘制圆弧，扇形，下载进度以及绘制的图形的填充和描边属性的设置.<br>将贝塞尔路径添加到图形上下文中<br>图形上下文中的状态保存和恢复<br>对图形上下文进行矩阵操作（平移，缩放，选转），实现一些特殊效果</p>
+<h3 id="使用贝塞尔曲线绘制矩形"><a href="#使用贝塞尔曲线绘制矩形" class="headerlink" title="使用贝塞尔曲线绘制矩形"></a>使用贝塞尔曲线绘制矩形</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    UIBezierPath *path = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, 20, 30)];</span><br><span class="line">    [[UIColor magentaColor] setStroke];</span><br><span class="line">    [[UIColor brownColor] setFill];</span><br><span class="line">    [path fill]; // 填充</span><br><span class="line">    [path stroke]; // 描边</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="圆角矩形"><a href="#圆角矩形" class="headerlink" title="圆角矩形"></a>圆角矩形</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 绘制圆角矩形</span><br><span class="line">&#123;</span><br><span class="line">    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(35, 10, 50, 70) cornerRadius:5.0];</span><br><span class="line">    [[UIColor magentaColor] setStroke];</span><br><span class="line">    [[UIColor cyanColor] setFill];</span><br><span class="line">    [path fill];</span><br><span class="line">    [path stroke];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="绘制圆"><a href="#绘制圆" class="headerlink" title="绘制圆"></a>绘制圆</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 画圆</span><br><span class="line">&#123;</span><br><span class="line">    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(90, 5, 40, 40) cornerRadius:20.0];</span><br><span class="line">    [[UIColor purpleColor] setStroke];</span><br><span class="line">    [[UIColor magentaColor] setFill];</span><br><span class="line">    [path fill];</span><br><span class="line">    [path stroke];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="绘制扇形"><a href="#绘制扇形" class="headerlink" title="绘制扇形"></a>绘制扇形</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CGPoint center = CGPointMake(200, 50);</span><br><span class="line">UIBezierPath *sectorPath = [UIBezierPath bezierPathWithArcCenter:center radius:100 startAngle:0 endAngle:M_PI_4 clockwise:YES];</span><br><span class="line">[sectorPath addLineToPoint:center];</span><br><span class="line">[[UIColor brownColor] setStroke];</span><br><span class="line">[sectorPath fill];</span><br><span class="line">[sectorPath stroke];</span><br></pre></td></tr></table></figure>
+<h3 id="绘制圆弧"><a href="#绘制圆弧" class="headerlink" title="绘制圆弧"></a>绘制圆弧</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 绘制圆弧</span><br><span class="line">* 参数1: 圆心坐标</span><br><span class="line">* 参数2: 半径</span><br><span class="line">* 参数3: 开始角度</span><br><span class="line">* 参数4: 结束角度 使用弧度制表示</span><br><span class="line">* 参数5: clockwis顺时针方法的</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">UIBezierPath *circuLarArcPath = [UIBezierPath bezierPathWithArcCenter:CGPointMake(100, 60) radius:50.0 startAngle:0 endAngle:M_PI_2 clockwise:YES];</span><br><span class="line"></span><br><span class="line">[circuLarArcPath moveToPoint:CGPointMake(100, 60)];</span><br><span class="line"></span><br><span class="line">[[UIColor magentaColor] setStroke];</span><br><span class="line">[[UIColor brownColor] setFill];</span><br><span class="line">[circuLarArcPath stroke];</span><br><span class="line">[circuLarArcPath fill];</span><br></pre></td></tr></table></figure>
+<h3 id="绘制文字"><a href="#绘制文字" class="headerlink" title="绘制文字"></a>绘制文字</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 绘制文字</span><br><span class="line"> * drawAtPoint 不能换行，当文字过多过长时不会有效果</span><br><span class="line"> * 使用 drawInRect 可以实现换行</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">NSString *text = @&quot;我是绘制文字价格就看过几个框架刚开始大家高考的感觉是快乐的关键时刻大家赶快来时的结果看了风水格局来看就哭了感觉树大根深来对抗肌肤抵抗力&quot;;</span><br><span class="line"></span><br><span class="line">NSMutableDictionary *attributeDict  = [NSMutableDictionary dictionary];</span><br><span class="line">attributeDict[NSFontAttributeName] = [UIFont systemFontOfSize:18];</span><br><span class="line"></span><br><span class="line">// 字体颜色</span><br><span class="line">attributeDict[NSForegroundColorAttributeName] = [UIColor greenColor];</span><br><span class="line">// 描边颜色</span><br><span class="line">attributeDict[NSStrokeColorAttributeName] = [UIColor yellowColor];</span><br><span class="line">// 描边宽度</span><br><span class="line">attributeDict[NSStrokeWidthAttributeName] = @1;</span><br><span class="line">//  阴影</span><br><span class="line">NSShadow *shadow = [[NSShadow alloc] init];</span><br><span class="line">shadow.shadowColor = [UIColor redColor];</span><br><span class="line">shadow.shadowOffset = CGSizeMake(1.0, 1.0);</span><br><span class="line"></span><br><span class="line">attributeDict[NSShadowAttributeName] = shadow;</span><br><span class="line"></span><br><span class="line">// 可以换行</span><br><span class="line">[text drawInRect:self.bounds withAttributes:attributeDict];</span><br><span class="line"></span><br><span class="line">// 不换行</span><br><span class="line">[text drawAtPoint:CGPointZero withAttributes:attributeDict];</span><br></pre></td></tr></table></figure>
+<h3 id="绘制图片"><a href="#绘制图片" class="headerlink" title="绘制图片"></a>绘制图片</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 绘制图片</span><br><span class="line"> * drawAtPoint 默认绘制的内容尺寸和图片的尺寸一样大</span><br><span class="line"> *</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line">- (void)drawImage &#123;</span><br><span class="line"></span><br><span class="line">    UIImage *image = [UIImage imageNamed:@&quot;wc_dk&quot;];</span><br><span class="line">    UIImage *image1 = [UIImage imageNamed:@&quot;wc_hq&quot;];</span><br><span class="line"></span><br><span class="line">    [image drawAtPoint:CGPointMake(10, 90)];</span><br><span class="line">    [image1 drawAtPoint:CGPointMake(70, 80)];</span><br><span class="line"></span><br><span class="line">    // 绘制在控件内部，和控件大小一致</span><br><span class="line">    [image1 drawInRect:self.bounds];</span><br><span class="line"></span><br><span class="line">    // 以平铺的方式绘制在控件的内部</span><br><span class="line">    [image1 drawAsPatternInRect:self.bounds];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="圆形下载进度的绘制"><a href="#圆形下载进度的绘制" class="headerlink" title="圆形下载进度的绘制"></a>圆形下载进度的绘制</h3><p>drawRect 方法不能手动调用，因为图形上下文不能手动创建<br>需要调用setNeedsDisplay方法来重绘，系统会创建图形上下文<br>绘制时用到的定时器，一般不使用NSTimer定时器，因为调度优先级比较低，不会被准时带,界面会出现卡顿的现象<br>CADisplayLink 每次刷新屏幕的时候就会调用，1s刷新 60 次<br>setNeedsDisplay调用此方法时并不是立即调用drawRect方法，只是给给当前控件添加刷新标记，直到下一次屏幕刷新的时候才调用drawRect 方法，正好与CADisplayLink 方法一致，所以界面流畅不会卡顿<br>图形上下文状态栈</p>
+<p>UIBezierPath图形上下文和CGContextRef的图形上下文不是同一个图形上下文</p>
+<p>可以将贝塞尔路径添加到图形上下文中</p>
+<p>也可以保存当前的图形上下文，CGContextSaveGState(ctx);<br>在下一次使用时可以恢复，CGContextRestoreGState(ctx);<br>画两种不同状态的线条</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 图形上下文栈的理解</span><br><span class="line">* 画两条状态不同的线段</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">// 获取上下文</span><br><span class="line">CGContextRef ctx = UIGraphicsGetCurrentContext();</span><br><span class="line"></span><br><span class="line">// 第一条</span><br><span class="line">UIBezierPath *path = [UIBezierPath bezierPath];</span><br><span class="line">[path moveToPoint:CGPointMake(10, 60)];</span><br><span class="line">[path addLineToPoint:CGPointMake(240, 60)];</span><br><span class="line"></span><br><span class="line">// 把路径添加到上下文</span><br><span class="line">CGContextAddPath(ctx, path.CGPath);</span><br><span class="line"></span><br><span class="line">// 保存上下的状态</span><br><span class="line">CGContextSaveGState(ctx);</span><br><span class="line"></span><br><span class="line">// 设置当前状态</span><br><span class="line">[[UIColor greenColor] setStroke];</span><br><span class="line">//此时设置path 的状态无效，需要设置当前上下文的状态</span><br><span class="line">path.lineWidth = 5.0;</span><br><span class="line">CGContextSetLineWidth(ctx, 5.0);</span><br><span class="line"></span><br><span class="line">// 渲染上下文</span><br><span class="line">CGContextStrokePath(ctx);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 第二根</span><br><span class="line"></span><br><span class="line">// 可使用第一根的路径，因为每次绘制完成之后都会清除</span><br><span class="line">path = [UIBezierPath bezierPath];</span><br><span class="line">[path moveToPoint:CGPointMake(60, 10)];</span><br><span class="line">[path addLineToPoint:CGPointMake(60, 240)];</span><br><span class="line"></span><br><span class="line">// 添加路径到上下文 需要转换为CGPath</span><br><span class="line">CGContextAddPath(ctx, path.CGPath);</span><br><span class="line"></span><br><span class="line">// 还原之前保存的上下文状态</span><br><span class="line">CGContextRestoreGState(ctx);</span><br><span class="line">CGContextStrokePath(ctx);</span><br><span class="line">图形上下文矩阵</span><br><span class="line"></span><br><span class="line">// 使用矩阵</span><br><span class="line"></span><br><span class="line">    // 获取上下文</span><br><span class="line">    CGContextRef ctx = UIGraphicsGetCurrentContext();</span><br><span class="line"></span><br><span class="line">    // 使用贝塞尔路径</span><br><span class="line">    UIBezierPath *ovalPath = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(-150, -100, 300, 200)];</span><br><span class="line">    [[UIColor cyanColor] setFill];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    // 以上绘制的图形有一部分看不到，通过对上下文矩阵操作来实现，平移上下文</span><br><span class="line">    // 操作矩阵必须在添加路径之前</span><br><span class="line"></span><br><span class="line">    // 平移</span><br><span class="line">    CGContextTranslateCTM(ctx, 150, 100);</span><br><span class="line"></span><br><span class="line">    // 缩放</span><br><span class="line">    CGContextScaleCTM(ctx, 0.5, 0.5);</span><br><span class="line"></span><br><span class="line">    // 旋转</span><br><span class="line">    // 可以实现点无法计算时的效果</span><br><span class="line">    CGContextRotateCTM(ctx, M_PI_4);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    // 添加路径到上下文</span><br><span class="line">    CGContextAddPath(ctx, ovalPath.CGPath);</span><br><span class="line"></span><br><span class="line">    // 操作矩阵放在添加路径之后无效果</span><br><span class="line">	//  CGContextTranslateCTM(ctx, 150, 100);</span><br><span class="line"></span><br><span class="line">    CGContextFillPath(ctx);</span><br><span class="line"></span><br><span class="line">    // 正常的绘制椭圆</span><br><span class="line">//    UIBezierPath *ovalPath = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(50, 20, 200, 100)];</span><br><span class="line">//    ovalPath.lineWidth = 4.0;</span><br><span class="line">//    [[UIColor magentaColor] setFill];</span><br><span class="line">//    [[UIColor yellowColor] setStroke];</span><br><span class="line">//    [ovalPath stroke];</span><br><span class="line">//    [ovalPath fill];</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2016/12/10/Quartz2D绘制形状/" data-id="cjwgh854m000moi81mn1fr015" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/01/18/异步下载图片/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          异步下载图片
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/12/05/GCD实现按钮定时亮起/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">GCD实现按钮定时亮起</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/03/第十二章架构和框架面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十四章第三方库面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十章网络相关/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第四章OC语言特性面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第八章多线程面试/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 aTreey<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

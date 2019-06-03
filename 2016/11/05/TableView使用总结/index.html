@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>TableView 使用 | aTreey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="tableView 使用总结 字典的 key enumerator 的使用  tableViewCell 的 selected 方法可以监听cell 的选中, 使用selected 参数  网络慢时点击左边cell右边数据不能及时刷新， 用户看到的还是上一个cell显示的数据  解决办法: 在网络加载之前就reload数据，让显示空白   点击左边的cell时 上拉加载更多控件的显示和隐藏逻辑">
+<meta name="keywords" content="TableView">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TableView 使用">
+<meta property="og:url" content="https://github.com/aTreey/2016/11/05/TableView使用总结/index.html">
+<meta property="og:site_name" content="aTreey&#39;s Blog">
+<meta property="og:description" content="tableView 使用总结 字典的 key enumerator 的使用  tableViewCell 的 selected 方法可以监听cell 的选中, 使用selected 参数  网络慢时点击左边cell右边数据不能及时刷新， 用户看到的还是上一个cell显示的数据  解决办法: 在网络加载之前就reload数据，让显示空白   点击左边的cell时 上拉加载更多控件的显示和隐藏逻辑">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-03T13:54:52.595Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TableView 使用">
+<meta name="twitter:description" content="tableView 使用总结 字典的 key enumerator 的使用  tableViewCell 的 selected 方法可以监听cell 的选中, 使用selected 参数  网络慢时点击左边cell右边数据不能及时刷新， 用户看到的还是上一个cell显示的数据  解决办法: 在网络加载之前就reload数据，让显示空白   点击左边的cell时 上拉加载更多控件的显示和隐藏逻辑">
+  
+    <link rel="alternate" href="/atom.xml" title="aTreey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">aTreey&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://github.com/aTreey"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-TableView使用总结" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/05/TableView使用总结/" class="article-date">
+  <time datetime="2016-11-05T14:59:46.000Z" itemprop="datePublished">2016-11-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      TableView 使用
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="tableView-使用总结"><a href="#tableView-使用总结" class="headerlink" title="tableView 使用总结"></a>tableView 使用总结</h2><ul>
+<li><p>字典的 key enumerator 的使用</p>
+</li>
+<li><p>tableViewCell 的 selected 方法可以监听cell 的选中, 使用selected 参数</p>
+</li>
+<li><p>网络慢时点击左边cell右边数据不能及时刷新， 用户看到的还是上一个cell显示的数据</p>
+<ul>
+<li>解决办法: 在网络加载之前就reload数据，让显示空白</li>
+</ul>
+</li>
+<li><p>点击左边的cell时 上拉加载更多控件的显示和隐藏逻辑</p>
+<ul>
+<li>解决办法: 在每次刷新右边数据时，控制footer的显示</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>在numberOfRowsInSection方法中控制</p>
+</li>
+<li><p>每次点击cell之前要结束上一个没有刷新完的，防止奔溃</p>
+</li>
+<li><p>加载更多时</p>
+<p>  在加载第一页时设置currentPage为1，在加载更多的逻辑中 ++currentPage<br>  点击cell加载时上一个加载更多的网络数据还没有回来，在当前请求之前结束掉所有的网络请求<br>  停止之后的刷新控件状态会有错误，没有更多还是还可以加载状态不确定<br>  在点击左边cell后刷新右边的之前需要检查右边tableView 的footer的状态<br>  下拉刷新</p>
+</li>
+<li><p>第一次下拉刷新之后，第二次下拉刷新，将数据添加到数组中会导致两次数据重复</p>
+<ul>
+<li>解决办法：清除以前的所有数据</li>
+</ul>
+</li>
+<li><p>下拉刷新完毕后结束刷新后需要检查footer的状态</p>
+</li>
+<li><p>网络慢时连续点击cell，连发多个请求成功回调时数据显示错乱，或者是数据已经回来了但是还是显示上一个请求正在请求。。。</p>
+<ul>
+<li>解决办法：点击左边某个类别时，结束所有的刷新（上拉和下拉）</li>
+</ul>
+</li>
+<li><p>连续点击发送请求</p>
+<ul>
+<li>解决办法：保存请求参数， 比较上一次参数和当前参数， 如果 ！= 直接return，不让进入成功回调解析数据， 失败的时候也是同样 return，不提示用户</li>
+</ul>
+</li>
+<li><p>控制器正在请求数据时控制器销毁， 导致奔溃</p>
+<ul>
+<li>解决办法：在dealloc 中停止所有的操作</li>
+</ul>
+</li>
+</ul>
+<h2 id="cell-的frame-设置"><a href="#cell-的frame-设置" class="headerlink" title="cell 的frame 设置"></a>cell 的frame 设置</h2><ul>
+<li><p>cell 之间的间隙以及cell的边距 重写frame 在super 之前设置</p>
+<ul>
+<li>设置frame 的x ，width， height 等属性</li>
+</ul>
+</li>
+<li><p>分页的2种做法</p>
+<ul>
+<li><p>下拉刷新</p>
+<p>  page 加载最新的 加载第一页 浪费用户的流量<br>  加载比当前更新的数据， 需要服务器支持，将当前最新的数据id发送给服务器，服务器加载比当前id还大的数据插入到最前面</p>
+</li>
+<li><p>上拉加载</p>
+<p>  将页码发给服务器</p>
+<p>  将最后面的数据的id发给服务器，</p>
+<p>  加载比当前id更小的数据</p>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2016/11/05/TableView使用总结/" data-id="cjwgh8554001uoi81brhy2k99" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TableView/">TableView</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/11/20/git学习总结/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          git 使用
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/05/Hexo个人博客搭建/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hexo个人博客搭建</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/03/第十二章架构和框架面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十四章第三方库面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十章网络相关/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第四章OC语言特性面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第八章多线程面试/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 aTreey<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

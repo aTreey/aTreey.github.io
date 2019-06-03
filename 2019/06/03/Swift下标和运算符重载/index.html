@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>aTreey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Swift下标和运算符重载 字典数组下标var array = [1,2,3,4,5,6] let temp = array[0]     // 通过下标访问 let temp2 = array[2]    // 通过下标访问 结构体下标 对于结构体不是直接使用下标访问，会直接报错直接使用下标获取属性值报错： Type &amp;#39;Vector_3&amp;#39; has no subscript mem">
+<meta property="og:type" content="article">
+<meta property="og:title" content="aTreey&#39;s Blog">
+<meta property="og:url" content="https://github.com/aTreey/2019/06/03/Swift下标和运算符重载/index.html">
+<meta property="og:site_name" content="aTreey&#39;s Blog">
+<meta property="og:description" content="Swift下标和运算符重载 字典数组下标var array = [1,2,3,4,5,6] let temp = array[0]     // 通过下标访问 let temp2 = array[2]    // 通过下标访问 结构体下标 对于结构体不是直接使用下标访问，会直接报错直接使用下标获取属性值报错： Type &amp;#39;Vector_3&amp;#39; has no subscript mem">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-03T13:54:52.594Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="aTreey&#39;s Blog">
+<meta name="twitter:description" content="Swift下标和运算符重载 字典数组下标var array = [1,2,3,4,5,6] let temp = array[0]     // 通过下标访问 let temp2 = array[2]    // 通过下标访问 结构体下标 对于结构体不是直接使用下标访问，会直接报错直接使用下标获取属性值报错： Type &amp;#39;Vector_3&amp;#39; has no subscript mem">
+  
+    <link rel="alternate" href="/atom.xml" title="aTreey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">aTreey&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://github.com/aTreey"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Swift下标和运算符重载" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/03/Swift下标和运算符重载/" class="article-date">
+  <time datetime="2019-06-03T13:54:52.594Z" itemprop="datePublished">2019-06-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Swift下标和运算符重载</p>
+<h3 id="字典数组下标"><a href="#字典数组下标" class="headerlink" title="字典数组下标"></a>字典数组下标</h3><pre><code>var array = [1,2,3,4,5,6]
+let temp = array[0]     // 通过下标访问
+let temp2 = array[2]    // 通过下标访问
+</code></pre><h3 id="结构体下标"><a href="#结构体下标" class="headerlink" title="结构体下标"></a>结构体下标</h3><ul>
+<li><p>对于结构体不是直接使用下标访问，会直接报错<br>直接使用下标获取属性值报错： <code>Type &#39;Vector_3&#39; has no subscript members</code></p>
+</li>
+<li><p>可以通过实现 <code>subscript(index: Int) -&gt; Double?</code>方法让结构体支持下标访问，可以理解为一个特殊的函数，需要传入参数和返回值</p>
+</li>
+<li>可以增加第二种下标–根据坐标轴获取属性值</li>
+<li>重写 subscript 的 set 方法 可以使用下标修改属性值</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">struct Vector_3 &#123;</span><br><span class="line">    var x = 0.0</span><br><span class="line">    var y = 0.0</span><br><span class="line">    var z = 0.0</span><br><span class="line">    </span><br><span class="line">    // 根据索引获取</span><br><span class="line">    subscript(index: Int) -&gt; Double? &#123;</span><br><span class="line">        </span><br><span class="line">        // 重写了get方法 实现通过下标获取属性值</span><br><span class="line">        get &#123;</span><br><span class="line">            switch index &#123;</span><br><span class="line">            case 0: return x</span><br><span class="line">            case 1: return y</span><br><span class="line">            case 2: return z</span><br><span class="line">            default: return nil</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 重写 set 方法，实现g通过下标设置属性值，使用系统默认的newValue</span><br><span class="line">        set &#123;</span><br><span class="line">            guard let newValue = newValue else &#123;return&#125;</span><br><span class="line">            switch index &#123;</span><br><span class="line">            case 0: x = newValue</span><br><span class="line">            case 1: y = newValue</span><br><span class="line">            case 2: z = newValue</span><br><span class="line">            default: return</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; </span><br><span class="line">    </span><br><span class="line">    // 增加第二种下标--根据坐标轴获取属性值</span><br><span class="line">    subscript(axis: String) -&gt; Double? &#123;</span><br><span class="line">        </span><br><span class="line">        get &#123;</span><br><span class="line">            switch axis &#123;</span><br><span class="line">            case &quot;X&quot;, &quot;x&quot;: return x</span><br><span class="line">            case &quot;Y&quot;, &quot;y&quot;: return y</span><br><span class="line">            case &quot;Z&quot;, &quot;z&quot;: return z</span><br><span class="line">            default: return nil</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        set &#123;</span><br><span class="line">            guard let newValue = newValue else &#123;return&#125;</span><br><span class="line">            switch axis &#123;</span><br><span class="line">            case &quot;X&quot;, &quot;x&quot;: x = newValue</span><br><span class="line">            case &quot;Y&quot;, &quot;y&quot;: y = newValue</span><br><span class="line">            case &quot;Z&quot;, &quot;z&quot;: z = newValue</span><br><span class="line">            default: return</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">```    </span><br><span class="line"></span><br><span class="line">### 下标访问</span><br><span class="line"></span><br><span class="line">结构体使用下标获取值</span><br></pre></td></tr></table></figure>
+<p>var v = Vector_3(x: 1, y: 2, z: 3)<br>print(v[0], v[1], v[2], v[3], v[100]) // Optional(1.0) Optional(2.0) Optional(3.0) nil nil<br>print(v[“x”], v[“y”], v[“z”], v[“i”]) // Optional(1.0) Optional(2.0) Optional(3.0) nil</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">结构体使用下标修改值</span><br></pre></td></tr></table></figure>
+<p>v[0] = 101<br>v[1] = 202<br>v[2] = 303<br>v[3] = 400<br>v[100] = 51<br>print(v[0], v[1], v[2], v[3], v[100]) // Optional(101.0) Optional(202.0) Optional(303.0) nil nil<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"> </span><br></pre></td></tr></table></figure></p>
+<p>v[“x”] = 100<br>v[“y”] = 200<br>v[“z”] = 300<br>v[“i”] = 50<br>print(v[“x”], v[“y”], v[“z”], v[“i”]) // Optional(100.0) Optional(200.0) Optional(300.0) nil</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 多维下标</span><br><span class="line"></span><br><span class="line">定义一个关于矩阵的结构体</span><br><span class="line"></span><br><span class="line">	struct Matrix &#123;</span><br><span class="line">	    var data: [[Double]]</span><br><span class="line">	    let row: Int</span><br><span class="line">	    let column: Int</span><br><span class="line">	    </span><br><span class="line">	    init(row: Int, column: Int) &#123;</span><br><span class="line">	        self.row = row</span><br><span class="line">	        self.column = column</span><br><span class="line">	        data = [[Double]]()</span><br><span class="line">	        for _ in 0..&lt;row &#123;</span><br><span class="line">	            let aRow = Array(repeating: 1.0, count: column)</span><br><span class="line">	            data.append(aRow)</span><br><span class="line">	        &#125;</span><br><span class="line">	    &#125;</span><br><span class="line">	    </span><br><span class="line">	    // 通过下标 [row,column] 方式访问</span><br><span class="line">	    subscript(row: Int, column: Int) -&gt; Double &#123;</span><br><span class="line">	        get &#123;</span><br><span class="line">	            assert(row &gt;= 0 &amp;&amp; row &lt; self.row &amp;&amp; column &gt;= 0 &amp;&amp; column &lt; self.column, &quot;下标不合法&quot;)</span><br><span class="line">	            return data[row][column]</span><br><span class="line">	        &#125;</span><br><span class="line">	        </span><br><span class="line">	        set &#123;</span><br><span class="line">	            assert(row &gt;= 0 &amp;&amp; row &lt; self.row &amp;&amp; column &gt;= 0 &amp;&amp; column &lt; self.column, &quot;下标不合法&quot;)</span><br><span class="line">	            data[row][column] = newValue</span><br><span class="line">	        &#125;</span><br><span class="line">	    &#125;</span><br><span class="line">	    </span><br><span class="line">	    // 通过下标 [row][column] 方式访问</span><br><span class="line">	    subscript(row: Int) -&gt; [Double] &#123;</span><br><span class="line">	        get &#123;</span><br><span class="line">	            assert(row &gt;= 0 &amp;&amp; row &lt; self.row, &quot;下标不合法&quot;)</span><br><span class="line">	            // 直接返回数组，数组本身有下标</span><br><span class="line">	            return data[row]</span><br><span class="line">	        &#125;</span><br><span class="line">	        </span><br><span class="line">	        set &#123;</span><br><span class="line">	            assert(newValue.count == column, &quot;下标不合法&quot;)</span><br><span class="line">	            data[row] = newValue</span><br><span class="line">	        &#125;</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line">### 运算符重载</span><br><span class="line"> </span><br><span class="line">- 重载 + 运算符</span><br></pre></td></tr></table></figure>
+<p>func +(one: Vector_3, other: Vector_3) -&gt; Vector_3 {<br>    return Vector_3(x: one[0]! + other[0]!, y: one[1]! + other[1]!, z: one[2]! + other[2]!)</p>
+<p>//    return Vector_3(x: one.x + other.x, y: one.y + other.y, z: one.z + other.z)<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 两个参数时相减</span><br></pre></td></tr></table></figure>
+<p>func -(one: Vector_3, other: Vector_3) -&gt; Vector_3 {<br>    return Vector_3(x: one.x - other.x, y: one.y - other.y, z: one.z - other.z)<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- 一个参数时去反, 需要 prefix 修饰</span><br></pre></td></tr></table></figure>
+<p>prefix func -(a: Vector_3) -&gt; Vector_3 {<br>    return Vector_3(x: -a.x, y: -a.y, z: -a.z)<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 向量相乘/向量和常量相乘</span><br></pre></td></tr></table></figure></p>
+<p>func <em>(one: Vector_3, other: Vector_3) -&gt; Double {<br>    return (one.x </em> other.x) + (one.y <em> other.y) + (one.z </em> other.z)<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 两个参数不能交换，需要重载两次 `*`</span><br></pre></td></tr></table></figure>
+<p>func <em>(one: Vector_3, a: Double) -&gt; Vector_3 {<br>    return Vector_3(x: a </em> one.x, y: a <em> one.y, z: a </em> one.z)<br>}</p>
+<p>func <em>(a: Double, one: Vector_3) -&gt; Vector_3 {<br>    return one </em> a</p>
+<pre><code>// 也可采用下面写法
+</code></pre><p>//    return Vector_3(x: a <em> one.x, y: a </em> one.y, z: a * one.z)<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 修改自身参数，不需要返回值</span><br></pre></td></tr></table></figure>
+<p>func +=(one: inout Vector_3, other: Vector_3) {<br>    // 已经重载过 + 运算符，可以直接调用<br>    one = one + other<br>}</p>
+<p>func ==(one: Vector_3, other: Vector_3) -&gt; Bool {<br>    return one.x == other.x &amp;&amp;<br>            one.y == other.y &amp;&amp;<br>            one.z == other.z<br>}</p>
+<p>func !=(one: Vector_3, other: Vector_3) -&gt; Bool {<br>    return !(one == other)</p>
+<pre><code>// 也可采用下面写法
+return one.x != other.x ||
+        one.y != other.y ||
+        one.z != other.z
+</code></pre><p>}</p>
+<p>func &lt;(one: Vector_3, other: Vector_3) -&gt; Bool {<br>    if one.x != other.x {return one.x &lt; other.x}<br>    if one.y != other.y {return one.y &lt; other.y}<br>    if one.z != other.z {return one.z &lt; other.z}<br>    return false<br>}</p>
+<p>func &lt;=(one: Vector_3, other: Vector_3) -&gt; Bool {<br>    return one &lt; other || one == other</p>
+<pre><code>// 也可采用下面写法
+return one.x &gt; other.x &amp;&amp;
+        one.y &gt; other.x &amp;&amp;
+        one.z &gt; other.z
+</code></pre><p>}</p>
+<p>func &gt;(one: Vector_3, other: Vector_3) -&gt; Bool {<br>    return (one &lt;= other)<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 自定义操作符</span><br><span class="line"></span><br><span class="line">`postfix` 声明前后缀关键词， `operator ` 操作符关键词</span><br><span class="line"></span><br><span class="line">- a+++</span><br></pre></td></tr></table></figure>
+<p>声明后置操作符<br>postfix operator +++<br>postfix func +++(vector: inout Vector_3) -&gt; Vector_3 {<br>    vector += Vector_3(x: 1.0, y: 1.0, z: 1.0)<br>    return vector<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- +++a</span><br></pre></td></tr></table></figure>
+<p>// 声明前置操作符<br>prefix operator +++<br>prefix func +++(vector: inout Vector_3) -&gt; Vector_3 {<br>    let temp = vector<br>    vector += Vector_3(x: 1.0, y: 1.0, z: 1.0)<br>    return temp<br>}</p>
+<p><code>`</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/03/Swift下标和运算符重载/" data-id="cjwgh854y001hoi81q4jewif8" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/03/SwiftLint使用/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/03/Swift协议扩展/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/03/第十二章架构和框架面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十四章第三方库面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十章网络相关/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第四章OC语言特性面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第八章多线程面试/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 aTreey<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

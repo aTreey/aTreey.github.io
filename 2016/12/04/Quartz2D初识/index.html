@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Quartz2D 初识 | aTreey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Quartz2D 二维绘图引擎，支持iOS和Mac系统么，可以实现的功能有  绘制图形: 线条，三角形，矩形，圆，弧等 绘制文字 绘制图像或者图片 读取生成PDF 截图/裁剪图片 自定义UI控件 手势解锁 图形上下文  保存绘图信息和状态确定输出目标(PDF,Bitmap或者显示器) Bitmap Graphics Context PDF Granhics Context Window Graph">
+<meta name="keywords" content="Quartz2D">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Quartz2D 初识">
+<meta property="og:url" content="https://github.com/aTreey/2016/12/04/Quartz2D初识/index.html">
+<meta property="og:site_name" content="aTreey&#39;s Blog">
+<meta property="og:description" content="Quartz2D 二维绘图引擎，支持iOS和Mac系统么，可以实现的功能有  绘制图形: 线条，三角形，矩形，圆，弧等 绘制文字 绘制图像或者图片 读取生成PDF 截图/裁剪图片 自定义UI控件 手势解锁 图形上下文  保存绘图信息和状态确定输出目标(PDF,Bitmap或者显示器) Bitmap Graphics Context PDF Granhics Context Window Graph">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-03T13:54:52.591Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Quartz2D 初识">
+<meta name="twitter:description" content="Quartz2D 二维绘图引擎，支持iOS和Mac系统么，可以实现的功能有  绘制图形: 线条，三角形，矩形，圆，弧等 绘制文字 绘制图像或者图片 读取生成PDF 截图/裁剪图片 自定义UI控件 手势解锁 图形上下文  保存绘图信息和状态确定输出目标(PDF,Bitmap或者显示器) Bitmap Graphics Context PDF Granhics Context Window Graph">
+  
+    <link rel="alternate" href="/atom.xml" title="aTreey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">aTreey&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://github.com/aTreey"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Quartz2D初识" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/04/Quartz2D初识/" class="article-date">
+  <time datetime="2016-12-04T05:34:28.000Z" itemprop="datePublished">2016-12-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Quartz2D 初识
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Quartz2D 二维绘图引擎，支持iOS和Mac系统么，可以实现的功能有</strong></p>
+<ul>
+<li>绘制图形: 线条，三角形，矩形，圆，弧等</li>
+<li>绘制文字</li>
+<li>绘制图像或者图片</li>
+<li>读取生成PDF</li>
+<li>截图/裁剪图片</li>
+<li>自定义UI控件</li>
+<li>手势解锁</li>
+<li>图形上下文</li>
+</ul>
+<h2 id="保存绘图信息和状态"><a href="#保存绘图信息和状态" class="headerlink" title="保存绘图信息和状态"></a>保存绘图信息和状态</h2><p>确定输出目标(PDF,Bitmap或者显示器)</p>
+<pre><code>Bitmap Graphics Context
+PDF Granhics Context
+Window Graphics Context
+Layer Graphics Context
+</code></pre><p>绘制线段</p>
+<pre><code>- (void)drawLine {
+    // 获取图形上下文
+    // 所用的是UIGraphics上下文
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+
+    // 创建描述路径
+    CGMutablePathRef path = CGPathCreateMutable();
+    // 设置起点
+    // path : 表示给那个路径设置起点
+    CGPathMoveToPoint(path, NULL, 10, 10);
+    CGPathAddLineToPoint(path, NULL, 80, 80);
+
+    // 添加路径到上下文
+    CGContextAddPath(ctx, path);
+
+    // 渲染
+    CGContextStrokePath(ctx);
+}
+</code></pre><p>系统底层自动将路径添加到图形上下文</p>
+<pre><code>- (void)drawLine2 {
+
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+
+    // 描述路径
+    // 此方法底层会自动将路径添加到图形上下文
+    CGContextMoveToPoint(ctx, 50, 50);
+    CGContextAddLineToPoint(ctx, 100, 100);
+
+    CGContextSetLineWidth(ctx, 5);
+
+    [[UIColor redColor] set];
+    // 渲染
+    CGContextStrokePath(ctx);
+}
+</code></pre><p>使用C语言函数的封装</p>
+<pre><code>- (void)drawLine3 {
+    // 使用UIKit 已经封装的功能,面向对象
+    // 贝塞尔路径
+
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(10, 10)];
+    [path addLineToPoint:CGPointMake(50, 50)];
+
+    // 绘制路径
+    [path stroke];
+}
+</code></pre><p>绘制多条线段</p>
+<ul>
+<li>绘制多条线,状态不好管理</li>
+<li>默认下一条线的起点是上一条线的终点</li>
+<li>绘制多天不连接的线时需要重新设置起点</li>
+<li>为了方便管理，应该让每一条线对应一条路径</li>
+<li>使用UIBeizerPath</li>
+</ul>
+<p>code:</p>
+<pre><code>- (void)drawMoreLine {
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+
+    // 描述路径
+    CGContextMoveToPoint(ctx, 20, 20);
+    CGContextAddLineToPoint(ctx, 100, 100);
+
+    // 设置第二条线的起点
+    CGContextMoveToPoint(ctx, 20, 30);
+    CGContextAddLineToPoint(ctx, 150, 100);
+
+    // 设置绘图状态要在渲染之前,都是给上下文设置
+    // 描边颜色
+    [[UIColor greenColor] setStroke];
+    // 线宽
+    CGContextSetLineWidth(ctx, 10);
+    // 连接样式
+    // kCGLineJoinMiter,    斜接
+    // kCGLineJoinRound,    圆角
+    // kCGLineJoinBevel     平切
+    CGContextSetLineJoin(ctx, kCGLineJoinBevel);
+    // 顶角样式,线的顶端效果
+    CGContextSetLineCap(ctx, kCGLineCapRound);
+
+    // 渲染
+    CGContextStrokePath(ctx);
+}
+</code></pre><p>使用UIBezierPath 绘制多条直线并设置不同状态</p>
+<pre><code>- (void)drawUIBezierPahtState {
+
+    // 第一条线
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(10, 10)];
+    [path addLineToPoint:CGPointMake(80, 80)];
+
+    path.lineWidth = 20;
+    path.lineJoinStyle = kCGLineJoinRound;
+    path.lineCapStyle = kCGLineCapRound;
+    [[UIColor redColor] setStroke];
+
+    [path stroke];
+
+    // 第二条线
+    {
+        UIBezierPath *path = [UIBezierPath bezierPath];
+        [path moveToPoint:CGPointMake(40, 70)];
+        [path addLineToPoint:CGPointMake(150, 40)];
+
+        path.lineWidth = 20;
+        path.lineJoinStyle = kCGLineJoinRound;
+        path.lineCapStyle = kCGLineCapRound;
+        [[UIColor greenColor] setStroke];
+
+        [path stroke];
+    }
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2016/12/04/Quartz2D初识/" data-id="cjwgh854i000loi81uwnl8d6k" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/12/04/Quartz2D绘制曲线/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Quartz2D绘制曲线
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/22/OC RunTime学习/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">OC中运行时</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/03/第十二章架构和框架面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十四章第三方库面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第十章网络相关/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第四章OC语言特性面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/第八章多线程面试/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 aTreey<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
