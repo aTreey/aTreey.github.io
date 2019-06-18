@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
 
@@ -61,6 +61,300 @@
 </header>
       <div class="outer">
         <section id="main">
+  
+    <article id="post-WKWebiView使用" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/22/WKWebiView使用/" class="article-date">
+  <time datetime="2016-11-22T03:10:31.000Z" itemprop="datePublished">2016-11-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/22/WKWebiView使用/">WKWebiView 使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="WKWebiView-iOS8-0-出现，性能要远远好于-iOS-2-0时出现的-UIWebView-主要记录WKWebView-的创建和代理方法"><a href="#WKWebiView-iOS8-0-出现，性能要远远好于-iOS-2-0时出现的-UIWebView-主要记录WKWebView-的创建和代理方法" class="headerlink" title="WKWebiView iOS8.0 出现，性能要远远好于 iOS 2.0时出现的 UIWebView,主要记录WKWebView 的创建和代理方法"></a>WKWebiView iOS8.0 出现，性能要远远好于 iOS 2.0时出现的 UIWebView,主要记录WKWebView 的创建和代理方法</h4><h2 id="创建WKWebView"><a href="#创建WKWebView" class="headerlink" title="创建WKWebView"></a>创建WKWebView</h2><pre><code>WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
+self.webView = webView;
+[self.view addSubview:webView];
+webView.UIDelegate = self;
+webView.navigationDelegate = self;
+[webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@&quot;https://www.baidu.com&quot;]]];
+</code></pre><p>遵守协议 WKNavgationDelegate WKUIDelegate</p>
+<h2 id="代理方法"><a href="#代理方法" class="headerlink" title="代理方法"></a>代理方法</h2><ul>
+<li><p>WKNavgationDelegate 方法</p>
+<ul>
+<li><p>发送请求之前决定是否跳转</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler &#123;</span><br><span class="line"></span><br><span class="line">	decisionHandler(WKNavigationActionPolicyAllow);</span><br><span class="line">	// 不允许跳转</span><br><span class="line">   decisionHandler(WKNavigationActionPolicyCancel);</span><br><span class="line">	NSLog(@&quot;decidePolicyForNavigationAction&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>收到相应之后决定是否跳转</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler &#123;</span><br><span class="line"></span><br><span class="line">	decisionHandler(WKNavigationResponsePolicyAllow);</span><br><span class="line">	</span><br><span class="line">	decisionHandler(WKNavigationResponsePolicyCancel);</span><br><span class="line">	</span><br><span class="line">	NSLog(@&quot;decidePolicyForNavigationResponse&quot;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>开始加载时调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;didStartProvisionalNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>接受到服务器的跳转请求时调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line">	NSLog(@&quot;didReceiveServerRedirectForProvisionalNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>- 页面加载失败时调用 **存在缓存问题**
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error &#123;</span><br><span class="line">		</span><br><span class="line">	NSLog(@&quot;error= %@&quot;, error);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+- 内容开始返回时调用
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didCommitNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;didCommitNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre><ul>
+<li><p>内容返回成功后调用</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;didFinishNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>开始返回错误时调用</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didFailNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;didFailNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>目前不知道什么时候调用</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable credential))completionHandler &#123;</span><br><span class="line">	NSLog(@&quot;didReceiveAuthenticationChallenge&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>目前不知道什么时候调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView API_AVAILABLE(macosx(10.11), ios(9.0)) &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;webViewWebContentProcessDidTerminate&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2016/11/22/WKWebiView使用/" data-id="cjx1wsdno001ymsfyp6krn0bz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WKWebView/">WKWebView</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-git学习总结" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/20/git学习总结/" class="article-date">
+  <time datetime="2016-11-20T03:10:31.000Z" itemprop="datePublished">2016-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/20/git学习总结/">git 使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="使用-git-提交代码"><a href="#使用-git-提交代码" class="headerlink" title="使用 git 提交代码"></a>使用 git 提交代码</h2><ul>
+<li><p>初始化工作目录</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置用户名和邮箱（当前仓库）</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config user.name &quot;aTreey&quot;</span><br><span class="line">git config user.email &quot;480814177@qq.com&quot;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>配置全局的用户名和密码</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name &quot;aTreey&quot;</span><br><span class="line">git config --global user.email &quot;480814177@qq.com&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建文件</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch main.m</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加文件到暂缓区</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add main.m</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看文件状态</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>新添加的文件或者新修改的文件在工作区中，没有添加到暂缓区中</p>
+</li>
+</ul>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Untracked files: （红色）</span><br></pre></td></tr></table></figure>
+</code></pre><ul>
+<li>需要添加到暂缓区中</li>
+</ul>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add main.m</span><br></pre></td></tr></table></figure>
+</code></pre><ul>
+<li>出现一下提示方可提交</li>
+</ul>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Changes to be committed: （绿色）</span><br></pre></td></tr></table></figure>
+</code></pre><ul>
+<li><p>给git起别名</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config alias.st &quot;status&quot;</span><br><span class="line">git config alias.ci &quot;commit -m&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看所有版本库日志（只能查看当前版本的以前日志）</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看指定文件的版本库日志</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log 文件名</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看所有的操作的日志</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reflog</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="版本会退"><a href="#版本会退" class="headerlink" title="版本会退"></a>版本会退</h2><ul>
+<li><p>强制回退到当前版本</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>强制回退到当前版本的上一个版本</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD^</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>强制回退到当前版本的上上个版本</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD^^</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>强制回退到当前版本的前100个版本</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD～100</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>强制回退指定版本</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD 版本号前七位</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2016/11/20/git学习总结/" data-id="cjx1wsdps0025msfyalqlnk1v" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-TableView使用总结" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/05/TableView使用总结/" class="article-date">
+  <time datetime="2016-11-05T14:59:46.000Z" itemprop="datePublished">2016-11-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/05/TableView使用总结/">TableView 使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="tableView-使用总结"><a href="#tableView-使用总结" class="headerlink" title="tableView 使用总结"></a>tableView 使用总结</h2><ul>
+<li><p>字典的 key enumerator 的使用</p>
+</li>
+<li><p>tableViewCell 的 selected 方法可以监听cell 的选中, 使用selected 参数</p>
+</li>
+<li><p>网络慢时点击左边cell右边数据不能及时刷新， 用户看到的还是上一个cell显示的数据</p>
+<ul>
+<li>解决办法: 在网络加载之前就reload数据，让显示空白</li>
+</ul>
+</li>
+<li><p>点击左边的cell时 上拉加载更多控件的显示和隐藏逻辑</p>
+<ul>
+<li>解决办法: 在每次刷新右边数据时，控制footer的显示</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>在numberOfRowsInSection方法中控制</p>
+</li>
+<li><p>每次点击cell之前要结束上一个没有刷新完的，防止奔溃</p>
+</li>
+<li><p>加载更多时</p>
+<p>  在加载第一页时设置currentPage为1，在加载更多的逻辑中 ++currentPage<br>  点击cell加载时上一个加载更多的网络数据还没有回来，在当前请求之前结束掉所有的网络请求<br>  停止之后的刷新控件状态会有错误，没有更多还是还可以加载状态不确定<br>  在点击左边cell后刷新右边的之前需要检查右边tableView 的footer的状态<br>  下拉刷新</p>
+</li>
+<li><p>第一次下拉刷新之后，第二次下拉刷新，将数据添加到数组中会导致两次数据重复</p>
+<ul>
+<li>解决办法：清除以前的所有数据</li>
+</ul>
+</li>
+<li><p>下拉刷新完毕后结束刷新后需要检查footer的状态</p>
+</li>
+<li><p>网络慢时连续点击cell，连发多个请求成功回调时数据显示错乱，或者是数据已经回来了但是还是显示上一个请求正在请求。。。</p>
+<ul>
+<li>解决办法：点击左边某个类别时，结束所有的刷新（上拉和下拉）</li>
+</ul>
+</li>
+<li><p>连续点击发送请求</p>
+<ul>
+<li>解决办法：保存请求参数， 比较上一次参数和当前参数， 如果 ！= 直接return，不让进入成功回调解析数据， 失败的时候也是同样 return，不提示用户</li>
+</ul>
+</li>
+<li><p>控制器正在请求数据时控制器销毁， 导致奔溃</p>
+<ul>
+<li>解决办法：在dealloc 中停止所有的操作</li>
+</ul>
+</li>
+</ul>
+<h2 id="cell-的frame-设置"><a href="#cell-的frame-设置" class="headerlink" title="cell 的frame 设置"></a>cell 的frame 设置</h2><ul>
+<li><p>cell 之间的间隙以及cell的边距 重写frame 在super 之前设置</p>
+<ul>
+<li>设置frame 的x ，width， height 等属性</li>
+</ul>
+</li>
+<li><p>分页的2种做法</p>
+<ul>
+<li><p>下拉刷新</p>
+<p>  page 加载最新的 加载第一页 浪费用户的流量<br>  加载比当前更新的数据， 需要服务器支持，将当前最新的数据id发送给服务器，服务器加载比当前id还大的数据插入到最前面</p>
+</li>
+<li><p>上拉加载</p>
+<p>  将页码发给服务器</p>
+<p>  将最后面的数据的id发给服务器，</p>
+<p>  加载比当前id更小的数据</p>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2016/11/05/TableView使用总结/" data-id="cjx1wsdnm001vmsfyaxjsfyqm" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TableView/">TableView</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-Hexo个人博客搭建" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -167,7 +461,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/11/05/Hexo个人博客搭建/" data-id="cjwgh85480009oi81faasuue9" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2016/11/05/Hexo个人博客搭建/" data-id="cjx1wsdka000bmsfy9ovz6b63" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hexo/">Hexo</a></li></ul>
@@ -226,7 +520,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/10/27/iOS弹框式图/" data-id="cjwgh855b0029oi8174uugdef" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2016/10/27/iOS弹框式图/" data-id="cjx1wsdql002dmsfyq1arh6fe" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AlertView/">AlertView</a></li></ul>
@@ -267,7 +561,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/10/20/本地缓存/" data-id="cjwgh855l002soi8126axfnyl" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2016/10/20/本地缓存/" data-id="cjx1wsdru002tmsfy4qo3697e" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
@@ -399,7 +693,7 @@ select * from t_product where productName like &apos;%_4&apos; order by productP
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/10/13/SQlite使用学习/" data-id="cjwgh854q000voi81qbl0u8tm" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2016/10/13/SQlite使用学习/" data-id="cjx1wsdl7000zmsfy1r3v4lhj" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL/">SQL</a></li></ul>
@@ -461,23 +755,23 @@ select * from t_product where productName like &apos;%_4&apos; order by productP
       <ul>
         
           <li>
-            <a href="/2019/06/03/第十二章架构和框架面试/">(no title)</a>
+            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/03/第十四章第三方库面试/">(no title)</a>
+            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/03/第十章网络相关/">(no title)</a>
+            <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/03/第四章OC语言特性面试/">(no title)</a>
+            <a href="/2019/06/18/第十章网络相关/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/03/第八章多线程面试/">(no title)</a>
+            <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
           </li>
         
       </ul>

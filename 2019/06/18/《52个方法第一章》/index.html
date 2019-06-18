@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>aTreey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="《52个方法-第一章》 一、OC起源 OC使用的是“消息结构”而不是“函数调用” 两者区别： 消息结构：在运行时所执行的代码由运行环境来决定，无论是否多态总会在运行时才会去查找所要执行的方法12NSObject *objc = [NSObject new];[objc performWith: parameter1 and: parameter2];     - 函数调用：由编译器决定，如果函数多">
+<meta property="og:type" content="article">
+<meta property="og:title" content="aTreey&#39;s Blog">
+<meta property="og:url" content="https://github.com/aTreey/2019/06/18/《52个方法第一章》/index.html">
+<meta property="og:site_name" content="aTreey&#39;s Blog">
+<meta property="og:description" content="《52个方法-第一章》 一、OC起源 OC使用的是“消息结构”而不是“函数调用” 两者区别： 消息结构：在运行时所执行的代码由运行环境来决定，无论是否多态总会在运行时才会去查找所要执行的方法12NSObject *objc = [NSObject new];[objc performWith: parameter1 and: parameter2];     - 函数调用：由编译器决定，如果函数多">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-18T14:24:32.188Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="aTreey&#39;s Blog">
+<meta name="twitter:description" content="《52个方法-第一章》 一、OC起源 OC使用的是“消息结构”而不是“函数调用” 两者区别： 消息结构：在运行时所执行的代码由运行环境来决定，无论是否多态总会在运行时才会去查找所要执行的方法12NSObject *objc = [NSObject new];[objc performWith: parameter1 and: parameter2];     - 函数调用：由编译器决定，如果函数多">
+  
+    <link rel="alternate" href="/atom.xml" title="aTreey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">aTreey&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://github.com/aTreey"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-《52个方法第一章》" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/《52个方法第一章》/" class="article-date">
+  <time datetime="2019-06-18T14:24:32.188Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>《52个方法-第一章》</p>
+<h3 id="一、OC起源"><a href="#一、OC起源" class="headerlink" title="一、OC起源"></a>一、OC起源</h3><ul>
+<li>OC使用的是“消息结构”而不是“函数调用”</li>
+<li>两者区别：<ul>
+<li>消息结构：在运行时所执行的代码由运行环境来决定，无论是否多态总会在运行时才会去查找所要执行的方法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NSObject *objc = [NSObject new];</span><br><span class="line">[objc performWith: parameter1 and: parameter2];</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>- 函数调用：由编译器决定，如果函数多态，编译时就要查处到底应该执行那个函数实现
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Object *objc = new Object;</span><br><span class="line">   objc -&gt; perform(parameter1, parameter2);</span><br></pre></td></tr></table></figure>
+</code></pre><ul>
+<li>消息结构中编译器不会关心接收消息的对象是何种类型，接收消息的对象问题也要在运行时处理，此过程叫做“动态绑定”</li>
+</ul>
+<p><strong>要点：</strong></p>
+<ol>
+<li>OC语言使用的动态绑定的消息结构，在运行时所执行的代码由运行环境来决定，无论是否多态总会在运行时才会去查找所要执行的方法，</li>
+<li>OC 中对象总是分配在“堆空间”，而绝不会分配在”栈“上，不带 “*”的变量或者结构体等可能会使用“栈空间”</li>
+</ol>
+<h3 id="二、类头文件尽量少导入其他头文件"><a href="#二、类头文件尽量少导入其他头文件" class="headerlink" title="二、类头文件尽量少导入其他头文件"></a>二、类头文件尽量少导入其他头文件</h3><p><strong>要点：</strong></p>
+<ol>
+<li>除非必要，否则不要引入头文件，使用向前声明降低类之间的耦合</li>
+<li>有时无法使用向前声明，应该把该类遵守协议的声明放到“class-continuation分类”（匿名分类）中。</li>
+<li>如果“class-continuation分类”也不行的话，就把协议单独放在一个文件中，再将其引入### 三、多用字面量语法，少用与之等价的方法</li>
+</ol>
+<h3 id="三、多用字面量语法，少用与之等价的方法"><a href="#三、多用字面量语法，少用与之等价的方法" class="headerlink" title="三、多用字面量语法，少用与之等价的方法"></a>三、多用字面量语法，少用与之等价的方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">- (void)tempMethond &#123;</span><br><span class="line">    // OC1.0 起，支持简单方式创建基本类型对象</span><br><span class="line">    </span><br><span class="line">    // - 使用字符串字面量：简介易读</span><br><span class="line">    NSString *someString = @&quot;Effective Objective-C 2.0&quot;;</span><br><span class="line">    // 传统方式</span><br><span class="line">    NSString *someStrongOld = [NSString stringWithFormat:@&quot;Effective Objective-C 2.0&quot;];</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    // - 字面数值</span><br><span class="line">    NSNumber *someNumber = @1;</span><br><span class="line">    NSNumber *floatNumber = @2.5f;</span><br><span class="line">    NSNumber *doubleNumber = @3.1415926;</span><br><span class="line">    NSNumber *boolNumber = @YES;</span><br><span class="line">    NSNumber *charNumber = @&apos;a&apos;;</span><br><span class="line">    // 字面量语法用于表达式</span><br><span class="line">    int x = 5;</span><br><span class="line">    float y = 6.23f;</span><br><span class="line">    NSNumber *expressionNumber = @(x * y);</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    // - 字面量数组</span><br><span class="line">    NSArray *animals = @[@&quot;cat&quot;, @&quot;dog&quot;, @&quot;mouse&quot;, @&quot;badger&quot;];</span><br><span class="line">    NSString *dog = animals[1];</span><br><span class="line">    </span><br><span class="line">    // arrayWithObjects 和 字面量 的区别:</span><br><span class="line">    // arrayWithObjects 方法依次处理各个参数，直到发现nil为止</span><br><span class="line">    // 字面量数组遇到nil直接抛出异常</span><br><span class="line">    NSArray *animalsOld = [NSArray arrayWithObjects:@&quot;cat&quot;, @&quot;dog&quot;, @&quot;mouse&quot;, @&quot;badger&quot;, nil];</span><br><span class="line">    NSString *dogOld = [animalsOld objectAtIndex:1];</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    // - 字面量字典</span><br><span class="line">    // 如果有nil直接抛出异常</span><br><span class="line">    NSDictionary *personData = @&#123;@&quot;firtName&quot;: @&quot;Matt&quot;,</span><br><span class="line">                                 @&quot;lastName&quot;: @&quot;Galloway&quot;,</span><br><span class="line">                                 @&quot;age&quot;: @28&#125;;</span><br><span class="line">    NSString *lastName = personData[@&quot;lastName&quot;];</span><br><span class="line">    </span><br><span class="line">    // dictionaryWithObjectsAndKeys 方法依次处理各个参数，直到发现nil为止</span><br><span class="line">    NSDictionary *personDataOld = [NSDictionary dictionaryWithObjectsAndKeys:@&quot;Matt&quot;,@&quot;firtName&quot;,</span><br><span class="line">                                     @&quot;Galloway&quot;, @&quot;lastName&quot;,</span><br><span class="line">                                     [NSNumber numberWithInteger:28], @&quot;age&quot;, nil];</span><br><span class="line">    </span><br><span class="line">    NSString *lastNameOld = [personData objectForKey:@&quot;lastName&quot;];</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    // - 可变数组和字典</span><br><span class="line">    NSMutableArray *mutableArray = animals.mutableCopy;</span><br><span class="line">    mutableArray[1] = @&quot;dog&quot;;</span><br><span class="line">    </span><br><span class="line">    NSMutableDictionary *mutableDict = [personData mutableCopy];</span><br><span class="line">    mutableDict[@&quot;lastName&quot;] = @&quot;Galloway&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>要点：</strong></p>
+<ol>
+<li>使用字面量语法创建字符串，数值，数组，字典简明扼要</li>
+<li>通过下标操作获取数组，字典对应的元素</li>
+<li>使用字面量创建数组，字典时若有nil ，会抛出异常，确保值里不含nil### 五、用枚举表示状态、选项、状态码</li>
+</ol>
+<h3 id="四、多用类型常量，少用-define预处理指令"><a href="#四、多用类型常量，少用-define预处理指令" class="headerlink" title="四、多用类型常量，少用#define预处理指令"></a>四、多用类型常量，少用#define预处理指令</h3><h5 id="宏定义"><a href="#宏定义" class="headerlink" title="宏定义"></a>宏定义</h5><ul>
+<li>缺点：<ul>
+<li>可以把所有相同的字符串值都替换为定义的值，<ul>
+<li>定义出来的常量没有具体的类型信息</li>
+<li>如果有人重新定义了宏定义，不会有警告或者提醒，导致程序中值不一样</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="类型常量"><a href="#类型常量" class="headerlink" title="类型常量"></a>类型常量</h5><ul>
+<li><p>命名规则：</p>
+<ul>
+<li>如果只是在实现文件.m 中使用，则在前面加字母k</li>
+<li>如果此常量在类之外也可见，则以类名为前缀，（第19条详细了解命名习惯）</li>
+</ul>
+</li>
+<li><p>声明位置：</p>
+<ul>
+<li>总是喜欢在头文件中声明宏定义，可能和常量名冲突，</li>
+<li>所有引入这个头文件的类都会出现宏定义或者常量，相当于声明了一个名叫kAnimationDuration的全局变量</li>
+<li>应该加上前缀，表明其所属的具体类，例如：EOCViewClassAnimationDuration</li>
+</ul>
+</li>
+<li><p>常量从右往左解读依次是: 具体类型，不可修改</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">	// const 修饰的是常量不希望别人修改， NSString * 指向NSString对象</span><br><span class="line">	extern NSString *const EOCStringConstant; </span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	//	两者写法都可以</span><br><span class="line">	extern const NSTimeInterval EOCAnimatedViewAnimationDuration;</span><br><span class="line">	extern NSTimeInterval const EOCAnimatedViewAnimationDuration1;</span><br><span class="line">	```	</span><br><span class="line"></span><br><span class="line">- 如果不打算公开常量，可以定义在 .m 实现文件里</span><br></pre></td></tr></table></figure>
+<p>  static const NSTimeInterval kAnimationDuration = 0.3;</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- static关键字</span><br><span class="line">	- static 修饰意味着该变量仅在定义此变量的编译单元（实现文件.m）中可见，作用域就是当前.m文件</span><br></pre></td></tr></table></figure>
+<pre><code>static const NSTimeInterval kAnimationDuration = 0.3;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- 如果需要声明一个外部可见的常值变量，需要在头文件中声明并使用 extern 关键词修饰 &quot;extern </span><br><span class="line"></span><br><span class="line">	在 .h 文件中</span><br></pre></td></tr></table></figure>
+
+extern NSString *const EOCStringConstant;
+
+// 两者写法都可以
+extern const NSTimeInterval EOCAnimatedViewAnimationDuration;
+extern NSTimeInterval const EOCAnimatedViewAnimationDuration1;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">在 .m 文件中</span><br></pre></td></tr></table></figure>
+
+NSString *const EOCStringConstant = @&quot;VALUE&quot;;
+const NSTimeInterval EOCAnimatedViewAnimationDuration = 0.3;
+NSTimeInterval const EOCAnimatedViewAnimationDuration1 = 0.3;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">**要点：**</span><br><span class="line"></span><br><span class="line">1. 定义常量时static const定义编译单元（实现文件.m)中可见的常量，无需为其名称加前缀</span><br><span class="line">2. 在头文件中使用extern 声明全局常量，并在实现文件中定义其值，这种常量要出现在全局符号表中，所以加相关类作为前缀</span><br><span class="line"></span><br><span class="line">### 五、用枚举表示状态、选项、状态码</span><br><span class="line"></span><br><span class="line">- 普通枚举</span><br></pre></td></tr></table></figure>
+</code></pre><p>  enum EOCConnectionState {</p>
+<pre><code>EOCConnectionStateDisconnected, // 断开连接
+EOCConnectionStateConnecting,   // 连接中...
+EOCConnectionStateConnected,    // 已连接
+</code></pre><p>  };</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">普通枚举如果要使用如下：</span><br></pre></td></tr></table></figure>
+<p>  enum EOCConnectionState status = EOCConnectionStateConnected;</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">如果每次都不需要输入enum关键字，只需要typedef关键字重新定义枚举类型</span><br></pre></td></tr></table></figure>
+<p>  EOCConnectionState status1 = EOCConnectionStateConnecting;</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 设置枚举的初始值</span><br></pre></td></tr></table></figure>
+<p>  enum EOCConnectionStateConnectionState {</p>
+<pre><code>EOCConnectionStateConnectionStateDisconnected = 1, // 断开连接
+EOCConnectionStateConnectionStateConnecting,   // 连接中...
+EOCConnectionStateConnectionStateConnected,    // 已连接
+</code></pre><p>  };</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 可选枚举</span><br><span class="line"></span><br><span class="line">	- &lt;&lt; 位操作符(左移)， 表示往左移动N位，使用 位运算符 | (或)来组合使用</span><br><span class="line">	- 使用位运算符 &amp;（与） 判断是否开启了某个选项</span><br></pre></td></tr></table></figure>
+<p>  enum UIViewAutoresizing {</p>
+<pre><code>UIViewAutoresizingNone                 = 0,
+UIViewAutoresizingFlexibleLeftMargin   = 1 &lt;&lt; 0,
+UIViewAutoresizingFlexibleWidth        = 1 &lt;&lt; 1,
+UIViewAutoresizingFlexibleRightMargin  = 1 &lt;&lt; 2,
+UIViewAutoresizingFlexibleTopMargin    = 1 &lt;&lt; 3,
+UIViewAutoresizingFlexibleHeight       = 1 &lt;&lt; 4,
+UIViewAutoresizingFlexibleBottomMargin = 1 &lt;&lt; 5
+</code></pre><p>  }</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 使用宏定义枚举</span><br><span class="line"></span><br><span class="line">	普通枚举类型（老式语法定义枚举）</span><br></pre></td></tr></table></figure>
+<p>  typedef enum : NSUInteger {</p>
+<pre><code>EOCConnectionState2DisConnected,
+EOCConnectionState2DisConnecting,
+EOCConnectionState2Connected,
+</code></pre><p>  } EOCConnectionState2;</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">NS_ENUM 宏定义的枚举展开后：</span><br></pre></td></tr></table></figure>
+<p>  typedef enum EOCConnectionState_3 : NSUInteger EOCConnectionState_3;<br>  enum EOCConnectionState_3 : NSUInteger {</p>
+<pre><code>EOCConnectionState_3DisConnected,
+EOCConnectionState_3DisConnecting,
+EOCConnectionState_3Connected,
+</code></pre><p>  };</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 定义新特性枚举</span><br></pre></td></tr></table></figure>
+<p>  typedef NS_ENUM(NSUInteger, EOCConnectionState3) {</p>
+<pre><code>EOCConnectionState3DisConnected,
+EOCConnectionState3DisConnecting,
+EOCConnectionState3Connected,
+</code></pre><p>  };</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 枚举使用</span><br><span class="line"></span><br><span class="line">	.h文件</span><br></pre></td></tr></table></figure>
+<p>  #import &lt;UIKit/UIKit.h&gt;</p>
+<p>  typedef enum EOCConnectionState EOCConnectionState;</p>
+<p>  typedef NS_ENUM(NSUInteger, EOCConnectionState3) {</p>
+<pre><code>EOCConnectionState3DisConnected,
+EOCConnectionState3DisConnecting,
+EOCConnectionState3Connected,
+</code></pre><p>  };</p>
+</li>
+</ul>
+<pre><code>@interface EOCEnum : NSObject
+@property (nonatomic, assign) enum EOCConnectionState state;
+@property (nonatomic, assign) EOCConnectionState3 state3;
+@end
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">.m 文件中</span><br></pre></td></tr></table></figure>
+
+#import &quot;EOCEnum.h&quot;
+
+@implementation EOCEnum
+
+- (void)testEnum {
+    // 未使用typedef 关键字
+    enum EOCConnectionState status = EOCConnectionStateConnected;
+    NSLog(@&quot;%u&quot;, status);
+
+    // 使用typedef 关键字
+    EOCConnectionState status1 = EOCConnectionStateConnecting;
+    NSLog(@&quot;%u&quot;, status1);
+
+    UIViewAutoresizing resizing = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    if (resizing &amp; UIViewAutoresizingFlexibleWidth) {
+        // 设置了 UIViewAutoresizingFlexibleWidth 约束
+    }
+}
+
+// UIKit 试图所支持的设置显示方向
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskLandscapeLeft;
+}
+
+// 枚举使用
+- (void)userEnum {
+    switch (_state3) {
+        case EOCConnectionState3DisConnected:
+            // ...
+            break;
+
+        case EOCConnectionState3DisConnecting:
+            // ...
+            break;
+
+        case EOCConnectionState3Connected:
+            // ...
+            break;
+
+        default: // 最好不用，防止以后增加一种状态机之后，编译器不发出警告
+            break;
+    }
+}
+
+@end
+```
+</code></pre><p><strong>要点：</strong></p>
+<ol>
+<li>使用枚举表示状态机的状态、传递给方法的选项以及状态码等值，给枚举值起名时要注重易懂</li>
+<li>如果一个类型可以使用状态机的状态来表示，并且多个选项可同时使用，那么就定义为可选的枚举类型，枚举各值定义为2的幂，以便通过“按位或”操作组合</li>
+<li>使用NS_ENUM 和 NS_OPTIONS 宏来定义枚举，并指明底层的数据类型。这样可以确保枚举是用开发者所选的底层数据类型实现出来的，而不会采用编译器所选的类型</li>
+<li>switch语句处理枚举类型时不要实现default 分支，如果以后加入枚举的新状态之后，编译器会发出警告</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/《52个方法第一章》/" data-id="cjx1wsdrn002mmsfyxjz4pvnb" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/18/typescripe 安装及语法/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/18/iOS通过URL获取HTML中标题/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第十章网络相关/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 aTreey<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

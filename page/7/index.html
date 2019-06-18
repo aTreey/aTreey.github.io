@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
 
@@ -61,6 +61,219 @@
 </header>
       <div class="outer">
         <section id="main">
+  
+    <article id="post-iOS静态库动态库" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/02/iOS静态库动态库/" class="article-date">
+  <time datetime="2017-02-02T14:15:40.000Z" itemprop="datePublished">2017-02-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/02/02/iOS静态库动态库/">WKWebiView 使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="iOS中静态库动态库介绍及编译"><a href="#iOS中静态库动态库介绍及编译" class="headerlink" title="iOS中静态库动态库介绍及编译"></a>iOS中静态库动态库介绍及编译</h3><ul>
+<li>静态库</li>
+</ul>
+<p>iOS中根据源码的公开情况可分为2种</p>
+<ul>
+<li>开源库<br>源代码公开，能够看到具体的代码实现</li>
+</ul>
+<p>比如 SDWebImage AFNetworking。。。</p>
+<ul>
+<li><p>闭源库<br>不公开源代码， 是经过编译后的二进制文件， 看不到具体实现<br>主要分为：静态库、动态库</p>
+</li>
+<li><p>存在形式</p>
+</li>
+</ul>
+<p>静态库： .a 和 .framework<br>动态库：.tbd 和 .framework (iOS 9 之前是 .dylib, iOS 9 之后取消了 .dylib 而使用 .tbd 来代替 .dylib )</p>
+<p>.framework 的库可以是静态库也可以是静态库， 凡是系统的 .framework 都是动态库，第三方的基本上全是静态中</p>
+<ul>
+<li>两者区别</li>
+</ul>
+<p>静态库：链接时会被完整的复制到可执行文件中，每次被使用都会被复制<br>动态库：链接时不复制，程序运行时由系统动态加载到内存中，供程序调用，系统只加载一次，多个程序可以公用，节省内存</p>
+<h3 id="静态库编译"><a href="#静态库编译" class="headerlink" title="静态库编译"></a>静态库编译</h3><p>编译时如果使用的是模拟器，生成的 .a 只能模拟器用，真机不可用，生成的 .a 文件在 Debug-iphonesimulator 文件夹下</p>
+<p>编译时如果使用 generic iOS Device，生成的 .a 只能真机而模拟器不可用，生成的 .a 文件在 Debug-iphoneos 文件夹下</p>
+<p>编译静态库时，自己手动创建的类的头文件不会被导出，只是默认导出创建工程时类的头文件</p>
+<p>导出手动添加类的头文件，点击工程名称 –&gt; build Phases –&gt; Copy Files 添加头文件，然后编译</p>
+<ul>
+<li>架构种类</li>
+</ul>
+<p>模拟器：i386 32位架构 (4s~5) ／ x86_64 64位架构 (5s以后机型)<br>真机：armv7 32位架构 (4~4s) ／ armv7s 特殊架构 (5~5C) ／ arm64 64位架构 (5s 以后机型)</p>
+<ul>
+<li><p>架构查看<br>lipo -info xxxx.a<br>默认生成模拟器只生成一种架构 i386 x86_64；真机默认导出两种架构 armv7 ／ arm64</p>
+</li>
+<li><p>合并多个架构</p>
+</li>
+</ul>
+<p>将模拟器的多个架构合并，项目名称–&gt;Build Settings –&gt; Achitectures –&gt; Build Active Architecture Only –&gt; Debug设置为NO<br>合并真机多个架构 按照以上方法运行真机即可<br>合并真机和模拟器架构 cd products lipo -create Debug-iphoneos/xxx.a Debug-iphonessimulator/xxx.a -output xx.a<br>合成 5 个架构 在Build Setting –&gt; Architectures 中手动添加三种架构,再编译合并</p>
+<ul>
+<li>静态库报错</li>
+</ul>
+<p>Undefined symbols for architecture （arm64 ／ armv7 ／ armv7s ／ i386 ／ x86_64），架构包导入出错，静态库有真机与模拟器</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2017/02/02/iOS静态库动态库/" data-id="cjx1wsdqk002bmsfyjwhwtag9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WKWebView/">WKWebView</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-异步下载图片" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/18/异步下载图片/" class="article-date">
+  <time datetime="2017-01-18T13:40:36.000Z" itemprop="datePublished">2017-01-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/18/异步下载图片/">异步下载图片</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="异步下载"><a href="#异步下载" class="headerlink" title="异步下载"></a>异步下载</h3><p>同步发送网络请求会卡UI线程，采用异步来下载图片。</p>
+<p><strong>异步下载存在的问题</strong></p>
+<ul>
+<li><p>错行问题</p>
+<ul>
+<li>解决：使用MVC模式，使数据一对一可解决，</li>
+<li>在MVC中增加image属性后，会导致单个模式的体积增大</li>
+<li>内存占用</li>
+<li>当接收到内存警告时清空图片时需要遍历模型中将image置为nil</li>
+<li>将图片用字典缓存起来达到一对一, 清空内存中的图片时只需要remove字典就ok</li>
+<li>创建下载任务的字典，在开始下载时将正在下载的URL写入到字典中下载完成后将字典中对应的值移除，写入防止来回滑动时重复发送网络请求，下载完后移除是为了防止如果接受到内存警告后下载的图片都已清除，但是下载任务的字典的值为移除就不会再一次去下载图片</li>
+<li><p>缓存下载的图片到沙盒中</p>
+</li>
+<li><p>获取图片下载路径最后一个分隔符后面的字符串作为图片名保存</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><code>stringByAppendingPathComponent</code> 和 <code>stringByAppendingString</code> 两个方法有区别</p>
+<p><strong>stringByAppendingString 方法是获取caches文件名，在文件夹名后面拼接字符串，在caches上一级目录下创建文件，和caches文件夹属于同一个级别</strong></p>
+<pre><code>// 获取caches文件路径
+NSString *cachesPath = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+
+NSString *URL = @&quot;http://wwww.baidu.com/image/123456.png&quot;;
+
+NSString *imageName = [URL lastPathComponent];
+
+// 拼接路径
+// 此方法生成的路径在caches文件下目录下
+NSString *filePath = [cachesPath stringByAppendingPathComponent];
+
+
+// 读取图片
+if (内存中没有) {
+    // 沙盒读取
+    UIImage *sandBoxImage = [UIImage imageWithContetsOfFile:filePath];
+
+    **加入到内存中，方便下次加载**
+} 
+
+if (sandBoxImage == nil) {
+    // 下载图片
+}
+
+// 写入到沙盒
+if (imageData != nil) {
+    [imageData writeToFile: filePath atomically:NO];
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2017/01/18/异步下载图片/" data-id="cjx1wsdrq002pmsfy6zxj5ecf" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/异步/">异步</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Quartz2D绘制形状" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/10/Quartz2D绘制形状/" class="article-date">
+  <time datetime="2016-12-10T13:58:31.000Z" itemprop="datePublished">2016-12-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/10/Quartz2D绘制形状/">Quartz 2D绘制形状(二)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用Quartz 2D绘制圆弧，扇形，下载进度以及绘制的图形的填充和描边属性的设置.<br>将贝塞尔路径添加到图形上下文中<br>图形上下文中的状态保存和恢复<br>对图形上下文进行矩阵操作（平移，缩放，选转），实现一些特殊效果</p>
+<h3 id="使用贝塞尔曲线绘制矩形"><a href="#使用贝塞尔曲线绘制矩形" class="headerlink" title="使用贝塞尔曲线绘制矩形"></a>使用贝塞尔曲线绘制矩形</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    UIBezierPath *path = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, 20, 30)];</span><br><span class="line">    [[UIColor magentaColor] setStroke];</span><br><span class="line">    [[UIColor brownColor] setFill];</span><br><span class="line">    [path fill]; // 填充</span><br><span class="line">    [path stroke]; // 描边</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="圆角矩形"><a href="#圆角矩形" class="headerlink" title="圆角矩形"></a>圆角矩形</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 绘制圆角矩形</span><br><span class="line">&#123;</span><br><span class="line">    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(35, 10, 50, 70) cornerRadius:5.0];</span><br><span class="line">    [[UIColor magentaColor] setStroke];</span><br><span class="line">    [[UIColor cyanColor] setFill];</span><br><span class="line">    [path fill];</span><br><span class="line">    [path stroke];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="绘制圆"><a href="#绘制圆" class="headerlink" title="绘制圆"></a>绘制圆</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 画圆</span><br><span class="line">&#123;</span><br><span class="line">    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(90, 5, 40, 40) cornerRadius:20.0];</span><br><span class="line">    [[UIColor purpleColor] setStroke];</span><br><span class="line">    [[UIColor magentaColor] setFill];</span><br><span class="line">    [path fill];</span><br><span class="line">    [path stroke];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="绘制扇形"><a href="#绘制扇形" class="headerlink" title="绘制扇形"></a>绘制扇形</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CGPoint center = CGPointMake(200, 50);</span><br><span class="line">UIBezierPath *sectorPath = [UIBezierPath bezierPathWithArcCenter:center radius:100 startAngle:0 endAngle:M_PI_4 clockwise:YES];</span><br><span class="line">[sectorPath addLineToPoint:center];</span><br><span class="line">[[UIColor brownColor] setStroke];</span><br><span class="line">[sectorPath fill];</span><br><span class="line">[sectorPath stroke];</span><br></pre></td></tr></table></figure>
+<h3 id="绘制圆弧"><a href="#绘制圆弧" class="headerlink" title="绘制圆弧"></a>绘制圆弧</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 绘制圆弧</span><br><span class="line">* 参数1: 圆心坐标</span><br><span class="line">* 参数2: 半径</span><br><span class="line">* 参数3: 开始角度</span><br><span class="line">* 参数4: 结束角度 使用弧度制表示</span><br><span class="line">* 参数5: clockwis顺时针方法的</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">UIBezierPath *circuLarArcPath = [UIBezierPath bezierPathWithArcCenter:CGPointMake(100, 60) radius:50.0 startAngle:0 endAngle:M_PI_2 clockwise:YES];</span><br><span class="line"></span><br><span class="line">[circuLarArcPath moveToPoint:CGPointMake(100, 60)];</span><br><span class="line"></span><br><span class="line">[[UIColor magentaColor] setStroke];</span><br><span class="line">[[UIColor brownColor] setFill];</span><br><span class="line">[circuLarArcPath stroke];</span><br><span class="line">[circuLarArcPath fill];</span><br></pre></td></tr></table></figure>
+<h3 id="绘制文字"><a href="#绘制文字" class="headerlink" title="绘制文字"></a>绘制文字</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 绘制文字</span><br><span class="line"> * drawAtPoint 不能换行，当文字过多过长时不会有效果</span><br><span class="line"> * 使用 drawInRect 可以实现换行</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">NSString *text = @&quot;我是绘制文字价格就看过几个框架刚开始大家高考的感觉是快乐的关键时刻大家赶快来时的结果看了风水格局来看就哭了感觉树大根深来对抗肌肤抵抗力&quot;;</span><br><span class="line"></span><br><span class="line">NSMutableDictionary *attributeDict  = [NSMutableDictionary dictionary];</span><br><span class="line">attributeDict[NSFontAttributeName] = [UIFont systemFontOfSize:18];</span><br><span class="line"></span><br><span class="line">// 字体颜色</span><br><span class="line">attributeDict[NSForegroundColorAttributeName] = [UIColor greenColor];</span><br><span class="line">// 描边颜色</span><br><span class="line">attributeDict[NSStrokeColorAttributeName] = [UIColor yellowColor];</span><br><span class="line">// 描边宽度</span><br><span class="line">attributeDict[NSStrokeWidthAttributeName] = @1;</span><br><span class="line">//  阴影</span><br><span class="line">NSShadow *shadow = [[NSShadow alloc] init];</span><br><span class="line">shadow.shadowColor = [UIColor redColor];</span><br><span class="line">shadow.shadowOffset = CGSizeMake(1.0, 1.0);</span><br><span class="line"></span><br><span class="line">attributeDict[NSShadowAttributeName] = shadow;</span><br><span class="line"></span><br><span class="line">// 可以换行</span><br><span class="line">[text drawInRect:self.bounds withAttributes:attributeDict];</span><br><span class="line"></span><br><span class="line">// 不换行</span><br><span class="line">[text drawAtPoint:CGPointZero withAttributes:attributeDict];</span><br></pre></td></tr></table></figure>
+<h3 id="绘制图片"><a href="#绘制图片" class="headerlink" title="绘制图片"></a>绘制图片</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 绘制图片</span><br><span class="line"> * drawAtPoint 默认绘制的内容尺寸和图片的尺寸一样大</span><br><span class="line"> *</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line">- (void)drawImage &#123;</span><br><span class="line"></span><br><span class="line">    UIImage *image = [UIImage imageNamed:@&quot;wc_dk&quot;];</span><br><span class="line">    UIImage *image1 = [UIImage imageNamed:@&quot;wc_hq&quot;];</span><br><span class="line"></span><br><span class="line">    [image drawAtPoint:CGPointMake(10, 90)];</span><br><span class="line">    [image1 drawAtPoint:CGPointMake(70, 80)];</span><br><span class="line"></span><br><span class="line">    // 绘制在控件内部，和控件大小一致</span><br><span class="line">    [image1 drawInRect:self.bounds];</span><br><span class="line"></span><br><span class="line">    // 以平铺的方式绘制在控件的内部</span><br><span class="line">    [image1 drawAsPatternInRect:self.bounds];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="圆形下载进度的绘制"><a href="#圆形下载进度的绘制" class="headerlink" title="圆形下载进度的绘制"></a>圆形下载进度的绘制</h3><p>drawRect 方法不能手动调用，因为图形上下文不能手动创建<br>需要调用setNeedsDisplay方法来重绘，系统会创建图形上下文<br>绘制时用到的定时器，一般不使用NSTimer定时器，因为调度优先级比较低，不会被准时带,界面会出现卡顿的现象<br>CADisplayLink 每次刷新屏幕的时候就会调用，1s刷新 60 次<br>setNeedsDisplay调用此方法时并不是立即调用drawRect方法，只是给给当前控件添加刷新标记，直到下一次屏幕刷新的时候才调用drawRect 方法，正好与CADisplayLink 方法一致，所以界面流畅不会卡顿<br>图形上下文状态栈</p>
+<p>UIBezierPath图形上下文和CGContextRef的图形上下文不是同一个图形上下文</p>
+<p>可以将贝塞尔路径添加到图形上下文中</p>
+<p>也可以保存当前的图形上下文，CGContextSaveGState(ctx);<br>在下一次使用时可以恢复，CGContextRestoreGState(ctx);<br>画两种不同状态的线条</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 图形上下文栈的理解</span><br><span class="line">* 画两条状态不同的线段</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">// 获取上下文</span><br><span class="line">CGContextRef ctx = UIGraphicsGetCurrentContext();</span><br><span class="line"></span><br><span class="line">// 第一条</span><br><span class="line">UIBezierPath *path = [UIBezierPath bezierPath];</span><br><span class="line">[path moveToPoint:CGPointMake(10, 60)];</span><br><span class="line">[path addLineToPoint:CGPointMake(240, 60)];</span><br><span class="line"></span><br><span class="line">// 把路径添加到上下文</span><br><span class="line">CGContextAddPath(ctx, path.CGPath);</span><br><span class="line"></span><br><span class="line">// 保存上下的状态</span><br><span class="line">CGContextSaveGState(ctx);</span><br><span class="line"></span><br><span class="line">// 设置当前状态</span><br><span class="line">[[UIColor greenColor] setStroke];</span><br><span class="line">//此时设置path 的状态无效，需要设置当前上下文的状态</span><br><span class="line">path.lineWidth = 5.0;</span><br><span class="line">CGContextSetLineWidth(ctx, 5.0);</span><br><span class="line"></span><br><span class="line">// 渲染上下文</span><br><span class="line">CGContextStrokePath(ctx);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 第二根</span><br><span class="line"></span><br><span class="line">// 可使用第一根的路径，因为每次绘制完成之后都会清除</span><br><span class="line">path = [UIBezierPath bezierPath];</span><br><span class="line">[path moveToPoint:CGPointMake(60, 10)];</span><br><span class="line">[path addLineToPoint:CGPointMake(60, 240)];</span><br><span class="line"></span><br><span class="line">// 添加路径到上下文 需要转换为CGPath</span><br><span class="line">CGContextAddPath(ctx, path.CGPath);</span><br><span class="line"></span><br><span class="line">// 还原之前保存的上下文状态</span><br><span class="line">CGContextRestoreGState(ctx);</span><br><span class="line">CGContextStrokePath(ctx);</span><br><span class="line">图形上下文矩阵</span><br><span class="line"></span><br><span class="line">// 使用矩阵</span><br><span class="line"></span><br><span class="line">    // 获取上下文</span><br><span class="line">    CGContextRef ctx = UIGraphicsGetCurrentContext();</span><br><span class="line"></span><br><span class="line">    // 使用贝塞尔路径</span><br><span class="line">    UIBezierPath *ovalPath = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(-150, -100, 300, 200)];</span><br><span class="line">    [[UIColor cyanColor] setFill];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    // 以上绘制的图形有一部分看不到，通过对上下文矩阵操作来实现，平移上下文</span><br><span class="line">    // 操作矩阵必须在添加路径之前</span><br><span class="line"></span><br><span class="line">    // 平移</span><br><span class="line">    CGContextTranslateCTM(ctx, 150, 100);</span><br><span class="line"></span><br><span class="line">    // 缩放</span><br><span class="line">    CGContextScaleCTM(ctx, 0.5, 0.5);</span><br><span class="line"></span><br><span class="line">    // 旋转</span><br><span class="line">    // 可以实现点无法计算时的效果</span><br><span class="line">    CGContextRotateCTM(ctx, M_PI_4);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    // 添加路径到上下文</span><br><span class="line">    CGContextAddPath(ctx, ovalPath.CGPath);</span><br><span class="line"></span><br><span class="line">    // 操作矩阵放在添加路径之后无效果</span><br><span class="line">	//  CGContextTranslateCTM(ctx, 150, 100);</span><br><span class="line"></span><br><span class="line">    CGContextFillPath(ctx);</span><br><span class="line"></span><br><span class="line">    // 正常的绘制椭圆</span><br><span class="line">//    UIBezierPath *ovalPath = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(50, 20, 200, 100)];</span><br><span class="line">//    ovalPath.lineWidth = 4.0;</span><br><span class="line">//    [[UIColor magentaColor] setFill];</span><br><span class="line">//    [[UIColor yellowColor] setStroke];</span><br><span class="line">//    [ovalPath stroke];</span><br><span class="line">//    [ovalPath fill];</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2016/12/10/Quartz2D绘制形状/" data-id="cjx1wsdkt000mmsfyr4t8lqt6" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-GCD实现按钮定时亮起" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -135,7 +348,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/12/05/GCD实现按钮定时亮起/" data-id="cjwgh85470008oi814d6dkdct" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2016/12/05/GCD实现按钮定时亮起/" data-id="cjx1wsdk40008msfyo89v3phc" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GCD/">GCD</a></li></ul>
@@ -263,7 +476,7 @@ CGContextClosePath(ctx);
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/12/04/Quartz2D绘制曲线/" data-id="cjwgh854r000xoi81noepc8rl" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2016/12/04/Quartz2D绘制曲线/" data-id="cjx1wsdku000nmsfypepmdwqg" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li></ul>
@@ -429,7 +642,7 @@ Layer Graphics Context
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/12/04/Quartz2D初识/" data-id="cjwgh854i000loi81uwnl8d6k" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2016/12/04/Quartz2D初识/" data-id="cjx1wsdkr000lmsfyajykr0if" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li></ul>
@@ -481,7 +694,7 @@ Layer Graphics Context
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/11/22/OC RunTime学习/" data-id="cjwgh854f000hoi8195my2ull" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2016/11/22/OC RunTime学习/" data-id="cjx1wsdkl000hmsfynj6gioxz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RunTime/">RunTime</a></li></ul>
@@ -570,7 +783,7 @@ webView.navigationDelegate = self;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/11/22/Quartz2D绘制线条/" data-id="cjwgh854v0019oi81kepiwjvq" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2016/11/22/Quartz2D绘制线条/" data-id="cjx1wsdkx000qmsfy07cb8rbg" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WKWebView/">WKWebView</a></li></ul>
@@ -659,7 +872,7 @@ webView.navigationDelegate = self;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/11/22/Swift3.0学习(五)/" data-id="cjwgh854w001boi81mah5tgfd" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2016/11/22/Swift3.0学习(五)/" data-id="cjx1wsdmu001bmsfyhrlria38" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WKWebView/">WKWebView</a></li></ul>
@@ -748,304 +961,10 @@ webView.navigationDelegate = self;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/11/22/Swift3.0学习(四)/" data-id="cjwgh854x001doi81311p1y9u" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2016/11/22/Swift3.0学习(四)/" data-id="cjx1wsdmx001cmsfyimzzwxpn" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WKWebView/">WKWebView</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-WKWebiView使用" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/11/22/WKWebiView使用/" class="article-date">
-  <time datetime="2016-11-22T03:10:31.000Z" itemprop="datePublished">2016-11-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/22/WKWebiView使用/">WKWebiView 使用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="WKWebiView-iOS8-0-出现，性能要远远好于-iOS-2-0时出现的-UIWebView-主要记录WKWebView-的创建和代理方法"><a href="#WKWebiView-iOS8-0-出现，性能要远远好于-iOS-2-0时出现的-UIWebView-主要记录WKWebView-的创建和代理方法" class="headerlink" title="WKWebiView iOS8.0 出现，性能要远远好于 iOS 2.0时出现的 UIWebView,主要记录WKWebView 的创建和代理方法"></a>WKWebiView iOS8.0 出现，性能要远远好于 iOS 2.0时出现的 UIWebView,主要记录WKWebView 的创建和代理方法</h4><h2 id="创建WKWebView"><a href="#创建WKWebView" class="headerlink" title="创建WKWebView"></a>创建WKWebView</h2><pre><code>WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
-self.webView = webView;
-[self.view addSubview:webView];
-webView.UIDelegate = self;
-webView.navigationDelegate = self;
-[webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@&quot;https://www.baidu.com&quot;]]];
-</code></pre><p>遵守协议 WKNavgationDelegate WKUIDelegate</p>
-<h2 id="代理方法"><a href="#代理方法" class="headerlink" title="代理方法"></a>代理方法</h2><ul>
-<li><p>WKNavgationDelegate 方法</p>
-<ul>
-<li><p>发送请求之前决定是否跳转</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler &#123;</span><br><span class="line"></span><br><span class="line">	decisionHandler(WKNavigationActionPolicyAllow);</span><br><span class="line">	// 不允许跳转</span><br><span class="line">   decisionHandler(WKNavigationActionPolicyCancel);</span><br><span class="line">	NSLog(@&quot;decidePolicyForNavigationAction&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>收到相应之后决定是否跳转</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler &#123;</span><br><span class="line"></span><br><span class="line">	decisionHandler(WKNavigationResponsePolicyAllow);</span><br><span class="line">	</span><br><span class="line">	decisionHandler(WKNavigationResponsePolicyCancel);</span><br><span class="line">	</span><br><span class="line">	NSLog(@&quot;decidePolicyForNavigationResponse&quot;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>开始加载时调用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;didStartProvisionalNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>接受到服务器的跳转请求时调用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line">	NSLog(@&quot;didReceiveServerRedirectForProvisionalNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<pre><code>- 页面加载失败时调用 **存在缓存问题**
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error &#123;</span><br><span class="line">		</span><br><span class="line">	NSLog(@&quot;error= %@&quot;, error);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-- 内容开始返回时调用
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didCommitNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;didCommitNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</code></pre><ul>
-<li><p>内容返回成功后调用</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;didFinishNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>开始返回错误时调用</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didFailNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;didFailNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li><p>目前不知道什么时候调用</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable credential))completionHandler &#123;</span><br><span class="line">	NSLog(@&quot;didReceiveAuthenticationChallenge&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>目前不知道什么时候调用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView API_AVAILABLE(macosx(10.11), ios(9.0)) &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;webViewWebContentProcessDidTerminate&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/11/22/WKWebiView使用/" data-id="cjwgh8556001xoi81zt8ih6q3" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WKWebView/">WKWebView</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-git学习总结" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/11/20/git学习总结/" class="article-date">
-  <time datetime="2016-11-20T03:10:31.000Z" itemprop="datePublished">2016-11-20</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/20/git学习总结/">git 使用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="使用-git-提交代码"><a href="#使用-git-提交代码" class="headerlink" title="使用 git 提交代码"></a>使用 git 提交代码</h2><ul>
-<li><p>初始化工作目录</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>配置用户名和邮箱（当前仓库）</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config user.name &quot;aTreey&quot;</span><br><span class="line">git config user.email &quot;480814177@qq.com&quot;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li><p>配置全局的用户名和密码</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name &quot;aTreey&quot;</span><br><span class="line">git config --global user.email &quot;480814177@qq.com&quot;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>创建文件</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch main.m</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>添加文件到暂缓区</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add main.m</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看文件状态</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>新添加的文件或者新修改的文件在工作区中，没有添加到暂缓区中</p>
-</li>
-</ul>
-<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Untracked files: （红色）</span><br></pre></td></tr></table></figure>
-</code></pre><ul>
-<li>需要添加到暂缓区中</li>
-</ul>
-<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add main.m</span><br></pre></td></tr></table></figure>
-</code></pre><ul>
-<li>出现一下提示方可提交</li>
-</ul>
-<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Changes to be committed: （绿色）</span><br></pre></td></tr></table></figure>
-</code></pre><ul>
-<li><p>给git起别名</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config alias.st &quot;status&quot;</span><br><span class="line">git config alias.ci &quot;commit -m&quot;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看所有版本库日志（只能查看当前版本的以前日志）</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看指定文件的版本库日志</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log 文件名</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看所有的操作的日志</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reflog</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="版本会退"><a href="#版本会退" class="headerlink" title="版本会退"></a>版本会退</h2><ul>
-<li><p>强制回退到当前版本</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>强制回退到当前版本的上一个版本</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD^</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>强制回退到当前版本的上上个版本</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD^^</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>强制回退到当前版本的前100个版本</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD～100</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>强制回退指定版本</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD 版本号前七位</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/11/20/git学习总结/" data-id="cjwgh85580021oi81w674ggln" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-TableView使用总结" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/11/05/TableView使用总结/" class="article-date">
-  <time datetime="2016-11-05T14:59:46.000Z" itemprop="datePublished">2016-11-05</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/05/TableView使用总结/">TableView 使用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="tableView-使用总结"><a href="#tableView-使用总结" class="headerlink" title="tableView 使用总结"></a>tableView 使用总结</h2><ul>
-<li><p>字典的 key enumerator 的使用</p>
-</li>
-<li><p>tableViewCell 的 selected 方法可以监听cell 的选中, 使用selected 参数</p>
-</li>
-<li><p>网络慢时点击左边cell右边数据不能及时刷新， 用户看到的还是上一个cell显示的数据</p>
-<ul>
-<li>解决办法: 在网络加载之前就reload数据，让显示空白</li>
-</ul>
-</li>
-<li><p>点击左边的cell时 上拉加载更多控件的显示和隐藏逻辑</p>
-<ul>
-<li>解决办法: 在每次刷新右边数据时，控制footer的显示</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><p>在numberOfRowsInSection方法中控制</p>
-</li>
-<li><p>每次点击cell之前要结束上一个没有刷新完的，防止奔溃</p>
-</li>
-<li><p>加载更多时</p>
-<p>  在加载第一页时设置currentPage为1，在加载更多的逻辑中 ++currentPage<br>  点击cell加载时上一个加载更多的网络数据还没有回来，在当前请求之前结束掉所有的网络请求<br>  停止之后的刷新控件状态会有错误，没有更多还是还可以加载状态不确定<br>  在点击左边cell后刷新右边的之前需要检查右边tableView 的footer的状态<br>  下拉刷新</p>
-</li>
-<li><p>第一次下拉刷新之后，第二次下拉刷新，将数据添加到数组中会导致两次数据重复</p>
-<ul>
-<li>解决办法：清除以前的所有数据</li>
-</ul>
-</li>
-<li><p>下拉刷新完毕后结束刷新后需要检查footer的状态</p>
-</li>
-<li><p>网络慢时连续点击cell，连发多个请求成功回调时数据显示错乱，或者是数据已经回来了但是还是显示上一个请求正在请求。。。</p>
-<ul>
-<li>解决办法：点击左边某个类别时，结束所有的刷新（上拉和下拉）</li>
-</ul>
-</li>
-<li><p>连续点击发送请求</p>
-<ul>
-<li>解决办法：保存请求参数， 比较上一次参数和当前参数， 如果 ！= 直接return，不让进入成功回调解析数据， 失败的时候也是同样 return，不提示用户</li>
-</ul>
-</li>
-<li><p>控制器正在请求数据时控制器销毁， 导致奔溃</p>
-<ul>
-<li>解决办法：在dealloc 中停止所有的操作</li>
-</ul>
-</li>
-</ul>
-<h2 id="cell-的frame-设置"><a href="#cell-的frame-设置" class="headerlink" title="cell 的frame 设置"></a>cell 的frame 设置</h2><ul>
-<li><p>cell 之间的间隙以及cell的边距 重写frame 在super 之前设置</p>
-<ul>
-<li>设置frame 的x ，width， height 等属性</li>
-</ul>
-</li>
-<li><p>分页的2种做法</p>
-<ul>
-<li><p>下拉刷新</p>
-<p>  page 加载最新的 加载第一页 浪费用户的流量<br>  加载比当前更新的数据， 需要服务器支持，将当前最新的数据id发送给服务器，服务器加载比当前id还大的数据插入到最前面</p>
-</li>
-<li><p>上拉加载</p>
-<p>  将页码发给服务器</p>
-<p>  将最后面的数据的id发给服务器，</p>
-<p>  加载比当前id更小的数据</p>
-</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/11/05/TableView使用总结/" data-id="cjwgh8554001uoi81brhy2k99" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TableView/">TableView</a></li></ul>
 
     </footer>
   </div>
@@ -1104,23 +1023,23 @@ webView.navigationDelegate = self;
       <ul>
         
           <li>
-            <a href="/2019/06/03/第十二章架构和框架面试/">(no title)</a>
+            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/03/第十四章第三方库面试/">(no title)</a>
+            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/03/第十章网络相关/">(no title)</a>
+            <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/03/第四章OC语言特性面试/">(no title)</a>
+            <a href="/2019/06/18/第十章网络相关/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/03/第八章多线程面试/">(no title)</a>
+            <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
           </li>
         
       </ul>

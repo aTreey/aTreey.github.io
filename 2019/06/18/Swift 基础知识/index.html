@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>aTreey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Swift 学习 枚举1. 定义 rawValue 为 Int 类型，初始值为1，1234567891011121314enum Month: Int &amp;#123;    case January = 1    case February    case March    case April    case May    case June    case July    case August">
+<meta property="og:type" content="article">
+<meta property="og:title" content="aTreey&#39;s Blog">
+<meta property="og:url" content="https://github.com/aTreey/2019/06/18/Swift 基础知识/index.html">
+<meta property="og:site_name" content="aTreey&#39;s Blog">
+<meta property="og:description" content="Swift 学习 枚举1. 定义 rawValue 为 Int 类型，初始值为1，1234567891011121314enum Month: Int &amp;#123;    case January = 1    case February    case March    case April    case May    case June    case July    case August">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-18T14:24:32.178Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="aTreey&#39;s Blog">
+<meta name="twitter:description" content="Swift 学习 枚举1. 定义 rawValue 为 Int 类型，初始值为1，1234567891011121314enum Month: Int &amp;#123;    case January = 1    case February    case March    case April    case May    case June    case July    case August">
+  
+    <link rel="alternate" href="/atom.xml" title="aTreey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">aTreey&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://github.com/aTreey"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Swift 基础知识" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/Swift 基础知识/" class="article-date">
+  <time datetime="2019-06-18T14:24:32.177Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Swift 学习</p>
+<h2 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h2><h4 id="1-定义-rawValue-为-Int-类型，初始值为1，"><a href="#1-定义-rawValue-为-Int-类型，初始值为1，" class="headerlink" title="1. 定义 rawValue 为 Int 类型，初始值为1，"></a>1. 定义 rawValue 为 Int 类型，初始值为1，</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">enum Month: Int &#123;</span><br><span class="line">    case January = 1</span><br><span class="line">    case February</span><br><span class="line">    case March</span><br><span class="line">    case April</span><br><span class="line">    case May</span><br><span class="line">    case June</span><br><span class="line">    case July</span><br><span class="line">    case August</span><br><span class="line">    case September</span><br><span class="line">    case October</span><br><span class="line">    case November</span><br><span class="line">    case December</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-rawValue-的整型值可以不连续"><a href="#2-rawValue-的整型值可以不连续" class="headerlink" title="2. rawValue 的整型值可以不连续"></a>2. rawValue 的整型值可以不连续</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">enum Season: Int &#123;</span><br><span class="line">    case Spring = 1</span><br><span class="line">    case Summer = 5</span><br><span class="line">    case Autumn = 10</span><br><span class="line">    case Winter = 40</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-枚举可以是字符串-字符串是变量名和-rawValue-的值相等"><a href="#3-枚举可以是字符串-字符串是变量名和-rawValue-的值相等" class="headerlink" title="3. 枚举可以是字符串,字符串是变量名和 rawValue 的值相等"></a>3. 枚举可以是字符串,字符串是<code>变量名</code>和 <code>rawValue</code> 的值相等</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">enum ProgrammerLanguae: String &#123;</span><br><span class="line">    case Swift</span><br><span class="line">    case OC = &quot;Objective-C&quot;</span><br><span class="line">    case C = &quot;语言&quot;</span><br><span class="line">    case RN = &quot;React-Native&quot;</span><br><span class="line">    case Java</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用<code>rawValue</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">func residueNewYear(month: Month) -&gt; Int &#123;</span><br><span class="line">    return 12 - month.rawValue</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用枚举的Moth的构造函数生成一个Month</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let month = Month(rawValue: 5)</span><br><span class="line">let swift = ProgrammerLanguae.Swift.rawValue</span><br><span class="line">let oc = ProgrammerLanguae.OC</span><br><span class="line">let RN = ProgrammerLanguae.RN.rawValue</span><br></pre></td></tr></table></figure>
+<h4 id="4-枚举关联值-associate-value"><a href="#4-枚举关联值-associate-value" class="headerlink" title="4. 枚举关联值 associate value"></a>4. 枚举关联值 associate value</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">enum Status &#123;</span><br><span class="line">    case success(Int)</span><br><span class="line">    case fail(String)</span><br><span class="line">    case null // 未关联值</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func associateValueTest(isSuccess: Bool) -&gt; Status &#123;</span><br><span class="line">    if isSuccess &#123;</span><br><span class="line">        return .success(200)</span><br><span class="line">    &#125;</span><br><span class="line">    return .fail(&quot;失败&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="5-枚举associateValue多个值"><a href="#5-枚举associateValue多个值" class="headerlink" title="5. 枚举associateValue多个值"></a>5. 枚举associateValue多个值</h4><ul>
+<li>本质是关联了一个元祖(value0, value1, value2…)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">enum Shape &#123;</span><br><span class="line">    case Square(width: Double)</span><br><span class="line">    case Reactangle(width: Double, height: Double)</span><br><span class="line">    case Circle(x: Double, y: Double, radius: Double)</span><br><span class="line">    case Point</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let square = Shape.Square(width: 20)</span><br><span class="line">let reactangle = Shape.Reactangle(width: 10, height: 20)</span><br><span class="line">let circle = Shape.Circle(x: 10, y: 10, radius: 20)</span><br><span class="line">let point = Shape.Point</span><br><span class="line"></span><br><span class="line">private func area(shape: Shape) -&gt; Double &#123;</span><br><span class="line">    switch shape &#123;</span><br><span class="line">    case let .Square(width):</span><br><span class="line">        return width * width</span><br><span class="line">    case let .Reactangle(width, height):</span><br><span class="line">        return width * height</span><br><span class="line">    case let .Circle(_, _, radius):</span><br><span class="line">        return radius * radius * Double.pi</span><br><span class="line">    case .Point:</span><br><span class="line">        return 0</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="6-递归枚举"><a href="#6-递归枚举" class="headerlink" title="6. 递归枚举"></a>6. 递归枚举</h4><ul>
+<li>定义一个递归算术表达式</li>
+<li>使用 indirect 来修饰</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">indirect enum ArithmeticalExpression &#123;</span><br><span class="line">    case Number(Int)</span><br><span class="line">    case Addition(ArithmeticalExpression, ArithmeticalExpression) // + 时两边也是一个表达式</span><br><span class="line">    case Multiplication(ArithmeticalExpression, ArithmeticalExpression) // * 时两边也是一个表达式</span><br><span class="line">    </span><br><span class="line">//    indirect case Addition(ArithmeticalExpression, ArithmeticalExpression) // + 时两边也是一个表达式</span><br><span class="line">//    indirect case Multiplication(ArithmeticalExpression, ArithmeticalExpression) // * 时两边也是一个表达式</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>递归表达式使用 (2+3) * 4</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let two = ArithmeticalExpression.Number(2)</span><br><span class="line">let one = ArithmeticalExpression.Number(3)</span><br><span class="line">let sum = ArithmeticalExpression.Addition(two, one)</span><br><span class="line">let indirectEnumResult = ArithmeticalExpression.Multiplication(sum, ArithmeticalExpression.Number(4))</span><br></pre></td></tr></table></figure>
+<ul>
+<li>计算表达式值的函数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">private func calculate(expression: ArithmeticalExpression) -&gt; Int &#123;</span><br><span class="line">    switch expression &#123;</span><br><span class="line">    case let .Number(value):</span><br><span class="line">        return value</span><br><span class="line">    case let .Addition(left, right):</span><br><span class="line">        return calculate(expression: left) + calculate(expression: right)</span><br><span class="line">    case let .Multiplication(left, right):</span><br><span class="line">        return calculate(expression: left) * calculate(expression: right)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="结构体"><a href="#结构体" class="headerlink" title="结构体"></a>结构体</h2><ul>
+<li>结构体中的属性值没有初始化时必须使用构造函数来初始化，否则报错</li>
+<li></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">struct Location &#123;</span><br><span class="line">    var latitude: Double</span><br><span class="line">    var longitude: Double</span><br><span class="line">    var placeName: String?</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let location1 = Location(latitude: 37.3230, longitude: -122.0322, placeName: &quot;测试&quot;)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>结构体中属性如果都赋了初始值就可以直接初始化</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct Location2 &#123;</span><br><span class="line">    var latitude: Double = 0</span><br><span class="line">    var longitude: Double = 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let location2 = Location2()</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果未指定初始值，swift 就不会默认初始化为（不初始化）</li>
+<li>当属性值为可选值时此时允许值为nil，那么就允许不通过构造函数来初始化赋值</li>
+<li>let 只有一次赋值机会</li>
+<li>不管是类还是结构体都应该提供一个全参数的构造函数 <code>init(latitude: Double, longitude: Double, placeName: String?)</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">struct Location3 &#123;</span><br><span class="line">    let latitude: Double</span><br><span class="line">    let longtitude: Double</span><br><span class="line">    var placeName: String?</span><br><span class="line">    </span><br><span class="line">    init(coordinateString: String) &#123;</span><br><span class="line">        let index = coordinateString.index(of: &quot;,&quot;)</span><br><span class="line">        let index1 = coordinateString.index(after: index!)</span><br><span class="line">        let test_1 = coordinateString.prefix(upTo: index!)</span><br><span class="line">        let test_2 = coordinateString.suffix(from: index1)</span><br><span class="line">        </span><br><span class="line">        latitude = Double(test_1)!</span><br><span class="line">        longtitude = Double(test_2)!</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    init(latitude: Double, longitude: Double, placeName: String?) &#123;</span><br><span class="line">        self.latitude = latitude</span><br><span class="line">        self.longtitude = longitude</span><br><span class="line">        self.placeName = placeName</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let test3 = Location3(coordinateString: &quot;12,45&quot;)</span><br></pre></td></tr></table></figure>
+<h2 id="类"><a href="#类" class="headerlink" title="类"></a>类</h2><h2 id="属性和方法"><a href="#属性和方法" class="headerlink" title="属性和方法"></a>属性和方法</h2><h4 id="计算型属性"><a href="#计算型属性" class="headerlink" title="计算型属性"></a>计算型属性</h4><h4 id="类型属性"><a href="#类型属性" class="headerlink" title="类型属性"></a>类型属性</h4><h4 id="类型方法"><a href="#类型方法" class="headerlink" title="类型方法"></a>类型方法</h4><h4 id="属性管擦器"><a href="#属性管擦器" class="headerlink" title="属性管擦器"></a>属性管擦器</h4><h4 id="延迟属性"><a href="#延迟属性" class="headerlink" title="延迟属性"></a>延迟属性</h4><h4 id="访问控制"><a href="#访问控制" class="headerlink" title="访问控制"></a>访问控制</h4><h4 id="单利模式"><a href="#单利模式" class="headerlink" title="单利模式"></a>单利模式</h4><h2 id="继承和构造函数"><a href="#继承和构造函数" class="headerlink" title="继承和构造函数"></a>继承和构造函数</h2><h4 id="swift-中继承"><a href="#swift-中继承" class="headerlink" title="swift 中继承"></a>swift 中继承</h4><h4 id="多态性"><a href="#多态性" class="headerlink" title="多态性"></a>多态性</h4><h4 id="属性和函数重载"><a href="#属性和函数重载" class="headerlink" title="属性和函数重载"></a>属性和函数重载</h4><h4 id="子类两段式构造"><a href="#子类两段式构造" class="headerlink" title="子类两段式构造"></a>子类两段式构造</h4><ul>
+<li><p>子类构造函数分为两段，第一段是构造自己，第二段是构造父类</p>
+<ul>
+<li>父类中构造函数</li>
+<li>子类要设置一个自己的构造函数</li>
+<li>子类构造函数中需要先初始化自己的属性</li>
+<li><p>然后在构造函数中调用父类初始化父类构造函数中的相关属性</p>
+<p>父类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class Father &#123;</span><br><span class="line">    var name: String</span><br><span class="line">    var sex: Int = 0</span><br><span class="line">    var old: Int = 32</span><br><span class="line">    var desc: String &#123;</span><br><span class="line">        return &quot;我是\(name)&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    init(name: String) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    func run() &#123;</span><br><span class="line">        print(&quot;Father can Running&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>子类
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class Son: Father &#123;</span><br><span class="line"></span><br><span class="line">    var isSwimming = true</span><br><span class="line">    </span><br><span class="line">    var computer: String</span><br><span class="line">    </span><br><span class="line">    override var desc: String &#123;</span><br><span class="line">        return &quot;Son is \(name)&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    init(name: String, computer: String) &#123;</span><br><span class="line">        self.computer = computer</span><br><span class="line">        super.init(name: name)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre><ul>
+<li><p>子类两段构造都完成后子类的初始化才完成，可以使用<code>self</code>调用属性或者方法</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">init(name: String, computer: String) &#123;</span><br><span class="line">       self.computer = computer</span><br><span class="line">       self.getToys() // 此代码报错，子类初始化未完成</span><br><span class="line">       super.init(name: name)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="便利构造函数和指定构造函数"><a href="#便利构造函数和指定构造函数" class="headerlink" title="便利构造函数和指定构造函数"></a>便利构造函数和指定构造函数</h4><ul>
+<li>便利构造函数只能调用自己的指定构造函数</li>
+<li>指定构造函数通过一系列的调用都会调用super.init()</li>
+<li>便利构造函数无法调用super.init()</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">class Father &#123;</span><br><span class="line">    var name: String</span><br><span class="line">    var sex: Int = 0</span><br><span class="line">    var old: Int = 32</span><br><span class="line">    var desc: String &#123;</span><br><span class="line">        return &quot;我是\(name)&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    init(name: String) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    init(name: String, old: Int) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">        self.old = old</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    func run() &#123;</span><br><span class="line">        print(&quot;Father can Running&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Son: Father &#123;</span><br><span class="line">    var isSwimming = true</span><br><span class="line">    var computer: String</span><br><span class="line">    </span><br><span class="line">    override var desc: String &#123;</span><br><span class="line">        return &quot;Son is \(name)&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 子类指定构造函数,调用了父类的指定构造函数</span><br><span class="line">    init(name: String, computer: String) &#123;</span><br><span class="line">        self.computer = computer</span><br><span class="line">        super.init(name: name)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 子类便利构造函数，调用了指定构造函数</span><br><span class="line">    convenience override init(name: String) &#123;</span><br><span class="line">        let computer = &quot;iMac&quot;</span><br><span class="line">        self.init(name: name, computer: computer)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="构造函数继承"><a href="#构造函数继承" class="headerlink" title="构造函数继承"></a>构造函数继承</h4><ul>
+<li>子类有可能会继承父类的构造函数</li>
+<li>子类没有实现父类的任何指定构造函数；则自动继承父类的所有指定构造函数, 因为继承了指定构造函数所以同时便利构造函数也被继承</li>
+</ul>
+<p>父类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">class Father &#123;</span><br><span class="line">    var name: String</span><br><span class="line">    var sex: Int = 0</span><br><span class="line">    var old: Int = 32</span><br><span class="line">    var desc: String &#123;</span><br><span class="line">        return &quot;我是\(name)&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// Father指定构造函数-1</span><br><span class="line">    init(name: String) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// Father指定构造函数-2</span><br><span class="line">    init(name: String, old: Int) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">        self.old = old</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// Father便利构造函数</span><br><span class="line">    convenience init(old: Int) &#123;</span><br><span class="line">        self.init(name: &quot;Father&quot;, old: old)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    func run() &#123;</span><br><span class="line">        print(&quot;Father can Running&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>子类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">class Son: Father &#123;</span><br><span class="line">    var isSwimming = true</span><br><span class="line">    var computer: String</span><br><span class="line">    var job: String</span><br><span class="line">    </span><br><span class="line">    override var desc: String &#123;</span><br><span class="line">        return &quot;Son is \(name)&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 子类重载的指定构造函数-1</span><br><span class="line">    convenience override init(name: String) &#123;</span><br><span class="line">        self.init(name: name, computer: &quot;Dell&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 子类重载的指定构造函数-2</span><br><span class="line">    override convenience init(name: String, old: Int) &#123;</span><br><span class="line">        self.init(name: name, computer: &quot;acer&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    /// 子类自己的指定构造函数,调用了父类的指定构造函数</span><br><span class="line">    init(name: String, computer: String) &#123;</span><br><span class="line">        self.computer = computer</span><br><span class="line">        self.job = &quot;C#&quot;</span><br><span class="line">        super.init(name: name)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 子类便利构造函数，调用了自己指定构造函数</span><br><span class="line">    convenience init(computer: String) &#123;</span><br><span class="line">        let name = &quot;小张&quot;</span><br><span class="line">        self.init(name: name, computer: computer)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>未实现父类任何的指定构造函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class Grandson: Son &#123;</span><br><span class="line">    var toy: String = &quot;dog toys&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>子类可以调用的构造函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">let grandSon0 = Grandson(old: 4)</span><br><span class="line">let grandSon1 = Grandson(computer: &quot;Mi&quot;)</span><br><span class="line">let grandSon2 = Grandson(name: &quot;小王&quot;)</span><br><span class="line">let grandSon3 = Grandson(name: &quot;小虎&quot;, computer: &quot;👽&quot;)</span><br><span class="line">let grandSon4 = Grandson(name: &quot;小李&quot;, old: 8)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>子类实现了父类所有的指定构造函数，则自动继承父类的所有便利构造函数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">let son0 = Son(old: 30)</span><br><span class="line">let son1 = Son(computer: &quot;Mi&quot;)</span><br><span class="line">let son2 = Son(name: &quot;小王&quot;)</span><br><span class="line">let son3 = Son(name: &quot;小虎&quot;, computer: &quot;👽&quot;)</span><br><span class="line">let son4 = Son(name: &quot;小李&quot;, old: 8)</span><br></pre></td></tr></table></figure>
+<h4 id="required-构造函数"><a href="#required-构造函数" class="headerlink" title="required 构造函数"></a>required 构造函数</h4><ul>
+<li>父类中有被 required 关键词修饰的构造函数子类必须实现此构造函数</li>
+<li>子类实现的此构造函数不需要再使用 override 关键词修饰，需要 required 修饰</li>
+</ul>
+<p>子类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Father &#123;</span><br><span class="line">    var name: String</span><br><span class="line">    /// Father指定构造函数-1</span><br><span class="line">    // required 修饰的指定构造函数子类中必须实现</span><br><span class="line">    required init(name: String) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>父类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Son: Father &#123;</span><br><span class="line">    var isSwimming = true</span><br><span class="line">    var computer: String</span><br><span class="line">    </span><br><span class="line">    /// 子类重载的指定构造函数-1</span><br><span class="line">    convenience required init(name: String) &#123;</span><br><span class="line">        self.init(name: name, computer: &quot;Dell&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 子类自己的指定构造函数,调用了父类的指定构造函数</span><br><span class="line">    init(name: String, computer: String) &#123;</span><br><span class="line">        self.computer = computer</span><br><span class="line">        self.job = &quot;C#&quot;</span><br><span class="line">        super.init(name: name)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>子类如果实现了自己的指定构造函数，那么 required 修饰指定构造函数就初始化失败，因为自己实现了指定构造函数所以不能继承父类中的构造函数，此时可以自己实现被required 修饰的便利构造函数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Son1: Son &#123;</span><br><span class="line">    var sport: String</span><br><span class="line">    </span><br><span class="line">    // 指定构造函数，需要调用父类的指定构造函数</span><br><span class="line">    init(name: String, sport: String) &#123;</span><br><span class="line">        self.sport = sport</span><br><span class="line">        Son.init(name: name)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 父类中有被 required 关键词修饰的必须实现的构造函数</span><br><span class="line">    convenience required init(name: String) &#123;</span><br><span class="line">       // fatalError(&quot;init(name:) has not been implemented&quot;)</span><br><span class="line">        // 调用自己的指定构造函数，</span><br><span class="line">        self.init(name: name, sport: &quot;&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift 基础知识/" data-id="cjx1wsdlc0013msfy05mlf15r" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/18/Swift 协议使用/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/18/RN报错/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第十章网络相关/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 aTreey<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

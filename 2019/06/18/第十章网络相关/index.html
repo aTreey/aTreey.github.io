@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>aTreey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="第十章 网络请求相关 HTTP协议超文本传输协议 请求/响应报文请求报文：  请求行  方法  URL  协议版本(1.1版本)  CRLF(回车)   首部字段区域  首部字段名(key) ：值（value ）CRLF  首部字段名(key) ：值（value ）CRLF  实体主体  get 请求没有  post 有实体主体   响应报文：  响应行  版本  状态码  状态码描述（短语）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="aTreey&#39;s Blog">
+<meta property="og:url" content="https://github.com/aTreey/2019/06/18/第十章网络相关/index.html">
+<meta property="og:site_name" content="aTreey&#39;s Blog">
+<meta property="og:description" content="第十章 网络请求相关 HTTP协议超文本传输协议 请求/响应报文请求报文：  请求行  方法  URL  协议版本(1.1版本)  CRLF(回车)   首部字段区域  首部字段名(key) ：值（value ）CRLF  首部字段名(key) ：值（value ）CRLF  实体主体  get 请求没有  post 有实体主体   响应报文：  响应行  版本  状态码  状态码描述（短语）">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-18T14:24:32.192Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="aTreey&#39;s Blog">
+<meta name="twitter:description" content="第十章 网络请求相关 HTTP协议超文本传输协议 请求/响应报文请求报文：  请求行  方法  URL  协议版本(1.1版本)  CRLF(回车)   首部字段区域  首部字段名(key) ：值（value ）CRLF  首部字段名(key) ：值（value ）CRLF  实体主体  get 请求没有  post 有实体主体   响应报文：  响应行  版本  状态码  状态码描述（短语）">
+  
+    <link rel="alternate" href="/atom.xml" title="aTreey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">aTreey&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://github.com/aTreey"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-第十章网络相关" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/第十章网络相关/" class="article-date">
+  <time datetime="2019-06-18T14:24:32.192Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>第十章 网络请求相关</p>
+<h3 id="HTTP协议"><a href="#HTTP协议" class="headerlink" title="HTTP协议"></a>HTTP协议</h3><p>超文本传输协议</p>
+<h4 id="请求-响应报文"><a href="#请求-响应报文" class="headerlink" title="请求/响应报文"></a>请求/响应报文</h4><p>请求报文：</p>
+<ul>
+<li><p>请求行<br>  方法  URL  协议版本(1.1版本)  CRLF(回车) </p>
+</li>
+<li><p>首部字段区域<br>  首部字段名(key) ：值（value ）CRLF<br>  首部字段名(key) ：值（value ）CRLF</p>
+</li>
+<li><p>实体主体<br>  get 请求没有<br>  post 有实体主体</p>
+</li>
+</ul>
+<p>响应报文：</p>
+<ul>
+<li><p>响应行<br>  版本  状态码  状态码描述（短语）   CRLF</p>
+</li>
+<li><p>首部字段区</p>
+</li>
+<li></li>
+<li>响应实体主体</li>
+</ul>
+<h4 id="连接建立流程"><a href="#连接建立流程" class="headerlink" title="连接建立流程"></a>连接建立流程</h4><p>三次握手和四次挥手</p>
+<p>三次握手</p>
+<ul>
+<li>客户端 发送 syn 同步报文到Server，</li>
+<li>server 端收到syn报文后会，链接建立，server 端会返回一个 syn，ack 报文给客户端，</li>
+<li>客户端收到 server 端的ask 报文后，会再次回应一个确认ack 的报文</li>
+</ul>
+<p>数据请求</p>
+<ul>
+<li>接下来在已经建立的tcp 通道上进行http 的请求报文</li>
+<li>server 端回复给客户端一个http响应报文</li>
+</ul>
+<p>四次挥手</p>
+<ul>
+<li>客户端发送 fin 终止报文到server 端</li>
+<li>server 端收到报文后会回回复一个ack 报文到客户端</li>
+<li>客户端到server 端的tcp的链接已经断开，但是 server 端到客户端的链接还会传输数据</li>
+<li>server 端向客户端发送一个fin ack 报文 ，然后客户端回应给server 一个ack 报文，释放链接</li>
+</ul>
+<h4 id="HTTP-的特点"><a href="#HTTP-的特点" class="headerlink" title="HTTP 的特点"></a>HTTP 的特点</h4><ul>
+<li><p>无连接<br>  非持久链接 需要多次断开/建立链接，就会经历 三次握手，四次挥手</p>
+<p>  HTTP 的持久链接： 多个http请求在同一个tcp 通道上， 一定时间内不会断开tcp通道，提高了网络请求的效率</p>
+<p>  头部字段：</p>
+<pre><code>coonection ： keep-alive 客户端是否采用持久链接
+time ：20 多长时间有效
+max：10 最多发生多少个http请求和响应对
+</code></pre></li>
+<li><p>无状态<br>  同一个用户多次发送http请求，server 端是不知道是同一个用户的，server 端通过 Cookie/Session 规避这个问题</p>
+<ul>
+<li><p>cookie<br>  cookie 主要是用来记录用户状态，区分用户，cookie由server端返回给客户端，cookie 状态保存在客户端</p>
+<p>保证cookie 的安全</p>
+<ul>
+<li>cookie 加密处理</li>
+<li>只在https 上携带Cookie</li>
+<li>设置Cookie为 httpOnly，防止跨站脚本攻击</li>
+</ul>
+</li>
+<li><p>session 用来记录用户的状态，区分用户，状态存放在服务端</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="HTTPS-与网络安全"><a href="#HTTPS-与网络安全" class="headerlink" title="HTTPS 与网络安全"></a>HTTPS 与网络安全</h3><p>HTTPS 都使用了那些加密手段，为什么？</p>
+<ul>
+<li>建立链接过程使用非对称加密，因为耗时</li>
+<li>后续通信数据传输过程中使用对称性加密</li>
+</ul>
+<p>对称性加密 </p>
+<h3 id="TCP：-传输控制协议"><a href="#TCP：-传输控制协议" class="headerlink" title="TCP： 传输控制协议"></a>TCP： 传输控制协议</h3><ul>
+<li>面向链接<br>  TCP 是全双工的所以数据传输之前需要三次握手，传输完毕需要四次挥手， </li>
+<li><p>可靠传输</p>
+<ul>
+<li>无差错 </li>
+<li>按序到达</li>
+<li></li>
+</ul>
+</li>
+<li><p>面向字节流</p>
+<p>  发送方发送数据时不管一次性提交给TCP的缓冲是多大的数据，TCP本身会根据实际情况来划分数据包再发送给接受数据方</p>
+</li>
+<li><p>流量控制</p>
+<p>  滑动窗口协议</p>
+</li>
+</ul>
+<h3 id="UDP-：-用户数据协议"><a href="#UDP-：-用户数据协议" class="headerlink" title="UDP ： 用户数据协议"></a>UDP ： 用户数据协议</h3><ul>
+<li><p>无连接<br>  发送数据时不需要建立链接，传输完毕也不需要释放链接</p>
+</li>
+<li><p>尽最大努力交付<br>  是不保证可靠传输的，</p>
+</li>
+<li><p>面向报文<br>  既不合并，也不拆分</p>
+</li>
+</ul>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><h4 id="GET-和post-请求的区别"><a href="#GET-和post-请求的区别" class="headerlink" title="GET 和post 请求的区别"></a>GET 和post 请求的区别</h4><ul>
+<li><p>GET 获取资源的</p>
+<ul>
+<li>安全的： 不因该引起Server 端的任何状态变化的</li>
+<li>幂等的：同一个请求方法执行多次和执行一次的效果完全相同 </li>
+<li>可缓存的：请求是可以缓存的，代理服务器可以缓存</li>
+<li>请求参数以? 分割拼接到URL 后面</li>
+</ul>
+</li>
+<li><p>post 请求处理资源</p>
+<ul>
+<li>不安全的： </li>
+<li>非幂等的</li>
+<li>不可缓存的</li>
+</ul>
+</li>
+</ul>
+<p>GET 请求参数有长度限制，是2048 个字符，post 一般没有限制</p>
+<h4 id="HTTPS-链接建立流程"><a href="#HTTPS-链接建立流程" class="headerlink" title="HTTPS 链接建立流程"></a>HTTPS 链接建立流程</h4><p>客户端会发送服务端一个支持的加密算法列表<br>包括 TLS 的版本号 +  随机数C，<br>服务端再回给客户端一个证书<br>包括  商定的加密算法 后续首先通过非对称加密进行对称性加密的密钥传输，http的网络就通过被非对称密钥保护的对称密钥访问和传输数据</p>
+<h3 id="TCP-和-UDP的区别"><a href="#TCP-和-UDP的区别" class="headerlink" title="TCP 和 UDP的区别"></a>TCP 和 UDP的区别</h3><p>tcp是面向链接的，并且支持可靠的传输，支持面向字节流， tcp 提供了流浪上的控制和拥塞的控制<br>UDP 提供了简单的复用/分用及差错检测的传输层的功能，</p>
+<h4 id="状态吗有哪些"><a href="#状态吗有哪些" class="headerlink" title="状态吗有哪些"></a>状态吗有哪些</h4><ul>
+<li>1XX</li>
+<li>2XX：成功</li>
+<li>3XX：重定向</li>
+<li>4XX：客户端请求错误</li>
+<li>5XX： 服务器端请求错误</li>
+</ul>
+<h4 id="为什么需要三次握手，两次行不行？"><a href="#为什么需要三次握手，两次行不行？" class="headerlink" title="为什么需要三次握手，两次行不行？"></a>为什么需要三次握手，两次行不行？</h4><p>解决同步请求链接建立时超时的情况，如果只有两次握手，</p>
+<h4 id="持久链接怎么判断一个请求是否结束"><a href="#持久链接怎么判断一个请求是否结束" class="headerlink" title="持久链接怎么判断一个请求是否结束"></a>持久链接怎么判断一个请求是否结束</h4><ul>
+<li>请求/响应报文的头部字段</li>
+</ul>
+<p>响应报文 content-length: 1024 头部字段是由server 端返回数据大小，客户端根据所接收的数据的字节数是否达到了头部字段 cotent-length 的大小判断</p>
+<ul>
+<li>通过post请求时server 端返回数据有可能需要多次响应才能返回，此时需要根据chunked 字段名 是否为空来判断</li>
+</ul>
+<h4 id="Charels-抓包原理是什么？"><a href="#Charels-抓包原理是什么？" class="headerlink" title="Charels 抓包原理是什么？"></a>Charels 抓包原理是什么？</h4><p>中间人攻击</p>
+<p>正常步骤是 客户端 —- server</p>
+<p>抓包：发送请求和响应请求都可以通过中间人修改再返回给某一端</p>
+<p>客户端 —中间人—-  server</p>
+<h4 id="DNS-解析"><a href="#DNS-解析" class="headerlink" title="DNS 解析"></a>DNS 解析</h4><p>域名到IP地址的映射，DNS解析请求采用UDP数据报，且明文</p>
+<h4 id="NDS-解析存在的常见问题"><a href="#NDS-解析存在的常见问题" class="headerlink" title="NDS 解析存在的常见问题"></a>NDS 解析存在的常见问题</h4><ul>
+<li>DNS 劫持问题<br>  钓鱼网站</li>
+<li>DNS 解析转发问题</li>
+</ul>
+<h4 id="DNS-劫持和HTTP-的关系时怎么样的"><a href="#DNS-劫持和HTTP-的关系时怎么样的" class="headerlink" title="DNS 劫持和HTTP 的关系时怎么样的"></a>DNS 劫持和HTTP 的关系时怎么样的</h4><p>没有关系，</p>
+<ul>
+<li>DNS 解析发在HTTP 建立连接之前</li>
+<li>DNS 解析请求使用UDP数据报， 端口是53，跟HTTP没有任何关系</li>
+</ul>
+<p>解决DNS 劫持问题</p>
+<ul>
+<li>httpDNS</li>
+<li>长连接</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/第十章网络相关/" data-id="cjx1wsdsc0037msfywzztcl0g" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/18/第十二章架构和框架面试/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/18/第四章OC语言特性面试/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第十章网络相关/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 aTreey<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

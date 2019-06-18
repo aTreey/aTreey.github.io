@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>aTreey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Masonry使用基本使用官网Demo非常详细，以下总结的是常见问题和技巧 安装遇到的问题 pod 安装后出现⚠️，项目运行报错   1[UIView mas_makeConstraints:]: unrecognized selector sent to instance   github   解决方法  使用lastBaseline属性crash   解决办法   使用时注意点 edgesFo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="aTreey&#39;s Blog">
+<meta property="og:url" content="https://github.com/aTreey/2019/06/18/MasonrySnapkit使用总结/index.html">
+<meta property="og:site_name" content="aTreey&#39;s Blog">
+<meta property="og:description" content="Masonry使用基本使用官网Demo非常详细，以下总结的是常见问题和技巧 安装遇到的问题 pod 安装后出现⚠️，项目运行报错   1[UIView mas_makeConstraints:]: unrecognized selector sent to instance   github   解决方法  使用lastBaseline属性crash   解决办法   使用时注意点 edgesFo">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79ly1fsgg7ugz8mj30ow0nqq4h.jpg">
+<meta property="og:updated_time" content="2019-06-18T14:24:32.175Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="aTreey&#39;s Blog">
+<meta name="twitter:description" content="Masonry使用基本使用官网Demo非常详细，以下总结的是常见问题和技巧 安装遇到的问题 pod 安装后出现⚠️，项目运行报错   1[UIView mas_makeConstraints:]: unrecognized selector sent to instance   github   解决方法  使用lastBaseline属性crash   解决办法   使用时注意点 edgesFo">
+<meta name="twitter:image" content="https://ws4.sinaimg.cn/large/006tNc79ly1fsgg7ugz8mj30ow0nqq4h.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="aTreey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">aTreey&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://github.com/aTreey"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-MasonrySnapkit使用总结" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/MasonrySnapkit使用总结/" class="article-date">
+  <time datetime="2019-06-18T14:24:32.174Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Masonry使用"><a href="#Masonry使用" class="headerlink" title="Masonry使用"></a>Masonry使用</h2><p>基本使用官网Demo非常详细，以下总结的是常见问题和技巧</p>
+<h3 id="安装遇到的问题"><a href="#安装遇到的问题" class="headerlink" title="安装遇到的问题"></a>安装遇到的问题</h3><ul>
+<li><p>pod 安装后出现⚠️，项目运行报错</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[UIView mas_makeConstraints:]: unrecognized selector sent to instance</span><br></pre></td></tr></table></figure>
+<p>  <a href="https://github.com/SnapKit/Masonry/issues/188">github</a></p>
+<p>  <a href="https://www.jianshu.com/p/3c3fc3cf1218" target="_blank" rel="noopener">解决方法</a></p>
+</li>
+<li><p>使用<code>lastBaseline</code>属性<code>crash</code></p>
+<p>  <a href="https://github.com/SnapKit/Masonry/issues/353">解决办法</a></p>
+</li>
+</ul>
+<h3 id="使用时注意点"><a href="#使用时注意点" class="headerlink" title="使用时注意点"></a>使用时注意点</h3><ul>
+<li><p><code>edgesForExtendedLayout</code> 方法</p>
+<p>  重写此方法的目的是为了确定布局位置从什么位置开始什么位置结束，</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (UIRectEdge)edgesForExtendedLayout &#123;</span><br><span class="line">   return UIRectEdgeNone;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<pre><code>**重写后**
+![](https://ws1.sinaimg.cn/large/006tNc79ly1fsgcn3fmo0j30s61iyalk.jpg)
+
+**重写前**
+![](https://ws4.sinaimg.cn/large/006tNc79ly1fsgcokvpdwj30s61iy7eq.jpg)
+</code></pre><ul>
+<li><p><code>translucent</code> 设置<code>UINavigationBar</code>是否半透明, 如果设置了导航栏的<code>style</code> 为<code>UIBarStyleBlackTranslucent</code> 就为true</p>
+<p>  <strong>设置为false不透明效果</strong><br>  <img src="https://ws4.sinaimg.cn/large/006tNc79ly1fsgg7ugz8mj30ow0nqq4h.jpg" alt></p>
+</li>
+</ul>
+<ul>
+<li><p><code>extendedLayoutIncludesOpaqueBars</code> 导航栏不透明条件下是否可以扩展，默认是NO不可以扩展</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">self.navigationController?.navigationBar.isTranslucent = false</span><br><span class="line"> self.extendedLayoutIncludesOpaqueBars = true</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<pre><code>**设置不透明，设置可以扩展此时从坐标的（0，0）点开始布局**
+![](https://ws2.sinaimg.cn/large/006tNc79ly1fsggem13mjj30ow0j83zy.jpg)    
+</code></pre><ul>
+<li><p><code>inset</code> 的使用，当约束控件的属性相同时不用再考虑正负值的问题，例如要约束一个控件左边距离另一控件的右边位置时还需要使用负值情况</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[yellowdView makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">       make.height.equalTo(@150);</span><br><span class="line">       make.top.equalTo(self).inset(220);</span><br><span class="line">       make.leading.equalTo(self).inset(10);</span><br><span class="line">       make.trailing.equalTo(greenView.leading).inset(10);</span><br><span class="line">       make.width.equalTo(greenView);</span><br><span class="line">   &#125;];</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>edges</code>的使用，约束边距更方便</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[edgeView remakeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">           make.edges.equalTo(lasView).insets(UIEdgeInsetsMake(10, 5, 5, 5));</span><br><span class="line">       &#125;];</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p><code>Priority</code> 设置约束的优先级</p>
+<ul>
+<li><code>priorityHigh</code></li>
+<li><code>priorityMedium</code></li>
+<li><code>priorityLow</code></li>
+</ul>
+</li>
+<li><p><code>makeConstraints</code>、<code>updateConstraints</code>、<code>remakeConstraints</code>三者区别</p>
+<ul>
+<li><code>makeConstraints</code> 添加约束</li>
+<li><code>updateConstraints</code> 更新约束，更新之前会查找一边控件已经存在的约束，没有就添加，有就更新到最新的约束</li>
+<li><code>remakeConstraints</code>删除控件以前的所有约束重新添加约束</li>
+</ul>
+</li>
+<li><p>设置控件或者某一约束的’key’ 方便冲突时⚠️查找</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">	greenView.mas_key = @&quot;greenView&quot;;</span><br><span class="line">    [greenView makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">        make.height.equalTo(yellowdView).key(@&quot;greenView-height&quot;);</span><br><span class="line">        make.top.equalTo(yellowdView).key(@&quot;greenView-top&quot;);</span><br><span class="line">        make.width.equalTo(yellowdView).key(@&quot;greenView-width&quot;);</span><br><span class="line">        make.trailing.equalTo(self).inset(10).key(@&quot;greenView-trailing&quot;);</span><br><span class="line">        // 冲突约束</span><br><span class="line">//        make.leading.equalTo(greenView.trailing).inset(10).key(@&quot;greenView-leading&quot;);</span><br><span class="line">    &#125;];</span><br><span class="line">	```	</span><br><span class="line"></span><br><span class="line">- 使用 `MASAttachKeys`批量给`view`设置key</span><br></pre></td></tr></table></figure>
+<p>  MASAttachKeys(greenView, yellowdView);</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">	![](https://ws3.sinaimg.cn/large/006tNc79ly1fsgalvd4l6j31a20modnp.jpg)</span><br><span class="line">	</span><br><span class="line">- `dividedBy`和 `multipliedBy` 约束宽高比</span><br></pre></td></tr></table></figure>
+<p>  [topInnerView makeConstraints:^(MASConstraintMaker *make) {</p>
+<pre><code>// 设置自己的宽高比是3:1
+make.width.equalTo( topInnerView.height).multipliedBy(3); // 乘因数
+
+// 设置宽高并且设置他们的优先级最低
+make.width.height.lessThanOrEqualTo(topView);
+make.width.height.equalTo(topView).priorityLow();
+
+// 设置位置
+make.top.equalTo(topView);
+</code></pre><p>  }];</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- 多个控件批量约束</span><br></pre></td></tr></table></figure>
+<p>  NSValue <em>sizeValue = [NSValue valueWithCGSize:CGSizeMake(100, 100)];<br>  [@[blueView, redView, yellowView] makeConstraints:^(MASConstraintMaker </em>make) {</p>
+<pre><code>make.size.equalTo(sizeValue);
+</code></pre><p>  }];</p>
+<p>  [@[blueView, redView, yellowView] mas_makeConstraints:^(MASConstraintMaker *make) {</p>
+<pre><code>make.top.equalTo(self).inset(20);
+</code></pre><p>  }];</p>
+<p>  [blueView makeConstraints:^(MASConstraintMaker *make) {</p>
+<pre><code>make.left.equalTo(self).inset(20);
+</code></pre><p>  }];</p>
+<p>  [redView makeConstraints:^(MASConstraintMaker *make) {</p>
+<pre><code>make.left.equalTo(blueView.right).inset(10);
+</code></pre><p>  }];</p>
+<p>  [yellowView makeConstraints:^(MASConstraintMaker *make) {</p>
+<pre><code>make.left.equalTo(redView.right).inset(10);
+</code></pre><p>  }];</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">![批量约束](https://ws1.sinaimg.cn/large/006tNc79ly1fsgaz670hvj30s61iyn2l.jpg)</span><br><span class="line"></span><br><span class="line">**以上代码也可以简化为**</span><br></pre></td></tr></table></figure>
+<p>  [redView makeConstraints:^(MASConstraintMaker *make) {</p>
+<pre><code>make.left.equalTo(blueView.right).inset(10);
+</code></pre><p>  }];</p>
+<p>  [yellowView makeConstraints:^(MASConstraintMaker *make) {</p>
+<pre><code>make.left.equalTo(redView.right).inset(10);
+</code></pre><p>  }];</p>
+</li>
+</ul>
+<pre><code>[blueView makeConstraints:^(MASConstraintMaker *make) {
+    make.top.left.equalTo(self);
+    make.size.equalTo(@[redView, yellowView, sizeValue]);
+}];
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">	![](https://ws2.sinaimg.cn/large/006tNc79ly1fsgbhz8lw5j30s61iyte5.jpg)</span><br><span class="line"></span><br><span class="line">## Snapkit 使用</span><br><span class="line"></span><br><span class="line">- Swift 中`edgesForExtendedLayout:UIRectEdge` 扩展布局的边缘是一个属性，默认是`All`</span><br></pre></td></tr></table></figure>
+
+self.edgesForExtendedLayout = []
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">	在Swift中闭包参数可以使用$0、$1、$2 一次代表第一个，第二个，第三个参数</span><br><span class="line"></span><br><span class="line">- 使用$0 来代替闭包参数</span><br></pre></td></tr></table></figure>
+
+nullDataImageView.snp.makeConstraints {
+    $0.top.equalTo(view).offset(44)
+    $0.centerX.equalTo(view)
+    $0.width.height.equalTo(200)
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">- `deactivate` 和 `activate` 使用</span><br><span class="line">	</span><br><span class="line">	- `activate` 激活指定的约束</span><br><span class="line">	- `deactivate` 移除指定的约束</span><br><span class="line"></span><br><span class="line">	添加约束</span><br></pre></td></tr></table></figure>
+
+nullDataImageView.snp.makeConstraints {
+    nullDataViewTopConstraint = $0.top.equalTo(view).offset(80).constraint
+    nullDataViewLeftConstraint = $0.left.equalTo(view).inset(10).constraint
+    $0.width.height.equalTo(200)
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">移除对应约束，设置约束再激活约束</span><br></pre></td></tr></table></figure>
+
+nullDataViewLeftConstraint?.deactivate()
+nullDataViewLeftConstraint?.update(inset: 100)
+nullDataViewLeftConstraint?.activate()
+UIView.animate(withDuration: 1.5) {
+    self.view.layoutIfNeeded()
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 更新约束</span><br><span class="line"></span><br><span class="line">	- 添加约束</span><br></pre></td></tr></table></figure>
+
+nullDataImageView.snp.makeConstraints {
+    nullDataViewTopConstraint = $0.top.equalTo(view).offset(64).constraint
+    $0.centerX.equalTo(view)
+    $0.width.height.equalTo(200)
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 更新约束</span><br></pre></td></tr></table></figure>
+
+nullDataViewTopConstraint?.update(inset: 84)
+UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut, animations: {
+    self.view.layoutIfNeeded()
+}) { (finished) in
+    print(&quot;动画执行完毕&quot;)
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">- 添加`debug`模式中的	`key`使用`labeled()`方法</span><br></pre></td></tr></table></figure>
+
+nullDataImageView.snp.makeConstraints {
+    nullDataViewTopConstraint = $0.top.equalTo(view).offset(80).constraint
+    nullDataViewLeftConstraint = $0.left.equalTo(view).inset(10).constraint
+    $0.width.height.equalTo(200).labeled(&quot;width和height约束&quot;)
+}
+```
+</code></pre><ul>
+<li>其他注意点都和<code>Masnory</code>相同</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/MasonrySnapkit使用总结/" data-id="cjx1wsdki000gmsfyy7hthcyz" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/18/JavaScript基础/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/18/GCD 信号量/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第十章网络相关/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 aTreey<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
