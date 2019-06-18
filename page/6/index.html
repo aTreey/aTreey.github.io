@@ -62,6 +62,267 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Swift加密相关" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/08/Swift加密相关/" class="article-date">
+  <time datetime="2018-01-08T13:33:01.000Z" itemprop="datePublished">2018-01-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/08/Swift加密相关/">Swift加密相关</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近公司项目开发中引用了 <code>Swift</code> 与 <code>OC</code> 混编, 涉及到了加密相关, 使用了第三方 <code>CryptoSwift</code>, 以下是使用过程中的简单记录</p>
+<h3 id="CryptoSwift简介"><a href="#CryptoSwift简介" class="headerlink" title="CryptoSwift简介"></a>CryptoSwift简介</h3><ul>
+<li>github: <a href="https://github.com/krzyzanowskim/CryptoSwift">https://github.com/krzyzanowskim/CryptoSwift</a></li>
+<li>使用Swift 编写的加密工具包，支持多种加密算法，如：MD5、SHA1、AES-128, AES-192, AES-256… 等等</li>
+</ul>
+<h3 id="数组转换"><a href="#数组转换" class="headerlink" title="数组转换"></a>数组转换</h3><ul>
+<li><p><code>data</code> 转化为字节数组</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let bytes = data.bytes</span><br><span class="line">   print(bytes)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>字节数组转化为 <code>data</code></p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let data = Data(bytes: [0x01, 0x02, 0x03])</span><br><span class="line">   print(data)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>十六进制创建字节</p>
+<pre><code>let bytes_Hex = Array&lt;UInt8&gt;(hex: &quot;0x010203&quot;)
+print(bytes_Hex)
+</code></pre></li>
+<li><p>字节转十六进制数</p>
+<pre><code>let hex = bytes_Hex.toHexString()
+print(hex)       
+</code></pre></li>
+</ul>
+<ul>
+<li><p>字符串生成字节数组</p>
+<pre><code>let string2bytes = &quot;string&quot;.bytes
+print(string2bytes)
+</code></pre></li>
+</ul>
+<ul>
+<li><p>字节数组 base64</p>
+<pre><code>let bytes1: [UInt8] = [1, 2, 3]
+let base64Str = bytes1.toBase64()
+print(base64Str!)
+</code></pre></li>
+<li><p>字符串base64</p>
+<pre><code>let str0 = &quot;test&quot;
+let base64Str1 = str0.bytes.toBase64()
+print(base64Str1!)
+</code></pre></li>
+</ul>
+<h3 id="MD5加密"><a href="#MD5加密" class="headerlink" title="MD5加密"></a>MD5加密</h3><ul>
+<li>MD5（RFC1321）诞生于 1991 年，全称是“Message-Digest Algorithm(信息摘要算法)5”，由 MIT 的计算机安全实验室和 RSA 安全公司共同提出。</li>
+<li><p>之前已经有 MD2、MD3 和 MD4 几种算法。MD5 克服了 MD4 的缺陷，生成 128bit 的摘要信息串，出现之后迅速成为主流算法 </p>
+</li>
+<li><p>字节数组MD5</p>
+<pre><code>let str = &quot;测试test&quot;
+let bytes = str.bytes
+
+// 写法一
+let digest = bytes.md5().toHexString()
+print(digest)
+// 04f47b69e3573867a5b3c1e5edb00789
+
+// 写法二
+let digest1 = Digest.md5(bytes).toHexString()
+print(digest1)
+// 04f47b69e3573867a5b3c1e5edb00789
+</code></pre></li>
+<li><p>Data的MD5值</p>
+<pre><code>/// data MD5
+let data = Data(str.bytes)
+let digest3 = data.md5().toHexString()
+print(digest3)
+// 04f47b69e3573867a5b3c1e5edb00789
+</code></pre></li>
+<li><p>字符串MD5</p>
+<pre><code>///写法 一
+let digest4 = str.md5()
+print(digest4)
+// 04f47b69e3573867a5b3c1e5edb00789
+
+// 写法二
+do {
+    var digest4_2 = MD5()
+
+    let _ = try digest4_2.update(withBytes: &quot;测试&quot;.bytes)
+    let _ = try digest4_2.update(withBytes: &quot;test&quot;.bytes)
+    let result = try digest4_2.finish()
+    print(result.toHexString())
+    //04f47b69e3573867a5b3c1e5edb00789
+} catch {
+
+}    
+</code></pre></li>
+</ul>
+<h3 id="哈希算法"><a href="#哈希算法" class="headerlink" title="哈希算法"></a>哈希算法</h3><ul>
+<li><p>字节数组SHA值</p>
+<pre><code>let str = &quot;测试test&quot;
+let bytes = str.bytes
+
+//方式一
+let digest1 = bytes.sha1().toHexString()
+let digest2 = bytes.sha224().toHexString()
+let digest3 = bytes.sha256().toHexString()
+let digest4 = bytes.sha384().toHexString()
+let digest5 = bytes.sha512().toHexString()
+print(digest1, digest2, digest3, digest4 ,digest5, separator: &quot;\n&quot;)
+
+//方式二
+let digest6 = Digest.sha1(bytes).toHexString()
+let digest7 = Digest.sha224(bytes).toHexString()
+let digest8 = Digest.sha256(bytes).toHexString()
+let digest9 = Digest.sha384(bytes).toHexString()
+let digest10 = Digest.sha512(bytes).toHexString()
+print(digest6, digest7, digest8, digest9 ,digest10, separator: &quot;\n&quot;)
+</code></pre></li>
+</ul>
+<ul>
+<li><p>Data的SHA值</p>
+<pre><code>let data = Data(bytes: str.bytes)
+let digest11 = data.sha1().toHexString()
+let digest12 = data.sha224().toHexString()
+let digest13 = data.sha256().toHexString()
+let digest14 = data.sha384().toHexString()
+let digest15 = data.sha512().toHexString()
+print(digest11, digest12, digest13, digest14 ,digest15, separator: &quot;\n&quot;)
+</code></pre></li>
+</ul>
+<ul>
+<li><p>字符串的SHA值</p>
+<pre><code>let digest16 = str.sha1()
+let digest17 = str.sha224()
+let digest18 = str.sha256()
+let digest19 = str.sha384()
+let digest20 = str.sha512()
+print(digest16, digest17, digest18, digest19 ,digest20, separator: &quot;\n&quot;)
+</code></pre></li>
+</ul>
+<pre><code>// 方式一
+let digest_str = str.sha1()
+print(digest_str)
+
+// 方式二
+do {
+    var digest_str = SHA1()
+    let _ = try digest_str.update(withBytes: Array(&quot;测试&quot;.bytes))
+    let _ = try digest_str.update(withBytes: Array(&quot;test&quot;.bytes))
+    let result = try digest_str.finish()
+    print(result.toHexString())
+} catch {
+
+}
+</code></pre><h3 id="AES-加密"><a href="#AES-加密" class="headerlink" title="AES 加密"></a>AES 加密</h3><ul>
+<li><p>key：公共密钥</p>
+</li>
+<li><p>IV： 密钥偏移量</p>
+</li>
+<li><p>padding：key 的补码方式</p>
+<pre><code>key 长度不够16 字节时，需要手动填充, zeroPadding 将其补齐至 blockSize 的整数倍
+zeroPadding 补齐规则:
+- 将长度补齐至 blockSize 参数的整数倍。比如我们将 blockSize 设置为 AES.blockSize（16）
+- 如果长度小于 16 字节：则尾部补 0，直到满足 16 字节。
+- 如果长度大于等于 16 字节，小于 32 字节：则尾部补 0，直到满足 32 字节。
+- 如果长度大于等于 32 字节，小于 48 字节：则尾部补 0，直到满足 48 字节。 以此类推......
+</code></pre></li>
+<li><p>补码方式padding, noPadding, zeroPadding, pkcs7, pkcs5, 默认使用 pkcs7,两者写法结果相同</p>
+</li>
+</ul>
+<pre><code>let iv_paddding = &quot;1234567890123456&quot; // 默认是
+let aes_padding1 = try AES(key: key.bytes, blockMode: .CBC(iv: iv_paddding.bytes))
+let aes_padding2 = try AES(key: key.bytes, blockMode: .CBC(iv: iv_paddding.bytes), padding: .pkcs7)            
+</code></pre><ul>
+<li><p>ECB 模式</p>
+<pre><code>let key = &quot;hangge.com123456&quot;
+let str = &quot;E蜂通信&quot;
+print(&quot;加密前 \(str)&quot;)
+
+//MARK: 使用ECB 模式， , 使用aes128 加密
+let aes = try AES(key: key.bytes, blockMode: .ECB)
+let encrpyted = try aes.encrypt(str.bytes)
+print(&quot;加密后 \(encrpyted)&quot;, separator: &quot;-----&quot;)
+
+ /// 解密
+ let decrypted = try aes.decrypt(encrpyted)
+ print(&quot;解密后 \(decrypted)&quot;)
+ let decryptedString = String(data: Data(decrypted), encoding: .utf8)!
+ print(&quot;解密后字符串 \(decryptedString)&quot;)
+</code></pre></li>
+</ul>
+<ul>
+<li><p>CBC 模式</p>
+<pre><code>//MARK: 使用CBC 模式, 需要提供一个额外的密钥偏移量 iv
+
+    /// 写法 1 --  便捷写法
+    // 偏移量
+    let iv = &quot;1234567890123456&quot; // 默认是
+
+    // TODO: 随机密钥偏移量
+    let data = Data(bytes: AES.randomIV(AES.blockSize))
+    let random_iv = String(data: data, encoding: .utf8)
+</code></pre></li>
+</ul>
+<pre><code>/// 写法 2 --
+// 创建密码器
+let cbc_aes = try AES(key: key.bytes, blockMode: .CBC(iv: iv.bytes))
+
+let cbc_aes2 = try AES(key: key, iv: iv)
+
+
+let cbc_aes3 = try AES(key: key, iv: iv)
+
+let cbc_encrypted = try cbc_aes.encrypt(str.bytes)
+
+let cbc_encrypted2 = try cbc_aes2.encrypt(str.bytes)
+
+let cbc_encrypted3 = try cbc_aes3.encrypt(str.bytes)
+
+
+// 便捷写法解密
+let cbc_decrypted = try cbc_aes.decrypt(cbc_encrypted)
+let cbc_decryptedData = Data(cbc_decrypted)
+let cbc_decryptedStr = String(data: cbc_decryptedData, encoding: .utf8)
+print(cbc_decryptedStr)
+
+// 正常写法2 解密
+let cbc_decrypted2 = try cbc_aes2.decrypt(cbc_encrypted2)
+let cbc_decryptedStr2 = String(data: Data(cbc_decrypted2), encoding: .utf8)
+print(cbc_decryptedStr2)
+
+
+// 随机密钥偏移量解密
+let cbc_decrypted3 = try cbc_aes3.decrypt(cbc_encrypted3)
+let cbc_decryptedStr3 = String(data: Data(cbc_decrypted3), encoding: .utf8)
+print(cbc_decryptedStr3)
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2018/01/08/Swift加密相关/" data-id="cjx1yc81r001k2cfyk3bjdj4g" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Mac-安装MySQL" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/12/14/Mac-安装MySQL/" class="article-date">
@@ -114,7 +375,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/12/14/Mac-安装MySQL/" data-id="cjx1xeb7f000da9fypx35wsdu" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/12/14/Mac-安装MySQL/" data-id="cjx1yc813000f2cfy49j8qmq7" class="article-share-link">Share</a>
       
       
     </footer>
@@ -166,7 +427,7 @@ EmotionKeyboard.podspec passed validation.
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/12/02/本地已有项目添加Pod/" data-id="cjx1xeb90002ta9fy8neo3tyu" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/12/02/本地已有项目添加Pod/" data-id="cjx1yc829002s2cfyy4me46ok" class="article-share-link">Share</a>
       
       
     </footer>
@@ -247,7 +508,7 @@ EmotionKeyboard.podspec passed validation.
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/11/29/CocoaPods制作私有pod/" data-id="cjx1xeb710004a9fy71j9z0tl" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/11/29/CocoaPods制作私有pod/" data-id="cjx1yc80r00032cfy14wxli6i" class="article-share-link">Share</a>
       
       
     </footer>
@@ -301,7 +562,7 @@ EmotionKeyboard.podspec passed validation.
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/04/10/Alamofire源码学习/" data-id="cjx1xeb6p0000a9fyibrhaoks" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/04/10/Alamofire源码学习/" data-id="cjx1yc80j00002cfysivuppp2" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Alamofire/">Alamofire</a></li></ul>
@@ -349,7 +610,7 @@ EmotionKeyboard.podspec passed validation.
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/03/25/知识点总结/" data-id="cjx1xeb91002ua9fykwe0x0ci" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/03/25/知识点总结/" data-id="cjx1yc82b002x2cfyi29wezbv" class="article-share-link">Share</a>
       
       
     </footer>
@@ -406,7 +667,7 @@ EmotionKeyboard.podspec passed validation.
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/03/08/Swift3.0学习(三)/" data-id="cjx1xeb84001ba9fyejrotuvz" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/03/08/Swift3.0学习(三)/" data-id="cjx1yc81m00192cfy7gu36ixl" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
@@ -569,7 +830,7 @@ let closure = {() -&gt; () in
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/03/05/Swift3.0学习(二)/" data-id="cjx1xeb820017a9fy11gpj90v" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/03/05/Swift3.0学习(二)/" data-id="cjx1yc81n001a2cfy525wfs7m" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
@@ -676,7 +937,7 @@ let closure = {() -&gt; () in
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/03/01/Swift3.0学习(一)/" data-id="cjx1xeb830018a9fyge1bc69p" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/03/01/Swift3.0学习(一)/" data-id="cjx1yc81m00172cfycau7f0vd" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
@@ -725,121 +986,10 @@ let closure = {() -&gt; () in
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/02/20/OC与js交互学习/" data-id="cjx1xeb7k000ha9fyj537uasx" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/02/20/OC与js交互学习/" data-id="cjx1yc81a000l2cfy111lfmou" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OC-JS/">OC, JS</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-SDWebImage学习" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/02/08/SDWebImage学习/" class="article-date">
-  <time datetime="2017-02-08T15:17:50.000Z" itemprop="datePublished">2017-02-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/08/SDWebImage学习/">SDWebImage的用法及原理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="SDWebImage-介绍"><a href="#SDWebImage-介绍" class="headerlink" title="SDWebImage 介绍"></a>SDWebImage 介绍</h3><p>SDWebImage 是用于网络中下载且缓存图片，并设置图片到对应的控件或上</p>
-<p>Demo: <a href="https://github.com/aTreey/DownImage.git">https://github.com/aTreey/DownImage.git</a></p>
-<ul>
-<li>提供了UIImageView的category用来加载网络图片并且下载的图片的缓存进行管理</li>
-<li>采用异步方式来下载，确保不会阻塞主线程，memory＋disk来缓存网络图片，自动管理缓存</li>
-<li>支持GIF动画，[self.imageView setImageWithURL:[[NSBundle mainBundle] URLForResource:@”xx.gif” withExtension:nil];</li>
-<li>支持WebP格式</li>
-<li>同一个URL的网络图片不会被重复下载</li>
-<li>失效的URL不会被无限重试</li>
-</ul>
-<h3 id="SDWebImage-的使用"><a href="#SDWebImage-的使用" class="headerlink" title="SDWebImage 的使用"></a>SDWebImage 的使用</h3><p>克隆</p>
-<p>git clone <a href="https://github.com/rs/SDWebImage.git">https://github.com/rs/SDWebImage.git</a><br>使用以上命令克隆会报错，框架中Vendors文件夹中的文件未能全部下载导致报错</p>
-<p>解决办法：<a href="https://github.com/rs/SDWebImage/blob/master/Docs/ManualInstallation.md">https://github.com/rs/SDWebImage/blob/master/Docs/ManualInstallation.md</a></p>
-<p>git clone –recursive <a href="https://github.com/rs/SDWebImage.git">https://github.com/rs/SDWebImage.git</a></p>
-<p>文件全部下载</p>
-<p>自定义operation 加入NSOperationQueue中</p>
-<ul>
-<li>自定义NSOperation,<br>重写main方法</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- (void)main &#123;</span><br><span class="line">@autoreleasepool &#123;</span><br><span class="line">    NSURL *url = [NSURL URLWithString:_urlStr];</span><br><span class="line">    NSData *data = [NSData dataWithContentsOfURL:url];</span><br><span class="line">    UIImage *image = [UIImage imageWithData:data];</span><br><span class="line"></span><br><span class="line">    if (_finishBlock) &#123;</span><br><span class="line">        _finishBlock(image);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>一个NSOperation对象可以通过调用start方法来执行任务，默认是同步执行的。也可以将NSOperation添加到一个NSOperationQueue(操作队列)中去执行，而且是异步执行的<br>创建队列</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (NSOperationQueue *)downLoadQueue &#123;</span><br><span class="line">    if (!_downLoadQueue) _downLoadQueue = [[NSOperationQueue alloc] init];</span><br><span class="line">    return _downLoadQueue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>添加一个任务到队列</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[_downLoadQueue addOperation:operation];</span><br><span class="line">添加一组operation, 是否阻塞当前线程</span><br><span class="line"></span><br><span class="line">[_downLoadQueue addOperations:@[operation] waitUntilFinished:NO];</span><br><span class="line">添加一个block 形式的operation</span><br><span class="line"></span><br><span class="line">[_downLoadQueue addOperationWithBlock:^&#123;</span><br><span class="line">    NSLog(@&quot;执行一个新的线程&quot;);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
-<p><strong>注意：</strong></p>
-<ol>
-<li><p>NSOperation 添加到 queue之后，通常短时间内就会执行，但是如果存在依赖，或者整个queue被暂停等原因，也可能会需要等待</p>
-</li>
-<li><p>NSOperation添加到queue之后，绝不要修改NSOperation对象的状态，因为NSOperation对象可能会在任何时候运行，因此改变NSOperation对象的依赖或者数据会产生不利的影响，只能查看NSOperation 对象的状态，比如是否正在运行、等待运行、已经完成等</p>
-</li>
-</ol>
-<ul>
-<li>NSOperation 添加依赖，<br>依赖关系不局限于相同的queue 中的NSOperation对象，可以夸队列进行依赖，但是不能循环依赖，</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// NSOperation 添加依赖</span><br><span class="line">&#123;</span><br><span class="line">    NSOperationQueue *testQueue = [[NSOperationQueue alloc] init];</span><br><span class="line">    NSBlockOperation *operation1 = [NSBlockOperation blockOperationWithBlock:^&#123;</span><br><span class="line">        NSLog(@&quot;operation1 NSThread = %@&quot;, [NSThread currentThread]);</span><br><span class="line">    &#125;];</span><br><span class="line"></span><br><span class="line">    NSBlockOperation *operation2 = [NSBlockOperation blockOperationWithBlock:^&#123;</span><br><span class="line">        NSLog(@&quot;operation2 NSThead = %@&quot;, [NSThread currentThread]);</span><br><span class="line">    &#125;];</span><br><span class="line"></span><br><span class="line">    // 添加依赖，1 依赖于 2，只有2 执行完之后才执行1</span><br><span class="line">    [operation1 addDependency:operation2];</span><br><span class="line">    // 加入到队列</span><br><span class="line">    [testQueue addOperation:operation1];</span><br><span class="line">    [testQueue addOperation:operation2];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>修改Operation的执行顺序<br>对于添加到queue中的operation执行顺序有一下2点决定<br>operation 是否已经准备好，是否添加了依赖<br>根据多有operations的相对优先性来决定，优先等级是operation对象本身的一个属性，默认都是“普通”优先级，可以通过setQueuePriority方法提高和降低优先级，优先级只能用于相同 queue 中的 operation，多个queue中operation的优先级相互独立，因此不同queue中的低优先级的operation可能比高优先级的operation更早执行<br>注意优先级和依赖不能相互替代，优先级只是对已经准备好的operation确定执行顺序，先满足依赖，然后再看已经准备好的operation中的优先级</p>
-</li>
-<li><p>设置 queue 的最大并发数，队列中最多同时运行几条线程<br>虽然NSOperationQueue类设计用于并发执行Operations,你也可以强制单个queue一次只能执行一个Operation。setMaxConcurrentOperationCount:方法可以配置queue的最大并发操作数量。设为1就表示queue每次只能执行一个操作。不过operation执行的顺序仍然依赖于其它因素,比如operation是否准备好和operation的优先级等。因此串行化的operation queue并不等同于GCD中的串行dispatch queue</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 每次只能执行一个操作  </span><br><span class="line">queue.maxConcurrentOperationCount = 1;  </span><br><span class="line">// 或者这样写  </span><br><span class="line">[queue setMaxConcurrentOperationCount:1];</span><br></pre></td></tr></table></figure>
-<ul>
-<li>取消 operations<br>一旦添加到operation queue,queue就拥有了这个Operation对象并且不能被删除,只能取消。调用Operation对象的cancel方法取消单个操作,也可以调用operation queue的cancelAllOperations方法取消当前queue中的所有操作, 使用cancel属性来判断是否已经取消了</li>
-</ul>
-<p>[operation cacel] 只是打了一个死亡标记, 并没有正真意义上的取消,称为 “自杀“,需要在被取消的任务中时时判断是否取消(在程序的关键处), 如果取消,结束任务, 具体是指在自定义的 operation 的main方法中结束</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[queue cancelAllOperations] 由队列来取消，称为 “他杀”</span><br><span class="line"></span><br><span class="line">// 取消单个操作  </span><br><span class="line">[operation cancel];</span><br><span class="line">// 取消queue中所有的操作  </span><br><span class="line">[queue cancelAllOperations];</span><br></pre></td></tr></table></figure>
-<ul>
-<li>等待operation 完成</li>
-</ul>
-<p>为了最佳的性能,你应该设计你的应用尽可能地异步操作,让应用在Operation正在执行时可以去处理其它事情。如果需要在当前线程中处理operation完成后的结果,可以使用NSOperation的waitUntilFinished方法阻塞当前线程，等待operation完成。通常我们应该避免编写这样的代码,阻塞当前线程可能是一种简便的解决方案,但是它引入了更多的串行代码,限制了整个应用的并发性,同时也降低了用户体验。绝对不要在应用主线程中等待一个Operation,只能在第二或次要线程中等待。阻塞主线程将导致应用无法响应用户事件,应用也将表现为无响应。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 会阻塞当前线程，等到某个operation执行完毕  </span><br><span class="line">[operation waitUntilFinished];</span><br></pre></td></tr></table></figure></p>
-<p>除了等待单个Operation完成,你也可以同时等待一个queue中的所有操作,使用NSOperationQueue的waitUntilAllOperationsAreFinished方法。注意：在等待一个 queue时,应用的其它线程仍然可以往queue中添加Operation,因此可能会加长线程的等待时间。</p>
-<p>// 阻塞当前线程，等待queue的所有操作执行完毕<br>[queue waitUntilAllOperationsAreFinished];<br>暂停和继续operation<br>如果你想临时暂停Operations的执行,可以使用queue的setSuspended:方法暂停queue。不过暂停一个queue不会导致正在执行的operation在任务中途暂停,只是简单地阻止调度新Operation执行。你可以在响应用户请求时,暂停一个queue来暂停等待中的任务。稍后根据用户的请求,可以再次调用setSuspended:方法继续queue中operation的执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 暂停queue  </span><br><span class="line">[queue setSuspended:YES];  </span><br><span class="line"></span><br><span class="line">// 继续queue  </span><br><span class="line">[queue setSuspended:NO];</span><br></pre></td></tr></table></figure></p>
-<h3 id="增加Manager管理类，"><a href="#增加Manager管理类，" class="headerlink" title="增加Manager管理类，"></a>增加Manager管理类，</h3><p>作用：</p>
-<ul>
-<li>下载队列</li>
-<li>图像缓存</li>
-<li>操作缓存（内存缓存）</li>
-<li>沙盒缓存</li>
-<li>防止错乱,取消老的未开始下载的操作</li>
-<li>图片显示逻辑：内存缓存 – 沙盒缓存 – 网络下载</li>
-<li>图片缓存逻辑：下载完成 – 缓存沙盒 – 加载到内存</li>
-</ul>
-<p>注意：缓存到本地时只能保存property列表里的对象（NSData, NSDate, NSNumber, NSString, NSArray, NSDictory）, 图片需要转化为二进制数据</p>
-<h3 id="SDWebImage"><a href="#SDWebImage" class="headerlink" title="SDWebImage"></a>SDWebImage</h3><ul>
-<li>SDWebImageDownloader 下完图片后都需要手动设置给UIImageView</li>
-<li>SDWebImageManager 下完图片后都需要手动设置给UIImageView</li>
-<li>下载后要显示可以使用 sd_setImageWithURL 方法</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/02/08/SDWebImage学习/" data-id="cjx1xeb800011a9fy94wsuclc" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li></ul>
 
     </footer>
   </div>
@@ -898,19 +1048,19 @@ let closure = {() -&gt; () in
       <ul>
         
           <li>
+            <a href="/2019/06/18/docs/15608702427054/">(no title)</a>
+          </li>
+        
+          <li>
             <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/18/第十一章设计模式面试/">(no title)</a>
-          </li>
-        
-          <li>
             <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
           </li>
         
           <li>

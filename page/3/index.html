@@ -62,6 +62,118 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-iOS通过URL获取HTML中标题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/iOS通过URL获取HTML中标题/" class="article-date">
+  <time datetime="2019-06-18T14:45:48.767Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>iOS通过URL获取HTML中标题</p>
+<h3 id="获取标题"><a href="#获取标题" class="headerlink" title="获取标题"></a>获取标题</h3><h5 id="String扩展一个方法"><a href="#String扩展一个方法" class="headerlink" title="String扩展一个方法"></a>String扩展一个方法</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">private let patternTitle = &quot;(?&lt;=title&gt;).*(?=&lt;/title)&quot;</span><br><span class="line">extension String &#123;</span><br><span class="line">    static func parseHTMLTitle(_ urlString: String) -&gt; String? &#123;</span><br><span class="line">        let url = URL(string: urlString)!</span><br><span class="line">        do &#123;</span><br><span class="line">            let html = try String(contentsOf: url, encoding: .utf8)</span><br><span class="line">            let range = html.range(of: patternTitle, options: String.CompareOptions.regularExpression, range: html.startIndex..&lt;html.endIndex, locale: nil)</span><br><span class="line">            guard let tempRange = range else &#123; return &quot;&quot; &#125;</span><br><span class="line">            let titleStr = html[tempRange]</span><br><span class="line">            return String(titleStr)</span><br><span class="line">        &#125; catch &#123;</span><br><span class="line">            return &quot;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="iOS-中简单正则表达式"><a href="#iOS-中简单正则表达式" class="headerlink" title="iOS 中简单正则表达式"></a>iOS 中简单正则表达式</h5><p>iOS 中 正则表达式中的\ 需要使用 \\ 来表示</p>
+<pre><code>// 获取
+let testStr = &quot;我到底是[iOS]开发还是[产品]经理&quot;
+
+// 获取 &quot;[&quot; 和 &quot;]&quot; 之间的所有内容, 左边[ 起一直到 右边 ] 结束的所有内容 
+let pattern1 = &quot;\\[.*\\]&quot; // [iOS]开发还是[产品]
+
+// 获取 &quot;[&quot; 和 &quot;]&quot; 之间的所有内容，包括[]
+let pattern2 = &quot;\\[.*?\\]&quot;    // [iOS]
+
+// 获取第一个 &quot;[&quot; 和 &quot;]&quot; 之间的所有内容 不包括[] 
+let pattern3 = &quot;(?&lt;=\\[).*?(?=\\])&quot; // iOS
+
+// 获取html中 title 标签中内容
+let pattern5 = &quot;(?&lt;=title&gt;).*(?=&lt;/title)&quot; 
+</code></pre><h5 id="获取范围截取子串"><a href="#获取范围截取子串" class="headerlink" title="获取范围截取子串"></a>获取范围截取子串</h5><pre><code>let testRange1 = testStr.range(of: pattern1, options: String.CompareOptions.regularExpression, range: testStr.startIndex..&lt;testStr.endIndex, locale: nil)
+    let result1 = String(testStr[testRange1!])
+
+
+let testRange2 = testStr.range(of: pattern2, options: String.CompareOptions.regularExpression, range: testStr.startIndex..&lt;testStr.endIndex, locale: nil)
+let result2 = String(testStr[testRange2!])
+
+
+let testRange3 = testStr.range(of: pattern3, options: String.CompareOptions.regularExpression, range: testStr.startIndex..&lt;testStr.endIndex, locale: nil)
+let result3 = String(testStr[testRange3!])
+
+print(result1) 
+print(result2) 
+print(result3) 
+</code></pre><h5 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h5><p>通过URL解析html中的标题</p>
+<ul>
+<li>获取html字符串</li>
+<li>正则匹配</li>
+<li>生成字符串Range</li>
+<li>截取字符串</li>
+</ul>
+<p>匹配一次直接返回结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// 生成表达式</span><br><span class="line">let regular = try NSRegularExpression(pattern: pattern5, options: .caseInsensitive) </span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">// 开始匹配  </span><br><span class="line">let matchResult1 = regular.firstMatch(in: html, options: NSRegularExpression.MatchingOptions.reportProgress, range: NSMakeRange(0, html.count))</span><br><span class="line"></span><br><span class="line">// 获取匹配结果范围</span><br><span class="line">let matchRange = matchResult1?.range</span><br><span class="line">let range = Range(matchRange!)!</span><br><span class="line">    </span><br><span class="line">// 生成String.Index 类型范围 </span><br><span class="line">let startIndex = html.index(html.startIndex, offsetBy: range.lowerBound)</span><br><span class="line">let endIndex = html.index(html.startIndex, offsetBy: range.upperBound)</span><br><span class="line">let range3 = Range(uncheckedBounds: (lower: startIndex, upper: endIndex))</span><br><span class="line"></span><br><span class="line">// 截取字符串</span><br><span class="line">let result1 = String(html[range3])</span><br><span class="line">print(result1)</span><br></pre></td></tr></table></figure>
+<p>全部匹配后返回结果时一个集合</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let matchResult2 = regular.matches(in: html, options: .reportProgress, range: NSMakeRange(0, html.count))</span><br><span class="line">            matchResult2.forEach &#123; (result) in</span><br><span class="line">let range = Range(result.range)!</span><br><span class="line">    </span><br><span class="line">let startIndex = html.index(html.startIndex, offsetBy: range.lowerBound)</span><br><span class="line">let endIndex = html.index(html.startIndex, offsetBy: range.upperBound)</span><br><span class="line">    </span><br><span class="line">let subStr2 = html[Range(uncheckedBounds: (startIndex, endIndex))]</span><br><span class="line">print(String(subStr2))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>将匹配到的内容提还</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let str3 = regular.stringByReplacingMatches(in: html, options: .reportProgress, range: NSMakeRange(0, html.count), withTemplate: &quot;====&quot;)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/iOS通过URL获取HTML中标题/" data-id="cjx1yc822002c2cfyhphmzvn0" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-iOS 动态设置TableHeaderView高度" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/iOS 动态设置TableHeaderView高度/" class="article-date">
+  <time datetime="2019-06-18T14:45:48.765Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="iOS动态设置tableHeaderView高度"><a href="#iOS动态设置tableHeaderView高度" class="headerlink" title="iOS动态设置tableHeaderView高度"></a>iOS动态设置<code>tableHeaderView</code>高度</h2><h4 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h4><p>动态的设置<code>tableHeaderView</code>的高度</p>
+<h4 id="遇到的问题："><a href="#遇到的问题：" class="headerlink" title="遇到的问题："></a>遇到的问题：</h4><ul>
+<li>设置<code>tableHeaderView</code> 的<code>frame</code>无法实现，有时候会出现<code>tableView</code> 中间的 <code>cell</code> 不显示</li>
+<li><p>有时候会导致<code>headerView</code>和<code>cell</code>内容重叠</p>
+</li>
+<li><p>通过计算控件高度设置frame方式麻烦</p>
+</li>
+</ul>
+<h4 id="正确的步骤"><a href="#正确的步骤" class="headerlink" title="正确的步骤"></a>正确的步骤</h4><ul>
+<li>创建HeaderView</li>
+<li>取出<code>UITableView</code>的<code>tableHeaderView</code></li>
+<li>设置<code>frame</code>大小，调整headerView布局</li>
+<li>重新给<code>UITableView</code>的<code>tableHeaderView</code></li>
+</ul>
+<h4 id="使用AutoLayout"><a href="#使用AutoLayout" class="headerlink" title="使用AutoLayout"></a>使用AutoLayout</h4><p>给<code>UITableView</code>增加分类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">extension UITableView &#123;</span><br><span class="line">    /// set tableHeaderView</span><br><span class="line">    func setTableHeaderView(_ headerView: UIView) &#123;</span><br><span class="line">        headerView.translatesAutoresizingMaskIntoConstraints = false</span><br><span class="line">        self.tableHeaderView = headerView</span><br><span class="line">        // autolayout</span><br><span class="line">        NSLayoutConstraint(item: headerView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0).isActive = true</span><br><span class="line">        NSLayoutConstraint(item: headerView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0).isActive = true</span><br><span class="line">        NSLayoutConstraint(item: headerView, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 1.0, constant: 0).isActive = true</span><br><span class="line">    &#125;</span><br><span class="line">    /// update</span><br><span class="line">    func updateHeaderView() &#123;</span><br><span class="line">        guard let headerView = self.tableHeaderView else &#123; return &#125;</span><br><span class="line">        headerView.layoutIfNeeded()</span><br><span class="line">        let header = self.tableHeaderView</span><br><span class="line">        self.tableHeaderView = header</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/iOS 动态设置TableHeaderView高度/" data-id="cjx1yc81z00242cfybj0z7byr" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-iOS开发_于鸿鹏" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/iOS开发_于鸿鹏/" class="article-date">
@@ -128,49 +240,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/iOS开发_于鸿鹏/" data-id="cjx1xeb8n0026a9fyno1o1l8q" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-iOS 动态设置TableHeaderView高度" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/iOS 动态设置TableHeaderView高度/" class="article-date">
-  <time datetime="2019-06-18T14:45:48.765Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="iOS动态设置tableHeaderView高度"><a href="#iOS动态设置tableHeaderView高度" class="headerlink" title="iOS动态设置tableHeaderView高度"></a>iOS动态设置<code>tableHeaderView</code>高度</h2><h4 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h4><p>动态的设置<code>tableHeaderView</code>的高度</p>
-<h4 id="遇到的问题："><a href="#遇到的问题：" class="headerlink" title="遇到的问题："></a>遇到的问题：</h4><ul>
-<li>设置<code>tableHeaderView</code> 的<code>frame</code>无法实现，有时候会出现<code>tableView</code> 中间的 <code>cell</code> 不显示</li>
-<li><p>有时候会导致<code>headerView</code>和<code>cell</code>内容重叠</p>
-</li>
-<li><p>通过计算控件高度设置frame方式麻烦</p>
-</li>
-</ul>
-<h4 id="正确的步骤"><a href="#正确的步骤" class="headerlink" title="正确的步骤"></a>正确的步骤</h4><ul>
-<li>创建HeaderView</li>
-<li>取出<code>UITableView</code>的<code>tableHeaderView</code></li>
-<li>设置<code>frame</code>大小，调整headerView布局</li>
-<li>重新给<code>UITableView</code>的<code>tableHeaderView</code></li>
-</ul>
-<h4 id="使用AutoLayout"><a href="#使用AutoLayout" class="headerlink" title="使用AutoLayout"></a>使用AutoLayout</h4><p>给<code>UITableView</code>增加分类</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">extension UITableView &#123;</span><br><span class="line">    /// set tableHeaderView</span><br><span class="line">    func setTableHeaderView(_ headerView: UIView) &#123;</span><br><span class="line">        headerView.translatesAutoresizingMaskIntoConstraints = false</span><br><span class="line">        self.tableHeaderView = headerView</span><br><span class="line">        // autolayout</span><br><span class="line">        NSLayoutConstraint(item: headerView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0).isActive = true</span><br><span class="line">        NSLayoutConstraint(item: headerView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0).isActive = true</span><br><span class="line">        NSLayoutConstraint(item: headerView, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 1.0, constant: 0).isActive = true</span><br><span class="line">    &#125;</span><br><span class="line">    /// update</span><br><span class="line">    func updateHeaderView() &#123;</span><br><span class="line">        guard let headerView = self.tableHeaderView else &#123; return &#125;</span><br><span class="line">        headerView.layoutIfNeeded()</span><br><span class="line">        let header = self.tableHeaderView</span><br><span class="line">        self.tableHeaderView = header</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/iOS 动态设置TableHeaderView高度/" data-id="cjx1xeb8n0027a9fy57r8vyfg" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/iOS开发_于鸿鹏/" data-id="cjx1yc821002a2cfyoqlc5nao" class="article-share-link">Share</a>
       
       
     </footer>
@@ -192,7 +262,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="flutter-常用组件"><a href="#flutter-常用组件" class="headerlink" title="flutter 常用组件"></a>flutter 常用组件</h2><h2 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h2><ul>
+        <p>flutter 常用组件</p>
+<h2 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h2><ul>
 <li>StatefulWidget<ul>
 <li>具有可变状态的窗口部件，使用应用时可随时变化，例如进度条</li>
 </ul>
@@ -230,7 +301,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Flutter常用组件/" data-id="cjx1xeb720005a9fyc10cyo6h" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Flutter常用组件/" data-id="cjx1yc80w00052cfyl33z536d" class="article-share-link">Share</a>
       
       
     </footer>
@@ -240,9 +311,9 @@
 
 
   
-    <article id="post-flutter 安装" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-flutter安装" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/18/flutter 安装/" class="article-date">
+    <a href="/2019/06/18/flutter安装/" class="article-date">
   <time datetime="2019-06-18T14:45:48.764Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
@@ -252,12 +323,13 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">// 导入头文件</span><br><span class="line">import &apos;package:flutter/material.dart&apos;;</span><br><span class="line"></span><br><span class="line">void main() =&gt; (MyApp());</span><br><span class="line"></span><br><span class="line">// 定义类, 继承</span><br><span class="line"></span><br><span class="line">class MyApp extends StatelessWidget &#123;</span><br><span class="line">  // 重写</span><br><span class="line">  @override</span><br><span class="line"></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line"></span><br><span class="line">    // 返回一窗口</span><br><span class="line">    return MaterialApp(</span><br><span class="line">      title:&apos;Flutter&apos;,</span><br><span class="line">      home: Scaffold(</span><br><span class="line">        appBar: AppBar(</span><br><span class="line">          title: Text(&apos;flutter 初体验&apos;)</span><br><span class="line">        ),</span><br><span class="line"></span><br><span class="line">        body: Center(</span><br><span class="line">          child: Text(&apos;flutter 学习之路&apos;),</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>flutter安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">// 导入头文件</span><br><span class="line">import &apos;package:flutter/material.dart&apos;;</span><br><span class="line"></span><br><span class="line">void main() =&gt; (MyApp());</span><br><span class="line"></span><br><span class="line">// 定义类, 继承</span><br><span class="line"></span><br><span class="line">class MyApp extends StatelessWidget &#123;</span><br><span class="line">  // 重写</span><br><span class="line">  @override</span><br><span class="line"></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line"></span><br><span class="line">    // 返回一窗口</span><br><span class="line">    return MaterialApp(</span><br><span class="line">      title:&apos;Flutter&apos;,</span><br><span class="line">      home: Scaffold(</span><br><span class="line">        appBar: AppBar(</span><br><span class="line">          title: Text(&apos;flutter 初体验&apos;)</span><br><span class="line">        ),</span><br><span class="line"></span><br><span class="line">        body: Center(</span><br><span class="line">          child: Text(&apos;flutter 学习之路&apos;),</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import &apos;package:flutter/material.dart&apos;;</span><br><span class="line"></span><br><span class="line">void main() =&gt; runApp(MyApp());</span><br><span class="line"></span><br><span class="line">class MyApp extends StatelessWidget &#123;</span><br><span class="line">  // This widget is the root of your application.</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return MaterialApp(</span><br><span class="line">      title: &apos;Flutter Demo&apos;,</span><br><span class="line">      theme: ThemeData(</span><br><span class="line">        // This is the theme of your application.</span><br><span class="line">        //</span><br><span class="line">        // Try running your application with &quot;flutter run&quot;. You&apos;ll see the</span><br><span class="line">        // application has a blue toolbar. Then, without quitting the app, try</span><br><span class="line">        // changing the primarySwatch below to Colors.green and then invoke</span><br><span class="line">        // &quot;hot reload&quot; (press &quot;r&quot; in the console where you ran &quot;flutter run&quot;,</span><br><span class="line">        // or simply save your changes to &quot;hot reload&quot; in a Flutter IDE).</span><br><span class="line">        // Notice that the counter didn&apos;t reset back to zero; the application</span><br><span class="line">        // is not restarted.</span><br><span class="line">        primarySwatch: Colors.blue,</span><br><span class="line">      ),</span><br><span class="line">      home: MyHomePage(title: &apos;Flutter Demo Home Page&apos;),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class MyHomePage extends StatefulWidget &#123;</span><br><span class="line">  MyHomePage(&#123;Key key, this.title&#125;) : super(key: key);</span><br><span class="line"></span><br><span class="line">  // This widget is the home page of your application. It is stateful, meaning</span><br><span class="line">  // that it has a State object (defined below) that contains fields that affect</span><br><span class="line">  // how it looks.</span><br><span class="line"></span><br><span class="line">  // This class is the configuration for the state. It holds the values (in this</span><br><span class="line">  // case the title) provided by the parent (in this case the App widget) and</span><br><span class="line">  // used by the build method of the State. Fields in a Widget subclass are</span><br><span class="line">  // always marked &quot;final&quot;.</span><br><span class="line"></span><br><span class="line">  final String title;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  _MyHomePageState createState() =&gt; _MyHomePageState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class _MyHomePageState extends State&lt;MyHomePage&gt; &#123;</span><br><span class="line">  int _counter = 0;</span><br><span class="line"></span><br><span class="line">  void _incrementCounter() &#123;</span><br><span class="line">    setState(() &#123;</span><br><span class="line">      // This call to setState tells the Flutter framework that something has</span><br><span class="line">      // changed in this State, which causes it to rerun the build method below</span><br><span class="line">      // so that the display can reflect the updated values. If we changed</span><br><span class="line">      // _counter without calling setState(), then the build method would not be</span><br><span class="line">      // called again, and so nothing would appear to happen.</span><br><span class="line">      _counter++;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    // This method is rerun every time setState is called, for instance as done</span><br><span class="line">    // by the _incrementCounter method above.</span><br><span class="line">    //</span><br><span class="line">    // The Flutter framework has been optimized to make rerunning build methods</span><br><span class="line">    // fast, so that you can just rebuild anything that needs updating rather</span><br><span class="line">    // than having to individually change instances of widgets.</span><br><span class="line">    return Scaffold(</span><br><span class="line">      appBar: AppBar(</span><br><span class="line">        // Here we take the value from the MyHomePage object that was created by</span><br><span class="line">        // the App.build method, and use it to set our appbar title.</span><br><span class="line">        title: Text(widget.title),</span><br><span class="line">      ),</span><br><span class="line">      body: Center(</span><br><span class="line">        // Center is a layout widget. It takes a single child and positions it</span><br><span class="line">        // in the middle of the parent.</span><br><span class="line">        child: Column(</span><br><span class="line">          // Column is also layout widget. It takes a list of children and</span><br><span class="line">          // arranges them vertically. By default, it sizes itself to fit its</span><br><span class="line">          // children horizontally, and tries to be as tall as its parent.</span><br><span class="line">          //</span><br><span class="line">          // Invoke &quot;debug painting&quot; (press &quot;p&quot; in the console, choose the</span><br><span class="line">          // &quot;Toggle Debug Paint&quot; action from the Flutter Inspector in Android</span><br><span class="line">          // Studio, or the &quot;Toggle Debug Paint&quot; command in Visual Studio Code)</span><br><span class="line">          // to see the wireframe for each widget.</span><br><span class="line">          //</span><br><span class="line">          // Column has various properties to control how it sizes itself and</span><br><span class="line">          // how it positions its children. Here we use mainAxisAlignment to</span><br><span class="line">          // center the children vertically; the main axis here is the vertical</span><br><span class="line">          // axis because Columns are vertical (the cross axis would be</span><br><span class="line">          // horizontal).</span><br><span class="line">          mainAxisAlignment: MainAxisAlignment.center,</span><br><span class="line">          children: &lt;Widget&gt;[</span><br><span class="line">            Text(</span><br><span class="line">              &apos;你可以点击按钮来修改文字，我是热重载的结果&apos;,</span><br><span class="line">            ),</span><br><span class="line">            Text(</span><br><span class="line">              &apos;$_counter&apos;,</span><br><span class="line">              style: Theme.of(context).textTheme.display1,</span><br><span class="line">            ),</span><br><span class="line">          ],</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">      floatingActionButton: FloatingActionButton(</span><br><span class="line">        onPressed: _incrementCounter,</span><br><span class="line">        tooltip: &apos;Increment&apos;,</span><br><span class="line">        child: Icon(Icons.add),</span><br><span class="line">      ), // This trailing comma makes auto-formatting nicer for build methods.</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/flutter 安装/" data-id="cjx1xeb8l0021a9fyphykiyc0" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/flutter安装/" data-id="cjx1yc81y00222cfyoeu9dgae" class="article-share-link">Share</a>
       
       
     </footer>
@@ -279,13 +351,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="flutter-安装"><a href="#flutter-安装" class="headerlink" title="flutter 安装"></a>flutter 安装</h2><h2 id="flutter-项目代码"><a href="#flutter-项目代码" class="headerlink" title="flutter 项目代码"></a>flutter 项目代码</h2><p>fluter 中一切皆是组件</p>
+        <p>flutter入门</p>
+<h2 id="flutter-安装"><a href="#flutter-安装" class="headerlink" title="flutter 安装"></a>flutter 安装</h2><h2 id="flutter-项目代码"><a href="#flutter-项目代码" class="headerlink" title="flutter 项目代码"></a>flutter 项目代码</h2><p>fluter 中一切皆是组件</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">// 导入头文件</span><br><span class="line">import &apos;package:flutter/material.dart&apos;;</span><br><span class="line"></span><br><span class="line">// 程序的入口，main 函数</span><br><span class="line">void main() =&gt; (MyApp());</span><br><span class="line"></span><br><span class="line">// 定义类, 继承</span><br><span class="line"></span><br><span class="line">class MyApp extends StatelessWidget &#123;</span><br><span class="line">  // 重写</span><br><span class="line">  @override</span><br><span class="line"></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line"></span><br><span class="line">    // 返回一窗口</span><br><span class="line">    return MaterialApp(</span><br><span class="line">      title:&apos;Flutter&apos;,</span><br><span class="line">      home: Scaffold(</span><br><span class="line">        appBar: AppBar(</span><br><span class="line">          title: Text(&apos;flutter 初体验&apos;)</span><br><span class="line">        ),</span><br><span class="line"></span><br><span class="line">        body: Center(</span><br><span class="line">          child: Text(&apos;flutter 学习之路&apos;),</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import &apos;package:flutter/material.dart&apos;;</span><br><span class="line"></span><br><span class="line">void main() =&gt; runApp(MyApp());</span><br><span class="line"></span><br><span class="line">class MyApp extends StatelessWidget &#123;</span><br><span class="line">  // This widget is the root of your application.</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return MaterialApp(</span><br><span class="line">      title: &apos;Flutter Demo&apos;,</span><br><span class="line">      theme: ThemeData(</span><br><span class="line">        // This is the theme of your application.</span><br><span class="line">        //</span><br><span class="line">        // Try running your application with &quot;flutter run&quot;. You&apos;ll see the</span><br><span class="line">        // application has a blue toolbar. Then, without quitting the app, try</span><br><span class="line">        // changing the primarySwatch below to Colors.green and then invoke</span><br><span class="line">        // &quot;hot reload&quot; (press &quot;r&quot; in the console where you ran &quot;flutter run&quot;,</span><br><span class="line">        // or simply save your changes to &quot;hot reload&quot; in a Flutter IDE).</span><br><span class="line">        // Notice that the counter didn&apos;t reset back to zero; the application</span><br><span class="line">        // is not restarted.</span><br><span class="line">        primarySwatch: Colors.blue,</span><br><span class="line">      ),</span><br><span class="line">      home: MyHomePage(title: &apos;Flutter Demo Home Page&apos;),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class MyHomePage extends StatefulWidget &#123;</span><br><span class="line">  MyHomePage(&#123;Key key, this.title&#125;) : super(key: key);</span><br><span class="line"></span><br><span class="line">  // This widget is the home page of your application. It is stateful, meaning</span><br><span class="line">  // that it has a State object (defined below) that contains fields that affect</span><br><span class="line">  // how it looks.</span><br><span class="line"></span><br><span class="line">  // This class is the configuration for the state. It holds the values (in this</span><br><span class="line">  // case the title) provided by the parent (in this case the App widget) and</span><br><span class="line">  // used by the build method of the State. Fields in a Widget subclass are</span><br><span class="line">  // always marked &quot;final&quot;.</span><br><span class="line"></span><br><span class="line">  final String title;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  _MyHomePageState createState() =&gt; _MyHomePageState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class _MyHomePageState extends State&lt;MyHomePage&gt; &#123;</span><br><span class="line">  int _counter = 0;</span><br><span class="line"></span><br><span class="line">  void _incrementCounter() &#123;</span><br><span class="line">    setState(() &#123;</span><br><span class="line">      // This call to setState tells the Flutter framework that something has</span><br><span class="line">      // changed in this State, which causes it to rerun the build method below</span><br><span class="line">      // so that the display can reflect the updated values. If we changed</span><br><span class="line">      // _counter without calling setState(), then the build method would not be</span><br><span class="line">      // called again, and so nothing would appear to happen.</span><br><span class="line">      _counter++;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    // This method is rerun every time setState is called, for instance as done</span><br><span class="line">    // by the _incrementCounter method above.</span><br><span class="line">    //</span><br><span class="line">    // The Flutter framework has been optimized to make rerunning build methods</span><br><span class="line">    // fast, so that you can just rebuild anything that needs updating rather</span><br><span class="line">    // than having to individually change instances of widgets.</span><br><span class="line">    return Scaffold(</span><br><span class="line">      appBar: AppBar(</span><br><span class="line">        // Here we take the value from the MyHomePage object that was created by</span><br><span class="line">        // the App.build method, and use it to set our appbar title.</span><br><span class="line">        title: Text(widget.title),</span><br><span class="line">      ),</span><br><span class="line">      body: Center(</span><br><span class="line">        // Center is a layout widget. It takes a single child and positions it</span><br><span class="line">        // in the middle of the parent.</span><br><span class="line">        child: Column(</span><br><span class="line">          // Column is also layout widget. It takes a list of children and</span><br><span class="line">          // arranges them vertically. By default, it sizes itself to fit its</span><br><span class="line">          // children horizontally, and tries to be as tall as its parent.</span><br><span class="line">          //</span><br><span class="line">          // Invoke &quot;debug painting&quot; (press &quot;p&quot; in the console, choose the</span><br><span class="line">          // &quot;Toggle Debug Paint&quot; action from the Flutter Inspector in Android</span><br><span class="line">          // Studio, or the &quot;Toggle Debug Paint&quot; command in Visual Studio Code)</span><br><span class="line">          // to see the wireframe for each widget.</span><br><span class="line">          //</span><br><span class="line">          // Column has various properties to control how it sizes itself and</span><br><span class="line">          // how it positions its children. Here we use mainAxisAlignment to</span><br><span class="line">          // center the children vertically; the main axis here is the vertical</span><br><span class="line">          // axis because Columns are vertical (the cross axis would be</span><br><span class="line">          // horizontal).</span><br><span class="line">          mainAxisAlignment: MainAxisAlignment.center,</span><br><span class="line">          children: &lt;Widget&gt;[</span><br><span class="line">            Text(</span><br><span class="line">              &apos;你可以点击按钮来修改文字，我是热重载的结果&apos;,</span><br><span class="line">            ),</span><br><span class="line">            Text(</span><br><span class="line">              &apos;$_counter&apos;,</span><br><span class="line">              style: Theme.of(context).textTheme.display1,</span><br><span class="line">            ),</span><br><span class="line">          ],</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">      floatingActionButton: FloatingActionButton(</span><br><span class="line">        onPressed: _incrementCounter,</span><br><span class="line">        tooltip: &apos;Increment&apos;,</span><br><span class="line">        child: Icon(Icons.add),</span><br><span class="line">      ), // This trailing comma makes auto-formatting nicer for build methods.</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Flutter入门/" data-id="cjx1xeb8t002ha9fyqdx1cvpj" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Flutter入门/" data-id="cjx1yc80s00042cfyah4fnvih" class="article-share-link">Share</a>
       
       
     </footer>
@@ -315,40 +388,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Xcode中使用Debug Memory Graph检查内存泄漏/" data-id="cjx1xeb8k001za9fycgo93aku" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Swift错误处理" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/Swift错误处理/" class="article-date">
-  <time datetime="2019-06-18T14:45:48.761Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Swift 中错误处理</p>
-<h3 id="assert-断言"><a href="#assert-断言" class="headerlink" title="assert 断言"></a>assert 断言</h3><p>只在debug 模式下程序会自动退出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public func assert(_ condition: @autoclosure () -&gt; Bool, _ message: @autoclosure () -&gt; String = default, file: StaticString = #file, line: UInt = #line)</span><br></pre></td></tr></table></figure>
-<h3 id="assertionFailure-断言错误"><a href="#assertionFailure-断言错误" class="headerlink" title="assertionFailure 断言错误"></a>assertionFailure 断言错误</h3><p>只在debug 模式下程序会自动退出, 没有条件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public func assertionFailure(_ message: @autoclosure () -&gt; String = default, file: StaticString = #file, line: UInt = #line)</span><br></pre></td></tr></table></figure>
-<h3 id="precondition"><a href="#precondition" class="headerlink" title="precondition"></a>precondition</h3><p>releas 模式程序也会退出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public func precondition(_ condition: @autoclosure () -&gt; Bool, _ message: @autoclosure () -&gt; String = default, file: StaticString = #file, line: UInt = #line)</span><br></pre></td></tr></table></figure>
-<h3 id="throw"><a href="#throw" class="headerlink" title="throw"></a>throw</h3>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift错误处理/" data-id="cjx1xeb8d001qa9fyhkgpmcp7" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Xcode中使用Debug Memory Graph检查内存泄漏/" data-id="cjx1yc81x001z2cfyj834n3dk" class="article-share-link">Share</a>
       
       
     </footer>
@@ -400,7 +440,40 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift项目中集成RN/" data-id="cjx1xeb8g001ua9fy4u5tssaj" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift项目中集成RN/" data-id="cjx1yc81u001r2cfynypir6fp" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Swift错误处理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/Swift错误处理/" class="article-date">
+  <time datetime="2019-06-18T14:45:48.761Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Swift 中错误处理</p>
+<h3 id="assert-断言"><a href="#assert-断言" class="headerlink" title="assert 断言"></a>assert 断言</h3><p>只在debug 模式下程序会自动退出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public func assert(_ condition: @autoclosure () -&gt; Bool, _ message: @autoclosure () -&gt; String = default, file: StaticString = #file, line: UInt = #line)</span><br></pre></td></tr></table></figure>
+<h3 id="assertionFailure-断言错误"><a href="#assertionFailure-断言错误" class="headerlink" title="assertionFailure 断言错误"></a>assertionFailure 断言错误</h3><p>只在debug 模式下程序会自动退出, 没有条件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public func assertionFailure(_ message: @autoclosure () -&gt; String = default, file: StaticString = #file, line: UInt = #line)</span><br></pre></td></tr></table></figure>
+<h3 id="precondition"><a href="#precondition" class="headerlink" title="precondition"></a>precondition</h3><p>releas 模式程序也会退出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public func precondition(_ condition: @autoclosure () -&gt; Bool, _ message: @autoclosure () -&gt; String = default, file: StaticString = #file, line: UInt = #line)</span><br></pre></td></tr></table></figure>
+<h3 id="throw"><a href="#throw" class="headerlink" title="throw"></a>throw</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift错误处理/" data-id="cjx1yc81v001u2cfyf23ajq5a" class="article-share-link">Share</a>
       
       
     </footer>
@@ -562,63 +635,7 @@ func shoutWins() {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift协议别名/" data-id="cjx1xeb8a001oa9fylhru6fnd" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Swift协议扩展" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/Swift协议扩展/" class="article-date">
-  <time datetime="2019-06-18T14:45:48.760Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Swift协议扩展</p>
-<h3 id="定义结构体"><a href="#定义结构体" class="headerlink" title="定义结构体"></a>定义结构体</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">struct Point &#123;</span><br><span class="line">    var x = 0.0</span><br><span class="line">    var y = 0.0</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Size &#123;</span><br><span class="line">    var height = 0.0</span><br><span class="line">    var width = 0.0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Rectangle &#123;</span><br><span class="line">    var origin = Point()</span><br><span class="line">    var size = Size()</span><br><span class="line">    </span><br><span class="line">    init(origin: Point, size: Size) &#123;</span><br><span class="line">        self.origin = origin</span><br><span class="line">        self.size = size</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><ul>
-<li>扩展方法</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">extension Rectangle &#123;</span><br><span class="line">    mutating func translate(x: Double, y: Double) &#123;</span><br><span class="line">        self.origin.x += x</span><br><span class="line">        self.origin.y += y</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>只能扩展计算型的属性，不能扩展存储型属性, 存储型属性需要在定义类或者结构体时声明</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">extension Rectangle &#123;</span><br><span class="line">    var center: Point &#123;</span><br><span class="line">        get &#123;</span><br><span class="line">            let center_x = origin.x + size.width / 2.0</span><br><span class="line">            let center_y = origin.y + size.height / 2.0</span><br><span class="line">            return Point(x: center_x, y: center_y)</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        set &#123;</span><br><span class="line">            origin.x = newValue.x - size.width / 2.0</span><br><span class="line">            origin.y = newValue.y - size.height / 2.0</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>扩展构造方法</p>
-<ul>
-<li>类中不能扩展指定构造方法，只能在结构体中扩展</li>
-<li>结构体中不能扩展便利构造方法m，只能在类中扩展</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">extension Rectangle &#123;</span><br><span class="line">    init(center: Point, size: Size) &#123;</span><br><span class="line">        let origin_x = center.x - size.width / 2.0</span><br><span class="line">        let origin_y = center.y - size.height / 2.0</span><br><span class="line">        self.origin = Point(x: origin_x, y: origin_y)</span><br><span class="line">        self.size = size</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 结构体中不能扩展便利构造函数 Delegating initializers in structs are not marked with &apos;convenience&apos;</span><br><span class="line">//    convenience init(center: Point, size: Size) &#123;</span><br><span class="line">//        let origin_x = center.x - size.width / 2.0</span><br><span class="line">//        let origin_y = center.y - size.height / 2.0</span><br><span class="line">//        self.origin = Point(x: origin_x, y: origin_y)</span><br><span class="line">//        self.size = size</span><br><span class="line">//    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>扩展嵌套类型</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">extension Rectangle &#123;</span><br><span class="line">    enum Vertex: Int &#123;</span><br><span class="line">        case left_top</span><br><span class="line">        case left_bottom</span><br><span class="line">        case right_bottom</span><br><span class="line">        case right_top</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 获取某一个顶点坐标</span><br><span class="line">    func point(of vertex: Vertex) -&gt; Point &#123;</span><br><span class="line">        switch vertex &#123;</span><br><span class="line">        case .left_top:</span><br><span class="line">            return origin</span><br><span class="line">        case .left_bottom:</span><br><span class="line">            return Point(x: origin.x, y: origin.y + size.height)</span><br><span class="line">        case .right_bottom:</span><br><span class="line">            return Point(x: origin.x + size.width, y: origin.y + size.height)</span><br><span class="line">        case .right_top:</span><br><span class="line">            return Point(x: origin.x + size.width, y: origin.y)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>扩展下标,根据传入的索引获取对应顶点坐标</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">extension Rectangle &#123;</span><br><span class="line">    subscript(index: Int) -&gt; Point? &#123;</span><br><span class="line">        assert(0 &lt;= index &amp;&amp; index &lt; 4, &quot;传入值非法&quot;)</span><br><span class="line">        return point(of: Vertex(rawValue: index)!)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="扩展系统方法"><a href="#扩展系统方法" class="headerlink" title="扩展系统方法"></a>扩展系统方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">extension Int &#123;</span><br><span class="line">    /// 平方</span><br><span class="line">    var square: Int &#123;</span><br><span class="line">        return self * self</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 立方</span><br><span class="line">    var cube: Int &#123;</span><br><span class="line">        return self * self * self</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 判断数组是否在某一个范围内</span><br><span class="line">    func inRange(clousedLeft left: Int, openRight right: Int) -&gt; Bool &#123;</span><br><span class="line">        return self &gt;= left &amp;&amp; self &gt; right</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 重复执行操作</span><br><span class="line">    func repeatitions(task: () -&gt; ()) &#123;</span><br><span class="line">        for _ in 0..&lt;self &#123;</span><br><span class="line">            task()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 变长函数</span><br><span class="line">    func stride(from: Int, to: Int, by: Int, task: () -&gt; ()) &#123;</span><br><span class="line">        // 系统变长函数</span><br><span class="line">        for i in Swift.stride(from: 0, to: 21, by: 3) &#123;</span><br><span class="line">            print(i)</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        for _ in Swift.stride(from: from, to: to, by: by) &#123;</span><br><span class="line">            task()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>扩展后使用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">print(2.square)</span><br><span class="line">print(3.cube)</span><br><span class="line">print(4.inRange(clousedLeft: 0, openRight: 4))</span><br><span class="line">4.repeatitions &#123;</span><br><span class="line">    print(&quot;extension&quot;)</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">// 使用变长函数</span><br><span class="line">4.stride(from: 0, to: 8, by: 4) &#123;</span><br><span class="line">    print(&quot;stride&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift协议扩展/" data-id="cjx1xeb8e001ra9fyowle0fat" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift协议别名/" data-id="cjx1yc81s001m2cfybnaqgm17" class="article-share-link">Share</a>
       
       
     </footer>
@@ -678,19 +695,19 @@ func shoutWins() {
       <ul>
         
           <li>
+            <a href="/2019/06/18/docs/15608702427054/">(no title)</a>
+          </li>
+        
+          <li>
             <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/18/第十一章设计模式面试/">(no title)</a>
-          </li>
-        
-          <li>
             <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
           </li>
         
           <li>
