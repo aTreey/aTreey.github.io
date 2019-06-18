@@ -62,10 +62,199 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-第四章OC语言特性面试" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/第四章OC语言特性面试/" class="article-date">
+  <time datetime="2019-06-18T14:45:48.774Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="OC-语言特性"><a href="#OC-语言特性" class="headerlink" title="OC 语言特性"></a>OC 语言特性</h1><h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>由运行时来决议的，不同分类当中含有同名方法 谁最终生效取决于谁最终参与编译，最后参编译的同名分类方法会最终生效，假如分类方法中添加的方法和宿主类中的某一个方法名相同，分类中的方法会覆盖宿主类中的同名方法，覆盖是指在消息传递过程中优先查找数组靠前的元素，如果查找到了同名方法就直接调用，实际上宿主类的同名方法实现仍然是存在的，我们可可以通过一些手段调用到原有类的同名方法的实现 </p>
+<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
+<li>申明私有方法，分类的 .m 文件中申明私有方法啊，对外不暴露</li>
+<li>对类中的代码进行抽取分解</li>
+<li>把Framework的私有方法公开化</li>
+</ul>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>运行时决议，运行时通过runtime 才把分类中的方法添加到了宿主类上</li>
+<li>可以为系统类添加方法</li>
+<li>有多个分类中存在同名方法时，最后编译的方法会最先生效</li>
+<li>分类中有和宿主类同名方法时，底层中通过内存copy将分类方法“覆盖”宿主类方法</li>
+<li>名字相同的分类编译会报错</li>
+</ul>
+<h3 id="分类中可以添加的内容"><a href="#分类中可以添加的内容" class="headerlink" title="分类中可以添加的内容"></a>分类中可以添加的内容</h3><ul>
+<li>实例方法</li>
+<li>类方法</li>
+<li>协议</li>
+<li>属性，实际上只是声明了 getter / setter 方法，并没有添加成员变量</li>
+</ul>
+<h3 id="关联对象技术"><a href="#关联对象技术" class="headerlink" title="关联对象技术"></a>关联对象技术</h3><p>关联对象由 AssocicationsManager 管理并在 AssociationsHashMap 上存储<br>所有对象的关联内容都在同一个全局容器中</p>
+<ul>
+<li>给分类添加成员变量，通过关联对象的方式</li>
+</ul>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><h3 id="使用场景-1"><a href="#使用场景-1" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
+<li>声明私有属性</li>
+<li>声明私有方法</li>
+<li>声明私有成员变量</li>
+</ul>
+<h3 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>编译时决议</li>
+<li>只以声明的形式存在，多数情况下寄生在宿主类的.m中</li>
+<li>不能为系统添加扩展</li>
+</ul>
+<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><ul>
+<li>代理设计模式，传递方式是一对一</li>
+<li>使用weak 避免循环引用</li>
+</ul>
+<h2 id="通知"><a href="#通知" class="headerlink" title="通知"></a>通知</h2><p>使用观察者模式来实现的用于跨层传递消息的机制</p>
+<h2 id="KVO"><a href="#KVO" class="headerlink" title="KVO"></a>KVO</h2><p>KVO 是系统对观察者模式的又一实现，使用isa 混写技术（isa - swizzling）来动态运行时为某一个类添加一个子类重写了它的setter 方法，同时将原有类的isa指针指向了新创建的类上</p>
+<ul>
+<li>KVO 是OC对观察者模式的又一实现</li>
+<li>apple 使用isa 混写技术（isa - swizzling）来实现KVO<ul>
+<li>给我A类注册一个观察者时本质上是调用系统的 Observer for keyPath 方法，系统会创建一个NSKVONotifiying_A 的类</li>
+</ul>
+</li>
+<li>使用 setter 方法设置值KVO才能生效</li>
+<li>使用setValue:forKey: 改变值KVO才能生效</li>
+<li>使用下划线的成员变量直接修改值需要手动添加KVO才能生效（增加 willChangeValueForKey 和 didChangeValueForKey 两个方法）</li>
+</ul>
+<h2 id="KVC"><a href="#KVC" class="headerlink" title="KVC"></a>KVC</h2><p>apple提供的键值编码技术</p>
+<ul>
+<li>(nullable id)valueForKey:(NSString *)key;</li>
+<li><p>(void)setValue:(nullable id)value forKey:(NSString *)key;</p>
+<p>  以上两个方法中的key是没有任何限制的，只要知道对应的成员变量名称，就可以对私有的成员变量设置和操作，这违背了面向对象的编程思想</p>
+</li>
+</ul>
+<p><strong>(void)setValue:(nullable id)value forKey:(NSString *)key; 方法调用流程</strong></p>
+<ul>
+<li>先判断是否有跟key 相关的setter 方法，如果有就直接调用，结束调用</li>
+<li>如果没有再判断是否存在实例变量，如果存在直接给赋值，结束调用</li>
+<li>如果说实例变量不存在，会去调用 <code>- (void)setValue:(nullable id)value forUndefinedKey:(NSString *)key;</code> 抛出异常</li>
+</ul>
+<h2 id="属性关键字"><a href="#属性关键字" class="headerlink" title="属性关键字"></a>属性关键字</h2><h3 id="读写权限"><a href="#读写权限" class="headerlink" title="读写权限"></a>读写权限</h3><ul>
+<li><p>readonly</p>
+</li>
+<li><p>readwrite 系统默认</p>
+</li>
+</ul>
+<h3 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h3><ul>
+<li>atomic （系统默认）保证赋值和获取（对成员属性的直接获取和赋值）时线程安全，并不代表操作和访问，如果atomic修饰的一个数组，只能保证独具改数组的读取和赋值时线程安全，并不能保证对数据操作（增加/删除数组元素）时是安全的</li>
+<li>nonatomic</li>
+</ul>
+<h3 id="引用技术"><a href="#引用技术" class="headerlink" title="引用技术"></a>引用技术</h3><ul>
+<li>assign <ul>
+<li>修饰基本数据类型，</li>
+<li>修饰对象时不改变其引用计数，</li>
+<li>会产生悬垂指针</li>
+</ul>
+</li>
+<li>weak  <ul>
+<li>不改变被修饰对象的引用计数，</li>
+<li>所指对象被释放之后指针自动置为nil</li>
+</ul>
+</li>
+</ul>
+<p><strong>两者区别：</strong></p>
+<ul>
+<li>weak可以修饰对象，而assign 既可以修饰对象也可以修饰基本数据类型</li>
+<li>assign 修饰的对象，对象释放后指针仍然指向原对象的内存地址，而weak 修饰的对象，释放后会自动置为nil</li>
+</ul>
+<p><strong>问题1</strong> </p>
+<p>weak 修饰的对象为什么释放后会自动置为nil</p>
+<p><strong>问题2</strong></p>
+<p><code>@property (copy) NSMutableArray *array;</code> 有什么问题</p>
+<ul>
+<li>被copy修饰后，如果赋值过来的是NSMutableArray，copy之后就是NSArray，如果赋值过来的是NSAarray，copy 之后仍然是NSArray，有可能会调用array的添加元素方法会导致crash</li>
+</ul>
+<h3 id="copy-关键词"><a href="#copy-关键词" class="headerlink" title="copy 关键词"></a>copy 关键词</h3><p> <img src="https://ws2.sinaimg.cn/large/006tNc79ly1g1uh6lwwe2j320s0lm7bm.jpg" alt></p>
+<ul>
+<li>浅拷贝：内存地址的复制，让目标对象指针和源对象指向同一块内存空间，<ul>
+<li>会增加对象的引用计数</li>
+<li>并没有一个新的内存分配</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>深拷贝：目标对象指针和源对象指针分别指向两块内容相同的内存空间<ul>
+<li>不会增加源对象的引用计数</li>
+<li>有新对象的内存分配</li>
+</ul>
+</li>
+</ul>
+<h2 id="MRC-重写-retain修饰的变量的setter-方法"><a href="#MRC-重写-retain修饰的变量的setter-方法" class="headerlink" title="MRC 重写 retain修饰的变量的setter 方法"></a>MRC 重写 retain修饰的变量的setter 方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- (void)setObj:(id)obj &#123;</span><br><span class="line">    if (_obj != obj) &#123;</span><br><span class="line">        [_obj release];</span><br><span class="line">    &#125;</span><br><span class="line">    _obj = [obj retain];</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>判断是为了防止异常处理，如果不做 if 判断，当传入的 obj 对象正好是原来的_obj 对象，对原对象尽行releas 操作，实际上也会对传入的对象进行releas 操作进行释放，此时如果再通过obj指针访问废弃的对象时就会导致carsh</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/第四章OC语言特性面试/" data-id="cjx1x9tex003a40fyhqtfipe5" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-第十一章设计模式面试" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/第十一章设计模式面试/" class="article-date">
+  <time datetime="2019-06-18T14:45:48.773Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>第十一章 设计模式</p>
+<h2 id="六大设计原则"><a href="#六大设计原则" class="headerlink" title="六大设计原则"></a>六大设计原则</h2><p>单一职责原则：一个类只负责一件事</p>
+<p>开闭原则： 对修改关闭，对扩展开放</p>
+<p>接口隔离原则：使用多个专门的协议，而不是一个庞大臃肿的协议，iOS系统的UITableView的数据和代理协议分开</p>
+<p>依赖倒置原则：抽象不应该依赖于具体实现，具体实现可以依赖于抽象</p>
+<p>里氏替换原则：父类可以被子类无缝替换，且原有功能不受任何影响，iOS系统 的 KVO 机制遵守了这一原则，当调用 addObserver 方法时，因为系统在动态运行时为我们创建了一个子类，直观感受是仍然使用的是父类，实际上系统已经替换为创建的子类，所以KVO 机制 不但使用了管擦这模式，并且遵从了 里氏替换原则</p>
+<p>迪米特法则： 一个对象应对其他对象有尽可能少的了解，平时所说的高内聚，低耦合</p>
+<h2 id="常用设计模式"><a href="#常用设计模式" class="headerlink" title="常用设计模式"></a>常用设计模式</h2><h3 id="责任链"><a href="#责任链" class="headerlink" title="责任链"></a>责任链</h3><p>有三个业务分别为A/B/C，以前的调用顺序为 A -&gt; B -&gt; C ，现在顺序有调整，</p>
+<p>定义某一个类，有一个成员变量他的类型跟原有类类型一致，组成一个责任链，让处理具体业务的责任者去处理</p>
+<p><img src="https://i.loli.net/2019/04/18/5cb85694cd028.jpg" alt></p>
+<h3 id="桥接模式"><a href="#桥接模式" class="headerlink" title="桥接模式"></a>桥接模式</h3><p>业务解耦的问题：同一个列表和多套数据显示，多套数据通过后端来控制是共存，</p>
+<p><img src="https://i.loli.net/2019/04/18/5cb857a83803d.jpg" alt></p>
+<p>类构成</p>
+<p>抽象类A ——&gt; class B </p>
+<p><img src="https://i.loli.net/2019/04/18/5cb85da6d46b6.jpg" alt></p>
+<h3 id="适配器模式"><a href="#适配器模式" class="headerlink" title="适配器模式"></a>适配器模式</h3><p>一个现有类需要适应变化的问题， 年代比较久远的类或者对象</p>
+<p>类构成<br><img src="https://i.loli.net/2019/04/18/5cb8600aa067b.jpg" alt></p>
+<ul>
+<li>对象适配</li>
+<li>类适配</li>
+</ul>
+<h3 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h3><h3 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h3><p>行为参数化</p>
+<p>降低代码重合度</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/第十一章设计模式面试/" data-id="cjx1x9ten003340fy1as2kp2m" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-第十三章算法面试" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/第十三章算法面试/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.192Z" itemprop="datePublished">2019-06-18</time>
+  <time datetime="2019-06-18T14:45:48.773Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -79,52 +268,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第十三章算法面试/" data-id="cjx1wsds70034msfyh9v145rh" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-第十四章第三方库面试" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/第十四章第三方库面试/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.192Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>第十四章 第三方库</p>
-<h3 id="AFNetworking"><a href="#AFNetworking" class="headerlink" title="AFNetworking"></a>AFNetworking</h3><h4 id="框架图"><a href="#框架图" class="headerlink" title="框架图"></a>框架图</h4><h4 id="会话NSURSession"><a href="#会话NSURSession" class="headerlink" title="会话NSURSession"></a>会话NSURSession</h4><p><img src="https://i.loli.net/2019/04/19/5cb92763a70c9.jpg" alt></p>
-<h4 id="主要类关系图"><a href="#主要类关系图" class="headerlink" title="主要类关系图"></a>主要类关系图</h4><p><img src="https://i.loli.net/2019/04/19/5cb927e446880.jpg" alt></p>
-<h4 id="AFURLSessionManager"><a href="#AFURLSessionManager" class="headerlink" title="AFURLSessionManager"></a>AFURLSessionManager</h4><ul>
-<li>创建和管理 NSURLSession， NSURLSessionTask </li>
-<li>实现NSURLSessionDelegate 等协议的代理方法</li>
-<li>引入AFSecurityPolicy 保证请求安全，https 请求时 证书检验，公钥验证</li>
-<li>引入AFNetworkReachabilityManager 监控网络状态</li>
-</ul>
-<h3 id="SDWebImage"><a href="#SDWebImage" class="headerlink" title="SDWebImage"></a>SDWebImage</h3><p>架构图</p>
-<p><img src="https://i.loli.net/2019/04/19/5cb92fed65b5f.jpg" alt></p>
-<p>加载图片流程<br><img src="https://i.loli.net/2019/04/19/5cb93011b9d52.jpg" alt></p>
-<h3 id="Reactive-Cocoa"><a href="#Reactive-Cocoa" class="headerlink" title="Reactive Cocoa"></a>Reactive Cocoa</h3><p><img src="https://i.loli.net/2019/04/19/5cb9303d51275.jpg" alt></p>
-<p>RACStream</p>
-<p><img src="https://i.loli.net/2019/04/19/5cb930588621e.jpg" alt></p>
-<h3 id="AsyncDisplayKit"><a href="#AsyncDisplayKit" class="headerlink" title="AsyncDisplayKit"></a>AsyncDisplayKit</h3><p>主要解决的问题</p>
-<p><img src="https://i.loli.net/2019/04/19/5cb93096d7ecd.jpg" alt></p>
-<p>基本原理</p>
-<p><img src="https://i.loli.net/2019/04/19/5cb930c6d0bff.jpg" alt></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第十四章第三方库面试/" data-id="cjx1wsds80035msfy9l93t7nx" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第十三章算法面试/" data-id="cjx1x9ter003640fytbdqtmpg" class="article-share-link">Share</a>
       
       
     </footer>
@@ -137,7 +281,7 @@
     <article id="post-第十二章架构和框架面试" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/第十二章架构和框架面试/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.192Z" itemprop="datePublished">2019-06-18</time>
+  <time datetime="2019-06-18T14:45:48.773Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -230,7 +374,52 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第十二章架构和框架面试/" data-id="cjx1wsds90036msfy44t645tm" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第十二章架构和框架面试/" data-id="cjx1x9tes003740fydawv5ngh" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-第十四章第三方库面试" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/第十四章第三方库面试/" class="article-date">
+  <time datetime="2019-06-18T14:45:48.773Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>第十四章 第三方库</p>
+<h3 id="AFNetworking"><a href="#AFNetworking" class="headerlink" title="AFNetworking"></a>AFNetworking</h3><h4 id="框架图"><a href="#框架图" class="headerlink" title="框架图"></a>框架图</h4><h4 id="会话NSURSession"><a href="#会话NSURSession" class="headerlink" title="会话NSURSession"></a>会话NSURSession</h4><p><img src="https://i.loli.net/2019/04/19/5cb92763a70c9.jpg" alt></p>
+<h4 id="主要类关系图"><a href="#主要类关系图" class="headerlink" title="主要类关系图"></a>主要类关系图</h4><p><img src="https://i.loli.net/2019/04/19/5cb927e446880.jpg" alt></p>
+<h4 id="AFURLSessionManager"><a href="#AFURLSessionManager" class="headerlink" title="AFURLSessionManager"></a>AFURLSessionManager</h4><ul>
+<li>创建和管理 NSURLSession， NSURLSessionTask </li>
+<li>实现NSURLSessionDelegate 等协议的代理方法</li>
+<li>引入AFSecurityPolicy 保证请求安全，https 请求时 证书检验，公钥验证</li>
+<li>引入AFNetworkReachabilityManager 监控网络状态</li>
+</ul>
+<h3 id="SDWebImage"><a href="#SDWebImage" class="headerlink" title="SDWebImage"></a>SDWebImage</h3><p>架构图</p>
+<p><img src="https://i.loli.net/2019/04/19/5cb92fed65b5f.jpg" alt></p>
+<p>加载图片流程<br><img src="https://i.loli.net/2019/04/19/5cb93011b9d52.jpg" alt></p>
+<h3 id="Reactive-Cocoa"><a href="#Reactive-Cocoa" class="headerlink" title="Reactive Cocoa"></a>Reactive Cocoa</h3><p><img src="https://i.loli.net/2019/04/19/5cb9303d51275.jpg" alt></p>
+<p>RACStream</p>
+<p><img src="https://i.loli.net/2019/04/19/5cb930588621e.jpg" alt></p>
+<h3 id="AsyncDisplayKit"><a href="#AsyncDisplayKit" class="headerlink" title="AsyncDisplayKit"></a>AsyncDisplayKit</h3><p>主要解决的问题</p>
+<p><img src="https://i.loli.net/2019/04/19/5cb93096d7ecd.jpg" alt></p>
+<p>基本原理</p>
+<p><img src="https://i.loli.net/2019/04/19/5cb930c6d0bff.jpg" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/第十四章第三方库面试/" data-id="cjx1x9tev003840fys9elucvl" class="article-share-link">Share</a>
       
       
     </footer>
@@ -243,7 +432,7 @@
     <article id="post-第十章网络相关" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/第十章网络相关/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.192Z" itemprop="datePublished">2019-06-18</time>
+  <time datetime="2019-06-18T14:45:48.773Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -402,243 +591,7 @@ max：10 最多发生多少个http请求和响应对
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第十章网络相关/" data-id="cjx1wsdsc0037msfywzztcl0g" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-第四章OC语言特性面试" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/第四章OC语言特性面试/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.192Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="OC-语言特性"><a href="#OC-语言特性" class="headerlink" title="OC 语言特性"></a>OC 语言特性</h1><h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>由运行时来决议的，不同分类当中含有同名方法 谁最终生效取决于谁最终参与编译，最后参编译的同名分类方法会最终生效，假如分类方法中添加的方法和宿主类中的某一个方法名相同，分类中的方法会覆盖宿主类中的同名方法，覆盖是指在消息传递过程中优先查找数组靠前的元素，如果查找到了同名方法就直接调用，实际上宿主类的同名方法实现仍然是存在的，我们可可以通过一些手段调用到原有类的同名方法的实现 </p>
-<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
-<li>申明私有方法，分类的 .m 文件中申明私有方法啊，对外不暴露</li>
-<li>对类中的代码进行抽取分解</li>
-<li>把Framework的私有方法公开化</li>
-</ul>
-<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
-<li>运行时决议，运行时通过runtime 才把分类中的方法添加到了宿主类上</li>
-<li>可以为系统类添加方法</li>
-<li>有多个分类中存在同名方法时，最后编译的方法会最先生效</li>
-<li>分类中有和宿主类同名方法时，底层中通过内存copy将分类方法“覆盖”宿主类方法</li>
-<li>名字相同的分类编译会报错</li>
-</ul>
-<h3 id="分类中可以添加的内容"><a href="#分类中可以添加的内容" class="headerlink" title="分类中可以添加的内容"></a>分类中可以添加的内容</h3><ul>
-<li>实例方法</li>
-<li>类方法</li>
-<li>协议</li>
-<li>属性，实际上只是声明了 getter / setter 方法，并没有添加成员变量</li>
-</ul>
-<h3 id="关联对象技术"><a href="#关联对象技术" class="headerlink" title="关联对象技术"></a>关联对象技术</h3><p>关联对象由 AssocicationsManager 管理并在 AssociationsHashMap 上存储<br>所有对象的关联内容都在同一个全局容器中</p>
-<ul>
-<li>给分类添加成员变量，通过关联对象的方式</li>
-</ul>
-<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><h3 id="使用场景-1"><a href="#使用场景-1" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
-<li>声明私有属性</li>
-<li>声明私有方法</li>
-<li>声明私有成员变量</li>
-</ul>
-<h3 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h3><ul>
-<li>编译时决议</li>
-<li>只以声明的形式存在，多数情况下寄生在宿主类的.m中</li>
-<li>不能为系统添加扩展</li>
-</ul>
-<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><ul>
-<li>代理设计模式，传递方式是一对一</li>
-<li>使用weak 避免循环引用</li>
-</ul>
-<h2 id="通知"><a href="#通知" class="headerlink" title="通知"></a>通知</h2><p>使用观察者模式来实现的用于跨层传递消息的机制</p>
-<h2 id="KVO"><a href="#KVO" class="headerlink" title="KVO"></a>KVO</h2><p>KVO 是系统对观察者模式的又一实现，使用isa 混写技术（isa - swizzling）来动态运行时为某一个类添加一个子类重写了它的setter 方法，同时将原有类的isa指针指向了新创建的类上</p>
-<ul>
-<li>KVO 是OC对观察者模式的又一实现</li>
-<li>apple 使用isa 混写技术（isa - swizzling）来实现KVO<ul>
-<li>给我A类注册一个观察者时本质上是调用系统的 Observer for keyPath 方法，系统会创建一个NSKVONotifiying_A 的类</li>
-</ul>
-</li>
-<li>使用 setter 方法设置值KVO才能生效</li>
-<li>使用setValue:forKey: 改变值KVO才能生效</li>
-<li>使用下划线的成员变量直接修改值需要手动添加KVO才能生效（增加 willChangeValueForKey 和 didChangeValueForKey 两个方法）</li>
-</ul>
-<h2 id="KVC"><a href="#KVC" class="headerlink" title="KVC"></a>KVC</h2><p>apple提供的键值编码技术</p>
-<ul>
-<li>(nullable id)valueForKey:(NSString *)key;</li>
-<li><p>(void)setValue:(nullable id)value forKey:(NSString *)key;</p>
-<p>  以上两个方法中的key是没有任何限制的，只要知道对应的成员变量名称，就可以对私有的成员变量设置和操作，这违背了面向对象的编程思想</p>
-</li>
-</ul>
-<p><strong>(void)setValue:(nullable id)value forKey:(NSString *)key; 方法调用流程</strong></p>
-<ul>
-<li>先判断是否有跟key 相关的setter 方法，如果有就直接调用，结束调用</li>
-<li>如果没有再判断是否存在实例变量，如果存在直接给赋值，结束调用</li>
-<li>如果说实例变量不存在，会去调用 <code>- (void)setValue:(nullable id)value forUndefinedKey:(NSString *)key;</code> 抛出异常</li>
-</ul>
-<h2 id="属性关键字"><a href="#属性关键字" class="headerlink" title="属性关键字"></a>属性关键字</h2><h3 id="读写权限"><a href="#读写权限" class="headerlink" title="读写权限"></a>读写权限</h3><ul>
-<li><p>readonly</p>
-</li>
-<li><p>readwrite 系统默认</p>
-</li>
-</ul>
-<h3 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h3><ul>
-<li>atomic （系统默认）保证赋值和获取（对成员属性的直接获取和赋值）时线程安全，并不代表操作和访问，如果atomic修饰的一个数组，只能保证独具改数组的读取和赋值时线程安全，并不能保证对数据操作（增加/删除数组元素）时是安全的</li>
-<li>nonatomic</li>
-</ul>
-<h3 id="引用技术"><a href="#引用技术" class="headerlink" title="引用技术"></a>引用技术</h3><ul>
-<li>assign <ul>
-<li>修饰基本数据类型，</li>
-<li>修饰对象时不改变其引用计数，</li>
-<li>会产生悬垂指针</li>
-</ul>
-</li>
-<li>weak  <ul>
-<li>不改变被修饰对象的引用计数，</li>
-<li>所指对象被释放之后指针自动置为nil</li>
-</ul>
-</li>
-</ul>
-<p><strong>两者区别：</strong></p>
-<ul>
-<li>weak可以修饰对象，而assign 既可以修饰对象也可以修饰基本数据类型</li>
-<li>assign 修饰的对象，对象释放后指针仍然指向原对象的内存地址，而weak 修饰的对象，释放后会自动置为nil</li>
-</ul>
-<p><strong>问题1</strong> </p>
-<p>weak 修饰的对象为什么释放后会自动置为nil</p>
-<p><strong>问题2</strong></p>
-<p><code>@property (copy) NSMutableArray *array;</code> 有什么问题</p>
-<ul>
-<li>被copy修饰后，如果赋值过来的是NSMutableArray，copy之后就是NSArray，如果赋值过来的是NSAarray，copy 之后仍然是NSArray，有可能会调用array的添加元素方法会导致crash</li>
-</ul>
-<h3 id="copy-关键词"><a href="#copy-关键词" class="headerlink" title="copy 关键词"></a>copy 关键词</h3><p> <img src="https://ws2.sinaimg.cn/large/006tNc79ly1g1uh6lwwe2j320s0lm7bm.jpg" alt></p>
-<ul>
-<li>浅拷贝：内存地址的复制，让目标对象指针和源对象指向同一块内存空间，<ul>
-<li>会增加对象的引用计数</li>
-<li>并没有一个新的内存分配</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li>深拷贝：目标对象指针和源对象指针分别指向两块内容相同的内存空间<ul>
-<li>不会增加源对象的引用计数</li>
-<li>有新对象的内存分配</li>
-</ul>
-</li>
-</ul>
-<h2 id="MRC-重写-retain修饰的变量的setter-方法"><a href="#MRC-重写-retain修饰的变量的setter-方法" class="headerlink" title="MRC 重写 retain修饰的变量的setter 方法"></a>MRC 重写 retain修饰的变量的setter 方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- (void)setObj:(id)obj &#123;</span><br><span class="line">    if (_obj != obj) &#123;</span><br><span class="line">        [_obj release];</span><br><span class="line">    &#125;</span><br><span class="line">    _obj = [obj retain];</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>判断是为了防止异常处理，如果不做 if 判断，当传入的 obj 对象正好是原来的_obj 对象，对原对象尽行releas 操作，实际上也会对传入的对象进行releas 操作进行释放，此时如果再通过obj指针访问废弃的对象时就会导致carsh</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第四章OC语言特性面试/" data-id="cjx1wsdsd0038msfyljku5fat" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-第三章UI视图响应链离屏渲染面试" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/第三章UI视图响应链离屏渲染面试/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.191Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="UITableView-相关"><a href="#UITableView-相关" class="headerlink" title="UITableView 相关"></a>UITableView 相关</h2><ul>
-<li>重用机制</li>
-<li><p>并发访问，数据拷贝问题：主线程删除了一条数据，子线程数据由删除之前的数据源copy而来，子线程网络请求，数据解析，预排版等操作后，回到主线程刷新时已经删除的数据又会重现</p>
-<ul>
-<li><p>主线程数据源删除时对数据进行记录，子线程的数据回来后再进行一次同步删除操作，然后再刷新数据</p>
-</li>
-<li><p>使用GCD中的串行队列，将数据删除和数据解析在此队列中进行</p>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="UIView-和CALayer-的关系"><a href="#UIView-和CALayer-的关系" class="headerlink" title="UIView 和CALayer 的关系"></a>UIView 和CALayer 的关系</h2><ul>
-<li>UIView 为 CALayer 提供内容，负责处理触摸事件，参与响应链</li>
-<li>CALayer 负责显示内容，分工明确，UIView 的Layer 实际上就是CALayer， backgroundColor 等属性本质是对CALayer 做了一层包装</li>
-</ul>
-<h2 id="事件传递"><a href="#事件传递" class="headerlink" title="事件传递"></a>事件传递</h2><p><img src="https://ws3.sinaimg.cn/large/006tKfTcly1g1omq41fi4j31hn0u0n3a.jpg" alt></p>
-<ul>
-<li>hitTest 方法是返回响应时间的试图</li>
-<li>pointInside withEvent 方法判断点击位置是否在当前视图范围内</li>
-<li>倒序遍历最终响应事件的试图，最后添加的试图会最优先被遍历到</li>
-</ul>
-<p><strong>需求案例</strong></p>
-<p>只让正方形的view中圆形区域内可以响应事件，四个角的位置不响应事件<br><img src="https://ws1.sinaimg.cn/large/006tKfTcly1g1onklz0k8j309q0a674h.jpg" alt></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">class CircularAreaResponseButton: UIButton &#123;</span><br><span class="line">    </span><br><span class="line">    override func hitTest(_ point: CGPoint, with event: UIEvent?) -&gt; UIView? &#123;</span><br><span class="line">        if self.isHidden || !self.isUserInteractionEnabled ||  self.alpha &lt;= 0.01 &#123;</span><br><span class="line">            return nil</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        var hitView: UIView?</span><br><span class="line">        if self.point(inside: point, with: event) &#123;</span><br><span class="line">            // 遍历当前视图的子试图</span><br><span class="line">            for subView in subviews &#123;</span><br><span class="line">                // 坐标转换</span><br><span class="line">                let convertPoint = self.convert(point, to: subView)</span><br><span class="line">                if let hitTestView = subView.hitTest(convertPoint, with: event) &#123;</span><br><span class="line">                    // 找到了最终响应事件的试图</span><br><span class="line">                    hitView = hitTestView</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            if hitView != nil &#123;</span><br><span class="line">                return hitView</span><br><span class="line">            &#125;</span><br><span class="line">            return self</span><br><span class="line">        &#125;</span><br><span class="line">        return nil</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    override func point(inside point: CGPoint, with event: UIEvent?) -&gt; Bool &#123;</span><br><span class="line">        let x1 = point.x</span><br><span class="line">        let y1 = point.y</span><br><span class="line">        </span><br><span class="line">        let x2 = self.frame.width / 2.0</span><br><span class="line">        let y2 = self.frame.height / 2.0</span><br><span class="line">        // 使用平面内两点见距离公式计算距离, 并且判断是否 &lt;= 圆的半径</span><br><span class="line">        return sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)) &lt;= x2</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="视图响应"><a href="#视图响应" class="headerlink" title="视图响应"></a>视图响应</h2><p>UIView 都继承于 UIResponder，都有以下方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func touchesBegan(_ touches: Set&lt;UITouch&gt;, with event: UIEvent?)</span><br><span class="line">func touchesMoved(_ touches: Set&lt;UITouch&gt;, with event: UIEvent?) </span><br><span class="line">func touchesEnded(_ touches: Set&lt;UITouch&gt;, with event: UIEvent?)</span><br><span class="line">func touchesCancelled(_ touches: Set&lt;UITouch&gt;, with event: UIEvent?)</span><br></pre></td></tr></table></figure>
-<p>如果事件沿着视图响应链一直传递到 UIApplicationDelegate 仍然没有任何一个视图处理事件，程序将会发生什么？</p>
-<ul>
-<li>忽略掉了这个事件当作什么都没有发生</li>
-</ul>
-<h2 id="图像显示原理"><a href="#图像显示原理" class="headerlink" title="图像显示原理"></a>图像显示原理</h2><p>CALayer 的 contents 是位图</p>
-<p><img src="https://ws1.sinaimg.cn/large/006tKfTcly1g1oqxcw9dvj32260n041w.jpg" alt></p>
-<ul>
-<li><p>CPU的工作</p>
-<p>  Layout   | Display   | Prepare    | Commite |<br>  ———|———–|————|———|<br>  UI布局      | 绘制         | 图片编解码  | 提交位图 |<br>  文本计算  | </p>
-</li>
-<li><p>GPU渲染管线</p>
-<p>  定点着色 | 图元转配 | 光栅化 | 片段着色 | 片段处理 |<br>  ——–|——–|——-|———|———|</p>
-</li>
-</ul>
-<pre><code>提交到帧缓冲区（frameBuffer）
-</code></pre><h2 id="UI卡顿掉帧的原因"><a href="#UI卡顿掉帧的原因" class="headerlink" title="UI卡顿掉帧的原因"></a>UI卡顿掉帧的原因</h2><p>1/60 ms 时间内， 由cpu 和GPU 协同产生最终的数据，当 CPU UI布局，文本计算所用的时间较长时，留给GPU渲染，提交到帧缓冲区的时间就会变短，这样以来就会发生掉帧情况</p>
-<h3 id="UIView-的绘制原理"><a href="#UIView-的绘制原理" class="headerlink" title="UIView 的绘制原理"></a>UIView 的绘制原理</h3><p><strong>CPU优化方案</strong></p>
-<ul>
-<li>对象的创建、调整、销毁放在子线程，节省cpu的一部分时间</li>
-<li>预排版（布局计算，文本计算）放在子线程中</li>
-<li>预渲染（文本等异步绘制，图片编解码）等</li>
-</ul>
-<p><strong>GPU优化方案</strong></p>
-<h2 id="在屏渲染"><a href="#在屏渲染" class="headerlink" title="在屏渲染"></a>在屏渲染</h2><p>指GPU的渲染操作是在当前用于显示的屏幕缓冲区域中进行</p>
-<h2 id="离屏渲染"><a href="#离屏渲染" class="headerlink" title="离屏渲染"></a>离屏渲染</h2><p>指GPU在当前屏幕缓冲区域外新开劈了一个缓冲区域进行渲染操作<br>指定了UI视图图层的某些属性，标记为视图在未预合成之前不能用于在当前屏幕上直接显示的时候就会发生离屏渲染，例如图层的圆角设置和蒙层设置</p>
-<ul>
-<li><p>离屏渲染何时触发</p>
-<ul>
-<li>设置layer 的圆角并且和 maskToBounds 一起使用时</li>
-<li>图层蒙版</li>
-<li>阴影</li>
-<li>光栅化</li>
-</ul>
-</li>
-<li><p>为何要避免离屏渲染</p>
-<ul>
-<li>离屏渲染，会增加 GPU 的工作量，GPU工作量的增加就很有可能导致CPU和GPU的总耗时超过1/60s，导致UI卡顿和掉帧 </li>
-</ul>
-</li>
-<li><p>避免离屏渲染</p>
-</li>
-</ul>
-<p>###异步绘制</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tKfTcly1g1osowi1dtj31l70u0ag5.jpg" alt></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第三章UI视图响应链离屏渲染面试/" data-id="cjx1wsdrw002umsfyk3ylnrnw" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第十章网络相关/" data-id="cjx1x9tew003940fynyutzfhs" class="article-share-link">Share</a>
       
       
     </footer>
@@ -651,7 +604,7 @@ max：10 最多发生多少个http请求和响应对
     <article id="post-第九章Runloop面试" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/第九章Runloop面试/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.191Z" itemprop="datePublished">2019-06-18</time>
+  <time datetime="2019-06-18T14:45:48.772Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -666,7 +619,7 @@ max：10 最多发生多少个http请求和响应对
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第九章Runloop面试/" data-id="cjx1wsdry002xmsfyx3zq9uud" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第九章Runloop面试/" data-id="cjx1x9tei002z40fypo284j0s" class="article-share-link">Share</a>
       
       
     </footer>
@@ -679,7 +632,7 @@ max：10 最多发生多少个http请求和响应对
     <article id="post-第五章Runtime相关面试" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/第五章Runtime相关面试/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.191Z" itemprop="datePublished">2019-06-18</time>
+  <time datetime="2019-06-18T14:45:48.772Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -775,7 +728,34 @@ max：10 最多发生多少个http请求和响应对
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第五章Runtime相关面试/" data-id="cjx1wsds2002zmsfy3xa773ss" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第五章Runtime相关面试/" data-id="cjx1x9tel003140fylyqolk1x" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-第八章多线程面试" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/第八章多线程面试/" class="article-date">
+  <time datetime="2019-06-18T14:45:48.772Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>第三章多线程面试</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/第八章多线程面试/" data-id="cjx1x9teo003440fyvforitaq" class="article-share-link">Share</a>
       
       
     </footer>
@@ -788,7 +768,7 @@ max：10 最多发生多少个http请求和响应对
     <article id="post-第六章内存管理面试" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/第六章内存管理面试/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.191Z" itemprop="datePublished">2019-06-18</time>
+  <time datetime="2019-06-18T14:45:48.772Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -873,34 +853,7 @@ max：10 最多发生多少个http请求和响应对
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第六章内存管理面试/" data-id="cjx1wsds40031msfykff76jvu" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-第八章多线程面试" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/第八章多线程面试/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.191Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>第三章多线程面试</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第八章多线程面试/" data-id="cjx1wsds50032msfytfob2ur4" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第六章内存管理面试/" data-id="cjx1x9tep003540fycwzppp8f" class="article-share-link">Share</a>
       
       
     </footer>
@@ -960,11 +913,15 @@ max：10 最多发生多少个http请求和响应对
       <ul>
         
           <li>
-            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
+            <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
+            <a href="/2019/06/18/第十一章设计模式面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
           </li>
         
           <li>
@@ -972,11 +929,7 @@ max：10 最多发生多少个http请求和响应对
           </li>
         
           <li>
-            <a href="/2019/06/18/第十章网络相关/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
+            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
           </li>
         
       </ul>

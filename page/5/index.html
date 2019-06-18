@@ -65,7 +65,7 @@
     <article id="post-GCD 信号量" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/GCD 信号量/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.173Z" itemprop="datePublished">2019-06-18</time>
+  <time datetime="2019-06-18T14:45:48.746Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -120,115 +120,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/GCD 信号量/" data-id="cjx1wsdk20007msfybzj0mvvk" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Charles 抓包" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/Charles 抓包/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.172Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Charles 抓包</p>
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>简单理解如下：</p>
-<ul>
-<li><p>正常请求</p>
-<p>  客户端 ——&gt; 服务器</p>
-</li>
-</ul>
-<ul>
-<li><p>Charles 抓包</p>
-<p>  客户端 ——&gt;  代理 （Charles）——&gt; 服务器</p>
-</li>
-</ul>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><a href="https://www.charlesproxy.com/" target="_blank" rel="noopener">Charles官网</a></p>
-<p>破解版本请自行百度</p>
-<p><strong>重要说明安装之前请暂时关闭电脑的VPN</strong></p>
-<p><strong>重要说明安装之前请暂时关闭电脑的VPN</strong></p>
-<p><strong>重要说明安装之前请暂时关闭电脑的VPN</strong></p>
-<h3 id="启动Charles"><a href="#启动Charles" class="headerlink" title="启动Charles"></a>启动Charles</h3><h3 id="安装Charles证书"><a href="#安装Charles证书" class="headerlink" title="安装Charles证书"></a>安装Charles证书</h3><p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1fyuumd2nkoj320y0j6jtz.jpg" alt></p>
-<pre><code>如果安装失败，请检查以前是否已经安装过，如果已经安装过并且已经失效，请删除失效证书后再安装
-</code></pre><h3 id="打开钥匙串–-gt-选择Charles-CA-gt-双击证书-–-gt-信任证书"><a href="#打开钥匙串–-gt-选择Charles-CA-gt-双击证书-–-gt-信任证书" class="headerlink" title="打开钥匙串–&gt; 选择Charles CA -&gt; 双击证书 –&gt; 信任证书"></a>打开钥匙串–&gt; 选择Charles CA -&gt; 双击证书 –&gt; 信任证书</h3><p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1fyuuq2z76mj31as0ri76z.jpg" alt></p>
-<h3 id="设置-https"><a href="#设置-https" class="headerlink" title="设置 https"></a>设置 https</h3><pre><code>- Proxy -&gt; SSL Proxying Settings -&gt; SSL Proxying -&gt; Add
-- Host: * 为需要过滤的域名地址,
-- *: 表示不过滤Port, 固定为443 `*`表示任意端口
-</code></pre><p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1fyuv3ii2bkj30wm0ocmye.jpg" alt></p>
-<h2 id="Mac-抓包"><a href="#Mac-抓包" class="headerlink" title="Mac 抓包"></a>Mac 抓包</h2><ul>
-<li><p>Proxy -&gt; macOS Proxy （☑️）</p>
-<p>  <img src="https://ws2.sinaimg.cn/large/006tNc79ly1fyuv7zqgaij31v00l0wik.jpg" alt></p>
-</li>
-</ul>
-<h2 id="真机抓包"><a href="#真机抓包" class="headerlink" title="真机抓包"></a>真机抓包</h2><p>此时可以将 macOS Proxy 选项中的 ✅ 去掉，</p>
-<h3 id="Mac与iPhone连接必须同一网络"><a href="#Mac与iPhone连接必须同一网络" class="headerlink" title="Mac与iPhone连接必须同一网络"></a>Mac与iPhone连接必须同一网络</h3><h3 id="设置代理端口号"><a href="#设置代理端口号" class="headerlink" title="设置代理端口号"></a>设置代理端口号</h3><p><img src="https://ws1.sinaimg.cn/large/006tNc79ly1fyuve5e6mbj31240u0wnu.jpg" alt></p>
-<h3 id="手机安装证书"><a href="#手机安装证书" class="headerlink" title="手机安装证书"></a>手机安装证书</h3><ul>
-<li><p>安装手机证书</p>
-<p>  <img src="https://ws3.sinaimg.cn/large/006tNc79ly1fyuvn5p8ijj31zi0iuq5h.jpg" alt></p>
-</li>
-<li><p>安装完成后弹窗</p>
-<p>  <img src="https://ws4.sinaimg.cn/large/006tNc79ly1fyuvln2bycj31b20cq0tz.jpg" alt></p>
-</li>
-</ul>
-<ul>
-<li><p>查看mac 地址，为手机设置代理</p>
-<ol>
-<li><p>根据安装手机证书后的弹窗显示IP配置</p>
-</li>
-<li><p>Charles –&gt; Help –&gt; Loca IP Address</p>
-<p> <img src="https://ws4.sinaimg.cn/large/006tNc79ly1fyuvgh515wj30uo0k0dhh.jpg" alt></p>
-</li>
-<li><p>打开电脑网络设置查看</p>
-<p> <img src="https://ws2.sinaimg.cn/large/006tNc79ly1fyuvic8h7vj30yo0u0dl3.jpg" alt></p>
-</li>
-</ol>
-</li>
-</ul>
-<ul>
-<li><p>设置代理</p>
-<p>  第一步<br>  <img src="https://ws1.sinaimg.cn/large/006tNc79ly1fyuvzrnksjj30oo0g8t96.jpg" alt></p>
-<p>  第二步<br>  <img src="https://ws3.sinaimg.cn/large/006tNc79ly1fyuvztfs46j30pu16uq4f.jpg" alt></p>
-<p>  第三步<br>  <img src="https://ws4.sinaimg.cn/large/006tNc79ly1fyuvzv0wdzj30q216wq46.jpg" alt></p>
-</li>
-<li><p>根据弹窗提示，在手机浏览器下载并安装证书</p>
-<p>  <img src="https://ws3.sinaimg.cn/large/006tNc79ly1fzej631vkbj30ve06gmya.jpg" alt></p>
-</li>
-</ul>
-<ul>
-<li><p>手机信任证书 </p>
-<ul>
-<li><p>设置 –&gt; 通用 –&gt; 关于本机 –&gt; 证书信任设置</p>
-<p> <img src="https://ws3.sinaimg.cn/large/006tNc79ly1fyuvzqy9shj31310u0doe.jpg" alt></p>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="模拟器抓包"><a href="#模拟器抓包" class="headerlink" title="模拟器抓包"></a>模拟器抓包</h3><ul>
-<li><p>安装模拟器证书</p>
-<p>  <img src="https://ws4.sinaimg.cn/large/006tNc79ly1fyux3vn7cbj31d80imaij.jpg" alt></p>
-</li>
-<li><p>勾选 <code>macOS Proxy</code> 选项</p>
-<p>  <img src="https://ws4.sinaimg.cn/large/006tNc79ly1fyux3cejcij30e40j4gmi.jpg" alt></p>
-</li>
-</ul>
-<p>如果失败，请先关闭模拟器，重新启动Charles 再打开模拟器</p>
-<h3 id="使用浏览器打开网页提示不是私密链接"><a href="#使用浏览器打开网页提示不是私密链接" class="headerlink" title="使用浏览器打开网页提示不是私密链接"></a>使用浏览器打开网页提示不是私密链接</h3><p><a href="https://blog.csdn.net/qq_31411389/article/details/79615688" target="_blank" rel="noopener">解决办法</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Charles 抓包/" data-id="cjx1wsdja0001msfypxl7gicd" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/GCD 信号量/" data-id="cjx1x9tb8000840fy2qxjv3hc" class="article-share-link">Share</a>
       
       
     </footer>
@@ -241,7 +133,7 @@
     <article id="post-ES6语法" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/ES6语法/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.172Z" itemprop="datePublished">2019-06-18</time>
+  <time datetime="2019-06-18T14:45:48.745Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -354,7 +246,115 @@ let arrowFunction = (param1, param2) =&gt; {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/ES6语法/" data-id="cjx1wsdjw0005msfy6jnqf8c0" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/ES6语法/" data-id="cjx1x9tb1000440fyay24g5mm" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Charles 抓包" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/Charles 抓包/" class="article-date">
+  <time datetime="2019-06-18T14:45:48.744Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Charles 抓包</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>简单理解如下：</p>
+<ul>
+<li><p>正常请求</p>
+<p>  客户端 ——&gt; 服务器</p>
+</li>
+</ul>
+<ul>
+<li><p>Charles 抓包</p>
+<p>  客户端 ——&gt;  代理 （Charles）——&gt; 服务器</p>
+</li>
+</ul>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><a href="https://www.charlesproxy.com/" target="_blank" rel="noopener">Charles官网</a></p>
+<p>破解版本请自行百度</p>
+<p><strong>重要说明安装之前请暂时关闭电脑的VPN</strong></p>
+<p><strong>重要说明安装之前请暂时关闭电脑的VPN</strong></p>
+<p><strong>重要说明安装之前请暂时关闭电脑的VPN</strong></p>
+<h3 id="启动Charles"><a href="#启动Charles" class="headerlink" title="启动Charles"></a>启动Charles</h3><h3 id="安装Charles证书"><a href="#安装Charles证书" class="headerlink" title="安装Charles证书"></a>安装Charles证书</h3><p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1fyuumd2nkoj320y0j6jtz.jpg" alt></p>
+<pre><code>如果安装失败，请检查以前是否已经安装过，如果已经安装过并且已经失效，请删除失效证书后再安装
+</code></pre><h3 id="打开钥匙串–-gt-选择Charles-CA-gt-双击证书-–-gt-信任证书"><a href="#打开钥匙串–-gt-选择Charles-CA-gt-双击证书-–-gt-信任证书" class="headerlink" title="打开钥匙串–&gt; 选择Charles CA -&gt; 双击证书 –&gt; 信任证书"></a>打开钥匙串–&gt; 选择Charles CA -&gt; 双击证书 –&gt; 信任证书</h3><p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1fyuuq2z76mj31as0ri76z.jpg" alt></p>
+<h3 id="设置-https"><a href="#设置-https" class="headerlink" title="设置 https"></a>设置 https</h3><pre><code>- Proxy -&gt; SSL Proxying Settings -&gt; SSL Proxying -&gt; Add
+- Host: * 为需要过滤的域名地址,
+- *: 表示不过滤Port, 固定为443 `*`表示任意端口
+</code></pre><p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1fyuv3ii2bkj30wm0ocmye.jpg" alt></p>
+<h2 id="Mac-抓包"><a href="#Mac-抓包" class="headerlink" title="Mac 抓包"></a>Mac 抓包</h2><ul>
+<li><p>Proxy -&gt; macOS Proxy （☑️）</p>
+<p>  <img src="https://ws2.sinaimg.cn/large/006tNc79ly1fyuv7zqgaij31v00l0wik.jpg" alt></p>
+</li>
+</ul>
+<h2 id="真机抓包"><a href="#真机抓包" class="headerlink" title="真机抓包"></a>真机抓包</h2><p>此时可以将 macOS Proxy 选项中的 ✅ 去掉，</p>
+<h3 id="Mac与iPhone连接必须同一网络"><a href="#Mac与iPhone连接必须同一网络" class="headerlink" title="Mac与iPhone连接必须同一网络"></a>Mac与iPhone连接必须同一网络</h3><h3 id="设置代理端口号"><a href="#设置代理端口号" class="headerlink" title="设置代理端口号"></a>设置代理端口号</h3><p><img src="https://ws1.sinaimg.cn/large/006tNc79ly1fyuve5e6mbj31240u0wnu.jpg" alt></p>
+<h3 id="手机安装证书"><a href="#手机安装证书" class="headerlink" title="手机安装证书"></a>手机安装证书</h3><ul>
+<li><p>安装手机证书</p>
+<p>  <img src="https://ws3.sinaimg.cn/large/006tNc79ly1fyuvn5p8ijj31zi0iuq5h.jpg" alt></p>
+</li>
+<li><p>安装完成后弹窗</p>
+<p>  <img src="https://ws4.sinaimg.cn/large/006tNc79ly1fyuvln2bycj31b20cq0tz.jpg" alt></p>
+</li>
+</ul>
+<ul>
+<li><p>查看mac 地址，为手机设置代理</p>
+<ol>
+<li><p>根据安装手机证书后的弹窗显示IP配置</p>
+</li>
+<li><p>Charles –&gt; Help –&gt; Loca IP Address</p>
+<p> <img src="https://ws4.sinaimg.cn/large/006tNc79ly1fyuvgh515wj30uo0k0dhh.jpg" alt></p>
+</li>
+<li><p>打开电脑网络设置查看</p>
+<p> <img src="https://ws2.sinaimg.cn/large/006tNc79ly1fyuvic8h7vj30yo0u0dl3.jpg" alt></p>
+</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li><p>设置代理</p>
+<p>  第一步<br>  <img src="https://ws1.sinaimg.cn/large/006tNc79ly1fyuvzrnksjj30oo0g8t96.jpg" alt></p>
+<p>  第二步<br>  <img src="https://ws3.sinaimg.cn/large/006tNc79ly1fyuvztfs46j30pu16uq4f.jpg" alt></p>
+<p>  第三步<br>  <img src="https://ws4.sinaimg.cn/large/006tNc79ly1fyuvzv0wdzj30q216wq46.jpg" alt></p>
+</li>
+<li><p>根据弹窗提示，在手机浏览器下载并安装证书</p>
+<p>  <img src="https://ws3.sinaimg.cn/large/006tNc79ly1fzej631vkbj30ve06gmya.jpg" alt></p>
+</li>
+</ul>
+<ul>
+<li><p>手机信任证书 </p>
+<ul>
+<li><p>设置 –&gt; 通用 –&gt; 关于本机 –&gt; 证书信任设置</p>
+<p> <img src="https://ws3.sinaimg.cn/large/006tNc79ly1fyuvzqy9shj31310u0doe.jpg" alt></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="模拟器抓包"><a href="#模拟器抓包" class="headerlink" title="模拟器抓包"></a>模拟器抓包</h3><ul>
+<li><p>安装模拟器证书</p>
+<p>  <img src="https://ws4.sinaimg.cn/large/006tNc79ly1fyux3vn7cbj31d80imaij.jpg" alt></p>
+</li>
+<li><p>勾选 <code>macOS Proxy</code> 选项</p>
+<p>  <img src="https://ws4.sinaimg.cn/large/006tNc79ly1fyux3cejcij30e40j4gmi.jpg" alt></p>
+</li>
+</ul>
+<p>如果失败，请先关闭模拟器，重新启动Charles 再打开模拟器</p>
+<h3 id="使用浏览器打开网页提示不是私密链接"><a href="#使用浏览器打开网页提示不是私密链接" class="headerlink" title="使用浏览器打开网页提示不是私密链接"></a>使用浏览器打开网页提示不是私密链接</h3><p><a href="https://blog.csdn.net/qq_31411389/article/details/79615688" target="_blank" rel="noopener">解决办法</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/Charles 抓包/" data-id="cjx1x9tar000340fy5faauqql" class="article-share-link">Share</a>
       
       
     </footer>
@@ -394,7 +394,7 @@ let arrowFunction = (param1, param2) =&gt; {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/02/03/Mac安装VirtualBox连接U盘/" data-id="cjx1wsdkf000dmsfy8fp40r2w" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/02/03/Mac安装VirtualBox连接U盘/" data-id="cjx1x9tbl000e40fy3l5mlgm6" class="article-share-link">Share</a>
       
       
     </footer>
@@ -450,7 +450,7 @@ let arrowFunction = (param1, param2) =&gt; {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/19/Block学习探究/" data-id="cjx1wsdjg0003msfy6aa94erx" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/19/Block学习探究/" data-id="cjx1x9taj000140fylkdmg8h3" class="article-share-link">Share</a>
       
       
     </footer>
@@ -526,7 +526,7 @@ let arrowFunction = (param1, param2) =&gt; {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/18/常见问题总结-二/" data-id="cjx1wsdrp002omsfy5m67c6ak" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/18/常见问题总结-二/" data-id="cjx1x9tea002q40fyhjwntr3v" class="article-share-link">Share</a>
       
       
     </footer>
@@ -636,7 +636,7 @@ let arrowFunction = (param1, param2) =&gt; {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/17/面试中常见问题总结/" data-id="cjx1wsdsl003amsfyw8nk4l5c" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/17/面试中常见问题总结/" data-id="cjx1x9tf2003c40fyrn47wo12" class="article-share-link">Share</a>
       
       
     </footer>
@@ -812,7 +812,7 @@ let arrowFunction = (param1, param2) =&gt; {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/12/iOS即时通讯实现二/" data-id="cjx1wsdpt0027msfydr4w58fx" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/12/iOS即时通讯实现二/" data-id="cjx1x9tdu002b40fy3vos4w08" class="article-share-link">Share</a>
       
       
     </footer>
@@ -886,7 +886,7 @@ let arrowFunction = (param1, param2) =&gt; {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/10/网络七层协议/" data-id="cjx1wsdsj0039msfyekgwd1b7" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/10/网络七层协议/" data-id="cjx1x9tf0003b40fyldbk2a7a" class="article-share-link">Share</a>
       
       
     </footer>
@@ -1145,7 +1145,7 @@ print(cbc_decryptedStr3)
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/08/Swift加密相关/" data-id="cjx1wsdn4001kmsfy9n7wvhs7" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/08/Swift加密相关/" data-id="cjx1x9td7001m40fyisbg5vib" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li></ul>
@@ -1207,11 +1207,15 @@ print(cbc_decryptedStr3)
       <ul>
         
           <li>
-            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
+            <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
+            <a href="/2019/06/18/第十一章设计模式面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
           </li>
         
           <li>
@@ -1219,11 +1223,7 @@ print(cbc_decryptedStr3)
           </li>
         
           <li>
-            <a href="/2019/06/18/第十章网络相关/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
+            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
           </li>
         
       </ul>
