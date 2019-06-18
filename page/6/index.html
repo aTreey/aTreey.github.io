@@ -62,80 +62,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-网络七层协议" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/01/10/网络七层协议/" class="article-date">
-  <time datetime="2018-01-10T15:26:18.000Z" itemprop="datePublished">2018-01-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/10/网络七层协议/">iOS 即使通讯网络知识篇</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="网络七层协议"><a href="#网络七层协议" class="headerlink" title="网络七层协议"></a>网络七层协议</h2><p>读《图解TCP/IP》第5版以及看过的关于网络文章之后自己的理解</p>
-<p>OSI (Open System Interconnec) 译为 开发式系统互联 七层模型从下到上一次是：物理层 -&gt; 数据链路层 —&gt; 网络层 -&gt; 传输层 -&gt; 会话层 -&gt; 表示层 -》 应用层</p>
-<p>数据每次经过一层之后就会在数据头部增加一个首部信息</p>
-<h5 id="物理层：网卡-网线-集线器-中继器-调制解调器"><a href="#物理层：网卡-网线-集线器-中继器-调制解调器" class="headerlink" title="物理层：网卡,网线,集线器,中继器,调制解调器"></a>物理层：网卡,网线,集线器,中继器,调制解调器</h5><ul>
-<li>定义设备标准，如网线，光纤接口类型，将0和1转化为电信号的强和弱，达到传输<strong>比特流</strong>目的，这层数据叫比特</li>
-</ul>
-<h5 id="数据链路层：网桥-交换机"><a href="#数据链路层：网桥-交换机" class="headerlink" title="数据链路层：网桥,交换机"></a>数据链路层：网桥,交换机</h5><ul>
-<li>传输的地址帧，并且有检测错误功能，保证数据可靠传输， 这层数据叫帧</li>
-</ul>
-<h5 id="网络层：路由器"><a href="#网络层：路由器" class="headerlink" title="网络层：路由器"></a>网络层：路由器</h5><ul>
-<li>两个计算机通信时可能会经过多个数据链路或者通信子网，网络层将数据链路层的帧组成数据包，包中有封装好的包头，其中含有逻辑地址信息（源站点和目的站点），此层为数据包选择合适的路由和交换结点,IP协议产生，这层数据叫着数据包</li>
-</ul>
-<h5 id="传输层："><a href="#传输层：" class="headerlink" title="传输层："></a>传输层：</h5><ul>
-<li>解决数据如何在网络中传输，这个层负责获取全部信息，因此，它必须跟踪数据单元碎片、乱序到达的 数据包和其它在传输过程中可能发生的危险。第4层为上层提供端到端（最终用户到最终用户）的透明的、可靠的数据传输服务。所为透明的传输是指在通信过程中 传输层对上层屏蔽了通信传输系统的具体细节。传输层协议的代表包括：TCP、UDP、SPX等</li>
-</ul>
-<h5 id="会话层："><a href="#会话层：" class="headerlink" title="会话层："></a>会话层：</h5><ul>
-<li>这一层也可以称为会晤层或对话层，在会话层及以上的高层次中，数据传送的单位不再另外命名，而是统称为报文。会话层不参与具体的传输，它提供包括访问验证和会话管理在内的建立和维护应用之间通信的机制。如服务器验证用户登录便是由会话层完成的</li>
-</ul>
-<h5 id="表示层："><a href="#表示层：" class="headerlink" title="表示层："></a>表示层：</h5><ul>
-<li>这一层主要解决拥护信息的语法表示问题。它将欲交换的数据从适合于某一用户的抽象语法，转换为适合于OSI系统内部使用的传送语法。即提供格式化的表示和转换数据服务。数据的压缩和解压缩， 加密和解密等工作都由表示层负责。</li>
-</ul>
-<h5 id="应用层：HTTP-协议"><a href="#应用层：HTTP-协议" class="headerlink" title="应用层：HTTP 协议"></a>应用层：HTTP 协议</h5><ul>
-<li>如何包装数据</li>
-</ul>
-<p><strong>通常从上到下会分成四层</strong></p>
-<p>TCP/IP 通常是指TCP/IP协议族,是一组不同协议组合在一起构成的协议族</p>
-<ul>
-<li>应用层：FTP 应用层协议</li>
-<li>传输层：TCP,UDP 传输层协议,TCP 提供了一个可靠的服务</li>
-<li>网络层：IP,ICMP 网络层协议，传输时不可靠的</li>
-<li>链路层：以太网协议</li>
-</ul>
-<h2 id="Socket"><a href="#Socket" class="headerlink" title="Socket"></a>Socket</h2><p><strong>为了解决不同计算机上进程间通信问题</strong><br>服务器在指定的端口上监听，然后生成一对儿新的socket 进行通讯，一个线程对应一个socket</p>
-<p>英文翻译为“插座”通常称为”套接字”, 本质是对于TCP/IP的封装，有客户端 socket 和 服务端socket </p>
-<ul>
-<li>流式 Socket (STREAM): 是一种面向连接的socket，针对于面向连接的TCP服务应用，因为安全所以效率低</li>
-<li>数据报式Socket (DATAGRAM): 是一种无连接的SOcket，正对于无连接的UDP服务应用，无序，不安全，需要在接收端分析重排或者要求重发，所以效率高</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/10/网络七层协议/" data-id="cjx1yl712003eihfy127pp9mw" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-Swift加密相关" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/01/08/Swift加密相关/" class="article-date">
@@ -385,7 +311,7 @@ print(cbc_decryptedStr3)
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/08/Swift加密相关/" data-id="cjx1yl707001rihfywhqsbqhu" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/08/Swift加密相关/" data-id="cjx1yn1kj001os2fyexrilw4k" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li></ul>
@@ -449,7 +375,7 @@ print(cbc_decryptedStr3)
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/12/14/Mac-安装MySQL/" data-id="cjx1yl6zi000eihfynjbu4i8i" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/12/14/Mac-安装MySQL/" data-id="cjx1yn1jw000gs2fyqrlsuudq" class="article-share-link">Share</a>
       
       
     </footer>
@@ -501,7 +427,7 @@ EmotionKeyboard.podspec passed validation.
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/12/02/本地已有项目添加Pod/" data-id="cjx1yl70p002uihfyd56wre4b" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/12/02/本地已有项目添加Pod/" data-id="cjx1yn1l4002us2fyjbxuptoa" class="article-share-link">Share</a>
       
       
     </footer>
@@ -582,7 +508,7 @@ EmotionKeyboard.podspec passed validation.
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/11/29/CocoaPods制作私有pod/" data-id="cjx1yl6z00002ihfy3a38o0ye" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/11/29/CocoaPods制作私有pod/" data-id="cjx1yn1jh0004s2fyhue28rvl" class="article-share-link">Share</a>
       
       
     </footer>
@@ -636,7 +562,7 @@ EmotionKeyboard.podspec passed validation.
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/04/10/Alamofire源码学习/" data-id="cjx1yl6yy0001ihfyy177eng9" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/04/10/Alamofire源码学习/" data-id="cjx1yn1j70000s2fy9czxvggs" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Alamofire/">Alamofire</a></li></ul>
@@ -684,7 +610,7 @@ EmotionKeyboard.podspec passed validation.
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/03/25/知识点总结/" data-id="cjx1yl70r002yihfyuol97q19" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/03/25/知识点总结/" data-id="cjx1yn1l6002xs2fy6rfm15x2" class="article-share-link">Share</a>
       
       
     </footer>
@@ -741,7 +667,7 @@ EmotionKeyboard.podspec passed validation.
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/03/08/Swift3.0学习(三)/" data-id="cjx1yl703001dihfy62bclwg3" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/03/08/Swift3.0学习(三)/" data-id="cjx1yn1kd001bs2fyy0yeuiws" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
@@ -904,7 +830,7 @@ let closure = {() -&gt; () in
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/03/05/Swift3.0学习(二)/" data-id="cjx1yl702001cihfy1i0ohaii" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/03/05/Swift3.0学习(二)/" data-id="cjx1yn1ke001cs2fy4i8jbjzr" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
@@ -1011,10 +937,59 @@ let closure = {() -&gt; () in
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/03/01/Swift3.0学习(一)/" data-id="cjx1yl7010019ihfyyo7snk15" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/03/01/Swift3.0学习(一)/" data-id="cjx1yn1kd0019s2fyz3lumxu1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-OC与js交互学习" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/20/OC与js交互学习/" class="article-date">
+  <time datetime="2017-02-20T12:10:41.000Z" itemprop="datePublished">2017-02-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/02/20/OC与js交互学习/">OC和JS交互</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="WebView相关属性"><a href="#WebView相关属性" class="headerlink" title="WebView相关属性"></a>WebView相关属性</h3><p>autoResizingMask 是UIView的属性,作用是实现子控件相对于父控件的自动布局</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">autoResizingMask 是UIViewAutoresizing 默认是 UIViewAutoresizingNone</span><br><span class="line"></span><br><span class="line">UIViewAutoresizingNone = 0,</span><br><span class="line">UIViewAutoresizingFlexibleLeftMargin = 1 &lt;&lt; 0,</span><br><span class="line">UIViewAutoresizingFlexibleWidth = 1 &lt;&lt; 1,</span><br><span class="line">UIViewAutoresizingFlexibleRightMargin = 1 &lt;&lt; 2,</span><br><span class="line">UIViewAutoresizingFlexibleTopMargin = 1 &lt;&lt; 3,</span><br><span class="line">UIViewAutoresizingFlexibleHeight = 1 &lt;&lt; 4,</span><br><span class="line">UIViewAutoresizingFlexibleBottomMargin = 1 &lt;&lt; 5</span><br></pre></td></tr></table></figure>
+<p>各属性解释：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">UIViewAutoresizingNone</span><br><span class="line">不会随父视图的改变而改变</span><br><span class="line"></span><br><span class="line">UIViewAutoresizingFlexibleLeftMargin</span><br><span class="line"></span><br><span class="line">自动调整view与父视图左边距，以保证右边距不变</span><br><span class="line"></span><br><span class="line">UIViewAutoresizingFlexibleWidth</span><br><span class="line">自动调整view的宽度，保证左边距和右边距不变</span><br><span class="line"></span><br><span class="line">UIViewAutoresizingFlexibleRightMargin</span><br><span class="line">自动调整view与父视图右边距，以保证左边距不变</span><br><span class="line"></span><br><span class="line">UIViewAutoresizingFlexibleTopMargin</span><br><span class="line">自动调整view与父视图上边距，以保证下边距不变</span><br><span class="line"></span><br><span class="line">UIViewAutoresizingFlexibleHeight</span><br><span class="line">自动调整view的高度，以保证上边距和下边距不变</span><br><span class="line"></span><br><span class="line">UIViewAutoresizingFlexibleBottomMargin</span><br><span class="line">自动调整view与父视图的下边距，以保证上边距不变</span><br></pre></td></tr></table></figure>
+<h3 id="OC-调用js"><a href="#OC-调用js" class="headerlink" title="OC 调用js"></a>OC 调用js</h3><p><code>webViewDidFinishLoad:(UIWebView *)webView</code>方法中</p>
+<ul>
+<li>删除增加结点</li>
+<li>添加点击事件</li>
+</ul>
+<h3 id="js调用OC"><a href="#js调用OC" class="headerlink" title="js调用OC"></a>js调用OC</h3><p><code>webView:(UIWebview )webView shouldStartLoadWithRequest:(NSURLRequest )request</code>方法中</p>
+<p>调用js页面点击按钮后保存图片到相册,必须调用系统提供的方法，不能自己自定义方法</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2017/02/20/OC与js交互学习/" data-id="cjx1yn1jz000ms2fyra5o0yeb" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OC-JS/">OC, JS</a></li></ul>
 
     </footer>
   </div>
@@ -1089,7 +1064,7 @@ let closure = {() -&gt; () in
           </li>
         
           <li>
-            <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
+            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
           </li>
         
       </ul>
