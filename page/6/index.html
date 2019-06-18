@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
 
@@ -62,6 +62,201 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Mac-安装MySQL" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/14/Mac-安装MySQL/" class="article-date">
+  <time datetime="2017-12-14T14:52:19.000Z" itemprop="datePublished">2017-12-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/14/Mac-安装MySQL/">Mac 安装MySQL</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>搭建 <code>XMPP</code> 即使通讯</p>
+<h2 id="安装MySQL数据库"><a href="#安装MySQL数据库" class="headerlink" title="安装MySQL数据库"></a>安装MySQL数据库</h2><ul>
+<li><p>安装MySQL 数据库    </p>
+<ul>
+<li><p><a href="https://www.mysql.com/" target="_blank" rel="noopener">官网</a> 下载安装包</p>
+<p><strong>特别强调：不要一直<code>下一步</code>最后的时候会有个弹窗提示你生成root的临时密码，记录一下</strong></p>
+</li>
+</ul>
+</li>
+<li><p>安装数据库管理工具 <code>MySQLWorkbench</code></p>
+<p> 官网安装包下载安装</p>
+</li>
+<li><p>修改数据库 root 密码，</p>
+<p>  打开<code>MySQLWorkbench</code> 随便打开一个SQL 输入安装时记录的密码，确认后提示你修改密码，</p>
+</li>
+<li><p>如果为记住安装时密码，参考下面链接修改</p>
+<p>  <a href="https://www.cnblogs.com/sunny3096/p/7954129.html" target="_blank" rel="noopener"></a> </p>
+</li>
+</ul>
+<h2 id="安装-openfire"><a href="#安装-openfire" class="headerlink" title="安装 openfire"></a>安装 openfire</h2><ul>
+<li><p><a href="https://www.igniterealtime.org/downloads/index.jsp" target="_blank" rel="noopener">官网</a> 下载安装包安装</p>
+</li>
+<li><p>安装后需重启系统偏好设置</p>
+</li>
+<li>如果出现右边的管理员配置按钮不能点击，请使用 <code>brew</code> 安装 或者更新 <code>Java</code> 环境，<code>openfire</code> 需要 <code>Java</code> 环境  </li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2017/12/14/Mac-安装MySQL/" data-id="cjx1wsdkd000cmsfyz9qf0aog" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-本地已有项目添加Pod" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/02/本地已有项目添加Pod/" class="article-date">
+  <time datetime="2017-12-01T16:38:18.000Z" itemprop="datePublished">2017-12-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/02/本地已有项目添加Pod/">本地已有项目添加Pod</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>上一篇中主要记录了如何使用 <code>pod</code> 工具自动创建 <code>pod</code> 库并且生成一个测试Demo，这边主要记录给已有的项目添加 <code>pod</code></p>
+<h2 id="创建-podsepc-文件"><a href="#创建-podsepc-文件" class="headerlink" title="创建 .podsepc 文件"></a>创建 .podsepc 文件</h2><ul>
+<li><p><code>cd</code> 到已有项目的根目录执行命令： <code>pod spec create [ProjectName].podspec</code></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod spec create EmotionKeyboard.podspec</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="修改编辑-podsepc-文件"><a href="#修改编辑-podsepc-文件" class="headerlink" title="修改编辑 .podsepc 文件"></a>修改编辑 <code>.podsepc</code> 文件</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">	s.name         = &quot;EmotionKeyboard&quot;</span><br><span class="line">  	s.version      = &quot;0.0.1&quot;</span><br><span class="line">  	s.summary      = &quot;A  Emotional Keyboard.&quot;</span><br><span class="line">  	</span><br><span class="line">  	# 此处的格式不能修改</span><br><span class="line">  	s.description  = &lt;&lt;-DESC</span><br><span class="line"></span><br><span class="line">	Swift Emotional Keyboard</span><br><span class="line">                   DESC</span><br><span class="line"></span><br><span class="line">	s.homepage     = &quot;https://github.com/aTreey/EmotionKeyboard&quot;</span><br><span class="line">	</span><br><span class="line">	# 两种写法，使用下面第二种  </span><br><span class="line">	# s.license      = &quot;MIT (example)&quot;</span><br><span class="line">	s.license      = &#123; :type =&gt; &quot;MIT&quot;, :file =&gt; &quot;LICENSE&quot; &#125;</span><br><span class="line">	</span><br><span class="line">	s.author             = &#123; &quot;aTree&quot; =&gt; &quot;480814177@qq.com&quot; &#125;</span><br><span class="line">	</span><br><span class="line">	s.platform     = :ios, &quot;8.0&quot;</span><br><span class="line">	</span><br><span class="line">	s.source       = &#123; :git =&gt; &quot;https://github.com/aTreey/EmotionKeyboard.git&quot;, :tag =&gt; &quot;#&#123;s.version&#125;&quot; &#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	# 从 .podspec 同级别的目录下起匹配 </span><br><span class="line">	s.source_files  = &quot;EmotionKeyboard&quot;, &quot;EmotionKeyboard/Classes/**/*.&#123;h,m&#125;&quot;</span><br><span class="line">	</span><br><span class="line">	# 设置自己项目中依赖的系统库</span><br><span class="line">	s.framework  = &quot;UIKit&quot;</span><br><span class="line">  	</span><br><span class="line">	``` </span><br><span class="line">	</span><br><span class="line">## 调整文件的目录结构</span><br><span class="line">	</span><br><span class="line">- 在项目根目录下新建一个放组件代码的文件夹</span><br><span class="line">- 如果项目中包含 `bundle` 文件, 需要在组件文件夹下新建一个 `Assets` 文件夹，用来存放组件中的资源</span><br><span class="line"></span><br><span class="line">	最终结果如下:</span><br><span class="line">	</span><br><span class="line">	![](https://ws1.sinaimg.cn/large/a1641e1bly1fm2jl7ykslj21gc0o80xt.jpg))</span><br><span class="line"></span><br><span class="line">- 创建并添加必要文件</span><br><span class="line">	</span><br><span class="line">	- `LICENSE` 文件: 开源许可文件, 如果创建项目的时候选择了开源许可就可以自动生成忽略此步骤,如果没有直接拷贝一份其他的工程中的即可</span><br><span class="line">	- `README.md` 文件: 主要用来说明你开源库的信息及使用方法</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">## 验证本地 `.podspec` 文件</span><br><span class="line"></span><br><span class="line">- 错误1: `.podspec `中的文件路径设置错误</span><br><span class="line">	</span><br><span class="line">	![](https://ws1.sinaimg.cn/large/a1641e1bly1fm2jlboq82j20v807ejug.jpg)</span><br><span class="line">	</span><br><span class="line">- 错误2: bundle 文件资源路径错误</span><br><span class="line"></span><br><span class="line">	![](https://ws1.sinaimg.cn/large/a1641e1bly1fm2jl4shnnj20zq0cwgqf.jpg)</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">- 本地验证结果</span><br><span class="line"></span><br><span class="line"> - **EmotionKeyboard passed validation.** 本地验证验证通过</span><br><span class="line"></span><br><span class="line">## 网络验证 `.podspec` 文件 </span><br><span class="line">	</span><br><span class="line">- 给 `master` 分支打上 `.podspec` 文件中对应的 `tag` 标签, 提交推送, </span><br><span class="line">- 执行命令</span><br></pre></td></tr></table></figure>
+
+pod spec lint
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- 网络验证结果</span><br></pre></td></tr></table></figure>
+
+EmotionKeyboard.podspec passed validation.
+```
+</code></pre><p><strong>本文参考</strong></p>
+<p><a href="http://blog.xianqu.org/2015/08/pod-resources/" target="_blank" rel="noopener">给 Pod 添加资源文件</a></p>
+<p><a href="http://swift.gg/2016/12/15/cocoapods-making-guide/" target="_blank" rel="noopener">基于 Swift 创建 CocoaPods 完全指南</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2017/12/02/本地已有项目添加Pod/" data-id="cjx1wsdrs002qmsfyxgs0kfsu" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-CocoaPods制作私有pod" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/29/CocoaPods制作私有pod/" class="article-date">
+  <time datetime="2017-11-29T12:57:56.000Z" itemprop="datePublished">2017-11-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/29/CocoaPods制作私有pod/">CocoaPods制作私有pod</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="CocoaPods原理"><a href="#CocoaPods原理" class="headerlink" title="CocoaPods原理"></a>CocoaPods原理</h2><p><strong>本文主要记录制作自己的pod库过程</strong></p>
+<p>CocoaPods 是自动化工具，主要用来管理一些开源的第三方框架，或者是制作自己的私有库,开源库,也可以使用它讲自己的项目组件化。</p>
+<p>具体可以参考：</p>
+<ol>
+<li><a href="https://juejin.im/post/58730a25a22b9d0058971144" target="_blank" rel="noopener">细聊 Cocoapods 与 Xcode 工程配置</a></li>
+<li><a href="https://juejin.im/post/59f2c7eaf265da432c2318e5" target="_blank" rel="noopener">你真的会用 CocoaPods 吗?</a></li>
+</ol>
+<h2 id="CocoaPods-安装"><a href="#CocoaPods-安装" class="headerlink" title="CocoaPods 安装"></a>CocoaPods 安装</h2><p><a href="http://www.pluto-y.com/cocoapods-getting-stared/" target="_blank" rel="noopener">安装教程</a></p>
+<h2 id="创建私有索引仓库"><a href="#创建私有索引仓库" class="headerlink" title="创建私有索引仓库"></a>创建私有索引仓库</h2><p>每次使用第三方开源库的时候只需要在 <code>Podfile</code> 文件中指定所用的库然后 <code>Pod install</code> ，这是因为安装pod的时候 <code>pod setup</code> 从<a href="https://github.com/CocoaPods/Specs">远程仓库</a>（索引库） clone到了本地,此仓库中存放了所有支持pod框架的描述信息(包括每个库的各个版本)</p>
+<p>文件目录：</p>
+<pre><code>~/.cocoapods/repos/master
+</code></pre><ul>
+<li><p>在 <a href="https://gitee.com/" target="_blank" rel="noopener">码云</a> 或者 <a href>coding</a> 上创建一个私有仓库</p>
+</li>
+<li><p>添加私有库到CocoaPods</p>
+<ul>
+<li><p>格式 <code>pod repo add [repoName] (URL)</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">	pod repo add PrivateSpec https://gitee.com/aapenga/PrivateSpec.git </span><br><span class="line">	```	</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 创建本地私有库</span><br><span class="line"></span><br><span class="line"> - `cd` 到任意一个文件夹下, 执行 `pod lib create [项目名]`</span><br><span class="line">	</span><br><span class="line">	``` </span><br><span class="line"> 	pod lib create PPExcelView</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>将文件放入到生成的 Demo 文件夹 的 <code>Classes</code> 文件目录下</li>
+<li><p><code>cd</code> 到 <code>Example</code> 下(含有 <code>Podfile</code> 文件) 执行</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod install</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod update</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p> 此时添加的文件出现在 <code>Dome</code> Pod 的 <code>Development Pods</code> 目录中</p>
+<ul>
+<li><p>从本地验证 pod 是否通过</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod lib lint</span><br></pre></td></tr></table></figure>
+<p>  如果有警告，可以使用 <code>--private</code> 或者 <code>--allow-warnings</code> 忽略</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pod lib lint --allow-warnings</span><br><span class="line">pod lib lint --private</span><br></pre></td></tr></table></figure>
+<p> <strong>出现     <code>PPExcelView passed validation.</code> 为通过</strong></p>
+</li>
+<li><p>从远程仓库验证 pod </p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod spec lint</span><br></pre></td></tr></table></figure>
+<p>  <strong>出现     <code>PPExcelView.podspec passed validation</code> 为通过</strong></p>
+</li>
+</ul>
+<h2 id="推送-podspec-文件到私有仓库"><a href="#推送-podspec-文件到私有仓库" class="headerlink" title="推送 .podspec 文件到私有仓库"></a>推送 <code>.podspec</code> 文件到私有仓库</h2><p><code>cd</code> 到 <code>.podspec</code> 所在的文件下</p>
+<pre><code>pod repo push MyGitSpec PPExcelView.podspec
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2017/11/29/CocoaPods制作私有pod/" data-id="cjx1wsdju0004msfydfec7ibq" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Alamofire源码学习" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/04/10/Alamofire源码学习/" class="article-date">
@@ -106,7 +301,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/04/10/Alamofire源码学习/" data-id="cjwgh853s0000oi810yxvdi11" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/04/10/Alamofire源码学习/" data-id="cjx1wsdj20000msfyppagjmqs" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Alamofire/">Alamofire</a></li></ul>
@@ -154,7 +349,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/03/25/知识点总结/" data-id="cjwgh855l002toi81i4yonpy4" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/03/25/知识点总结/" data-id="cjx1wsdrt002smsfyt8rlmklu" class="article-share-link">Share</a>
       
       
     </footer>
@@ -211,7 +406,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/03/08/Swift3.0学习(三)/" data-id="cjwgh854u0015oi815zdxp4yz" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/03/08/Swift3.0学习(三)/" data-id="cjx1wsdlf0017msfybfcfgkp0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
@@ -374,7 +569,7 @@ let closure = {() -&gt; () in
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/03/05/Swift3.0学习(二)/" data-id="cjwgh854v0018oi81a31484rp" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/03/05/Swift3.0学习(二)/" data-id="cjx1wsdmt0018msfy5zvh2oz8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
@@ -481,7 +676,7 @@ let closure = {() -&gt; () in
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/03/01/Swift3.0学习(一)/" data-id="cjwgh854t0014oi81dybrscel" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/03/01/Swift3.0学习(一)/" data-id="cjx1wsdle0015msfysqnuu90i" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
@@ -530,7 +725,7 @@ let closure = {() -&gt; () in
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/02/20/OC与js交互学习/" data-id="cjwgh854g000ioi81zcap41g4" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/02/20/OC与js交互学习/" data-id="cjx1wsdko000imsfyw9j1qp0s" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OC-JS/">OC, JS</a></li></ul>
@@ -641,223 +836,10 @@ let closure = {() -&gt; () in
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/02/08/SDWebImage学习/" data-id="cjwgh854p000toi81q7fordip" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/02/08/SDWebImage学习/" data-id="cjx1wsdl5000xmsfyzir0nq5z" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-iOS静态库动态库" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/02/02/iOS静态库动态库/" class="article-date">
-  <time datetime="2017-02-02T14:15:40.000Z" itemprop="datePublished">2017-02-02</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/02/iOS静态库动态库/">WKWebiView 使用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="iOS中静态库动态库介绍及编译"><a href="#iOS中静态库动态库介绍及编译" class="headerlink" title="iOS中静态库动态库介绍及编译"></a>iOS中静态库动态库介绍及编译</h3><ul>
-<li>静态库</li>
-</ul>
-<p>iOS中根据源码的公开情况可分为2种</p>
-<ul>
-<li>开源库<br>源代码公开，能够看到具体的代码实现</li>
-</ul>
-<p>比如 SDWebImage AFNetworking。。。</p>
-<ul>
-<li><p>闭源库<br>不公开源代码， 是经过编译后的二进制文件， 看不到具体实现<br>主要分为：静态库、动态库</p>
-</li>
-<li><p>存在形式</p>
-</li>
-</ul>
-<p>静态库： .a 和 .framework<br>动态库：.tbd 和 .framework (iOS 9 之前是 .dylib, iOS 9 之后取消了 .dylib 而使用 .tbd 来代替 .dylib )</p>
-<p>.framework 的库可以是静态库也可以是静态库， 凡是系统的 .framework 都是动态库，第三方的基本上全是静态中</p>
-<ul>
-<li>两者区别</li>
-</ul>
-<p>静态库：链接时会被完整的复制到可执行文件中，每次被使用都会被复制<br>动态库：链接时不复制，程序运行时由系统动态加载到内存中，供程序调用，系统只加载一次，多个程序可以公用，节省内存</p>
-<h3 id="静态库编译"><a href="#静态库编译" class="headerlink" title="静态库编译"></a>静态库编译</h3><p>编译时如果使用的是模拟器，生成的 .a 只能模拟器用，真机不可用，生成的 .a 文件在 Debug-iphonesimulator 文件夹下</p>
-<p>编译时如果使用 generic iOS Device，生成的 .a 只能真机而模拟器不可用，生成的 .a 文件在 Debug-iphoneos 文件夹下</p>
-<p>编译静态库时，自己手动创建的类的头文件不会被导出，只是默认导出创建工程时类的头文件</p>
-<p>导出手动添加类的头文件，点击工程名称 –&gt; build Phases –&gt; Copy Files 添加头文件，然后编译</p>
-<ul>
-<li>架构种类</li>
-</ul>
-<p>模拟器：i386 32位架构 (4s~5) ／ x86_64 64位架构 (5s以后机型)<br>真机：armv7 32位架构 (4~4s) ／ armv7s 特殊架构 (5~5C) ／ arm64 64位架构 (5s 以后机型)</p>
-<ul>
-<li><p>架构查看<br>lipo -info xxxx.a<br>默认生成模拟器只生成一种架构 i386 x86_64；真机默认导出两种架构 armv7 ／ arm64</p>
-</li>
-<li><p>合并多个架构</p>
-</li>
-</ul>
-<p>将模拟器的多个架构合并，项目名称–&gt;Build Settings –&gt; Achitectures –&gt; Build Active Architecture Only –&gt; Debug设置为NO<br>合并真机多个架构 按照以上方法运行真机即可<br>合并真机和模拟器架构 cd products lipo -create Debug-iphoneos/xxx.a Debug-iphonessimulator/xxx.a -output xx.a<br>合成 5 个架构 在Build Setting –&gt; Architectures 中手动添加三种架构,再编译合并</p>
-<ul>
-<li>静态库报错</li>
-</ul>
-<p>Undefined symbols for architecture （arm64 ／ armv7 ／ armv7s ／ i386 ／ x86_64），架构包导入出错，静态库有真机与模拟器</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/02/02/iOS静态库动态库/" data-id="cjwgh855c002doi8180wc3ciu" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WKWebView/">WKWebView</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-异步下载图片" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/01/18/异步下载图片/" class="article-date">
-  <time datetime="2017-01-18T13:40:36.000Z" itemprop="datePublished">2017-01-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/18/异步下载图片/">异步下载图片</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="异步下载"><a href="#异步下载" class="headerlink" title="异步下载"></a>异步下载</h3><p>同步发送网络请求会卡UI线程，采用异步来下载图片。</p>
-<p><strong>异步下载存在的问题</strong></p>
-<ul>
-<li><p>错行问题</p>
-<ul>
-<li>解决：使用MVC模式，使数据一对一可解决，</li>
-<li>在MVC中增加image属性后，会导致单个模式的体积增大</li>
-<li>内存占用</li>
-<li>当接收到内存警告时清空图片时需要遍历模型中将image置为nil</li>
-<li>将图片用字典缓存起来达到一对一, 清空内存中的图片时只需要remove字典就ok</li>
-<li>创建下载任务的字典，在开始下载时将正在下载的URL写入到字典中下载完成后将字典中对应的值移除，写入防止来回滑动时重复发送网络请求，下载完后移除是为了防止如果接受到内存警告后下载的图片都已清除，但是下载任务的字典的值为移除就不会再一次去下载图片</li>
-<li><p>缓存下载的图片到沙盒中</p>
-</li>
-<li><p>获取图片下载路径最后一个分隔符后面的字符串作为图片名保存</p>
-</li>
-</ul>
-</li>
-</ul>
-<p><code>stringByAppendingPathComponent</code> 和 <code>stringByAppendingString</code> 两个方法有区别</p>
-<p><strong>stringByAppendingString 方法是获取caches文件名，在文件夹名后面拼接字符串，在caches上一级目录下创建文件，和caches文件夹属于同一个级别</strong></p>
-<pre><code>// 获取caches文件路径
-NSString *cachesPath = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-
-NSString *URL = @&quot;http://wwww.baidu.com/image/123456.png&quot;;
-
-NSString *imageName = [URL lastPathComponent];
-
-// 拼接路径
-// 此方法生成的路径在caches文件下目录下
-NSString *filePath = [cachesPath stringByAppendingPathComponent];
-
-
-// 读取图片
-if (内存中没有) {
-    // 沙盒读取
-    UIImage *sandBoxImage = [UIImage imageWithContetsOfFile:filePath];
-
-    **加入到内存中，方便下次加载**
-} 
-
-if (sandBoxImage == nil) {
-    // 下载图片
-}
-
-// 写入到沙盒
-if (imageData != nil) {
-    [imageData writeToFile: filePath atomically:NO];
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/01/18/异步下载图片/" data-id="cjwgh855j002poi81yi8g185b" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/异步/">异步</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Quartz2D绘制形状" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/12/10/Quartz2D绘制形状/" class="article-date">
-  <time datetime="2016-12-10T13:58:31.000Z" itemprop="datePublished">2016-12-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/10/Quartz2D绘制形状/">Quartz 2D绘制形状(二)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>使用Quartz 2D绘制圆弧，扇形，下载进度以及绘制的图形的填充和描边属性的设置.<br>将贝塞尔路径添加到图形上下文中<br>图形上下文中的状态保存和恢复<br>对图形上下文进行矩阵操作（平移，缩放，选转），实现一些特殊效果</p>
-<h3 id="使用贝塞尔曲线绘制矩形"><a href="#使用贝塞尔曲线绘制矩形" class="headerlink" title="使用贝塞尔曲线绘制矩形"></a>使用贝塞尔曲线绘制矩形</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    UIBezierPath *path = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, 20, 30)];</span><br><span class="line">    [[UIColor magentaColor] setStroke];</span><br><span class="line">    [[UIColor brownColor] setFill];</span><br><span class="line">    [path fill]; // 填充</span><br><span class="line">    [path stroke]; // 描边</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="圆角矩形"><a href="#圆角矩形" class="headerlink" title="圆角矩形"></a>圆角矩形</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 绘制圆角矩形</span><br><span class="line">&#123;</span><br><span class="line">    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(35, 10, 50, 70) cornerRadius:5.0];</span><br><span class="line">    [[UIColor magentaColor] setStroke];</span><br><span class="line">    [[UIColor cyanColor] setFill];</span><br><span class="line">    [path fill];</span><br><span class="line">    [path stroke];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="绘制圆"><a href="#绘制圆" class="headerlink" title="绘制圆"></a>绘制圆</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 画圆</span><br><span class="line">&#123;</span><br><span class="line">    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(90, 5, 40, 40) cornerRadius:20.0];</span><br><span class="line">    [[UIColor purpleColor] setStroke];</span><br><span class="line">    [[UIColor magentaColor] setFill];</span><br><span class="line">    [path fill];</span><br><span class="line">    [path stroke];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="绘制扇形"><a href="#绘制扇形" class="headerlink" title="绘制扇形"></a>绘制扇形</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CGPoint center = CGPointMake(200, 50);</span><br><span class="line">UIBezierPath *sectorPath = [UIBezierPath bezierPathWithArcCenter:center radius:100 startAngle:0 endAngle:M_PI_4 clockwise:YES];</span><br><span class="line">[sectorPath addLineToPoint:center];</span><br><span class="line">[[UIColor brownColor] setStroke];</span><br><span class="line">[sectorPath fill];</span><br><span class="line">[sectorPath stroke];</span><br></pre></td></tr></table></figure>
-<h3 id="绘制圆弧"><a href="#绘制圆弧" class="headerlink" title="绘制圆弧"></a>绘制圆弧</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 绘制圆弧</span><br><span class="line">* 参数1: 圆心坐标</span><br><span class="line">* 参数2: 半径</span><br><span class="line">* 参数3: 开始角度</span><br><span class="line">* 参数4: 结束角度 使用弧度制表示</span><br><span class="line">* 参数5: clockwis顺时针方法的</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">UIBezierPath *circuLarArcPath = [UIBezierPath bezierPathWithArcCenter:CGPointMake(100, 60) radius:50.0 startAngle:0 endAngle:M_PI_2 clockwise:YES];</span><br><span class="line"></span><br><span class="line">[circuLarArcPath moveToPoint:CGPointMake(100, 60)];</span><br><span class="line"></span><br><span class="line">[[UIColor magentaColor] setStroke];</span><br><span class="line">[[UIColor brownColor] setFill];</span><br><span class="line">[circuLarArcPath stroke];</span><br><span class="line">[circuLarArcPath fill];</span><br></pre></td></tr></table></figure>
-<h3 id="绘制文字"><a href="#绘制文字" class="headerlink" title="绘制文字"></a>绘制文字</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 绘制文字</span><br><span class="line"> * drawAtPoint 不能换行，当文字过多过长时不会有效果</span><br><span class="line"> * 使用 drawInRect 可以实现换行</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">NSString *text = @&quot;我是绘制文字价格就看过几个框架刚开始大家高考的感觉是快乐的关键时刻大家赶快来时的结果看了风水格局来看就哭了感觉树大根深来对抗肌肤抵抗力&quot;;</span><br><span class="line"></span><br><span class="line">NSMutableDictionary *attributeDict  = [NSMutableDictionary dictionary];</span><br><span class="line">attributeDict[NSFontAttributeName] = [UIFont systemFontOfSize:18];</span><br><span class="line"></span><br><span class="line">// 字体颜色</span><br><span class="line">attributeDict[NSForegroundColorAttributeName] = [UIColor greenColor];</span><br><span class="line">// 描边颜色</span><br><span class="line">attributeDict[NSStrokeColorAttributeName] = [UIColor yellowColor];</span><br><span class="line">// 描边宽度</span><br><span class="line">attributeDict[NSStrokeWidthAttributeName] = @1;</span><br><span class="line">//  阴影</span><br><span class="line">NSShadow *shadow = [[NSShadow alloc] init];</span><br><span class="line">shadow.shadowColor = [UIColor redColor];</span><br><span class="line">shadow.shadowOffset = CGSizeMake(1.0, 1.0);</span><br><span class="line"></span><br><span class="line">attributeDict[NSShadowAttributeName] = shadow;</span><br><span class="line"></span><br><span class="line">// 可以换行</span><br><span class="line">[text drawInRect:self.bounds withAttributes:attributeDict];</span><br><span class="line"></span><br><span class="line">// 不换行</span><br><span class="line">[text drawAtPoint:CGPointZero withAttributes:attributeDict];</span><br></pre></td></tr></table></figure>
-<h3 id="绘制图片"><a href="#绘制图片" class="headerlink" title="绘制图片"></a>绘制图片</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 绘制图片</span><br><span class="line"> * drawAtPoint 默认绘制的内容尺寸和图片的尺寸一样大</span><br><span class="line"> *</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line">- (void)drawImage &#123;</span><br><span class="line"></span><br><span class="line">    UIImage *image = [UIImage imageNamed:@&quot;wc_dk&quot;];</span><br><span class="line">    UIImage *image1 = [UIImage imageNamed:@&quot;wc_hq&quot;];</span><br><span class="line"></span><br><span class="line">    [image drawAtPoint:CGPointMake(10, 90)];</span><br><span class="line">    [image1 drawAtPoint:CGPointMake(70, 80)];</span><br><span class="line"></span><br><span class="line">    // 绘制在控件内部，和控件大小一致</span><br><span class="line">    [image1 drawInRect:self.bounds];</span><br><span class="line"></span><br><span class="line">    // 以平铺的方式绘制在控件的内部</span><br><span class="line">    [image1 drawAsPatternInRect:self.bounds];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="圆形下载进度的绘制"><a href="#圆形下载进度的绘制" class="headerlink" title="圆形下载进度的绘制"></a>圆形下载进度的绘制</h3><p>drawRect 方法不能手动调用，因为图形上下文不能手动创建<br>需要调用setNeedsDisplay方法来重绘，系统会创建图形上下文<br>绘制时用到的定时器，一般不使用NSTimer定时器，因为调度优先级比较低，不会被准时带,界面会出现卡顿的现象<br>CADisplayLink 每次刷新屏幕的时候就会调用，1s刷新 60 次<br>setNeedsDisplay调用此方法时并不是立即调用drawRect方法，只是给给当前控件添加刷新标记，直到下一次屏幕刷新的时候才调用drawRect 方法，正好与CADisplayLink 方法一致，所以界面流畅不会卡顿<br>图形上下文状态栈</p>
-<p>UIBezierPath图形上下文和CGContextRef的图形上下文不是同一个图形上下文</p>
-<p>可以将贝塞尔路径添加到图形上下文中</p>
-<p>也可以保存当前的图形上下文，CGContextSaveGState(ctx);<br>在下一次使用时可以恢复，CGContextRestoreGState(ctx);<br>画两种不同状态的线条</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 图形上下文栈的理解</span><br><span class="line">* 画两条状态不同的线段</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">// 获取上下文</span><br><span class="line">CGContextRef ctx = UIGraphicsGetCurrentContext();</span><br><span class="line"></span><br><span class="line">// 第一条</span><br><span class="line">UIBezierPath *path = [UIBezierPath bezierPath];</span><br><span class="line">[path moveToPoint:CGPointMake(10, 60)];</span><br><span class="line">[path addLineToPoint:CGPointMake(240, 60)];</span><br><span class="line"></span><br><span class="line">// 把路径添加到上下文</span><br><span class="line">CGContextAddPath(ctx, path.CGPath);</span><br><span class="line"></span><br><span class="line">// 保存上下的状态</span><br><span class="line">CGContextSaveGState(ctx);</span><br><span class="line"></span><br><span class="line">// 设置当前状态</span><br><span class="line">[[UIColor greenColor] setStroke];</span><br><span class="line">//此时设置path 的状态无效，需要设置当前上下文的状态</span><br><span class="line">path.lineWidth = 5.0;</span><br><span class="line">CGContextSetLineWidth(ctx, 5.0);</span><br><span class="line"></span><br><span class="line">// 渲染上下文</span><br><span class="line">CGContextStrokePath(ctx);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 第二根</span><br><span class="line"></span><br><span class="line">// 可使用第一根的路径，因为每次绘制完成之后都会清除</span><br><span class="line">path = [UIBezierPath bezierPath];</span><br><span class="line">[path moveToPoint:CGPointMake(60, 10)];</span><br><span class="line">[path addLineToPoint:CGPointMake(60, 240)];</span><br><span class="line"></span><br><span class="line">// 添加路径到上下文 需要转换为CGPath</span><br><span class="line">CGContextAddPath(ctx, path.CGPath);</span><br><span class="line"></span><br><span class="line">// 还原之前保存的上下文状态</span><br><span class="line">CGContextRestoreGState(ctx);</span><br><span class="line">CGContextStrokePath(ctx);</span><br><span class="line">图形上下文矩阵</span><br><span class="line"></span><br><span class="line">// 使用矩阵</span><br><span class="line"></span><br><span class="line">    // 获取上下文</span><br><span class="line">    CGContextRef ctx = UIGraphicsGetCurrentContext();</span><br><span class="line"></span><br><span class="line">    // 使用贝塞尔路径</span><br><span class="line">    UIBezierPath *ovalPath = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(-150, -100, 300, 200)];</span><br><span class="line">    [[UIColor cyanColor] setFill];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    // 以上绘制的图形有一部分看不到，通过对上下文矩阵操作来实现，平移上下文</span><br><span class="line">    // 操作矩阵必须在添加路径之前</span><br><span class="line"></span><br><span class="line">    // 平移</span><br><span class="line">    CGContextTranslateCTM(ctx, 150, 100);</span><br><span class="line"></span><br><span class="line">    // 缩放</span><br><span class="line">    CGContextScaleCTM(ctx, 0.5, 0.5);</span><br><span class="line"></span><br><span class="line">    // 旋转</span><br><span class="line">    // 可以实现点无法计算时的效果</span><br><span class="line">    CGContextRotateCTM(ctx, M_PI_4);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    // 添加路径到上下文</span><br><span class="line">    CGContextAddPath(ctx, ovalPath.CGPath);</span><br><span class="line"></span><br><span class="line">    // 操作矩阵放在添加路径之后无效果</span><br><span class="line">	//  CGContextTranslateCTM(ctx, 150, 100);</span><br><span class="line"></span><br><span class="line">    CGContextFillPath(ctx);</span><br><span class="line"></span><br><span class="line">    // 正常的绘制椭圆</span><br><span class="line">//    UIBezierPath *ovalPath = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(50, 20, 200, 100)];</span><br><span class="line">//    ovalPath.lineWidth = 4.0;</span><br><span class="line">//    [[UIColor magentaColor] setFill];</span><br><span class="line">//    [[UIColor yellowColor] setStroke];</span><br><span class="line">//    [ovalPath stroke];</span><br><span class="line">//    [ovalPath fill];</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/12/10/Quartz2D绘制形状/" data-id="cjwgh854m000moi81mn1fr015" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li></ul>
 
     </footer>
   </div>
@@ -916,23 +898,23 @@ if (imageData != nil) {
       <ul>
         
           <li>
-            <a href="/2019/06/03/第十二章架构和框架面试/">(no title)</a>
+            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/03/第十四章第三方库面试/">(no title)</a>
+            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/03/第十章网络相关/">(no title)</a>
+            <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/03/第四章OC语言特性面试/">(no title)</a>
+            <a href="/2019/06/18/第十章网络相关/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/03/第八章多线程面试/">(no title)</a>
+            <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
           </li>
         
       </ul>

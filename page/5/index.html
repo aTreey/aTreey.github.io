@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
 
@@ -62,6 +62,308 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-GCD 信号量" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/GCD 信号量/" class="article-date">
+  <time datetime="2019-06-18T14:24:32.173Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>GCD信号量用法</p>
+<p>对于异步网络请求相互依赖问题一般用三种方式解决：</p>
+<ul>
+<li>网络请求嵌套</li>
+<li>使用 BlockOperation </li>
+<li>GCD DispatchGroup</li>
+<li>GCD semaphore（信号量）</li>
+</ul>
+<h3 id="GCD-信号量"><a href="#GCD-信号量" class="headerlink" title="GCD 信号量"></a>GCD 信号量</h3><ul>
+<li>semaphore 值 &lt;= 0 阻塞</li>
+<li>semaphore semaphore.signal() 使信号量值增加</li>
+<li>semaphore.wait() 等待，可设置时长</li>
+</ul>
+<p>request – 3 依赖 request – 1 和 request – 2，1 和 2 无需关注顺序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">private func gcdSemaphore() &#123;</span><br><span class="line">       let semaphore = DispatchSemaphore(value: 0)</span><br><span class="line">       DispatchQueue.global().async &#123;</span><br><span class="line">           for i in 0...300 &#123;</span><br><span class="line">               print(&quot;request -- 1&quot;)</span><br><span class="line">           &#125;</span><br><span class="line">           semaphore.signal()</span><br><span class="line">       &#125;</span><br><span class="line">       </span><br><span class="line">       DispatchQueue.global().async &#123;</span><br><span class="line">           for i in 0...200 &#123;</span><br><span class="line">               print(&quot;request -- 2&quot;)</span><br><span class="line">           &#125;</span><br><span class="line">           semaphore.signal()</span><br><span class="line">       &#125;</span><br><span class="line">       </span><br><span class="line">       </span><br><span class="line">       DispatchQueue.global().async &#123;</span><br><span class="line">           semaphore.wait()</span><br><span class="line">           semaphore.wait()</span><br><span class="line">           for i in 0...160 &#123;</span><br><span class="line">               print(&quot;request -- 3&quot;)</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>request – 3 ，request – 2 和 request – 1，依次相互依赖</p>
+<pre><code>private func gcdSemaphore() {
+        let semaphore = DispatchSemaphore(value: 0)
+        DispatchQueue.global().async {
+            for i in 0...300 {
+                print(&quot;request -- 1&quot;)
+            }
+            semaphore.signal()
+        }
+
+        DispatchQueue.global().async {
+            semaphore.wait()
+            for i in 0...200 {
+                print(&quot;request -- 2&quot;)
+            }
+            semaphore.signal()
+        }
+
+
+        DispatchQueue.global().async {
+            semaphore.wait()
+            for i in 0...160 {
+                print(&quot;request -- 3&quot;)
+            }
+        }
+    }
+
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/GCD 信号量/" data-id="cjx1wsdk20007msfybzj0mvvk" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Charles 抓包" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/Charles 抓包/" class="article-date">
+  <time datetime="2019-06-18T14:24:32.172Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Charles 抓包</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>简单理解如下：</p>
+<ul>
+<li><p>正常请求</p>
+<p>  客户端 ——&gt; 服务器</p>
+</li>
+</ul>
+<ul>
+<li><p>Charles 抓包</p>
+<p>  客户端 ——&gt;  代理 （Charles）——&gt; 服务器</p>
+</li>
+</ul>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><a href="https://www.charlesproxy.com/" target="_blank" rel="noopener">Charles官网</a></p>
+<p>破解版本请自行百度</p>
+<p><strong>重要说明安装之前请暂时关闭电脑的VPN</strong></p>
+<p><strong>重要说明安装之前请暂时关闭电脑的VPN</strong></p>
+<p><strong>重要说明安装之前请暂时关闭电脑的VPN</strong></p>
+<h3 id="启动Charles"><a href="#启动Charles" class="headerlink" title="启动Charles"></a>启动Charles</h3><h3 id="安装Charles证书"><a href="#安装Charles证书" class="headerlink" title="安装Charles证书"></a>安装Charles证书</h3><p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1fyuumd2nkoj320y0j6jtz.jpg" alt></p>
+<pre><code>如果安装失败，请检查以前是否已经安装过，如果已经安装过并且已经失效，请删除失效证书后再安装
+</code></pre><h3 id="打开钥匙串–-gt-选择Charles-CA-gt-双击证书-–-gt-信任证书"><a href="#打开钥匙串–-gt-选择Charles-CA-gt-双击证书-–-gt-信任证书" class="headerlink" title="打开钥匙串–&gt; 选择Charles CA -&gt; 双击证书 –&gt; 信任证书"></a>打开钥匙串–&gt; 选择Charles CA -&gt; 双击证书 –&gt; 信任证书</h3><p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1fyuuq2z76mj31as0ri76z.jpg" alt></p>
+<h3 id="设置-https"><a href="#设置-https" class="headerlink" title="设置 https"></a>设置 https</h3><pre><code>- Proxy -&gt; SSL Proxying Settings -&gt; SSL Proxying -&gt; Add
+- Host: * 为需要过滤的域名地址,
+- *: 表示不过滤Port, 固定为443 `*`表示任意端口
+</code></pre><p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1fyuv3ii2bkj30wm0ocmye.jpg" alt></p>
+<h2 id="Mac-抓包"><a href="#Mac-抓包" class="headerlink" title="Mac 抓包"></a>Mac 抓包</h2><ul>
+<li><p>Proxy -&gt; macOS Proxy （☑️）</p>
+<p>  <img src="https://ws2.sinaimg.cn/large/006tNc79ly1fyuv7zqgaij31v00l0wik.jpg" alt></p>
+</li>
+</ul>
+<h2 id="真机抓包"><a href="#真机抓包" class="headerlink" title="真机抓包"></a>真机抓包</h2><p>此时可以将 macOS Proxy 选项中的 ✅ 去掉，</p>
+<h3 id="Mac与iPhone连接必须同一网络"><a href="#Mac与iPhone连接必须同一网络" class="headerlink" title="Mac与iPhone连接必须同一网络"></a>Mac与iPhone连接必须同一网络</h3><h3 id="设置代理端口号"><a href="#设置代理端口号" class="headerlink" title="设置代理端口号"></a>设置代理端口号</h3><p><img src="https://ws1.sinaimg.cn/large/006tNc79ly1fyuve5e6mbj31240u0wnu.jpg" alt></p>
+<h3 id="手机安装证书"><a href="#手机安装证书" class="headerlink" title="手机安装证书"></a>手机安装证书</h3><ul>
+<li><p>安装手机证书</p>
+<p>  <img src="https://ws3.sinaimg.cn/large/006tNc79ly1fyuvn5p8ijj31zi0iuq5h.jpg" alt></p>
+</li>
+<li><p>安装完成后弹窗</p>
+<p>  <img src="https://ws4.sinaimg.cn/large/006tNc79ly1fyuvln2bycj31b20cq0tz.jpg" alt></p>
+</li>
+</ul>
+<ul>
+<li><p>查看mac 地址，为手机设置代理</p>
+<ol>
+<li><p>根据安装手机证书后的弹窗显示IP配置</p>
+</li>
+<li><p>Charles –&gt; Help –&gt; Loca IP Address</p>
+<p> <img src="https://ws4.sinaimg.cn/large/006tNc79ly1fyuvgh515wj30uo0k0dhh.jpg" alt></p>
+</li>
+<li><p>打开电脑网络设置查看</p>
+<p> <img src="https://ws2.sinaimg.cn/large/006tNc79ly1fyuvic8h7vj30yo0u0dl3.jpg" alt></p>
+</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li><p>设置代理</p>
+<p>  第一步<br>  <img src="https://ws1.sinaimg.cn/large/006tNc79ly1fyuvzrnksjj30oo0g8t96.jpg" alt></p>
+<p>  第二步<br>  <img src="https://ws3.sinaimg.cn/large/006tNc79ly1fyuvztfs46j30pu16uq4f.jpg" alt></p>
+<p>  第三步<br>  <img src="https://ws4.sinaimg.cn/large/006tNc79ly1fyuvzv0wdzj30q216wq46.jpg" alt></p>
+</li>
+<li><p>根据弹窗提示，在手机浏览器下载并安装证书</p>
+<p>  <img src="https://ws3.sinaimg.cn/large/006tNc79ly1fzej631vkbj30ve06gmya.jpg" alt></p>
+</li>
+</ul>
+<ul>
+<li><p>手机信任证书 </p>
+<ul>
+<li><p>设置 –&gt; 通用 –&gt; 关于本机 –&gt; 证书信任设置</p>
+<p> <img src="https://ws3.sinaimg.cn/large/006tNc79ly1fyuvzqy9shj31310u0doe.jpg" alt></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="模拟器抓包"><a href="#模拟器抓包" class="headerlink" title="模拟器抓包"></a>模拟器抓包</h3><ul>
+<li><p>安装模拟器证书</p>
+<p>  <img src="https://ws4.sinaimg.cn/large/006tNc79ly1fyux3vn7cbj31d80imaij.jpg" alt></p>
+</li>
+<li><p>勾选 <code>macOS Proxy</code> 选项</p>
+<p>  <img src="https://ws4.sinaimg.cn/large/006tNc79ly1fyux3cejcij30e40j4gmi.jpg" alt></p>
+</li>
+</ul>
+<p>如果失败，请先关闭模拟器，重新启动Charles 再打开模拟器</p>
+<h3 id="使用浏览器打开网页提示不是私密链接"><a href="#使用浏览器打开网页提示不是私密链接" class="headerlink" title="使用浏览器打开网页提示不是私密链接"></a>使用浏览器打开网页提示不是私密链接</h3><p><a href="https://blog.csdn.net/qq_31411389/article/details/79615688" target="_blank" rel="noopener">解决办法</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/Charles 抓包/" data-id="cjx1wsdja0001msfypxl7gicd" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-ES6语法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/ES6语法/" class="article-date">
+  <time datetime="2019-06-18T14:24:32.172Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="JS-ES6-语法"><a href="#JS-ES6-语法" class="headerlink" title="JS ES6 语法"></a>JS ES6 语法</h1><h3 id="1-let-var-变量，作用域"><a href="#1-let-var-变量，作用域" class="headerlink" title="1. let var 变量，作用域"></a>1. let var 变量，作用域</h3><pre><code>var a = 10;
+
+if (a &gt; 10) {
+    let b = 5; // let 只能在代码块内被访问
+
+    console.log(b);
+}
+
+// 访问 b 报错
+console.log(b);
+console.log(a);
+</code></pre><h3 id="2-const-只能分配一次值"><a href="#2-const-只能分配一次值" class="headerlink" title="2. const 只能分配一次值"></a>2. const 只能分配一次值</h3><p>{<br>    const const_a = 1;<br>    console.log(const_a)</p>
+<pre><code>// 报错
+const_a = 2;
+
+// 声明一个常量数组
+const const_array = [];
+const_array.push(1);
+const_array.push(2);
+// 再次赋值时会报错
+const_array = [3];
+</code></pre><p>}</p>
+<h3 id="3-解构语法"><a href="#3-解构语法" class="headerlink" title="3. 解构语法"></a>3. 解构语法</h3><p>{<br>    // 1.解构数组<br>    function getArray() {<br>        return [10, 20, 30];<br>    }</p>
+<pre><code>let [a,b,c] = getArray()
+console.log(a, b, c)
+
+
+// 函数返回一个对象
+function getObj() {
+    return {dessert: &apos;面包&apos;, drink: &apos;水&apos;, play: &apos;Game&apos;};
+}
+
+// 2.解构对象
+let {des: dessert,  dri: drink, pla: play} = getObj()
+console.log(des, dri, pla);
+</code></pre><p>}</p>
+<h3 id="4-模版字符串"><a href="#4-模版字符串" class="headerlink" title="4. 模版字符串"></a>4. 模版字符串</h3><p>{<br>    let name = ‘姓名：’, password = ‘密码：’<br>    let str_4 = name + ‘李老师’ + ‘—-‘ + password + ‘北京太热。。。’<br>    console.log(str_4)</p>
+<pre><code>// 使用 `${}` 包裹会生成字符串
+let str_41 = `${name}李老师----${password}北京太热`
+console.log(str_41)
+
+// 多行显示时直接回车换行
+let str_42 = `${name}李老师
+----
+${password}北京太热`
+console.log(str_42)
+</code></pre><p>}</p>
+<h3 id="5-带标签的模版字符串"><a href="#5-带标签的模版字符串" class="headerlink" title="5. 带标签的模版字符串"></a>5. 带标签的模版字符串</h3><p>{<br>    let name = ‘姓名：’, password = ‘密码：’<br>    // 多行显示时直接回车换行<br>    let str_5 = strTest<code>${name}李老师 ---- ${password}北京太热</code><br>    console.log(str_5)</p>
+<pre><code>// strings 字符中包含的被插值分割的子字符串已数组形式展现
+// values 字符串中的插值数组
+function strTest(strings, ...values) {
+    console.log(strings)
+    console.log(values)
+}
+
+function strTest1(strings, ...values) {
+    let result = &apos;&apos;;
+    for (let i = 0; i &lt; values.length; i++) {
+        result += strings[i]
+        result += values[i]
+    }
+    return result
+}
+</code></pre><p>}</p>
+<h3 id="6-判断字符串是否包含其他字符"><a href="#6-判断字符串是否包含其他字符" class="headerlink" title="6. 判断字符串是否包含其他字符"></a>6. 判断字符串是否包含其他字符</h3><p>{<br>    let name = ‘姓名：’, password = ‘密码：’<br>    let str_6 = <code>${name}李老师---${password}北京真热</code><br>    console.log(str_6.startsWith(<code>${name}</code>))<br>    console.log(str_6.endsWith(<code>${name}</code>))<br>    console.log(str_6.includes(‘李老师’))<br>}</p>
+<h3 id="7-函数默认参数"><a href="#7-函数默认参数" class="headerlink" title="7. 函数默认参数"></a>7. 函数默认参数</h3><p>{<br>    function funcDefaultParame(param1 = ‘a’, param2 = ‘b’, param3 = ‘c’) {<br>        return <code>${param1}--${param2}--${param3}</code><br>    }<br>    console.log(funcDefaultParame(1, 2,3))<br>}</p>
+<h3 id="8-“…”展开操作符"><a href="#8-“…”展开操作符" class="headerlink" title="8. “…”展开操作符"></a>8. “…”展开操作符</h3><p>{<br>    let a = [1,2,3];<br>    console.log(a);<br>    console.log(…a)</p>
+<pre><code>let b = [...a, 4, 5];
+console.log(a);
+console.log(b)
+</code></pre><p>}</p>
+<h3 id="9-‘…-‘剩余操作符-一般用在函数参数，-可以看作是一个可以展开的参数"><a href="#9-‘…-‘剩余操作符-一般用在函数参数，-可以看作是一个可以展开的参数" class="headerlink" title="9. ‘… ‘剩余操作符, 一般用在函数参数， 可以看作是一个可以展开的参数"></a>9. ‘… ‘剩余操作符, 一般用在函数参数， 可以看作是一个可以展开的参数</h3><pre><code>//  ... param3表示函数可以接收除了param1, param2,两个参数外，多个参数，都会放在param3中
+function operator(param1, param2, ...param3) {
+    console.log(param1, param2, param3)
+}
+operator(&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;,&apos;e&apos;,&apos;f&apos;,&apos;g&apos;)
+</code></pre><h3 id="10-解构对象解构函数"><a href="#10-解构对象解构函数" class="headerlink" title="10. 解构对象解构函数"></a>10. 解构对象解构函数</h3><pre><code>// 当函数参数是对象是可以按照对象解构
+function getObjcValue(param1, param2, {value1, value2} = {}) {
+    console.log(param1, param2, value1, value2)
+}
+
+getObjcValue(1,2,{value1: -3,value2: -4})
+</code></pre><h3 id="11-获取函数名称"><a href="#11-获取函数名称" class="headerlink" title="11. 获取函数名称"></a>11. 获取函数名称</h3><pre><code>function getObjcValue(param1, param2, {value1, value2} = {}) {
+    console.log(param1, param2, value1, value2)
+}
+console.log(getObjcValue.name)
+
+let funName = function getfunctionName() {  }
+console.log(funName.name)
+</code></pre><h3 id="12-箭头函数"><a href="#12-箭头函数" class="headerlink" title="12. 箭头函数"></a>12. 箭头函数</h3><pre><code>// 原来普通写法
+var funType = function arrowfunction(param) {
+    return param
+}
+
+// 函数参数 =&gt; 函数返回值
+// &apos;=&gt;&apos; 的左边表示箭头函数的参数，多个时表示为 (param1, param2, param3)
+// &apos;=&gt;&apos; 的右边表示箭头函数的返回值，如果返回值是一个对象时用 { } 表示
+let arrowFunction = (param1, param2) =&gt; {
+    return `${param1}${param2}`
+</code></pre><p>}</p>
+<h3 id="13"><a href="#13" class="headerlink" title="13"></a>13</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/ES6语法/" data-id="cjx1wsdjw0005msfy6jnqf8c0" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Mac安装VirtualBox连接U盘" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/02/03/Mac安装VirtualBox连接U盘/" class="article-date">
@@ -92,7 +394,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/02/03/Mac安装VirtualBox连接U盘/" data-id="cjwgh854b000doi81ewz5tpni" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/02/03/Mac安装VirtualBox连接U盘/" data-id="cjx1wsdkf000dmsfy8fp40r2w" class="article-share-link">Share</a>
       
       
     </footer>
@@ -148,7 +450,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/19/Block学习探究/" data-id="cjwgh85410003oi816us0tr9i" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/19/Block学习探究/" data-id="cjx1wsdjg0003msfy6aa94erx" class="article-share-link">Share</a>
       
       
     </footer>
@@ -224,7 +526,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/18/常见问题总结-二/" data-id="cjwgh855i002noi81hagpszmi" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/18/常见问题总结-二/" data-id="cjx1wsdrp002omsfy5m67c6ak" class="article-share-link">Share</a>
       
       
     </footer>
@@ -334,7 +636,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/17/面试中常见问题总结/" data-id="cjwgh855x003aoi8142asur7s" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/17/面试中常见问题总结/" data-id="cjx1wsdsl003amsfyw8nk4l5c" class="article-share-link">Share</a>
       
       
     </footer>
@@ -510,7 +812,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/12/iOS即时通讯实现二/" data-id="cjwgh85590025oi8154eiqrf9" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/12/iOS即时通讯实现二/" data-id="cjx1wsdpt0027msfydr4w58fx" class="article-share-link">Share</a>
       
       
     </footer>
@@ -584,7 +886,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/10/网络七层协议/" data-id="cjwgh855w0039oi815njog7k6" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/10/网络七层协议/" data-id="cjx1wsdsj0039msfyekgwd1b7" class="article-share-link">Share</a>
       
       
     </footer>
@@ -843,206 +1145,11 @@ print(cbc_decryptedStr3)
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/08/Swift加密相关/" data-id="cjwgh8550001loi81q7pxveg7" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/08/Swift加密相关/" data-id="cjx1wsdn4001kmsfy9n7wvhs7" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li></ul>
 
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Mac-安装MySQL" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/12/14/Mac-安装MySQL/" class="article-date">
-  <time datetime="2017-12-14T14:52:19.000Z" itemprop="datePublished">2017-12-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/14/Mac-安装MySQL/">Mac 安装MySQL</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>搭建 <code>XMPP</code> 即使通讯</p>
-<h2 id="安装MySQL数据库"><a href="#安装MySQL数据库" class="headerlink" title="安装MySQL数据库"></a>安装MySQL数据库</h2><ul>
-<li><p>安装MySQL 数据库    </p>
-<ul>
-<li><p><a href="https://www.mysql.com/" target="_blank" rel="noopener">官网</a> 下载安装包</p>
-<p><strong>特别强调：不要一直<code>下一步</code>最后的时候会有个弹窗提示你生成root的临时密码，记录一下</strong></p>
-</li>
-</ul>
-</li>
-<li><p>安装数据库管理工具 <code>MySQLWorkbench</code></p>
-<p> 官网安装包下载安装</p>
-</li>
-<li><p>修改数据库 root 密码，</p>
-<p>  打开<code>MySQLWorkbench</code> 随便打开一个SQL 输入安装时记录的密码，确认后提示你修改密码，</p>
-</li>
-<li><p>如果为记住安装时密码，参考下面链接修改</p>
-<p>  <a href="https://www.cnblogs.com/sunny3096/p/7954129.html" target="_blank" rel="noopener"></a> </p>
-</li>
-</ul>
-<h2 id="安装-openfire"><a href="#安装-openfire" class="headerlink" title="安装 openfire"></a>安装 openfire</h2><ul>
-<li><p><a href="https://www.igniterealtime.org/downloads/index.jsp" target="_blank" rel="noopener">官网</a> 下载安装包安装</p>
-</li>
-<li><p>安装后需重启系统偏好设置</p>
-</li>
-<li>如果出现右边的管理员配置按钮不能点击，请使用 <code>brew</code> 安装 或者更新 <code>Java</code> 环境，<code>openfire</code> 需要 <code>Java</code> 环境  </li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/12/14/Mac-安装MySQL/" data-id="cjwgh854a000coi813600w2ye" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-本地已有项目添加Pod" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/12/02/本地已有项目添加Pod/" class="article-date">
-  <time datetime="2017-12-01T16:38:18.000Z" itemprop="datePublished">2017-12-02</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/02/本地已有项目添加Pod/">本地已有项目添加Pod</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>上一篇中主要记录了如何使用 <code>pod</code> 工具自动创建 <code>pod</code> 库并且生成一个测试Demo，这边主要记录给已有的项目添加 <code>pod</code></p>
-<h2 id="创建-podsepc-文件"><a href="#创建-podsepc-文件" class="headerlink" title="创建 .podsepc 文件"></a>创建 .podsepc 文件</h2><ul>
-<li><p><code>cd</code> 到已有项目的根目录执行命令： <code>pod spec create [ProjectName].podspec</code></p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod spec create EmotionKeyboard.podspec</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="修改编辑-podsepc-文件"><a href="#修改编辑-podsepc-文件" class="headerlink" title="修改编辑 .podsepc 文件"></a>修改编辑 <code>.podsepc</code> 文件</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">	s.name         = &quot;EmotionKeyboard&quot;</span><br><span class="line">  	s.version      = &quot;0.0.1&quot;</span><br><span class="line">  	s.summary      = &quot;A  Emotional Keyboard.&quot;</span><br><span class="line">  	</span><br><span class="line">  	# 此处的格式不能修改</span><br><span class="line">  	s.description  = &lt;&lt;-DESC</span><br><span class="line"></span><br><span class="line">	Swift Emotional Keyboard</span><br><span class="line">                   DESC</span><br><span class="line"></span><br><span class="line">	s.homepage     = &quot;https://github.com/aTreey/EmotionKeyboard&quot;</span><br><span class="line">	</span><br><span class="line">	# 两种写法，使用下面第二种  </span><br><span class="line">	# s.license      = &quot;MIT (example)&quot;</span><br><span class="line">	s.license      = &#123; :type =&gt; &quot;MIT&quot;, :file =&gt; &quot;LICENSE&quot; &#125;</span><br><span class="line">	</span><br><span class="line">	s.author             = &#123; &quot;aTree&quot; =&gt; &quot;480814177@qq.com&quot; &#125;</span><br><span class="line">	</span><br><span class="line">	s.platform     = :ios, &quot;8.0&quot;</span><br><span class="line">	</span><br><span class="line">	s.source       = &#123; :git =&gt; &quot;https://github.com/aTreey/EmotionKeyboard.git&quot;, :tag =&gt; &quot;#&#123;s.version&#125;&quot; &#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	# 从 .podspec 同级别的目录下起匹配 </span><br><span class="line">	s.source_files  = &quot;EmotionKeyboard&quot;, &quot;EmotionKeyboard/Classes/**/*.&#123;h,m&#125;&quot;</span><br><span class="line">	</span><br><span class="line">	# 设置自己项目中依赖的系统库</span><br><span class="line">	s.framework  = &quot;UIKit&quot;</span><br><span class="line">  	</span><br><span class="line">	``` </span><br><span class="line">	</span><br><span class="line">## 调整文件的目录结构</span><br><span class="line">	</span><br><span class="line">- 在项目根目录下新建一个放组件代码的文件夹</span><br><span class="line">- 如果项目中包含 `bundle` 文件, 需要在组件文件夹下新建一个 `Assets` 文件夹，用来存放组件中的资源</span><br><span class="line"></span><br><span class="line">	最终结果如下:</span><br><span class="line">	</span><br><span class="line">	![](https://ws1.sinaimg.cn/large/a1641e1bly1fm2jl7ykslj21gc0o80xt.jpg))</span><br><span class="line"></span><br><span class="line">- 创建并添加必要文件</span><br><span class="line">	</span><br><span class="line">	- `LICENSE` 文件: 开源许可文件, 如果创建项目的时候选择了开源许可就可以自动生成忽略此步骤,如果没有直接拷贝一份其他的工程中的即可</span><br><span class="line">	- `README.md` 文件: 主要用来说明你开源库的信息及使用方法</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">## 验证本地 `.podspec` 文件</span><br><span class="line"></span><br><span class="line">- 错误1: `.podspec `中的文件路径设置错误</span><br><span class="line">	</span><br><span class="line">	![](https://ws1.sinaimg.cn/large/a1641e1bly1fm2jlboq82j20v807ejug.jpg)</span><br><span class="line">	</span><br><span class="line">- 错误2: bundle 文件资源路径错误</span><br><span class="line"></span><br><span class="line">	![](https://ws1.sinaimg.cn/large/a1641e1bly1fm2jl4shnnj20zq0cwgqf.jpg)</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">- 本地验证结果</span><br><span class="line"></span><br><span class="line"> - **EmotionKeyboard passed validation.** 本地验证验证通过</span><br><span class="line"></span><br><span class="line">## 网络验证 `.podspec` 文件 </span><br><span class="line">	</span><br><span class="line">- 给 `master` 分支打上 `.podspec` 文件中对应的 `tag` 标签, 提交推送, </span><br><span class="line">- 执行命令</span><br></pre></td></tr></table></figure>
-
-pod spec lint
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- 网络验证结果</span><br></pre></td></tr></table></figure>
-
-EmotionKeyboard.podspec passed validation.
-```
-</code></pre><p><strong>本文参考</strong></p>
-<p><a href="http://blog.xianqu.org/2015/08/pod-resources/" target="_blank" rel="noopener">给 Pod 添加资源文件</a></p>
-<p><a href="http://swift.gg/2016/12/15/cocoapods-making-guide/" target="_blank" rel="noopener">基于 Swift 创建 CocoaPods 完全指南</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/12/02/本地已有项目添加Pod/" data-id="cjwgh855k002qoi81qdoklftb" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-CocoaPods制作私有pod" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/11/29/CocoaPods制作私有pod/" class="article-date">
-  <time datetime="2017-11-29T12:57:56.000Z" itemprop="datePublished">2017-11-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/29/CocoaPods制作私有pod/">CocoaPods制作私有pod</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="CocoaPods原理"><a href="#CocoaPods原理" class="headerlink" title="CocoaPods原理"></a>CocoaPods原理</h2><p><strong>本文主要记录制作自己的pod库过程</strong></p>
-<p>CocoaPods 是自动化工具，主要用来管理一些开源的第三方框架，或者是制作自己的私有库,开源库,也可以使用它讲自己的项目组件化。</p>
-<p>具体可以参考：</p>
-<ol>
-<li><a href="https://juejin.im/post/58730a25a22b9d0058971144" target="_blank" rel="noopener">细聊 Cocoapods 与 Xcode 工程配置</a></li>
-<li><a href="https://juejin.im/post/59f2c7eaf265da432c2318e5" target="_blank" rel="noopener">你真的会用 CocoaPods 吗?</a></li>
-</ol>
-<h2 id="CocoaPods-安装"><a href="#CocoaPods-安装" class="headerlink" title="CocoaPods 安装"></a>CocoaPods 安装</h2><p><a href="http://www.pluto-y.com/cocoapods-getting-stared/" target="_blank" rel="noopener">安装教程</a></p>
-<h2 id="创建私有索引仓库"><a href="#创建私有索引仓库" class="headerlink" title="创建私有索引仓库"></a>创建私有索引仓库</h2><p>每次使用第三方开源库的时候只需要在 <code>Podfile</code> 文件中指定所用的库然后 <code>Pod install</code> ，这是因为安装pod的时候 <code>pod setup</code> 从<a href="https://github.com/CocoaPods/Specs">远程仓库</a>（索引库） clone到了本地,此仓库中存放了所有支持pod框架的描述信息(包括每个库的各个版本)</p>
-<p>文件目录：</p>
-<pre><code>~/.cocoapods/repos/master
-</code></pre><ul>
-<li><p>在 <a href="https://gitee.com/" target="_blank" rel="noopener">码云</a> 或者 <a href>coding</a> 上创建一个私有仓库</p>
-</li>
-<li><p>添加私有库到CocoaPods</p>
-<ul>
-<li><p>格式 <code>pod repo add [repoName] (URL)</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">	pod repo add PrivateSpec https://gitee.com/aapenga/PrivateSpec.git </span><br><span class="line">	```	</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 创建本地私有库</span><br><span class="line"></span><br><span class="line"> - `cd` 到任意一个文件夹下, 执行 `pod lib create [项目名]`</span><br><span class="line">	</span><br><span class="line">	``` </span><br><span class="line"> 	pod lib create PPExcelView</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li>将文件放入到生成的 Demo 文件夹 的 <code>Classes</code> 文件目录下</li>
-<li><p><code>cd</code> 到 <code>Example</code> 下(含有 <code>Podfile</code> 文件) 执行</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod install</span><br></pre></td></tr></table></figure>
-<p>或者</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod update</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p> 此时添加的文件出现在 <code>Dome</code> Pod 的 <code>Development Pods</code> 目录中</p>
-<ul>
-<li><p>从本地验证 pod 是否通过</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod lib lint</span><br></pre></td></tr></table></figure>
-<p>  如果有警告，可以使用 <code>--private</code> 或者 <code>--allow-warnings</code> 忽略</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pod lib lint --allow-warnings</span><br><span class="line">pod lib lint --private</span><br></pre></td></tr></table></figure>
-<p> <strong>出现     <code>PPExcelView passed validation.</code> 为通过</strong></p>
-</li>
-<li><p>从远程仓库验证 pod </p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod spec lint</span><br></pre></td></tr></table></figure>
-<p>  <strong>出现     <code>PPExcelView.podspec passed validation</code> 为通过</strong></p>
-</li>
-</ul>
-<h2 id="推送-podspec-文件到私有仓库"><a href="#推送-podspec-文件到私有仓库" class="headerlink" title="推送 .podspec 文件到私有仓库"></a>推送 <code>.podspec</code> 文件到私有仓库</h2><p><code>cd</code> 到 <code>.podspec</code> 所在的文件下</p>
-<pre><code>pod repo push MyGitSpec PPExcelView.podspec
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/11/29/CocoaPods制作私有pod/" data-id="cjwgh853x0001oi81a0arezyd" class="article-share-link">Share</a>
-      
-      
     </footer>
   </div>
   
@@ -1100,23 +1207,23 @@ EmotionKeyboard.podspec passed validation.
       <ul>
         
           <li>
-            <a href="/2019/06/03/第十二章架构和框架面试/">(no title)</a>
+            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/03/第十四章第三方库面试/">(no title)</a>
+            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/03/第十章网络相关/">(no title)</a>
+            <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/03/第四章OC语言特性面试/">(no title)</a>
+            <a href="/2019/06/18/第十章网络相关/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/03/第八章多线程面试/">(no title)</a>
+            <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
           </li>
         
       </ul>

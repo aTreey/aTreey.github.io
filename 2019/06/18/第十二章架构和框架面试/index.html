@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>aTreey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="第十二章 架构和框架 目的  实现模块化 分层 解耦  图片缓存图片缓存框架设计方案？ 图片缓存时内存设计上需要考虑的问题 内存存储的size  10kb的图片开辟的内存空间 50 张 100kb图片的 20 张 100kb 以上的 10 张通过队列的方式存储，先进先出的方式淘汰   淘汰策略  以队列先进先出的方式淘汰 已LRU 算法 (如 30 min 之内是否使用过)    磁盘设计考虑的问">
+<meta property="og:type" content="article">
+<meta property="og:title" content="aTreey&#39;s Blog">
+<meta property="og:url" content="https://github.com/aTreey/2019/06/18/第十二章架构和框架面试/index.html">
+<meta property="og:site_name" content="aTreey&#39;s Blog">
+<meta property="og:description" content="第十二章 架构和框架 目的  实现模块化 分层 解耦  图片缓存图片缓存框架设计方案？ 图片缓存时内存设计上需要考虑的问题 内存存储的size  10kb的图片开辟的内存空间 50 张 100kb图片的 20 张 100kb 以上的 10 张通过队列的方式存储，先进先出的方式淘汰   淘汰策略  以队列先进先出的方式淘汰 已LRU 算法 (如 30 min 之内是否使用过)    磁盘设计考虑的问">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://i.loli.net/2019/04/18/5cb8873419c28.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/04/18/5cb887ab505f3.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/04/18/5cb8903ae7004.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/04/18/5cb8915823482.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/04/18/5cb894992c97c.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/04/18/5cb895a29c8e3.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/04/18/5cb8962545202.jpg">
+<meta property="og:updated_time" content="2019-06-18T14:24:32.192Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="aTreey&#39;s Blog">
+<meta name="twitter:description" content="第十二章 架构和框架 目的  实现模块化 分层 解耦  图片缓存图片缓存框架设计方案？ 图片缓存时内存设计上需要考虑的问题 内存存储的size  10kb的图片开辟的内存空间 50 张 100kb图片的 20 张 100kb 以上的 10 张通过队列的方式存储，先进先出的方式淘汰   淘汰策略  以队列先进先出的方式淘汰 已LRU 算法 (如 30 min 之内是否使用过)    磁盘设计考虑的问">
+<meta name="twitter:image" content="https://i.loli.net/2019/04/18/5cb8873419c28.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="aTreey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">aTreey&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://github.com/aTreey"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-第十二章架构和框架面试" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/第十二章架构和框架面试/" class="article-date">
+  <time datetime="2019-06-18T14:24:32.192Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>第十二章 架构和框架</p>
+<p>目的</p>
+<ul>
+<li>实现模块化</li>
+<li>分层</li>
+<li>解耦</li>
+</ul>
+<h2 id="图片缓存"><a href="#图片缓存" class="headerlink" title="图片缓存"></a>图片缓存</h2><h3 id="图片缓存框架设计方案？"><a href="#图片缓存框架设计方案？" class="headerlink" title="图片缓存框架设计方案？"></a>图片缓存框架设计方案？</h3><p><img src="https://i.loli.net/2019/04/18/5cb8873419c28.jpg" alt></p>
+<h3 id="图片缓存时内存设计上需要考虑的问题"><a href="#图片缓存时内存设计上需要考虑的问题" class="headerlink" title="图片缓存时内存设计上需要考虑的问题"></a>图片缓存时内存设计上需要考虑的问题</h3><ul>
+<li><p>内存存储的size</p>
+<ul>
+<li>10kb的图片开辟的内存空间 50 张</li>
+<li>100kb图片的 20 张</li>
+<li>100kb 以上的 10 张<br>通过队列的方式存储，先进先出的方式淘汰</li>
+</ul>
+</li>
+<li><p>淘汰策略</p>
+<ul>
+<li>以队列先进先出的方式淘汰</li>
+<li>已LRU 算法 (如 30 min 之内是否使用过)</li>
+</ul>
+</li>
+</ul>
+<h3 id="磁盘设计考虑的问题"><a href="#磁盘设计考虑的问题" class="headerlink" title="磁盘设计考虑的问题"></a>磁盘设计考虑的问题</h3><ul>
+<li>存储方式</li>
+<li>大小限制</li>
+<li>淘汰策略(超过 7 天)</li>
+</ul>
+<h3 id="网络部分的设计需要考虑的问题"><a href="#网络部分的设计需要考虑的问题" class="headerlink" title="网络部分的设计需要考虑的问题"></a>网络部分的设计需要考虑的问题</h3><ul>
+<li>图片请求最大并发量</li>
+<li>请求超时策略，一旦超时了，可以重试，如果重试2次失败，是否还下载</li>
+<li>请求优先级，下载或者缓存的图片是否紧急需要</li>
+</ul>
+<h3 id="图片通过什么方式进行读写，过程是怎样的？"><a href="#图片通过什么方式进行读写，过程是怎样的？" class="headerlink" title="图片通过什么方式进行读写，过程是怎样的？"></a>图片通过什么方式进行读写，过程是怎样的？</h3><ul>
+<li>以图片的url 的单向哈希值作为key 存储</li>
+<li>读取过程</li>
+</ul>
+<p><img src="https://i.loli.net/2019/04/18/5cb887ab505f3.jpg" alt></p>
+<h3 id="图片解码"><a href="#图片解码" class="headerlink" title="图片解码"></a>图片解码</h3><ul>
+<li><p>对于不同格式的图片，解码采用什么方式来做？</p>
+<ul>
+<li>应用策略模式对于不同图片格式进行解码</li>
+</ul>
+</li>
+<li><p>在那个阶段做图片解码处理？</p>
+<ul>
+<li>再磁盘读取后未解码或者网络请求返回后，解码后再放到内存中，可以减轻主线程的压力，解码在主线程中</li>
+</ul>
+</li>
+</ul>
+<h3 id="线程处理"><a href="#线程处理" class="headerlink" title="线程处理"></a>线程处理</h3><p> <img src="https://i.loli.net/2019/04/18/5cb8903ae7004.jpg" alt></p>
+<h2 id="阅读时长统计"><a href="#阅读时长统计" class="headerlink" title="阅读时长统计"></a>阅读时长统计</h2><h3 id="怎样设计一个时长统计框架？"><a href="#怎样设计一个时长统计框架？" class="headerlink" title="怎样设计一个时长统计框架？"></a>怎样设计一个时长统计框架？</h3><p><img src="https://i.loli.net/2019/04/18/5cb8915823482.jpg" alt></p>
+<h3 id="为何要有不同类型的记录器，处于什么考虑？"><a href="#为何要有不同类型的记录器，处于什么考虑？" class="headerlink" title="为何要有不同类型的记录器，处于什么考虑？"></a>为何要有不同类型的记录器，处于什么考虑？</h3><p>基于不同分类场景提供的关于记录的封装、适配</p>
+<h3 id="记录的数据由于程序杀死或者断电，关机等丢失，你是怎样处理的？"><a href="#记录的数据由于程序杀死或者断电，关机等丢失，你是怎样处理的？" class="headerlink" title="记录的数据由于程序杀死或者断电，关机等丢失，你是怎样处理的？"></a>记录的数据由于程序杀死或者断电，关机等丢失，你是怎样处理的？</h3><ul>
+<li>定时写磁盘</li>
+<li>限定内存缓存条数，超过该条数就写如磁盘</li>
+</ul>
+<h3 id="记录器上传-中延时上传的具体场景有哪些？上传时机如何把握？"><a href="#记录器上传-中延时上传的具体场景有哪些？上传时机如何把握？" class="headerlink" title="记录器上传 中延时上传的具体场景有哪些？上传时机如何把握？"></a>记录器上传 中延时上传的具体场景有哪些？上传时机如何把握？</h3><p>上传时机</p>
+<ul>
+<li>立刻上传</li>
+<li>延时上传</li>
+<li>定时上传</li>
+</ul>
+<p>延时上传场景</p>
+<p>统计结果立即上传会重复调用接口导致资源浪费</p>
+<ul>
+<li>前后台切换</li>
+<li>从无网到有网的变化时</li>
+<li>通过其他的接口捎带着上传</li>
+</ul>
+<h2 id="复杂页面的架构"><a href="#复杂页面的架构" class="headerlink" title="复杂页面的架构"></a>复杂页面的架构</h2><h3 id="MVVM-框架思想"><a href="#MVVM-框架思想" class="headerlink" title="MVVM 框架思想"></a>MVVM 框架思想</h3><p><img src="https://i.loli.net/2019/04/18/5cb894992c97c.jpg" alt></p>
+<h3 id="RN-的数据流思想"><a href="#RN-的数据流思想" class="headerlink" title="RN 的数据流思想"></a>RN 的数据流思想</h3><p><img src="https://i.loli.net/2019/04/18/5cb895a29c8e3.jpg" alt></p>
+<p>任何一个子节点是没有权力做自己的变化更新的，它必须把这个消息传递给根结点，根结点通过自顶向下的遍历查找需要更新的节点</p>
+<h3 id="系统UIView-更新机制的思想"><a href="#系统UIView-更新机制的思想" class="headerlink" title="系统UIView 更新机制的思想"></a>系统UIView 更新机制的思想</h3><h3 id="AsyncDisplayKit-关于预排版的设计思想"><a href="#AsyncDisplayKit-关于预排版的设计思想" class="headerlink" title="AsyncDisplayKit 关于预排版的设计思想"></a>AsyncDisplayKit 关于预排版的设计思想</h3><h2 id="客户端整体架构"><a href="#客户端整体架构" class="headerlink" title="客户端整体架构"></a>客户端整体架构</h2><p>需要独立于APP 的通用层<br>通用的业务层<br>中间层<br>业务层</p>
+<p><img src="https://i.loli.net/2019/04/18/5cb8962545202.jpg" alt></p>
+<p>业务之间的解耦通信方式</p>
+<ul>
+<li>OpenURL</li>
+<li>依赖注入方式， 在中间层通过代理 的方式实现业务A 和业务B之间的通信</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/第十二章架构和框架面试/" data-id="cjx1wsds90036msfy44t645tm" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/18/第十四章第三方库面试/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/18/第十章网络相关/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第十章网络相关/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 aTreey<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

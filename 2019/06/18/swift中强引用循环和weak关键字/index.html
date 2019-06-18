@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>aTreey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Swift中内存管理 强引用循环和 weak 关键字房东 123456789101112class Landlord &amp;#123;    var name: String    var house: House?        init(name: String) &amp;#123;        self.name = name    &amp;#125;        deinit &amp;#123;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="aTreey&#39;s Blog">
+<meta property="og:url" content="https://github.com/aTreey/2019/06/18/swift中强引用循环和weak关键字/index.html">
+<meta property="og:site_name" content="aTreey&#39;s Blog">
+<meta property="og:description" content="Swift中内存管理 强引用循环和 weak 关键字房东 123456789101112class Landlord &amp;#123;    var name: String    var house: House?        init(name: String) &amp;#123;        self.name = name    &amp;#125;        deinit &amp;#123;">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-18T14:24:32.188Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="aTreey&#39;s Blog">
+<meta name="twitter:description" content="Swift中内存管理 强引用循环和 weak 关键字房东 123456789101112class Landlord &amp;#123;    var name: String    var house: House?        init(name: String) &amp;#123;        self.name = name    &amp;#125;        deinit &amp;#123;">
+  
+    <link rel="alternate" href="/atom.xml" title="aTreey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">aTreey&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://github.com/aTreey"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-swift中强引用循环和weak关键字" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/swift中强引用循环和weak关键字/" class="article-date">
+  <time datetime="2019-06-18T14:24:32.188Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Swift中内存管理</p>
+<h3 id="强引用循环和-weak-关键字"><a href="#强引用循环和-weak-关键字" class="headerlink" title="强引用循环和 weak 关键字"></a>强引用循环和 weak 关键字</h3><p>房东</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Landlord &#123;</span><br><span class="line">    var name: String</span><br><span class="line">    var house: House?</span><br><span class="line">    </span><br><span class="line">    init(name: String) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    deinit &#123;</span><br><span class="line">        print(&quot;Landlord内存释放&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>房子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class House &#123;</span><br><span class="line">    var name: String</span><br><span class="line">    var landlord: Landlord?</span><br><span class="line">    </span><br><span class="line">    init(person: String) &#123;</span><br><span class="line">        self.name = person</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    deinit &#123;</span><br><span class="line">        print(&quot;House内存释放&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>循环引用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">func strongRetain() &#123;</span><br><span class="line">    var landlord: Landlord? = Landlord(name: &quot;老李&quot;)</span><br><span class="line">    var house: House? = House(person: &quot;望京府邸&quot;)</span><br><span class="line">    // 房东有个房子</span><br><span class="line">    landlord?.house = house</span><br><span class="line">    // 房子有个主人</span><br><span class="line">    house?.landlord = landlord</span><br><span class="line">    </span><br><span class="line">    landlord = nil</span><br><span class="line">    house = nil</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>虽然 landlord = nil 和 house = nil，但是 Landlord 和 House 内存空间并没有释放 （并未执行 deinit 函数）</p>
+</li>
+<li><p>原因：因为两个内存空间相互引用，引用计数不为0，形成了强循环引用</p>
+</li>
+<li><p>解决办法：使用weak 关键字来修饰两者中其中一个变量</p>
+<ul>
+<li>使用weak修饰的变量必须是可选类型，可以赋值为nil</li>
+<li>使用weak修饰必须是var 类型变量</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class House &#123;</span><br><span class="line">    var name: String</span><br><span class="line">    weak var landlord: Landlord?</span><br><span class="line">    </span><br><span class="line">    init(person: String) &#123;</span><br><span class="line">        self.name = person</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    deinit &#123;</span><br><span class="line">        print(&quot;House内存释放&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="unowned-关键字的使用"><a href="#unowned-关键字的使用" class="headerlink" title="unowned 关键字的使用"></a>unowned 关键字的使用</h3><h4 id="相互循环引用的两个变量有一个是可选的"><a href="#相互循环引用的两个变量有一个是可选的" class="headerlink" title="相互循环引用的两个变量有一个是可选的"></a>相互循环引用的两个变量有一个是可选的</h4><p>有个身份证的类，每个身份证肯定对应一个人</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class ID &#123;</span><br><span class="line">    var number: String</span><br><span class="line">    let person: Landlord</span><br><span class="line">    </span><br><span class="line">    init(person: Landlord, number: String) &#123;</span><br><span class="line">        self.person = person</span><br><span class="line">        self.number = number</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    deinit &#123;</span><br><span class="line">        print(&quot;ID内存释放&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">房东</span><br></pre></td></tr></table></figure>
+<p>class Landlord {<br>    var name: String<br>    var house: House?<br>    /// 身份证可以为nil，<br>    var id: ID?</p>
+<pre><code>init(name: String) {
+    self.name = name
+}
+
+deinit {
+    print(&quot;Landlord内存释放&quot;)
+}
+</code></pre><p>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">循环引用</span><br></pre></td></tr></table></figure>
+<p>func unownedTest() {<br>    var person: Landlord? = Landlord(name: “老王”)<br>    var id: ID? = ID(person: person!, number: “10010”)</p>
+<pre><code>person?.id = id
+person = nil
+id = nil
+</code></pre><p>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">-  person 和 id 之间有强引用关系</span><br><span class="line">-  每个id必须有一个对应的人并且是固定的只能使用let 修饰，不能为nil, 而id可以为空 </span><br><span class="line">- 	unowned和 weak 作用相同都是弱引用，只是unowned 修改的变量不能是nil （可选型的）</span><br><span class="line">-  unowned只能使用在 class 类型上，不能修饰函数类型，例如闭包存在循环引用时不能使用unowned修饰</span><br><span class="line">-  解决方法：</span><br><span class="line">	-  此时可以通过使用 weak 修饰 id 的方式，因为 id 可以为nil</span><br><span class="line">	-  let 修饰并且不能为nil 这种情况可以使用 unowned 修饰解决</span><br></pre></td></tr></table></figure>
+<pre><code>class ID {
+    var number: String
+    unowned let person: Landlord
+
+    init(person: Landlord, number: String) {
+        self.person = person
+        self.number = number
+    }
+
+    deinit {
+        print(&quot;ID内存释放&quot;)
+    }
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">**unowned有一定的危险性** </span><br><span class="line"></span><br><span class="line">因为unowned 修饰的对象不能赋值为nil，所以执行下面的代码会crash，</span><br></pre></td></tr></table></figure>
+</code></pre><p>func unownedTest() {<br>        var person: Landlord? = Landlord(name: “老王”)<br>        var id: ID? = ID(person: person!, number: “10010”)</p>
+<pre><code>person?.id = id
+
+// 提前释放 person 内存
+person = nil
+
+// 获取身份证对应的人
+print(id?.person) // 此处奔溃，
+let owner = id?.person
+id = nil
+</code></pre><p> }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">正确的写法因该是先将🆔设置为nil，再将 Person 设置为nil，再调用 print(id?.person) 就不会再报错</span><br></pre></td></tr></table></figure></p>
+<p>func unownedTest() {<br>        var person: Landlord? = Landlord(name: “老王”)<br>        var id: ID? = ID(person: person!, number: “10010”)</p>
+<pre><code>person?.id = id
+
+id = nil
+
+// 提前释放 person 内存
+person = nil
+
+// 获取身份证对应的人
+print(id?.person) // 此处奔溃，
+let owner = id?.person
+</code></pre><p> }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 相互循环引用的两个变量都不是可选的</span><br><span class="line"></span><br><span class="line">使用隐式可选类型</span><br><span class="line"></span><br><span class="line">### 闭包中的强引用循环</span><br><span class="line"></span><br><span class="line">- 并不是所有的闭包都会产生循环引用，只有相互引用的两个对象会产生循环引用</span><br><span class="line"></span><br><span class="line">- 使用swift闭包捕获列表，在闭包的声明参数之前使用 [unowned self], 不需要解包</span><br><span class="line"></span><br><span class="line">- 使用 unowned表示这个对象不能为空，可能存在风险，如果对象为空就会crash</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">使用 unowned 对象不能为空，可能存在风险</span><br></pre></td></tr></table></figure></p>
+<p>class Closure {<br>    var closure: ((Int) -&gt; Void)?</p>
+<pre><code>init() {
+    closure = { [unowned self] index in
+        print(self)
+        print(index)
+    }
+}
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">使用 weak, 此时需要解包</span><br></pre></td></tr></table></figure></p>
+<p>closure = { [weak self] index in<br>            // 解包<br>            if let <code>self</code> = self {<br>                print(self)<br>                print(index)<br>            }<br>        }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">强制解包</span><br></pre></td></tr></table></figure></p>
+<p>closure = { [weak self] index in<br>            // 强制解包<br>            print(self!)<br>            print(index)<br>        }<br><code>`</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/swift中强引用循环和weak关键字/" data-id="cjx1wsdrf002jmsfyomcvyf44" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/18/npm和cnpm/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/18/typescripe 安装及语法/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第十章网络相关/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 aTreey<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
