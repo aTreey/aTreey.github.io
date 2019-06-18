@@ -62,9 +62,9 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Flutter-md" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Flutterr入门" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/18/Flutter-md/" class="article-date">
+    <a href="/2019/06/18/Flutterr入门/" class="article-date">
   <time datetime="2019-06-18T15:18:43.000Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
@@ -76,7 +76,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/18/Flutter-md/">Flutter.md</a>
+      <a class="article-title" href="/2019/06/18/Flutterr入门/">Flutter 入门.md</a>
     </h1>
   
 
@@ -85,14 +85,18 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>flutter安装</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">// 导入头文件</span><br><span class="line">import &apos;package:flutter/material.dart&apos;;</span><br><span class="line"></span><br><span class="line">void main() =&gt; (MyApp());</span><br><span class="line"></span><br><span class="line">// 定义类, 继承</span><br><span class="line"></span><br><span class="line">class MyApp extends StatelessWidget &#123;</span><br><span class="line">  // 重写</span><br><span class="line">  @override</span><br><span class="line"></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line"></span><br><span class="line">    // 返回一窗口</span><br><span class="line">    return MaterialApp(</span><br><span class="line">      title:&apos;Flutter&apos;,</span><br><span class="line">      home: Scaffold(</span><br><span class="line">        appBar: AppBar(</span><br><span class="line">          title: Text(&apos;flutter 初体验&apos;)</span><br><span class="line">        ),</span><br><span class="line"></span><br><span class="line">        body: Center(</span><br><span class="line">          child: Text(&apos;flutter 学习之路&apos;),</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>flutter入门</p>
+<h2 id="flutter-安装"><a href="#flutter-安装" class="headerlink" title="flutter 安装"></a>flutter 安装</h2><h2 id="flutter-项目代码"><a href="#flutter-项目代码" class="headerlink" title="flutter 项目代码"></a>flutter 项目代码</h2><p>fluter 中一切皆是组件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">// 导入头文件</span><br><span class="line">import &apos;package:flutter/material.dart&apos;;</span><br><span class="line"></span><br><span class="line">// 程序的入口，main 函数</span><br><span class="line">void main() =&gt; (MyApp());</span><br><span class="line"></span><br><span class="line">// 定义类, 继承</span><br><span class="line"></span><br><span class="line">class MyApp extends StatelessWidget &#123;</span><br><span class="line">  // 重写</span><br><span class="line">  @override</span><br><span class="line"></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line"></span><br><span class="line">    // 返回一窗口</span><br><span class="line">    return MaterialApp(</span><br><span class="line">      title:&apos;Flutter&apos;,</span><br><span class="line">      home: Scaffold(</span><br><span class="line">        appBar: AppBar(</span><br><span class="line">          title: Text(&apos;flutter 初体验&apos;)</span><br><span class="line">        ),</span><br><span class="line"></span><br><span class="line">        body: Center(</span><br><span class="line">          child: Text(&apos;flutter 学习之路&apos;),</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import &apos;package:flutter/material.dart&apos;;</span><br><span class="line"></span><br><span class="line">void main() =&gt; runApp(MyApp());</span><br><span class="line"></span><br><span class="line">class MyApp extends StatelessWidget &#123;</span><br><span class="line">  // This widget is the root of your application.</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return MaterialApp(</span><br><span class="line">      title: &apos;Flutter Demo&apos;,</span><br><span class="line">      theme: ThemeData(</span><br><span class="line">        // This is the theme of your application.</span><br><span class="line">        //</span><br><span class="line">        // Try running your application with &quot;flutter run&quot;. You&apos;ll see the</span><br><span class="line">        // application has a blue toolbar. Then, without quitting the app, try</span><br><span class="line">        // changing the primarySwatch below to Colors.green and then invoke</span><br><span class="line">        // &quot;hot reload&quot; (press &quot;r&quot; in the console where you ran &quot;flutter run&quot;,</span><br><span class="line">        // or simply save your changes to &quot;hot reload&quot; in a Flutter IDE).</span><br><span class="line">        // Notice that the counter didn&apos;t reset back to zero; the application</span><br><span class="line">        // is not restarted.</span><br><span class="line">        primarySwatch: Colors.blue,</span><br><span class="line">      ),</span><br><span class="line">      home: MyHomePage(title: &apos;Flutter Demo Home Page&apos;),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class MyHomePage extends StatefulWidget &#123;</span><br><span class="line">  MyHomePage(&#123;Key key, this.title&#125;) : super(key: key);</span><br><span class="line"></span><br><span class="line">  // This widget is the home page of your application. It is stateful, meaning</span><br><span class="line">  // that it has a State object (defined below) that contains fields that affect</span><br><span class="line">  // how it looks.</span><br><span class="line"></span><br><span class="line">  // This class is the configuration for the state. It holds the values (in this</span><br><span class="line">  // case the title) provided by the parent (in this case the App widget) and</span><br><span class="line">  // used by the build method of the State. Fields in a Widget subclass are</span><br><span class="line">  // always marked &quot;final&quot;.</span><br><span class="line"></span><br><span class="line">  final String title;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  _MyHomePageState createState() =&gt; _MyHomePageState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class _MyHomePageState extends State&lt;MyHomePage&gt; &#123;</span><br><span class="line">  int _counter = 0;</span><br><span class="line"></span><br><span class="line">  void _incrementCounter() &#123;</span><br><span class="line">    setState(() &#123;</span><br><span class="line">      // This call to setState tells the Flutter framework that something has</span><br><span class="line">      // changed in this State, which causes it to rerun the build method below</span><br><span class="line">      // so that the display can reflect the updated values. If we changed</span><br><span class="line">      // _counter without calling setState(), then the build method would not be</span><br><span class="line">      // called again, and so nothing would appear to happen.</span><br><span class="line">      _counter++;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    // This method is rerun every time setState is called, for instance as done</span><br><span class="line">    // by the _incrementCounter method above.</span><br><span class="line">    //</span><br><span class="line">    // The Flutter framework has been optimized to make rerunning build methods</span><br><span class="line">    // fast, so that you can just rebuild anything that needs updating rather</span><br><span class="line">    // than having to individually change instances of widgets.</span><br><span class="line">    return Scaffold(</span><br><span class="line">      appBar: AppBar(</span><br><span class="line">        // Here we take the value from the MyHomePage object that was created by</span><br><span class="line">        // the App.build method, and use it to set our appbar title.</span><br><span class="line">        title: Text(widget.title),</span><br><span class="line">      ),</span><br><span class="line">      body: Center(</span><br><span class="line">        // Center is a layout widget. It takes a single child and positions it</span><br><span class="line">        // in the middle of the parent.</span><br><span class="line">        child: Column(</span><br><span class="line">          // Column is also layout widget. It takes a list of children and</span><br><span class="line">          // arranges them vertically. By default, it sizes itself to fit its</span><br><span class="line">          // children horizontally, and tries to be as tall as its parent.</span><br><span class="line">          //</span><br><span class="line">          // Invoke &quot;debug painting&quot; (press &quot;p&quot; in the console, choose the</span><br><span class="line">          // &quot;Toggle Debug Paint&quot; action from the Flutter Inspector in Android</span><br><span class="line">          // Studio, or the &quot;Toggle Debug Paint&quot; command in Visual Studio Code)</span><br><span class="line">          // to see the wireframe for each widget.</span><br><span class="line">          //</span><br><span class="line">          // Column has various properties to control how it sizes itself and</span><br><span class="line">          // how it positions its children. Here we use mainAxisAlignment to</span><br><span class="line">          // center the children vertically; the main axis here is the vertical</span><br><span class="line">          // axis because Columns are vertical (the cross axis would be</span><br><span class="line">          // horizontal).</span><br><span class="line">          mainAxisAlignment: MainAxisAlignment.center,</span><br><span class="line">          children: &lt;Widget&gt;[</span><br><span class="line">            Text(</span><br><span class="line">              &apos;你可以点击按钮来修改文字，我是热重载的结果&apos;,</span><br><span class="line">            ),</span><br><span class="line">            Text(</span><br><span class="line">              &apos;$_counter&apos;,</span><br><span class="line">              style: Theme.of(context).textTheme.display1,</span><br><span class="line">            ),</span><br><span class="line">          ],</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">      floatingActionButton: FloatingActionButton(</span><br><span class="line">        onPressed: _incrementCounter,</span><br><span class="line">        tooltip: &apos;Increment&apos;,</span><br><span class="line">        child: Icon(Icons.add),</span><br><span class="line">      ), // This trailing comma makes auto-formatting nicer for build methods.</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Flutter-md/" data-id="cjx1yh3ap0001f9fy5fpx58n1" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Flutterr入门/" data-id="cjx1yl6zd000aihfy06gy386h" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flutter/">Flutter</a></li></ul>
+
     </footer>
   </div>
   
@@ -117,7 +121,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/docs/15608702427054/" data-id="cjx1yh3d1003ef9fytg7ah6np" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/docs/15608702427054/" data-id="cjx1yl719003gihfys597ts4k" class="article-share-link">Share</a>
       
       
     </footer>
@@ -257,7 +261,56 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第四章OC语言特性面试/" data-id="cjx1yh3cm0039f9fymk6vr3rl" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第四章OC语言特性面试/" data-id="cjx1yl711003dihfyifb0uw15" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-第十一章设计模式面试" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/第十一章设计模式面试/" class="article-date">
+  <time datetime="2019-06-18T14:45:48.773Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>第十一章 设计模式</p>
+<h2 id="六大设计原则"><a href="#六大设计原则" class="headerlink" title="六大设计原则"></a>六大设计原则</h2><p>单一职责原则：一个类只负责一件事</p>
+<p>开闭原则： 对修改关闭，对扩展开放</p>
+<p>接口隔离原则：使用多个专门的协议，而不是一个庞大臃肿的协议，iOS系统的UITableView的数据和代理协议分开</p>
+<p>依赖倒置原则：抽象不应该依赖于具体实现，具体实现可以依赖于抽象</p>
+<p>里氏替换原则：父类可以被子类无缝替换，且原有功能不受任何影响，iOS系统 的 KVO 机制遵守了这一原则，当调用 addObserver 方法时，因为系统在动态运行时为我们创建了一个子类，直观感受是仍然使用的是父类，实际上系统已经替换为创建的子类，所以KVO 机制 不但使用了管擦这模式，并且遵从了 里氏替换原则</p>
+<p>迪米特法则： 一个对象应对其他对象有尽可能少的了解，平时所说的高内聚，低耦合</p>
+<h2 id="常用设计模式"><a href="#常用设计模式" class="headerlink" title="常用设计模式"></a>常用设计模式</h2><h3 id="责任链"><a href="#责任链" class="headerlink" title="责任链"></a>责任链</h3><p>有三个业务分别为A/B/C，以前的调用顺序为 A -&gt; B -&gt; C ，现在顺序有调整，</p>
+<p>定义某一个类，有一个成员变量他的类型跟原有类类型一致，组成一个责任链，让处理具体业务的责任者去处理</p>
+<p><img src="https://i.loli.net/2019/04/18/5cb85694cd028.jpg" alt></p>
+<h3 id="桥接模式"><a href="#桥接模式" class="headerlink" title="桥接模式"></a>桥接模式</h3><p>业务解耦的问题：同一个列表和多套数据显示，多套数据通过后端来控制是共存，</p>
+<p><img src="https://i.loli.net/2019/04/18/5cb857a83803d.jpg" alt></p>
+<p>类构成</p>
+<p>抽象类A ——&gt; class B </p>
+<p><img src="https://i.loli.net/2019/04/18/5cb85da6d46b6.jpg" alt></p>
+<h3 id="适配器模式"><a href="#适配器模式" class="headerlink" title="适配器模式"></a>适配器模式</h3><p>一个现有类需要适应变化的问题， 年代比较久远的类或者对象</p>
+<p>类构成<br><img src="https://i.loli.net/2019/04/18/5cb8600aa067b.jpg" alt></p>
+<ul>
+<li>对象适配</li>
+<li>类适配</li>
+</ul>
+<h3 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h3><h3 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h3><p>行为参数化</p>
+<p>降低代码重合度</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/第十一章设计模式面试/" data-id="cjx1yl70w0038ihfy0vyl53gk" class="article-share-link">Share</a>
       
       
     </footer>
@@ -363,7 +416,34 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第十二章架构和框架面试/" data-id="cjx1yh3ck0036f9fymhz6p7bn" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第十二章架构和框架面试/" data-id="cjx1yl70x0039ihfy03ez4f10" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-第十三章算法面试" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/第十三章算法面试/" class="article-date">
+  <time datetime="2019-06-18T14:45:48.773Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>第十三章算法</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/第十三章算法面试/" data-id="cjx1yl70y003aihfyg1mgdqu7" class="article-share-link">Share</a>
       
       
     </footer>
@@ -408,7 +488,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第十四章第三方库面试/" data-id="cjx1yh3cl0037f9fylr59cbzu" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第十四章第三方库面试/" data-id="cjx1yl70z003bihfyewwga3x6" class="article-share-link">Share</a>
       
       
     </footer>
@@ -580,83 +660,7 @@ max：10 最多发生多少个http请求和响应对
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第十章网络相关/" data-id="cjx1yh3cl0038f9fyhaqs17ta" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-第十一章设计模式面试" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/第十一章设计模式面试/" class="article-date">
-  <time datetime="2019-06-18T14:45:48.773Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>第十一章 设计模式</p>
-<h2 id="六大设计原则"><a href="#六大设计原则" class="headerlink" title="六大设计原则"></a>六大设计原则</h2><p>单一职责原则：一个类只负责一件事</p>
-<p>开闭原则： 对修改关闭，对扩展开放</p>
-<p>接口隔离原则：使用多个专门的协议，而不是一个庞大臃肿的协议，iOS系统的UITableView的数据和代理协议分开</p>
-<p>依赖倒置原则：抽象不应该依赖于具体实现，具体实现可以依赖于抽象</p>
-<p>里氏替换原则：父类可以被子类无缝替换，且原有功能不受任何影响，iOS系统 的 KVO 机制遵守了这一原则，当调用 addObserver 方法时，因为系统在动态运行时为我们创建了一个子类，直观感受是仍然使用的是父类，实际上系统已经替换为创建的子类，所以KVO 机制 不但使用了管擦这模式，并且遵从了 里氏替换原则</p>
-<p>迪米特法则： 一个对象应对其他对象有尽可能少的了解，平时所说的高内聚，低耦合</p>
-<h2 id="常用设计模式"><a href="#常用设计模式" class="headerlink" title="常用设计模式"></a>常用设计模式</h2><h3 id="责任链"><a href="#责任链" class="headerlink" title="责任链"></a>责任链</h3><p>有三个业务分别为A/B/C，以前的调用顺序为 A -&gt; B -&gt; C ，现在顺序有调整，</p>
-<p>定义某一个类，有一个成员变量他的类型跟原有类类型一致，组成一个责任链，让处理具体业务的责任者去处理</p>
-<p><img src="https://i.loli.net/2019/04/18/5cb85694cd028.jpg" alt></p>
-<h3 id="桥接模式"><a href="#桥接模式" class="headerlink" title="桥接模式"></a>桥接模式</h3><p>业务解耦的问题：同一个列表和多套数据显示，多套数据通过后端来控制是共存，</p>
-<p><img src="https://i.loli.net/2019/04/18/5cb857a83803d.jpg" alt></p>
-<p>类构成</p>
-<p>抽象类A ——&gt; class B </p>
-<p><img src="https://i.loli.net/2019/04/18/5cb85da6d46b6.jpg" alt></p>
-<h3 id="适配器模式"><a href="#适配器模式" class="headerlink" title="适配器模式"></a>适配器模式</h3><p>一个现有类需要适应变化的问题， 年代比较久远的类或者对象</p>
-<p>类构成<br><img src="https://i.loli.net/2019/04/18/5cb8600aa067b.jpg" alt></p>
-<ul>
-<li>对象适配</li>
-<li>类适配</li>
-</ul>
-<h3 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h3><h3 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h3><p>行为参数化</p>
-<p>降低代码重合度</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第十一章设计模式面试/" data-id="cjx1yh3cn003af9fyziki4qnw" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-第十三章算法面试" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/第十三章算法面试/" class="article-date">
-  <time datetime="2019-06-18T14:45:48.773Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>第十三章算法</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第十三章算法面试/" data-id="cjx1yh3cn003bf9fyyohg18n9" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第十章网络相关/" data-id="cjx1yl710003cihfyd8lerjl6" class="article-share-link">Share</a>
       
       
     </footer>
@@ -684,7 +688,7 @@ max：10 最多发生多少个http请求和响应对
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第九章Runloop面试/" data-id="cjx1yh3ch0031f9fyeruz3h91" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第九章Runloop面试/" data-id="cjx1yl70t0033ihfyoggr69m8" class="article-share-link">Share</a>
       
       
     </footer>
@@ -793,7 +797,7 @@ max：10 最多发生多少个http请求和响应对
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第五章Runtime相关面试/" data-id="cjx1yh3ci0033f9fyq9qgr2la" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第五章Runtime相关面试/" data-id="cjx1yl70u0035ihfyhntv14ee" class="article-share-link">Share</a>
       
       
     </footer>
@@ -821,7 +825,7 @@ max：10 最多发生多少个http请求和响应对
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flutter/">Flutter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
     </div>
   </div>
 
@@ -831,7 +835,7 @@ max：10 最多发生多少个http请求和响应对
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
+      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/Flutter/" style="font-size: 10px;">Flutter</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
     </div>
   </div>
 
@@ -853,7 +857,7 @@ max：10 最多发生多少个http请求和响应对
       <ul>
         
           <li>
-            <a href="/2019/06/18/Flutter-md/">Flutter.md</a>
+            <a href="/2019/06/18/Flutterr入门/">Flutter 入门.md</a>
           </li>
         
           <li>
@@ -865,11 +869,11 @@ max：10 最多发生多少个http请求和响应对
           </li>
         
           <li>
-            <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
+            <a href="/2019/06/18/第十一章设计模式面试/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
+            <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
           </li>
         
       </ul>

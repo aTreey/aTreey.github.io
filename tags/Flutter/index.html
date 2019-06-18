@@ -5,19 +5,15 @@
   
 
   
-  <title>aTreey&#39;s Blog</title>
+  <title>Tag: Flutter | aTreey&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="swift类型检查和类型转换 is 关键字类型检查判断父类和子类之间的关系 1234567891011121314func typeCheck() &amp;#123;    let programmer = Programmer(name: &amp;quot;老张-php&amp;quot;)    if dev is iOSDeveloper &amp;#123;        print(&amp;quot;iOS 开发者&amp;qu">
-<meta property="og:type" content="article">
+  <meta property="og:type" content="website">
 <meta property="og:title" content="aTreey&#39;s Blog">
-<meta property="og:url" content="https://github.com/aTreey/2019/06/18/is 关键字类型检查/index.html">
+<meta property="og:url" content="https://github.com/aTreey/tags/Flutter/index.html">
 <meta property="og:site_name" content="aTreey&#39;s Blog">
-<meta property="og:description" content="swift类型检查和类型转换 is 关键字类型检查判断父类和子类之间的关系 1234567891011121314func typeCheck() &amp;#123;    let programmer = Programmer(name: &amp;quot;老张-php&amp;quot;)    if dev is iOSDeveloper &amp;#123;        print(&amp;quot;iOS 开发者&amp;qu">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-18T14:45:48.768Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="aTreey&#39;s Blog">
-<meta name="twitter:description" content="swift类型检查和类型转换 is 关键字类型检查判断父类和子类之间的关系 1234567891011121314func typeCheck() &amp;#123;    let programmer = Programmer(name: &amp;quot;老张-php&amp;quot;)    if dev is iOSDeveloper &amp;#123;        print(&amp;quot;iOS 开发者&amp;qu">
   
     <link rel="alternate" href="/atom.xml" title="aTreey&#39;s Blog" type="application/atom+xml">
   
@@ -64,61 +60,40 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-is 关键字类型检查" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/is 关键字类型检查/" class="article-date">
-  <time datetime="2019-06-18T14:45:48.768Z" itemprop="datePublished">2019-06-18</time>
+        <section id="main">
+  
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2019" class="archive-year">2019</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2019/06/18/Flutterr入门/" class="archive-article-date">
+  <time datetime="2019-06-18T15:18:43.000Z" itemprop="datePublished">Jun 18</time>
 </a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
       
-        <p>swift类型检查和类型转换</p>
-<h3 id="is-关键字类型检查"><a href="#is-关键字类型检查" class="headerlink" title="is 关键字类型检查"></a>is 关键字类型检查</h3><p>判断父类和子类之间的关系</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">func typeCheck() &#123;</span><br><span class="line">    let programmer = Programmer(name: &quot;老张-php&quot;)</span><br><span class="line">    if dev is iOSDeveloper &#123;</span><br><span class="line">        print(&quot;iOS 开发者&quot;)</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        print(&quot;其他开发者&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    if programmer is Coder &#123;</span><br><span class="line">        print(&quot;老张-php是一农个码农&quot;)</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        print(&quot;&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="as-关键字类型转换"><a href="#as-关键字类型转换" class="headerlink" title="as 关键字类型转换"></a>as 关键字类型转换</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let ios = iosDev as? Programmer</span><br><span class="line">let ios2 = iosDev as! Coder</span><br></pre></td></tr></table></figure>
-<h3 id="判断是否遵守了协议"><a href="#判断是否遵守了协议" class="headerlink" title="判断是否遵守了协议"></a>判断是否遵守了协议</h3><p>swift 中协议可以当作是一个类型使用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">et ios = iosDev as? Programmer</span><br><span class="line">    let ios2 = iosDev as Coder</span><br><span class="line">    </span><br><span class="line">    // 是否遵守了 Person 协议</span><br><span class="line">    if iosDev is Person &#123;</span><br><span class="line">        print(&quot;遵守了Person协议&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    let devs = [dev, iosDev, programmer] as [Any]</span><br><span class="line">    </span><br><span class="line">    for dev in devs &#123;</span><br><span class="line">        if let dev = dev as? Person &#123;</span><br><span class="line">            print(dev)</span><br><span class="line">            print(&quot;遵守Person协议&quot;)</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            print(&quot;未遵守Person协议&quot;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="AnyObject-Any"><a href="#AnyObject-Any" class="headerlink" title="AnyObject Any"></a>AnyObject Any</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var anyObjectArray: [AnyObject] = [CGFloat(0.5) as AnyObject,</span><br><span class="line">                             			1 as AnyObject,</span><br><span class="line">                             			&quot;string&quot; as AnyObject,</span><br><span class="line">                         				iOSODev]</span><br></pre></td></tr></table></figure>
-<p>swift是面向函数编程， 函数是一等公民，数组中可以存入一个函数，函数表达的是一个过程，不是一个名词或者物体，所以函数不是一个对象,需要使用 any 关键字</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var anyArray: [Any] = [CGFloat(0.5),</span><br><span class="line">							1,</span><br><span class="line">							&quot;string&quot;, </span><br><span class="line">							iOSODev]</span><br></pre></td></tr></table></figure>
-<p>放入函数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">anyArray.append(&#123; (a: Int) -&gt; (Int) in return a * a &#125;)</span><br></pre></td></tr></table></figure>
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2019/06/18/Flutterr入门/">Flutter 入门.md</a>
+    </h1>
+  
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/is 关键字类型检查/" data-id="cjx1yl70k002mihfylfyb107m" class="article-share-link">Share</a>
-      
-      
-    </footer>
+    </header>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2019/06/18/iOS面试OC语言特性/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          (no title)
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2019/06/18/npm和cnpm/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title"></div>
-    </a>
-  
-</nav>
-
-  
 </article>
+  
+  
+    </div></section>
+  
+
 
 </section>
         
