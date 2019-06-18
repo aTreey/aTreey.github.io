@@ -1,10 +1,19 @@
+---
+title: Flutter 入门.md
+date: 2019-06-18 23:18:43
+tags: Flutter
+---
+
+flutter安装
+
+flutter入门
+
 ## flutter 安装
 
 
 ## flutter 项目代码
 
 fluter 中一切皆是组件
-
 
 ```
 // 导入头文件
@@ -153,6 +162,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-
 ```
