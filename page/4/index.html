@@ -62,6 +62,62 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Swift协议扩展" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/Swift协议扩展/" class="article-date">
+  <time datetime="2019-06-18T14:45:48.760Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Swift协议扩展</p>
+<h3 id="定义结构体"><a href="#定义结构体" class="headerlink" title="定义结构体"></a>定义结构体</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">struct Point &#123;</span><br><span class="line">    var x = 0.0</span><br><span class="line">    var y = 0.0</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Size &#123;</span><br><span class="line">    var height = 0.0</span><br><span class="line">    var width = 0.0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Rectangle &#123;</span><br><span class="line">    var origin = Point()</span><br><span class="line">    var size = Size()</span><br><span class="line">    </span><br><span class="line">    init(origin: Point, size: Size) &#123;</span><br><span class="line">        self.origin = origin</span><br><span class="line">        self.size = size</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><ul>
+<li>扩展方法</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">extension Rectangle &#123;</span><br><span class="line">    mutating func translate(x: Double, y: Double) &#123;</span><br><span class="line">        self.origin.x += x</span><br><span class="line">        self.origin.y += y</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>只能扩展计算型的属性，不能扩展存储型属性, 存储型属性需要在定义类或者结构体时声明</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">extension Rectangle &#123;</span><br><span class="line">    var center: Point &#123;</span><br><span class="line">        get &#123;</span><br><span class="line">            let center_x = origin.x + size.width / 2.0</span><br><span class="line">            let center_y = origin.y + size.height / 2.0</span><br><span class="line">            return Point(x: center_x, y: center_y)</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        set &#123;</span><br><span class="line">            origin.x = newValue.x - size.width / 2.0</span><br><span class="line">            origin.y = newValue.y - size.height / 2.0</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>扩展构造方法</p>
+<ul>
+<li>类中不能扩展指定构造方法，只能在结构体中扩展</li>
+<li>结构体中不能扩展便利构造方法m，只能在类中扩展</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">extension Rectangle &#123;</span><br><span class="line">    init(center: Point, size: Size) &#123;</span><br><span class="line">        let origin_x = center.x - size.width / 2.0</span><br><span class="line">        let origin_y = center.y - size.height / 2.0</span><br><span class="line">        self.origin = Point(x: origin_x, y: origin_y)</span><br><span class="line">        self.size = size</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 结构体中不能扩展便利构造函数 Delegating initializers in structs are not marked with &apos;convenience&apos;</span><br><span class="line">//    convenience init(center: Point, size: Size) &#123;</span><br><span class="line">//        let origin_x = center.x - size.width / 2.0</span><br><span class="line">//        let origin_y = center.y - size.height / 2.0</span><br><span class="line">//        self.origin = Point(x: origin_x, y: origin_y)</span><br><span class="line">//        self.size = size</span><br><span class="line">//    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>扩展嵌套类型</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">extension Rectangle &#123;</span><br><span class="line">    enum Vertex: Int &#123;</span><br><span class="line">        case left_top</span><br><span class="line">        case left_bottom</span><br><span class="line">        case right_bottom</span><br><span class="line">        case right_top</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 获取某一个顶点坐标</span><br><span class="line">    func point(of vertex: Vertex) -&gt; Point &#123;</span><br><span class="line">        switch vertex &#123;</span><br><span class="line">        case .left_top:</span><br><span class="line">            return origin</span><br><span class="line">        case .left_bottom:</span><br><span class="line">            return Point(x: origin.x, y: origin.y + size.height)</span><br><span class="line">        case .right_bottom:</span><br><span class="line">            return Point(x: origin.x + size.width, y: origin.y + size.height)</span><br><span class="line">        case .right_top:</span><br><span class="line">            return Point(x: origin.x + size.width, y: origin.y)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>扩展下标,根据传入的索引获取对应顶点坐标</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">extension Rectangle &#123;</span><br><span class="line">    subscript(index: Int) -&gt; Point? &#123;</span><br><span class="line">        assert(0 &lt;= index &amp;&amp; index &lt; 4, &quot;传入值非法&quot;)</span><br><span class="line">        return point(of: Vertex(rawValue: index)!)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="扩展系统方法"><a href="#扩展系统方法" class="headerlink" title="扩展系统方法"></a>扩展系统方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">extension Int &#123;</span><br><span class="line">    /// 平方</span><br><span class="line">    var square: Int &#123;</span><br><span class="line">        return self * self</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 立方</span><br><span class="line">    var cube: Int &#123;</span><br><span class="line">        return self * self * self</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 判断数组是否在某一个范围内</span><br><span class="line">    func inRange(clousedLeft left: Int, openRight right: Int) -&gt; Bool &#123;</span><br><span class="line">        return self &gt;= left &amp;&amp; self &gt; right</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 重复执行操作</span><br><span class="line">    func repeatitions(task: () -&gt; ()) &#123;</span><br><span class="line">        for _ in 0..&lt;self &#123;</span><br><span class="line">            task()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 变长函数</span><br><span class="line">    func stride(from: Int, to: Int, by: Int, task: () -&gt; ()) &#123;</span><br><span class="line">        // 系统变长函数</span><br><span class="line">        for i in Swift.stride(from: 0, to: 21, by: 3) &#123;</span><br><span class="line">            print(i)</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        for _ in Swift.stride(from: from, to: to, by: by) &#123;</span><br><span class="line">            task()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>扩展后使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">print(2.square)</span><br><span class="line">print(3.cube)</span><br><span class="line">print(4.inRange(clousedLeft: 0, openRight: 4))</span><br><span class="line">4.repeatitions &#123;</span><br><span class="line">    print(&quot;extension&quot;)</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">// 使用变长函数</span><br><span class="line">4.stride(from: 0, to: 8, by: 4) &#123;</span><br><span class="line">    print(&quot;stride&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift协议扩展/" data-id="cjx1yh3bu001qf9fym7f1fnha" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Swift协议别名" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/Swift协议别名/" class="article-date">
@@ -214,63 +270,7 @@ func shoutWins() {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift协议别名/" data-id="cjx1yegq6001p53fywtxfmco2" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Swift协议扩展" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/Swift协议扩展/" class="article-date">
-  <time datetime="2019-06-18T14:45:48.760Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Swift协议扩展</p>
-<h3 id="定义结构体"><a href="#定义结构体" class="headerlink" title="定义结构体"></a>定义结构体</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">struct Point &#123;</span><br><span class="line">    var x = 0.0</span><br><span class="line">    var y = 0.0</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Size &#123;</span><br><span class="line">    var height = 0.0</span><br><span class="line">    var width = 0.0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Rectangle &#123;</span><br><span class="line">    var origin = Point()</span><br><span class="line">    var size = Size()</span><br><span class="line">    </span><br><span class="line">    init(origin: Point, size: Size) &#123;</span><br><span class="line">        self.origin = origin</span><br><span class="line">        self.size = size</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><ul>
-<li>扩展方法</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">extension Rectangle &#123;</span><br><span class="line">    mutating func translate(x: Double, y: Double) &#123;</span><br><span class="line">        self.origin.x += x</span><br><span class="line">        self.origin.y += y</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>只能扩展计算型的属性，不能扩展存储型属性, 存储型属性需要在定义类或者结构体时声明</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">extension Rectangle &#123;</span><br><span class="line">    var center: Point &#123;</span><br><span class="line">        get &#123;</span><br><span class="line">            let center_x = origin.x + size.width / 2.0</span><br><span class="line">            let center_y = origin.y + size.height / 2.0</span><br><span class="line">            return Point(x: center_x, y: center_y)</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        set &#123;</span><br><span class="line">            origin.x = newValue.x - size.width / 2.0</span><br><span class="line">            origin.y = newValue.y - size.height / 2.0</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>扩展构造方法</p>
-<ul>
-<li>类中不能扩展指定构造方法，只能在结构体中扩展</li>
-<li>结构体中不能扩展便利构造方法m，只能在类中扩展</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">extension Rectangle &#123;</span><br><span class="line">    init(center: Point, size: Size) &#123;</span><br><span class="line">        let origin_x = center.x - size.width / 2.0</span><br><span class="line">        let origin_y = center.y - size.height / 2.0</span><br><span class="line">        self.origin = Point(x: origin_x, y: origin_y)</span><br><span class="line">        self.size = size</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 结构体中不能扩展便利构造函数 Delegating initializers in structs are not marked with &apos;convenience&apos;</span><br><span class="line">//    convenience init(center: Point, size: Size) &#123;</span><br><span class="line">//        let origin_x = center.x - size.width / 2.0</span><br><span class="line">//        let origin_y = center.y - size.height / 2.0</span><br><span class="line">//        self.origin = Point(x: origin_x, y: origin_y)</span><br><span class="line">//        self.size = size</span><br><span class="line">//    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>扩展嵌套类型</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">extension Rectangle &#123;</span><br><span class="line">    enum Vertex: Int &#123;</span><br><span class="line">        case left_top</span><br><span class="line">        case left_bottom</span><br><span class="line">        case right_bottom</span><br><span class="line">        case right_top</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 获取某一个顶点坐标</span><br><span class="line">    func point(of vertex: Vertex) -&gt; Point &#123;</span><br><span class="line">        switch vertex &#123;</span><br><span class="line">        case .left_top:</span><br><span class="line">            return origin</span><br><span class="line">        case .left_bottom:</span><br><span class="line">            return Point(x: origin.x, y: origin.y + size.height)</span><br><span class="line">        case .right_bottom:</span><br><span class="line">            return Point(x: origin.x + size.width, y: origin.y + size.height)</span><br><span class="line">        case .right_top:</span><br><span class="line">            return Point(x: origin.x + size.width, y: origin.y)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>扩展下标,根据传入的索引获取对应顶点坐标</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">extension Rectangle &#123;</span><br><span class="line">    subscript(index: Int) -&gt; Point? &#123;</span><br><span class="line">        assert(0 &lt;= index &amp;&amp; index &lt; 4, &quot;传入值非法&quot;)</span><br><span class="line">        return point(of: Vertex(rawValue: index)!)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="扩展系统方法"><a href="#扩展系统方法" class="headerlink" title="扩展系统方法"></a>扩展系统方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">extension Int &#123;</span><br><span class="line">    /// 平方</span><br><span class="line">    var square: Int &#123;</span><br><span class="line">        return self * self</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 立方</span><br><span class="line">    var cube: Int &#123;</span><br><span class="line">        return self * self * self</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 判断数组是否在某一个范围内</span><br><span class="line">    func inRange(clousedLeft left: Int, openRight right: Int) -&gt; Bool &#123;</span><br><span class="line">        return self &gt;= left &amp;&amp; self &gt; right</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 重复执行操作</span><br><span class="line">    func repeatitions(task: () -&gt; ()) &#123;</span><br><span class="line">        for _ in 0..&lt;self &#123;</span><br><span class="line">            task()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 变长函数</span><br><span class="line">    func stride(from: Int, to: Int, by: Int, task: () -&gt; ()) &#123;</span><br><span class="line">        // 系统变长函数</span><br><span class="line">        for i in Swift.stride(from: 0, to: 21, by: 3) &#123;</span><br><span class="line">            print(i)</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        for _ in Swift.stride(from: from, to: to, by: by) &#123;</span><br><span class="line">            task()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>扩展后使用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">print(2.square)</span><br><span class="line">print(3.cube)</span><br><span class="line">print(4.inRange(clousedLeft: 0, openRight: 4))</span><br><span class="line">4.repeatitions &#123;</span><br><span class="line">    print(&quot;extension&quot;)</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">// 使用变长函数</span><br><span class="line">4.stride(from: 0, to: 8, by: 4) &#123;</span><br><span class="line">    print(&quot;stride&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift协议扩展/" data-id="cjx1yegq7001r53fyny9gcrq9" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift协议别名/" data-id="cjx1yh3bv001sf9fyjl0vq85f" class="article-share-link">Share</a>
       
       
     </footer>
@@ -322,7 +322,7 @@ func shoutWins() {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift泛型/" data-id="cjx1yegq7001t53fy4t6nc3ve" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift泛型/" data-id="cjx1yh3bx001wf9fyim93fefc" class="article-share-link">Share</a>
       
       
     </footer>
@@ -350,7 +350,7 @@ func shoutWins() {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/SwiftLint使用/" data-id="cjx1yegq4001i53fy5q8x3tks" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/SwiftLint使用/" data-id="cjx1yh3bq001hf9fyh0pk39i1" class="article-share-link">Share</a>
       
       
     </footer>
@@ -428,82 +428,7 @@ return one.x &gt; other.x &amp;&amp;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift下标和运算符重载/" data-id="cjx1yegq5001k53fyhancrfgl" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Swift 协议使用" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/Swift 协议使用/" class="article-date">
-  <time datetime="2019-06-18T14:45:48.755Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Swift-协议使用"><a href="#Swift-协议使用" class="headerlink" title="Swift 协议使用"></a>Swift 协议使用</h1><h2 id="对UIView-扩展"><a href="#对UIView-扩展" class="headerlink" title="对UIView 扩展"></a>对UIView 扩展</h2><h3 id="按钮-文本框抖动动画"><a href="#按钮-文本框抖动动画" class="headerlink" title="按钮/文本框抖动动画"></a>按钮/文本框抖动动画</h3><ul>
-<li><p>声明协议</p>
-<ul>
-<li><p>协议中定义属性：遵循该协议的类型都具有此属性</p>
-<ul>
-<li>必须明确规定该属性是可读的 <code>{get}</code> 或者可写的 <code>{set}</code>，或是可读可写的 <code>{get set}</code></li>
-<li>使用static修饰声明一个类类型属性</li>
-</ul>
-</li>
-<li><p>协议中定义方法</p>
-</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">protocol Shakable &#123;&#125;</span><br><span class="line">extension Shakable where Self: UIView &#123;</span><br><span class="line">    func shakeAnimation() &#123;</span><br><span class="line">        let animation = CABasicAnimation(keyPath: &quot;position&quot;)</span><br><span class="line">        animation.duration = 0.08</span><br><span class="line">        animation.repeatCount = 5</span><br><span class="line">        animation.autoreverses = true</span><br><span class="line">        animation.fromValue = NSValue(cgPoint: CGPoint(x: self.center.x - 4, y: self.center.y))</span><br><span class="line">        animation.toValue = NSValue(cgPoint: CGPoint(x: self.center.x + 4, y: self.center.y))</span><br><span class="line">        layer.add(animation, forKey: &quot;position&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>自定义UI控件并遵守协议</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class MyButton: UIButton, Shakable &#123;  &#125;</span><br><span class="line">class MySwitch: UISwitch, Shakable &#123;  &#125;</span><br><span class="line">class MyTextField: UITextField, Shakable &#123;  &#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>使用</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let mySwitch = MySwitch()</span><br><span class="line">mySwitch.isOn = true</span><br><span class="line">self.mySwitch = mySwitch</span><br><span class="line">view.addSubview(mySwitch)</span><br><span class="line">mySwitch.translatesAutoresizingMaskIntoConstraints = false</span><br><span class="line">mySwitch.topAnchor.constraint(equalTo: view.bottomAnchor, constant: 10).isActive = true</span><br><span class="line">mySwitch.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true</span><br><span class="line"></span><br><span class="line">// 调用</span><br><span class="line">mySwitch.shakeAnimation()</span><br></pre></td></tr></table></figure>
-<h2 id="UITableViewCell使用"><a href="#UITableViewCell使用" class="headerlink" title="UITableViewCell使用"></a>UITableViewCell使用</h2><h3 id="定义协议"><a href="#定义协议" class="headerlink" title="定义协议"></a>定义协议</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">protocol ReusableView: class &#123;	&#125;</span><br><span class="line"></span><br><span class="line">extension ReusableView where Self: UIView &#123;</span><br><span class="line">    static var reuseIdentifier: String &#123;</span><br><span class="line">        return String(describing: self)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">### 对tableView扩展</span><br></pre></td></tr></table></figure>
-<p>extension UITableView {<br>    /// 注册cell<br>    func register&lt;T: UITableViewCell&gt;(T: T.Type) where T: ReusableView {<br>        print(T.reuseIdentifier)<br>        self.register(T.self, forCellReuseIdentifier: T.reuseIdentifier)<br>    }</p>
-<pre><code>/// 调用cell
-func dequeueReusableCell&lt;T: UITableViewCell&gt;(_ indexPath: IndexPath) -&gt; T where T: ReusableView {
-    print(T.reuseIdentifier)
-    return self.dequeueReusableCell(withIdentifier: T.reuseIdentifier, for: indexPath) as! T
-}
-</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 用法</span><br><span class="line"></span><br><span class="line">- 创建自定义的cell，需要遵守协议</span><br></pre></td></tr></table></figure></p>
-<p>class TableProtocolCell: UITableViewCell, ReusableView {<br>    override var reuseIdentifier: String? {<br>        return “cell”<br>    }<br>    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {<br>        super.init(style: style, reuseIdentifier: reuseIdentifier)<br>        self.backgroundColor = .cyan<br>        self.textLabel?.text = “通过协议和泛型创建的cell”<br>        self.textLabel?.textColor = .blue<br>    }<br>    required init?(coder aDecoder: NSCoder) {<br>        fatalError(“init(coder:) has not been implemented”)<br>    }<br>}</p>
-<p>class TableProtocolCell2: UITableViewCell, ReusableView {<br>    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {<br>        super.init(style: style, reuseIdentifier: reuseIdentifier)<br>        self.backgroundColor = .red<br>        self.textLabel?.text = “cell1 - 通过协议和泛型创建的”<br>        self.textLabel?.textAlignment = .right<br>    }<br>    required init?(coder aDecoder: NSCoder) {<br>        fatalError(“init(coder:) has not been implemented”)<br>    }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 注册和使用</span><br></pre></td></tr></table></figure></p>
-<p>class TableViewProtocolController: UITableViewController {<br>    override func viewDidLoad() {<br>        super.viewDidLoad()<br>        tableView.register(T: TableProtocolCell.self)<br>        tableView.register(T: TableProtocolCell2.self)<br>    }</p>
-<pre><code>override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int {
-    return 10
-}
-
-override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -&gt; UITableViewCell {
-    var cell = UITableViewCell()
-    if indexPath.row % 2 == 0 {
-        cell = tableView.dequeueReusableCell(indexPath) as TableProtocolCell
-    } else {
-        cell = tableView.dequeueReusableCell(indexPath) as TableProtocolCell2
-    }
-    return cell
-}
-</code></pre><p>}</p>
-<p><code>`</code></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift 协议使用/" data-id="cjx1yegpx001453fymz9ms22l" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift下标和运算符重载/" data-id="cjx1yh3br001jf9fyj7zzisaf" class="article-share-link">Share</a>
       
       
     </footer>
@@ -625,7 +550,82 @@ override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexP
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift 基础知识/" data-id="cjx1yegpz001653fyk8eyej9n" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift 基础知识/" data-id="cjx1yh3bl0015f9fyxbtd7pj8" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Swift 协议使用" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/Swift 协议使用/" class="article-date">
+  <time datetime="2019-06-18T14:45:48.755Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Swift-协议使用"><a href="#Swift-协议使用" class="headerlink" title="Swift 协议使用"></a>Swift 协议使用</h1><h2 id="对UIView-扩展"><a href="#对UIView-扩展" class="headerlink" title="对UIView 扩展"></a>对UIView 扩展</h2><h3 id="按钮-文本框抖动动画"><a href="#按钮-文本框抖动动画" class="headerlink" title="按钮/文本框抖动动画"></a>按钮/文本框抖动动画</h3><ul>
+<li><p>声明协议</p>
+<ul>
+<li><p>协议中定义属性：遵循该协议的类型都具有此属性</p>
+<ul>
+<li>必须明确规定该属性是可读的 <code>{get}</code> 或者可写的 <code>{set}</code>，或是可读可写的 <code>{get set}</code></li>
+<li>使用static修饰声明一个类类型属性</li>
+</ul>
+</li>
+<li><p>协议中定义方法</p>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">protocol Shakable &#123;&#125;</span><br><span class="line">extension Shakable where Self: UIView &#123;</span><br><span class="line">    func shakeAnimation() &#123;</span><br><span class="line">        let animation = CABasicAnimation(keyPath: &quot;position&quot;)</span><br><span class="line">        animation.duration = 0.08</span><br><span class="line">        animation.repeatCount = 5</span><br><span class="line">        animation.autoreverses = true</span><br><span class="line">        animation.fromValue = NSValue(cgPoint: CGPoint(x: self.center.x - 4, y: self.center.y))</span><br><span class="line">        animation.toValue = NSValue(cgPoint: CGPoint(x: self.center.x + 4, y: self.center.y))</span><br><span class="line">        layer.add(animation, forKey: &quot;position&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>自定义UI控件并遵守协议</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class MyButton: UIButton, Shakable &#123;  &#125;</span><br><span class="line">class MySwitch: UISwitch, Shakable &#123;  &#125;</span><br><span class="line">class MyTextField: UITextField, Shakable &#123;  &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let mySwitch = MySwitch()</span><br><span class="line">mySwitch.isOn = true</span><br><span class="line">self.mySwitch = mySwitch</span><br><span class="line">view.addSubview(mySwitch)</span><br><span class="line">mySwitch.translatesAutoresizingMaskIntoConstraints = false</span><br><span class="line">mySwitch.topAnchor.constraint(equalTo: view.bottomAnchor, constant: 10).isActive = true</span><br><span class="line">mySwitch.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true</span><br><span class="line"></span><br><span class="line">// 调用</span><br><span class="line">mySwitch.shakeAnimation()</span><br></pre></td></tr></table></figure>
+<h2 id="UITableViewCell使用"><a href="#UITableViewCell使用" class="headerlink" title="UITableViewCell使用"></a>UITableViewCell使用</h2><h3 id="定义协议"><a href="#定义协议" class="headerlink" title="定义协议"></a>定义协议</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">protocol ReusableView: class &#123;	&#125;</span><br><span class="line"></span><br><span class="line">extension ReusableView where Self: UIView &#123;</span><br><span class="line">    static var reuseIdentifier: String &#123;</span><br><span class="line">        return String(describing: self)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">### 对tableView扩展</span><br></pre></td></tr></table></figure>
+<p>extension UITableView {<br>    /// 注册cell<br>    func register&lt;T: UITableViewCell&gt;(T: T.Type) where T: ReusableView {<br>        print(T.reuseIdentifier)<br>        self.register(T.self, forCellReuseIdentifier: T.reuseIdentifier)<br>    }</p>
+<pre><code>/// 调用cell
+func dequeueReusableCell&lt;T: UITableViewCell&gt;(_ indexPath: IndexPath) -&gt; T where T: ReusableView {
+    print(T.reuseIdentifier)
+    return self.dequeueReusableCell(withIdentifier: T.reuseIdentifier, for: indexPath) as! T
+}
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 用法</span><br><span class="line"></span><br><span class="line">- 创建自定义的cell，需要遵守协议</span><br></pre></td></tr></table></figure></p>
+<p>class TableProtocolCell: UITableViewCell, ReusableView {<br>    override var reuseIdentifier: String? {<br>        return “cell”<br>    }<br>    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {<br>        super.init(style: style, reuseIdentifier: reuseIdentifier)<br>        self.backgroundColor = .cyan<br>        self.textLabel?.text = “通过协议和泛型创建的cell”<br>        self.textLabel?.textColor = .blue<br>    }<br>    required init?(coder aDecoder: NSCoder) {<br>        fatalError(“init(coder:) has not been implemented”)<br>    }<br>}</p>
+<p>class TableProtocolCell2: UITableViewCell, ReusableView {<br>    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {<br>        super.init(style: style, reuseIdentifier: reuseIdentifier)<br>        self.backgroundColor = .red<br>        self.textLabel?.text = “cell1 - 通过协议和泛型创建的”<br>        self.textLabel?.textAlignment = .right<br>    }<br>    required init?(coder aDecoder: NSCoder) {<br>        fatalError(“init(coder:) has not been implemented”)<br>    }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 注册和使用</span><br></pre></td></tr></table></figure></p>
+<p>class TableViewProtocolController: UITableViewController {<br>    override func viewDidLoad() {<br>        super.viewDidLoad()<br>        tableView.register(T: TableProtocolCell.self)<br>        tableView.register(T: TableProtocolCell2.self)<br>    }</p>
+<pre><code>override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int {
+    return 10
+}
+
+override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -&gt; UITableViewCell {
+    var cell = UITableViewCell()
+    if indexPath.row % 2 == 0 {
+        cell = tableView.dequeueReusableCell(indexPath) as TableProtocolCell
+    } else {
+        cell = tableView.dequeueReusableCell(indexPath) as TableProtocolCell2
+    }
+    return cell
+}
+</code></pre><p>}</p>
+<p><code>`</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift 协议使用/" data-id="cjx1yh3bs001mf9fy9q4c22ij" class="article-share-link">Share</a>
       
       
     </footer>
@@ -675,7 +675,7 @@ override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexP
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/ReactNative中ref使用/" data-id="cjx1yegpt000y53fy1h64gft2" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/ReactNative中ref使用/" data-id="cjx1yh3bf000xf9fy9xuw0y4i" class="article-share-link">Share</a>
       
       
     </footer>
@@ -744,7 +744,7 @@ override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexP
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/React-Native开发iOS打包/" data-id="cjx1yegpr000u53fyw0mk1tkj" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/React-Native开发iOS打包/" data-id="cjx1yh3be000tf9fyd6qj71lf" class="article-share-link">Share</a>
       
       
     </footer>
@@ -831,7 +831,7 @@ override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexP
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/RN报错/" data-id="cjx1yegps000w53fyjrvw7m7i" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/RN报错/" data-id="cjx1yh3bd000sf9fyd06rsrz0" class="article-share-link">Share</a>
       
       
     </footer>
@@ -903,11 +903,11 @@ override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexP
           </li>
         
           <li>
-            <a href="/2019/06/18/第十一章设计模式面试/">(no title)</a>
+            <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
+            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
           </li>
         
       </ul>
