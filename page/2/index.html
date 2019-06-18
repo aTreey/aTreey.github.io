@@ -62,10 +62,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-第八章多线程面试" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-第五章Runtime相关面试" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/18/第八章多线程面试/" class="article-date">
-  <time datetime="2019-06-18T14:45:48.772Z" itemprop="datePublished">2019-06-18</time>
+    <a href="/2019/06/18/第五章Runtime相关面试/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.017Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -74,110 +74,94 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>第三章多线程面试</p>
+        <h1 id="Runtime-相关问题"><a href="#Runtime-相关问题" class="headerlink" title="Runtime 相关问题"></a>Runtime 相关问题</h1><h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><h3 id="objc-object-结构体"><a href="#objc-object-结构体" class="headerlink" title="objc_object 结构体"></a>objc_object 结构体</h3><h3 id="objc-class"><a href="#objc-class" class="headerlink" title="objc_class"></a>objc_class</h3><h4 id="对象、类对象、元类对象的区别"><a href="#对象、类对象、元类对象的区别" class="headerlink" title="对象、类对象、元类对象的区别"></a>对象、类对象、元类对象的区别</h4><ul>
+<li>类对象存储实例方法列表等信息</li>
+<li>元类对象存锤类方法列表等信息</li>
+</ul>
+<h2 id="消息传递"><a href="#消息传递" class="headerlink" title="消息传递"></a>消息传递</h2><p><code>void objc_msgSend(void /* id self, SEL op, ... */)</code></p>
+<p>经过编译器转变后<br><code>[self class]</code> &lt;==&gt;  <code>objc_msgSend(self, @selector(class))</code><br>第一个参数是消息传递的接收者self, 第二个参数是传递的消息名称（选择器）</p>
+<p><code>void objc_msgSendSuper(void /* struct objc_super *super, SEL op, ... */)</code><br>第一个参数是一个结构体指针</p>
+<p>//<br>struuch objc_super {<br>    __unsafe_unretained id receiver; // 就是当前的对象<br>}</p>
+<p><code>[superclass]</code> &lt;==&gt;  <code>objc_msgSendSuper(super, @selector(class))</code></p>
+<p>无论调用[super class] 还是 [self class] 最终这条消息的接收者都是当前对象</p>
+<p>图1</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79ly1g1viq97z3cj31k90u0qd3.jpg" alt></p>
+<h2 id="消息传递过程"><a href="#消息传递过程" class="headerlink" title="消息传递过程"></a>消息传递过程</h2><p>图2</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1g1vigugmvmj31qu0u07a4.jpg" alt></p>
+<p>问题1</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79ly1g1vikx3a6wj31hp0u0dmw.jpg" alt></p>
+<p><code>打印结果都是 Phone</code></p>
+<p>原因:</p>
+<ul>
+<li>无论调用[super class] 还是 [self class] 最终这条消息的接收者都是当前对象</li>
+<li>[self class] 在Phone的类对象中查找class 方法，没有去父类查找，父类也没有，如图1顺次往上查找到根类，调用根类中class 的具体实现</li>
+<li>[super class]只是跨越了当前类，直接从当前类的父类中查找 class 方法，父类中没有class 方法，如图1所示只能继续往上查找到根类对象，在NSObject 中有class 方法实现，所以接受者任然是当前的对象</li>
+</ul>
+<h3 id="缓存查找"><a href="#缓存查找" class="headerlink" title="缓存查找"></a>缓存查找</h3><p>根据给定的SEL（方法选择器）通过一个函数来映射出bucket_t 在数组当中的位置，本质上是哈希查找</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1g1vj2xha6gj318i0jc76s.jpg" alt></p>
+<h3 id="当前类中查找"><a href="#当前类中查找" class="headerlink" title="当前类中查找"></a>当前类中查找</h3><p>当前类中存在着对应的方法列表</p>
+<ul>
+<li>对于已经排序好的列表，采用二分查找算法查找对应的执行函数</li>
+<li>对于没有排序的列表，采用一般遍历查找方法查找对应的执行函数</li>
+</ul>
+<h3 id="父类逐级查找"><a href="#父类逐级查找" class="headerlink" title="父类逐级查找"></a>父类逐级查找</h3><p>图3<br><img src="https://ws1.sinaimg.cn/large/006tNc79ly1g1vkkjffglj31xm0ssgpn.jpg" alt></p>
+<ul>
+<li>最关键是通过当前类的 superclass 成员变量去查找父类，或者访问父类</li>
+<li>curClass 的父类是否为 nil？如果是NSObject 类，他的父类为空，所以会结束查找</li>
+<li>如果当前类有父类就要去该父类的缓存中查找，如果在缓存中命中，那么就结束查找，如果缓存中没有，就需要遍历当前类的父类的方法列表，如果没有就遍历父类的父类查找，沿着superclass指针逐级向上查找，直到查找到NSObject，再去Superclass。如果还是没有为nil时就结束父类逐级查找</li>
+</ul>
+<h2 id="消息转发"><a href="#消息转发" class="headerlink" title="消息转发"></a>消息转发</h2><h3 id="resolveInstanceMethod"><a href="#resolveInstanceMethod" class="headerlink" title="resolveInstanceMethod:"></a>resolveInstanceMethod:</h3><ul>
+<li>该方法是类方法不是实例方法，参数是SEL 方法选择器类型</li>
+<li>返回值是一个BOOL值</li>
+<li>告诉系统是否要解决当前实例方法的实现</li>
+<li>如果返回YES，结束消息转发</li>
+<li>如果返回NO，系统会给第二次机会处理这个消息，会回掉forwardingTargetForSelector:</li>
+</ul>
+<h3 id="forwardingTargetForSelector："><a href="#forwardingTargetForSelector：" class="headerlink" title="forwardingTargetForSelector："></a>forwardingTargetForSelector：</h3><ul>
+<li>参数是 SEL 方法选择器</li>
+<li>返回值是 id 类型，说明有哪个对象来处理，转发的对象是谁，如果返回了转发目标就会结束当前调用</li>
+<li>如果返回为nil，系统会调用 methodSignatureForSelector:方法，最后一次机会处理这个消息</li>
+</ul>
+<h3 id="methodSignatureForSelector："><a href="#methodSignatureForSelector：" class="headerlink" title="methodSignatureForSelector："></a>methodSignatureForSelector：</h3><ul>
+<li>参数是 SEL 方法选择器</li>
+<li>返回值是一个对象，实际上这个对象是对<code>methodSignatureForSelector</code> 方法的参数，参数个数，参数类型和返回值的包装</li>
+<li>如果返回一个方法签名的话，就会调用 forwardInvocation: 方法</li>
+<li>如果返回为nil，标记为消息无法处理，程序crash</li>
+</ul>
+<h3 id="forwardInvocation："><a href="#forwardInvocation：" class="headerlink" title="forwardInvocation："></a>forwardInvocation：</h3><ul>
+<li>如果此方法不能处理消息，程序crash</li>
+</ul>
+<p>代码示例</p>
+<p>.h 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@interface RunTimeObject : NSObject</span><br><span class="line">// 只声明，不实现，验证消息转发机制</span><br><span class="line">- (void)test;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>.m 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">@implementation RunTimeObject</span><br><span class="line"></span><br><span class="line">// 实现消息转发流程 中的方法</span><br><span class="line">/**</span><br><span class="line"> 是否要解决当前实例方法的实现</span><br><span class="line"> */</span><br><span class="line">+ (BOOL)resolveInstanceMethod:(SEL)sel &#123;</span><br><span class="line">    if (sel == @selector(test)) &#123;</span><br><span class="line">        NSLog(@&quot;resolveInstanceMethod:&quot;);</span><br><span class="line">        // 如果返回YES，消息转发就会结束</span><br><span class="line">//        return YES;</span><br><span class="line">        </span><br><span class="line">        return NO;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;super resolveInstanceMethod:&quot;);</span><br><span class="line">        // 返回父类的默认调用</span><br><span class="line">        return [super resolveInstanceMethod:sel];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> - 参数是 SEL 方法选择器</span><br><span class="line"> - 返回值是 id 类型，说明有哪个对象来处理，转发的对象是谁，如果返回了转发目标就会结束当前调用</span><br><span class="line"> - 如果返回为nil，系统会调用 methodSignatureForSelector:方法，最后一次机会处理这个消息</span><br><span class="line"> */</span><br><span class="line">- (id)forwardingTargetForSelector:(SEL)aSelector &#123;</span><br><span class="line">    NSLog(@&quot; forwardingTargetForSelector: &quot;);</span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> - 参数是 SEL 方法选择器</span><br><span class="line"> - 返回值是一个对象，实际上这个对象是对`methodSignatureForSelector` 方法的参数，参数个数，参数类型和返回值的包装</span><br><span class="line"> - 如果返回一个方法签名的话，就会调用 forwardInvocation: 方法</span><br><span class="line"> - 如果返回为nil，标记为消息无法处理，程序crash</span><br><span class="line"> </span><br><span class="line"> */</span><br><span class="line">- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector &#123;</span><br><span class="line">    if (aSelector == @selector(test)) &#123;</span><br><span class="line">        NSLog(@&quot;methodSignatureForSelector:&quot;);</span><br><span class="line">        /**</span><br><span class="line">         v: 表示这个方法返回值是 void</span><br><span class="line">         </span><br><span class="line">         固定参数@: 表示参数类型是 id, 即self</span><br><span class="line">         固定参数`:` : 表示参数类型是选择器类型，即 @selector(test)</span><br><span class="line">         */</span><br><span class="line">        return [NSMethodSignature signatureWithObjCTypes:&quot;v@:&quot;];</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;super methodSignatureForSelector:&quot;);</span><br><span class="line">        // 返回父类的默认调用</span><br><span class="line">        return [super methodSignatureForSelector:aSelector];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">- (void)forwardInvocation:(NSInvocation *)anInvocation &#123;</span><br><span class="line">    NSLog(@&quot;forwardInvocation:&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>调用 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)runTiemTest &#123;</span><br><span class="line">    RunTimeObject *obj = [[RunTimeObject alloc] init];</span><br><span class="line">    [obj test];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">resolveInstanceMethod:</span><br><span class="line">forwardingTargetForSelector:</span><br><span class="line">methodSignatureForSelector:</span><br><span class="line">super resolveInstanceMethod:</span><br><span class="line">forwardInvocation:</span><br></pre></td></tr></table></figure>
+<h2 id="为类动态添加方法"><a href="#为类动态添加方法" class="headerlink" title="为类动态添加方法"></a>为类动态添加方法</h2><p>methond Swizzling</p>
+<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
+<li>页面中的进出添加统计信息，使用 methond Swizzling 替换viewillAppear 方法</li>
+</ul>
+<h3 id="动态添加方法"><a href="#动态添加方法" class="headerlink" title="动态添加方法"></a>动态添加方法</h3><ul>
+<li>perforSelector: 实际上是考察class_addMethod 的方法使用</li>
+</ul>
+<h3 id="动态方法解析"><a href="#动态方法解析" class="headerlink" title="动态方法解析"></a>动态方法解析</h3><ul>
+<li>@dynamic关键字</li>
+<li>动态运行时语言将函数决议推迟到运行时</li>
+<li>编译时不生成setter/getter 方法，而是在运行时才添加具体的执行函数</li>
+</ul>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="obj-foo-和-obj-msgSend-函数之间有什么关系？"><a href="#obj-foo-和-obj-msgSend-函数之间有什么关系？" class="headerlink" title="[obj foo] 和 obj_msgSend()函数之间有什么关系？"></a>[obj foo] 和 obj_msgSend()函数之间有什么关系？</h3><ul>
+<li><code>[obj foo]</code>经过编译器处理过后会变成 <code>obj_msgSend()</code>有两个参数，一个是obj，第二个参数是foo 选择器</li>
+</ul>
+<h3 id="runtime-如何通过Selector找到对应的IMP地址的？"><a href="#runtime-如何通过Selector找到对应的IMP地址的？" class="headerlink" title="runtime 如何通过Selector找到对应的IMP地址的？"></a>runtime 如何通过Selector找到对应的IMP地址的？</h3><p>消息传递机制</p>
+<h3 id="能否向编译后的类增加实例变量"><a href="#能否向编译后的类增加实例变量" class="headerlink" title="能否向编译后的类增加实例变量"></a>能否向编译后的类增加实例变量</h3><p>编译之前就完成了实例变量的布局，<br>runtime_r_t 表示是readonly 的，编译后的类是不能添加实例变量的，可以向动态添加的类中添加实例变量</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第八章多线程面试/" data-id="cjx1yn1la0035s2fytuzs586h" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-第六章内存管理面试" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/第六章内存管理面试/" class="article-date">
-  <time datetime="2019-06-18T14:45:48.772Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h1><h2 id="内存布局"><a href="#内存布局" class="headerlink" title="内存布局"></a>内存布局</h2><p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1g1mabhcs20j31cb0u0n2p.jpg" alt></p>
-<ul>
-<li>stack 栈是从高地址向低地址扩展，所以栈是向下增长的，对象和block copy 后都会放在堆上</li>
-<li>heap 堆区向上增长</li>
-</ul>
-<ul>
-<li><p>散列表方式</p>
-<ul>
-<li>自旋锁<ul>
-<li>自旋锁是“忙等” 的锁</li>
-</ul>
-</li>
-<li>引用计数表</li>
-<li>弱应用表</li>
-</ul>
-</li>
-</ul>
-<h2 id="内存管理方案"><a href="#内存管理方案" class="headerlink" title="内存管理方案"></a>内存管理方案</h2><ul>
-<li>小对象使用 TaggedPointer </li>
-<li>64 位架构下面使用的是 NONPONINT_ISA 内存管理方案，非指针型的 isa，内部存储了一些 </li>
-<li>散列表结构 （Side Tables() 结构）<ul>
-<li>自旋锁</li>
-<li>引用计数表</li>
-<li>弱引用表</li>
-<li>Side Tables() 结构</li>
-</ul>
-</li>
-</ul>
-<h3 id="为什么不是一个SideTable，而是多个组成了Side-Tables"><a href="#为什么不是一个SideTable，而是多个组成了Side-Tables" class="headerlink" title="为什么不是一个SideTable，而是多个组成了Side Tables"></a>为什么不是一个SideTable，而是多个组成了Side Tables</h3><p>如果所有对象的存储都放在一张大表当中，因为每个对象是在不同的线程中创建的，要操作其中一个对象时，需要将表加锁处理保证数据安全，要等锁释放之后才能操作下一个对象，此时存在效率问题，引入分离锁技术方案</p>
-<ul>
-<li>分离锁：把引用计数表分成多张表进行，</li>
-<li>Side Tables 本质是一张Hash 表</li>
-</ul>
-<p><img src="https://ws4.sinaimg.cn/large/006tNc79ly1g1wp3j6obfj310u07g0tn.jpg" alt></p>
-<h3 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h3><p>是“忙等”的锁，如果当前锁已被其他线程获取，当前线程会不断探测是否被释放，会第一时间获取，而其他锁比如信号量当它获取不到锁时，会把自己的线程阻塞休眠，等到其他线程释放这个锁时再唤醒这个锁</p>
-<ul>
-<li>适用于轻量访问</li>
-</ul>
-<h3 id="引用计数表"><a href="#引用计数表" class="headerlink" title="引用计数表"></a>引用计数表</h3><p>使用过Hash表来实现，hash查找提高了查找高效率，插入和获取是通过Hash 算法来是实现的，避免了for循环</p>
-<h4 id="alloc-实现"><a href="#alloc-实现" class="headerlink" title="alloc 实现"></a>alloc 实现</h4><p>经过一系列调用，最终调用了C函数 calloc， 并没有引用计数+1</p>
-<h4 id="retain-实现"><a href="#retain-实现" class="headerlink" title="retain 实现"></a>retain 实现</h4><p>底层经过了2次Hash表查找 </p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNc79ly1g1wq0qej61j31kg0dmtca.jpg" alt></p>
-<h4 id="release-实现"><a href="#release-实现" class="headerlink" title="release 实现"></a>release 实现</h4><p>和 retain 实现相反</p>
-<h4 id="dealloc-实现原理"><a href="#dealloc-实现原理" class="headerlink" title="dealloc 实现原理"></a>dealloc 实现原理</h4><p><img src="https://ws1.sinaimg.cn/large/006tNc79ly1g1wqa1mub5j31df0u0gqo.jpg" alt></p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNc79ly1g1wqvau8guj316u0rwmz9.jpg" alt></p>
-<h4 id="objc-destructInstance-实现"><a href="#objc-destructInstance-实现" class="headerlink" title="objc_destructInstance() 实现"></a>objc_destructInstance() 实现</h4><p><img src="https://ws2.sinaimg.cn/large/006tNc79ly1g1wqvfecquj315t0u0n1e.jpg" alt></p>
-<h4 id="clearDeallocating-实现"><a href="#clearDeallocating-实现" class="headerlink" title="clearDeallocating() 实现"></a>clearDeallocating() 实现</h4><p><img src="https://ws2.sinaimg.cn/large/006tNc79ly1g1wqvivtonj31la0tqdke.jpg" alt></p>
-<h4 id="MRC"><a href="#MRC" class="headerlink" title="MRC"></a>MRC</h4><p>手动引用计数 </p>
-<h4 id="ARC"><a href="#ARC" class="headerlink" title="ARC"></a>ARC</h4><ul>
-<li><p>编译器在对应位置自动插入retain 和 release 操作，并和runtime协作达到自动引用计数管理内存的效果</p>
-</li>
-<li><p>ARC 中禁止手动调用  retain/release </p>
-</li>
-<li>ARC 中新增 weeak、strong 等关键字</li>
-</ul>
-<h3 id="弱引用管理"><a href="#弱引用管理" class="headerlink" title="弱引用管理"></a>弱引用管理</h3><p>被声明为__weak 的对象指针经过编译后会进过调用以下方法，在最终的weak_register_no_lock() 方法中进行弱引用变量的添加。添加的位置是通过Hash算法查找的</p>
-<p><img src="https://ws1.sinaimg.cn/large/006tNc79ly1g1wr6cz3ctj31ac0hijtf.jpg" alt>  </p>
-<h3 id="weak-修饰的对象，释放时置为nil-如何实现的"><a href="#weak-修饰的对象，释放时置为nil-如何实现的" class="headerlink" title="weak 修饰的对象，释放时置为nil 如何实现的"></a>weak 修饰的对象，释放时置为nil 如何实现的</h3><p>当一个对象被 dealloc 之后，在dealloc内部实现当中会调用弱引用清除的相关函数，在相关函数当中会根据当前对象指针查找弱引用表，把当前对象下对应的弱应用都取出，遍历弱应用指针并置为nil。</p>
-<h3 id="自动释放池"><a href="#自动释放池" class="headerlink" title="自动释放池"></a>自动释放池</h3><p>是以栈为结点通过双向链表的形式组合而成，和线程一一对应</p>
-<p>Autoreleasepool </p>
-<h2 id="循环引用"><a href="#循环引用" class="headerlink" title="循环引用"></a>循环引用</h2><h3 id="自循环引用"><a href="#自循环引用" class="headerlink" title="自循环引用"></a>自循环引用</h3><p>一个对象中有拥有一个 强持有他的 obj，如果给 obj 赋值为原对象就会造成自循环引用</p>
-<h3 id="相互循环引用"><a href="#相互循环引用" class="headerlink" title="相互循环引用"></a>相互循环引用</h3><ul>
-<li>代理</li>
-<li>Block</li>
-<li>NSTimer</li>
-<li>大环多循环</li>
-</ul>
-<h3 id="多循环引用"><a href="#多循环引用" class="headerlink" title="多循环引用"></a>多循环引用</h3><p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1g1ws3as0wdj31sa0rwae5.jpg" alt></p>
-<h2 id="解决循环引用的方案"><a href="#解决循环引用的方案" class="headerlink" title="解决循环引用的方案"></a>解决循环引用的方案</h2><h3 id="weak"><a href="#weak" class="headerlink" title="__weak"></a>__weak</h3><p>解决相互循环引用</p>
-<h3 id="block"><a href="#block" class="headerlink" title="__block"></a>__block</h3><p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1g1wscj9qnij320o09igq4.jpg" alt></p>
-<h3 id="unsafe-unretained"><a href="#unsafe-unretained" class="headerlink" title="__unsafe_unretained"></a>__unsafe_unretained</h3><p>一般不建议使用</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1g1wsdln9jrj31iq0a041v.jpg" alt></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第六章内存管理面试/" data-id="cjx1yn1lb0036s2fypiscstya" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第五章Runtime相关面试/" data-id="cjx1zaulj0036x9fyck81bl0v" class="article-share-link">Share</a>
       
       
     </footer>
@@ -190,7 +174,7 @@
     <article id="post-第七章Blocks面试" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/第七章Blocks面试/" class="article-date">
-  <time datetime="2019-06-18T14:45:48.771Z" itemprop="datePublished">2019-06-18</time>
+  <time datetime="2019-06-18T15:30:19.016Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -273,7 +257,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第七章Blocks面试/" data-id="cjx1yn1l7002ys2fyvcyr5lwb" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第七章Blocks面试/" data-id="cjx1zaulg0031x9fy3vxlw6rr" class="article-share-link">Share</a>
       
       
     </footer>
@@ -286,7 +270,7 @@
     <article id="post-第三章UI视图响应链离屏渲染面试" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/第三章UI视图响应链离屏渲染面试/" class="article-date">
-  <time datetime="2019-06-18T14:45:48.771Z" itemprop="datePublished">2019-06-18</time>
+  <time datetime="2019-06-18T15:30:19.016Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -369,7 +353,158 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第三章UI视图响应链离屏渲染面试/" data-id="cjx1yn1l80031s2fyrwak3rj3" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第三章UI视图响应链离屏渲染面试/" data-id="cjx1zaulh0034x9fyonkiopee" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-一自动引用计数" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/一自动引用计数/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.015Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>自动引用计数</p>
+<h2 id="什么是自动引用计数"><a href="#什么是自动引用计数" class="headerlink" title="什么是自动引用计数"></a>什么是自动引用计数</h2><p>内存管理中对引用采取自动计数的技术</p>
+<h2 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h2><ul>
+<li>自己生成的对象，自己所持有 <ul>
+<li>alloc</li>
+<li>new</li>
+<li>copy</li>
+<li>mutableCopy</li>
+</ul>
+</li>
+<li>非自己生成的对象，自己也能持有 <ul>
+<li>retain</li>
+</ul>
+</li>
+<li>不再需要自己持有的对象时释放    <ul>
+<li>release</li>
+</ul>
+</li>
+<li><p>非自己持有的对象无法释放</p>
+</li>
+<li><p>废弃对象</p>
+<ul>
+<li>dealloc </li>
+</ul>
+</li>
+</ul>
+<h2 id="strong"><a href="#strong" class="headerlink" title="__strong"></a>__strong</h2><p>__strong 修饰符表示对对象的“强引用”</p>
+<h3 id="unsafe-unretained-修饰符"><a href="#unsafe-unretained-修饰符" class="headerlink" title="__unsafe_unretained 修饰符"></a>__unsafe_unretained 修饰符</h3><p>__unsafe_unretained 是不安全的所有权修饰符， 被它修饰的变量不属于编译器的内存管理对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id __unsafe_unretained objc = [[NSObject alloc] init];</span><br></pre></td></tr></table></figure>
+<p>Xcode 提示：<code>Assigning retained object to unsafe_unretained variable; object will be released after assignment</code></p>
+<p>将保留对象赋给unsafe_unretain变量;对象将在赋值后释放</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">id __unsafe_unretained obj1 = nil;</span><br><span class="line">   </span><br><span class="line">   &#123;</span><br><span class="line">       id __unsafe_unretained obj = [[NSObject alloc] init];</span><br><span class="line">       </span><br><span class="line">       // 自己生成并持有对象</span><br><span class="line">       // 因为obj0 变量是__strong,强引用，所以自己持有对象</span><br><span class="line">       id __strong obj0 = [[NSObject alloc] init];</span><br><span class="line">       </span><br><span class="line">       // obj0 变量赋值给你obj1</span><br><span class="line">       // ojb1 变量不持有对象的强应用，也不持有弱引用</span><br><span class="line">       obj1 = obj0;</span><br><span class="line">       </span><br><span class="line">       </span><br><span class="line">       // 输出 obj1 变量表示的对象</span><br><span class="line">       NSLog(@&quot;A: %@&quot;, obj1);</span><br><span class="line">   &#125; // obj0变量 超出了其作用域，强引用失效自动释放自己持有的对象，除此之外没有其他持有者，所以废弃该对象</span><br><span class="line">   </span><br><span class="line">   </span><br><span class="line">   </span><br><span class="line">   </span><br><span class="line">   // 输出 obj1 变量表示的对象</span><br><span class="line">   // obj1 变量表示的对象因为无持有者已经销毁，坏的内存访问</span><br><span class="line">   NSLog(@&quot;B: %@&quot;, obj1);</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/一自动引用计数/" data-id="cjx1zaulb002vx9fylbkh3ap1" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-is 关键字类型检查" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/is 关键字类型检查/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.014Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>swift类型检查和类型转换</p>
+<h3 id="is-关键字类型检查"><a href="#is-关键字类型检查" class="headerlink" title="is 关键字类型检查"></a>is 关键字类型检查</h3><p>判断父类和子类之间的关系</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">func typeCheck() &#123;</span><br><span class="line">    let programmer = Programmer(name: &quot;老张-php&quot;)</span><br><span class="line">    if dev is iOSDeveloper &#123;</span><br><span class="line">        print(&quot;iOS 开发者&quot;)</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        print(&quot;其他开发者&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    if programmer is Coder &#123;</span><br><span class="line">        print(&quot;老张-php是一农个码农&quot;)</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        print(&quot;&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="as-关键字类型转换"><a href="#as-关键字类型转换" class="headerlink" title="as 关键字类型转换"></a>as 关键字类型转换</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let ios = iosDev as? Programmer</span><br><span class="line">let ios2 = iosDev as! Coder</span><br></pre></td></tr></table></figure>
+<h3 id="判断是否遵守了协议"><a href="#判断是否遵守了协议" class="headerlink" title="判断是否遵守了协议"></a>判断是否遵守了协议</h3><p>swift 中协议可以当作是一个类型使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">et ios = iosDev as? Programmer</span><br><span class="line">    let ios2 = iosDev as Coder</span><br><span class="line">    </span><br><span class="line">    // 是否遵守了 Person 协议</span><br><span class="line">    if iosDev is Person &#123;</span><br><span class="line">        print(&quot;遵守了Person协议&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    let devs = [dev, iosDev, programmer] as [Any]</span><br><span class="line">    </span><br><span class="line">    for dev in devs &#123;</span><br><span class="line">        if let dev = dev as? Person &#123;</span><br><span class="line">            print(dev)</span><br><span class="line">            print(&quot;遵守Person协议&quot;)</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            print(&quot;未遵守Person协议&quot;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="AnyObject-Any"><a href="#AnyObject-Any" class="headerlink" title="AnyObject Any"></a>AnyObject Any</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var anyObjectArray: [AnyObject] = [CGFloat(0.5) as AnyObject,</span><br><span class="line">                             			1 as AnyObject,</span><br><span class="line">                             			&quot;string&quot; as AnyObject,</span><br><span class="line">                         				iOSODev]</span><br></pre></td></tr></table></figure>
+<p>swift是面向函数编程， 函数是一等公民，数组中可以存入一个函数，函数表达的是一个过程，不是一个名词或者物体，所以函数不是一个对象,需要使用 any 关键字</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var anyArray: [Any] = [CGFloat(0.5),</span><br><span class="line">							1,</span><br><span class="line">							&quot;string&quot;, </span><br><span class="line">							iOSODev]</span><br></pre></td></tr></table></figure>
+<p>放入函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">anyArray.append(&#123; (a: Int) -&gt; (Int) in return a * a &#125;)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/is 关键字类型检查/" data-id="cjx1zaul6002ox9fym18fw99d" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-npm和cnpm" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/npm和cnpm/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.014Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="ReactNative配置-npm-和cnpm-相关"><a href="#ReactNative配置-npm-和cnpm-相关" class="headerlink" title="ReactNative配置.npm 和cnpm 相关"></a>ReactNative配置.npm 和cnpm 相关</h1><h3 id="npm"><a href="#npm" class="headerlink" title="npm"></a>npm</h3><p>Nodejs的包管理工具</p>
+<h3 id="npm-常用命令"><a href="#npm-常用命令" class="headerlink" title="npm 常用命令"></a>npm 常用命令</h3><ul>
+<li><p>更新或卸载</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm update/uninstall moduleName</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看当前目录下已安装的包</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm list</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看全局安装的包的路径</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm root -g</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>全部命令</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm help</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="cnpm"><a href="#cnpm" class="headerlink" title="cnpm"></a>cnpm</h3><p>因为npm安装插件是从国外服务器下载，受网络影响大，可能出现异常，cnpm <a href="https://npm.taobao.org/" target="_blank" rel="noopener">淘宝镜像</a></p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+<h3 id="设置镜像源"><a href="#设置镜像源" class="headerlink" title="设置镜像源"></a>设置镜像源</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cnpm set registry http://registry.cnpm.taobao.com</span><br><span class="line">npm set registry http://registry.cnpm.taobao.com</span><br></pre></td></tr></table></figure>
+<h3 id="配置-npmrc-文件"><a href="#配置-npmrc-文件" class="headerlink" title="配置 .npmrc 文件"></a>配置 .npmrc 文件</h3><p>前端项目开发离不开安装各种npm依赖包，可以选择远程的仓库也可以选择本地的仓库，但更改仓库地址需要在安装时控制台打命令，比较麻烦， 而npmrc可以很方便地解决上面问题</p>
+<h3 id="npmrc-原理"><a href="#npmrc-原理" class="headerlink" title=".npmrc 原理"></a>.npmrc 原理</h3><p>当安装项目的依赖包时，会查找并读取项目根目录下的.npmrc文件的配置，自动指定仓库地址</p>
+<ul>
+<li><p>打开 .npmrc</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open .npmrc</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>编辑文件, 指定特定的库的镜像源, 比如以<code>@test</code>开头的库镜像为：<code>http://registry.cnpm.test.com/</code> 而其他的正常</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@test:registry=http://registry.cnpm.lietou.com/</span><br><span class="line">registry=https://registry.npm.taobao.org/</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/npm和cnpm/" data-id="cjx1zaul7002qx9fyvz01k7p7" class="article-share-link">Share</a>
       
       
     </footer>
@@ -382,7 +517,7 @@
     <article id="post-swift中强引用循环和weak关键字" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/swift中强引用循环和weak关键字/" class="article-date">
-  <time datetime="2019-06-18T14:45:48.769Z" itemprop="datePublished">2019-06-18</time>
+  <time datetime="2019-06-18T15:30:19.014Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -480,7 +615,7 @@ let owner = id?.person
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/swift中强引用循环和weak关键字/" data-id="cjx1yn1kz002os2fyduakn7bp" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/swift中强引用循环和weak关键字/" data-id="cjx1zaul8002rx9fy3329dchp" class="article-share-link">Share</a>
       
       
     </footer>
@@ -493,7 +628,7 @@ let owner = id?.person
     <article id="post-typescripe 安装及语法" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/typescripe 安装及语法/" class="article-date">
-  <time datetime="2019-06-18T14:45:48.769Z" itemprop="datePublished">2019-06-18</time>
+  <time datetime="2019-06-18T15:30:19.014Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -582,7 +717,7 @@ npm start --reset-cache
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/typescripe 安装及语法/" data-id="cjx1yn1kz002ps2fyv5wrzjp5" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/typescripe 安装及语法/" data-id="cjx1zaul8002sx9fybp96nwj4" class="article-share-link">Share</a>
       
       
     </footer>
@@ -595,7 +730,7 @@ npm start --reset-cache
     <article id="post-《52个方法第一章》" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/《52个方法第一章》/" class="article-date">
-  <time datetime="2019-06-18T14:45:48.769Z" itemprop="datePublished">2019-06-18</time>
+  <time datetime="2019-06-18T15:30:19.014Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -796,7 +931,7 @@ EOCConnectionState3Connected,
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/《52个方法第一章》/" data-id="cjx1yn1l0002qs2fy3rqa4xm7" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/《52个方法第一章》/" data-id="cjx1zaul9002tx9fyekbc7xlb" class="article-share-link">Share</a>
       
       
     </footer>
@@ -806,10 +941,10 @@ EOCConnectionState3Connected,
 
 
   
-    <article id="post-一自动引用计数" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-iOS通过URL获取HTML中标题" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/18/一自动引用计数/" class="article-date">
-  <time datetime="2019-06-18T14:45:48.769Z" itemprop="datePublished">2019-06-18</time>
+    <a href="/2019/06/18/iOS通过URL获取HTML中标题/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.013Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -818,220 +953,55 @@ EOCConnectionState3Connected,
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>自动引用计数</p>
-<h2 id="什么是自动引用计数"><a href="#什么是自动引用计数" class="headerlink" title="什么是自动引用计数"></a>什么是自动引用计数</h2><p>内存管理中对引用采取自动计数的技术</p>
-<h2 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h2><ul>
-<li>自己生成的对象，自己所持有 <ul>
-<li>alloc</li>
-<li>new</li>
-<li>copy</li>
-<li>mutableCopy</li>
-</ul>
-</li>
-<li>非自己生成的对象，自己也能持有 <ul>
-<li>retain</li>
-</ul>
-</li>
-<li>不再需要自己持有的对象时释放    <ul>
-<li>release</li>
-</ul>
-</li>
-<li><p>非自己持有的对象无法释放</p>
-</li>
-<li><p>废弃对象</p>
+        <p>iOS通过URL获取HTML中标题</p>
+<h3 id="获取标题"><a href="#获取标题" class="headerlink" title="获取标题"></a>获取标题</h3><h5 id="String扩展一个方法"><a href="#String扩展一个方法" class="headerlink" title="String扩展一个方法"></a>String扩展一个方法</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">private let patternTitle = &quot;(?&lt;=title&gt;).*(?=&lt;/title)&quot;</span><br><span class="line">extension String &#123;</span><br><span class="line">    static func parseHTMLTitle(_ urlString: String) -&gt; String? &#123;</span><br><span class="line">        let url = URL(string: urlString)!</span><br><span class="line">        do &#123;</span><br><span class="line">            let html = try String(contentsOf: url, encoding: .utf8)</span><br><span class="line">            let range = html.range(of: patternTitle, options: String.CompareOptions.regularExpression, range: html.startIndex..&lt;html.endIndex, locale: nil)</span><br><span class="line">            guard let tempRange = range else &#123; return &quot;&quot; &#125;</span><br><span class="line">            let titleStr = html[tempRange]</span><br><span class="line">            return String(titleStr)</span><br><span class="line">        &#125; catch &#123;</span><br><span class="line">            return &quot;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="iOS-中简单正则表达式"><a href="#iOS-中简单正则表达式" class="headerlink" title="iOS 中简单正则表达式"></a>iOS 中简单正则表达式</h5><p>iOS 中 正则表达式中的\ 需要使用 \\ 来表示</p>
+<pre><code>// 获取
+let testStr = &quot;我到底是[iOS]开发还是[产品]经理&quot;
+
+// 获取 &quot;[&quot; 和 &quot;]&quot; 之间的所有内容, 左边[ 起一直到 右边 ] 结束的所有内容 
+let pattern1 = &quot;\\[.*\\]&quot; // [iOS]开发还是[产品]
+
+// 获取 &quot;[&quot; 和 &quot;]&quot; 之间的所有内容，包括[]
+let pattern2 = &quot;\\[.*?\\]&quot;    // [iOS]
+
+// 获取第一个 &quot;[&quot; 和 &quot;]&quot; 之间的所有内容 不包括[] 
+let pattern3 = &quot;(?&lt;=\\[).*?(?=\\])&quot; // iOS
+
+// 获取html中 title 标签中内容
+let pattern5 = &quot;(?&lt;=title&gt;).*(?=&lt;/title)&quot; 
+</code></pre><h5 id="获取范围截取子串"><a href="#获取范围截取子串" class="headerlink" title="获取范围截取子串"></a>获取范围截取子串</h5><pre><code>let testRange1 = testStr.range(of: pattern1, options: String.CompareOptions.regularExpression, range: testStr.startIndex..&lt;testStr.endIndex, locale: nil)
+    let result1 = String(testStr[testRange1!])
+
+
+let testRange2 = testStr.range(of: pattern2, options: String.CompareOptions.regularExpression, range: testStr.startIndex..&lt;testStr.endIndex, locale: nil)
+let result2 = String(testStr[testRange2!])
+
+
+let testRange3 = testStr.range(of: pattern3, options: String.CompareOptions.regularExpression, range: testStr.startIndex..&lt;testStr.endIndex, locale: nil)
+let result3 = String(testStr[testRange3!])
+
+print(result1) 
+print(result2) 
+print(result3) 
+</code></pre><h5 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h5><p>通过URL解析html中的标题</p>
 <ul>
-<li>dealloc </li>
+<li>获取html字符串</li>
+<li>正则匹配</li>
+<li>生成字符串Range</li>
+<li>截取字符串</li>
 </ul>
-</li>
-</ul>
-<h2 id="strong"><a href="#strong" class="headerlink" title="__strong"></a>__strong</h2><p>__strong 修饰符表示对对象的“强引用”</p>
-<h3 id="unsafe-unretained-修饰符"><a href="#unsafe-unretained-修饰符" class="headerlink" title="__unsafe_unretained 修饰符"></a>__unsafe_unretained 修饰符</h3><p>__unsafe_unretained 是不安全的所有权修饰符， 被它修饰的变量不属于编译器的内存管理对象</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id __unsafe_unretained objc = [[NSObject alloc] init];</span><br></pre></td></tr></table></figure>
-<p>Xcode 提示：<code>Assigning retained object to unsafe_unretained variable; object will be released after assignment</code></p>
-<p>将保留对象赋给unsafe_unretain变量;对象将在赋值后释放</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">id __unsafe_unretained obj1 = nil;</span><br><span class="line">   </span><br><span class="line">   &#123;</span><br><span class="line">       id __unsafe_unretained obj = [[NSObject alloc] init];</span><br><span class="line">       </span><br><span class="line">       // 自己生成并持有对象</span><br><span class="line">       // 因为obj0 变量是__strong,强引用，所以自己持有对象</span><br><span class="line">       id __strong obj0 = [[NSObject alloc] init];</span><br><span class="line">       </span><br><span class="line">       // obj0 变量赋值给你obj1</span><br><span class="line">       // ojb1 变量不持有对象的强应用，也不持有弱引用</span><br><span class="line">       obj1 = obj0;</span><br><span class="line">       </span><br><span class="line">       </span><br><span class="line">       // 输出 obj1 变量表示的对象</span><br><span class="line">       NSLog(@&quot;A: %@&quot;, obj1);</span><br><span class="line">   &#125; // obj0变量 超出了其作用域，强引用失效自动释放自己持有的对象，除此之外没有其他持有者，所以废弃该对象</span><br><span class="line">   </span><br><span class="line">   </span><br><span class="line">   </span><br><span class="line">   </span><br><span class="line">   // 输出 obj1 变量表示的对象</span><br><span class="line">   // obj1 变量表示的对象因为无持有者已经销毁，坏的内存访问</span><br><span class="line">   NSLog(@&quot;B: %@&quot;, obj1);</span><br></pre></td></tr></table></figure>
+<p>匹配一次直接返回结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// 生成表达式</span><br><span class="line">let regular = try NSRegularExpression(pattern: pattern5, options: .caseInsensitive) </span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">// 开始匹配  </span><br><span class="line">let matchResult1 = regular.firstMatch(in: html, options: NSRegularExpression.MatchingOptions.reportProgress, range: NSMakeRange(0, html.count))</span><br><span class="line"></span><br><span class="line">// 获取匹配结果范围</span><br><span class="line">let matchRange = matchResult1?.range</span><br><span class="line">let range = Range(matchRange!)!</span><br><span class="line">    </span><br><span class="line">// 生成String.Index 类型范围 </span><br><span class="line">let startIndex = html.index(html.startIndex, offsetBy: range.lowerBound)</span><br><span class="line">let endIndex = html.index(html.startIndex, offsetBy: range.upperBound)</span><br><span class="line">let range3 = Range(uncheckedBounds: (lower: startIndex, upper: endIndex))</span><br><span class="line"></span><br><span class="line">// 截取字符串</span><br><span class="line">let result1 = String(html[range3])</span><br><span class="line">print(result1)</span><br></pre></td></tr></table></figure>
+<p>全部匹配后返回结果时一个集合</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let matchResult2 = regular.matches(in: html, options: .reportProgress, range: NSMakeRange(0, html.count))</span><br><span class="line">            matchResult2.forEach &#123; (result) in</span><br><span class="line">let range = Range(result.range)!</span><br><span class="line">    </span><br><span class="line">let startIndex = html.index(html.startIndex, offsetBy: range.lowerBound)</span><br><span class="line">let endIndex = html.index(html.startIndex, offsetBy: range.upperBound)</span><br><span class="line">    </span><br><span class="line">let subStr2 = html[Range(uncheckedBounds: (startIndex, endIndex))]</span><br><span class="line">print(String(subStr2))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>将匹配到的内容提还</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let str3 = regular.stringByReplacingMatches(in: html, options: .reportProgress, range: NSMakeRange(0, html.count), withTemplate: &quot;====&quot;)</span><br></pre></td></tr></table></figure>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/一自动引用计数/" data-id="cjx1yn1l1002rs2fy0f9rr25t" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-iOS面试OC语言特性" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/iOS面试OC语言特性/" class="article-date">
-  <time datetime="2019-06-18T14:45:48.768Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="OC-语言特性"><a href="#OC-语言特性" class="headerlink" title="OC 语言特性"></a>OC 语言特性</h1><h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>由运行时来决议的，不同分类当中含有同名方法 谁最终生效取决于谁最终参与编译，最后参编译的同名分类方法会最终生效，假如分类方法中添加的方法和宿主类中的某一个方法名相同，分类中的方法会覆盖宿主类中的同名方法，覆盖是指在消息传递过程中优先查找数组靠前的元素，如果查找到了同名方法就直接调用，实际上宿主类的同名方法实现仍然是存在的，我们可可以通过一些手段调用到原有类的同名方法的实现 </p>
-<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
-<li>申明私有方法，分类的 .m 文件中申明私有方法啊，对外不暴露</li>
-<li>对类中的代码进行抽取分解</li>
-<li>把Framework的私有方法公开化</li>
-</ul>
-<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
-<li>运行时决议，运行时通过runtime 才把分类中的方法添加到了宿主类上</li>
-<li>可以为系统类添加方法</li>
-<li>有多个分类中存在同名方法时，最后编译的方法会最先生效</li>
-<li>分类中有和宿主类同名方法时，底层中通过内存copy将分类方法“覆盖”宿主类方法</li>
-<li>名字相同的分类编译会报错</li>
-</ul>
-<h3 id="分类中可以添加的内容"><a href="#分类中可以添加的内容" class="headerlink" title="分类中可以添加的内容"></a>分类中可以添加的内容</h3><ul>
-<li>实例方法</li>
-<li>类方法</li>
-<li>协议</li>
-<li>属性，实际上只是声明了 getter / setter 方法，并没有添加成员变量</li>
-</ul>
-<h3 id="关联对象技术"><a href="#关联对象技术" class="headerlink" title="关联对象技术"></a>关联对象技术</h3><p>关联对象由 AssocicationsManager 管理并在 AssociationsHashMap 上存储<br>所有对象的关联内容都在同一个全局容器中</p>
-<ul>
-<li>给分类添加成员变量，通过关联对象的方式</li>
-</ul>
-<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><h3 id="使用场景-1"><a href="#使用场景-1" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
-<li>声明私有属性</li>
-<li>声明私有方法</li>
-<li>声明私有成员变量</li>
-</ul>
-<h3 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h3><ul>
-<li>编译时决议</li>
-<li>只以声明的形式存在，多数情况下寄生在宿主类的.m中</li>
-<li>不能为系统添加扩展</li>
-</ul>
-<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><ul>
-<li>代理设计模式，传递方式是一对一</li>
-<li>使用weak 避免循环引用</li>
-</ul>
-<h2 id="通知"><a href="#通知" class="headerlink" title="通知"></a>通知</h2><p>使用观察者模式来实现的用于跨层传递消息的机制</p>
-<h2 id="KVO"><a href="#KVO" class="headerlink" title="KVO"></a>KVO</h2><p>KVO 是系统对观察者模式的又一实现，使用isa 混写技术（isa - swizzling）来动态运行时为某一个类添加一个子类重写了它的setter 方法，同时将原有类的isa指针指向了新创建的类上</p>
-<ul>
-<li>KVO 是OC对观察者模式的又一实现</li>
-<li>apple 使用isa 混写技术（isa - swizzling）来实现KVO<ul>
-<li>给我A类注册一个观察者时本质上是调用系统的 Observer for keyPath 方法，系统会创建一个NSKVONotifiying_A 的类</li>
-</ul>
-</li>
-<li>使用 setter 方法设置值KVO才能生效</li>
-<li>使用setValue:forKey: 改变值KVO才能生效</li>
-<li>使用下划线的成员变量直接修改值需要手动添加KVO才能生效（增加 willChangeValueForKey 和 didChangeValueForKey 两个方法）</li>
-</ul>
-<h2 id="KVC"><a href="#KVC" class="headerlink" title="KVC"></a>KVC</h2><p>apple提供的键值编码技术</p>
-<ul>
-<li>(nullable id)valueForKey:(NSString *)key;</li>
-<li><p>(void)setValue:(nullable id)value forKey:(NSString *)key;</p>
-<p>  以上两个方法中的key是没有任何限制的，只要知道对应的成员变量名称，就可以对私有的成员变量设置和操作，这违背了面向对象的编程思想</p>
-</li>
-</ul>
-<p><strong>(void)setValue:(nullable id)value forKey:(NSString *)key; 方法调用流程</strong></p>
-<ul>
-<li>先判断是否有跟key 相关的setter 方法，如果有就直接调用，结束调用</li>
-<li>如果没有再判断是否存在实例变量，如果存在直接给赋值，结束调用</li>
-<li>如果说实例变量不存在，会去调用 <code>- (void)setValue:(nullable id)value forUndefinedKey:(NSString *)key;</code> 抛出异常</li>
-</ul>
-<h2 id="属性关键字"><a href="#属性关键字" class="headerlink" title="属性关键字"></a>属性关键字</h2><h3 id="读写权限"><a href="#读写权限" class="headerlink" title="读写权限"></a>读写权限</h3><ul>
-<li><p>readonly</p>
-</li>
-<li><p>readwrite 系统默认</p>
-</li>
-</ul>
-<h3 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h3><ul>
-<li>atomic （系统默认）保证赋值和获取（对成员属性的直接获取和赋值）时线程安全，并不代表操作和访问，如果atomic修饰的一个数组，只能保证独具改数组的读取和赋值时线程安全，并不能保证对数据操作（增加/删除数组元素）时是安全的</li>
-<li>nonatomic</li>
-</ul>
-<h3 id="引用技术"><a href="#引用技术" class="headerlink" title="引用技术"></a>引用技术</h3><ul>
-<li>assign <ul>
-<li>修饰基本数据类型，</li>
-<li>修饰对象时不改变其引用计数，</li>
-<li>会产生悬垂指针</li>
-</ul>
-</li>
-<li>weak  <ul>
-<li>不改变被修饰对象的引用计数，</li>
-<li>所指对象被释放之后指针自动置为nil</li>
-</ul>
-</li>
-</ul>
-<p><strong>两者区别：</strong></p>
-<ul>
-<li>weak可以修饰对象，而assign 既可以修饰对象也可以修饰基本数据类型</li>
-<li>assign 修饰的对象，对象释放后指针仍然指向原对象的内存地址，而weak 修饰的对象，释放后会自动置为nil</li>
-</ul>
-<p><strong>问题1</strong> </p>
-<p>weak 修饰的对象为什么释放后会自动置为nil</p>
-<p><strong>问题2</strong></p>
-<p><code>@property (copy) NSMutableArray *array;</code> 有什么问题</p>
-<ul>
-<li>被copy修饰后，如果赋值过来的是NSMutableArray，copy之后就是NSArray，如果赋值过来的是NSAarray，copy 之后仍然是NSArray，有可能会调用array的添加元素方法会导致crash</li>
-</ul>
-<h3 id="copy-关键词"><a href="#copy-关键词" class="headerlink" title="copy 关键词"></a>copy 关键词</h3><p> <img src="https://ws2.sinaimg.cn/large/006tNc79ly1g1uh6lwwe2j320s0lm7bm.jpg" alt></p>
-<ul>
-<li>浅拷贝：内存地址的复制，让目标对象指针和源对象指向同一块内存空间，<ul>
-<li>会增加对象的引用计数</li>
-<li>并没有一个新的内存分配</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li>深拷贝：目标对象指针和源对象指针分别指向两块内容相同的内存空间<ul>
-<li>不会增加源对象的引用计数</li>
-<li>有新对象的内存分配</li>
-</ul>
-</li>
-</ul>
-<h2 id="MRC-重写-retain修饰的变量的setter-方法"><a href="#MRC-重写-retain修饰的变量的setter-方法" class="headerlink" title="MRC 重写 retain修饰的变量的setter 方法"></a>MRC 重写 retain修饰的变量的setter 方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- (void)setObj:(id)obj &#123;</span><br><span class="line">    if (_obj != obj) &#123;</span><br><span class="line">        [_obj release];</span><br><span class="line">    &#125;</span><br><span class="line">    _obj = [obj retain];</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>判断是为了防止异常处理，如果不做 if 判断，当传入的 obj 对象正好是原来的_obj 对象，对原对象尽行releas 操作，实际上也会对传入的对象进行releas 操作进行释放，此时如果再通过obj指针访问废弃的对象时就会导致carsh</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/iOS面试OC语言特性/" data-id="cjx1yn1kw002js2fy5w6dctcg" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-is 关键字类型检查" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/is 关键字类型检查/" class="article-date">
-  <time datetime="2019-06-18T14:45:48.768Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>swift类型检查和类型转换</p>
-<h3 id="is-关键字类型检查"><a href="#is-关键字类型检查" class="headerlink" title="is 关键字类型检查"></a>is 关键字类型检查</h3><p>判断父类和子类之间的关系</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">func typeCheck() &#123;</span><br><span class="line">    let programmer = Programmer(name: &quot;老张-php&quot;)</span><br><span class="line">    if dev is iOSDeveloper &#123;</span><br><span class="line">        print(&quot;iOS 开发者&quot;)</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        print(&quot;其他开发者&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    if programmer is Coder &#123;</span><br><span class="line">        print(&quot;老张-php是一农个码农&quot;)</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        print(&quot;&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="as-关键字类型转换"><a href="#as-关键字类型转换" class="headerlink" title="as 关键字类型转换"></a>as 关键字类型转换</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let ios = iosDev as? Programmer</span><br><span class="line">let ios2 = iosDev as! Coder</span><br></pre></td></tr></table></figure>
-<h3 id="判断是否遵守了协议"><a href="#判断是否遵守了协议" class="headerlink" title="判断是否遵守了协议"></a>判断是否遵守了协议</h3><p>swift 中协议可以当作是一个类型使用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">et ios = iosDev as? Programmer</span><br><span class="line">    let ios2 = iosDev as Coder</span><br><span class="line">    </span><br><span class="line">    // 是否遵守了 Person 协议</span><br><span class="line">    if iosDev is Person &#123;</span><br><span class="line">        print(&quot;遵守了Person协议&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    let devs = [dev, iosDev, programmer] as [Any]</span><br><span class="line">    </span><br><span class="line">    for dev in devs &#123;</span><br><span class="line">        if let dev = dev as? Person &#123;</span><br><span class="line">            print(dev)</span><br><span class="line">            print(&quot;遵守Person协议&quot;)</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            print(&quot;未遵守Person协议&quot;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="AnyObject-Any"><a href="#AnyObject-Any" class="headerlink" title="AnyObject Any"></a>AnyObject Any</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var anyObjectArray: [AnyObject] = [CGFloat(0.5) as AnyObject,</span><br><span class="line">                             			1 as AnyObject,</span><br><span class="line">                             			&quot;string&quot; as AnyObject,</span><br><span class="line">                         				iOSODev]</span><br></pre></td></tr></table></figure>
-<p>swift是面向函数编程， 函数是一等公民，数组中可以存入一个函数，函数表达的是一个过程，不是一个名词或者物体，所以函数不是一个对象,需要使用 any 关键字</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var anyArray: [Any] = [CGFloat(0.5),</span><br><span class="line">							1,</span><br><span class="line">							&quot;string&quot;, </span><br><span class="line">							iOSODev]</span><br></pre></td></tr></table></figure>
-<p>放入函数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">anyArray.append(&#123; (a: Int) -&gt; (Int) in return a * a &#125;)</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/is 关键字类型检查/" data-id="cjx1yn1kx002ls2fygtszqu9j" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/iOS通过URL获取HTML中标题/" data-id="cjx1zaul4002jx9fycae1g7ox" class="article-share-link">Share</a>
       
       
     </footer>
@@ -1059,7 +1029,7 @@ EOCConnectionState3Connected,
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flutter/">Flutter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flutter/">Flutter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flutter-GridView/">Flutter GridView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
     </div>
   </div>
 
@@ -1069,7 +1039,7 @@ EOCConnectionState3Connected,
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/Flutter/" style="font-size: 10px;">Flutter</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
+      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/Flutter/" style="font-size: 10px;">Flutter</a> <a href="/tags/Flutter-GridView/" style="font-size: 10px;">Flutter GridView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
     </div>
   </div>
 
@@ -1091,11 +1061,15 @@ EOCConnectionState3Connected,
       <ul>
         
           <li>
-            <a href="/2019/06/18/Flutterr入门/">Flutter 入门.md</a>
+            <a href="/2019/06/18/Flutter中GridView组件/">GridView组件使用.md</a>
           </li>
         
           <li>
-            <a href="/2019/06/18/docs/15608702427054/">(no title)</a>
+            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/第十章网络相关/">(no title)</a>
           </li>
         
           <li>
@@ -1104,10 +1078,6 @@ EOCConnectionState3Connected,
         
           <li>
             <a href="/2019/06/18/第十一章设计模式面试/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
           </li>
         
       </ul>
