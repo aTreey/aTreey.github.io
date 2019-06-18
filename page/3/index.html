@@ -62,48 +62,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-iOS 动态设置TableHeaderView高度" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/iOS 动态设置TableHeaderView高度/" class="article-date">
-  <time datetime="2019-06-18T14:45:48.765Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="iOS动态设置tableHeaderView高度"><a href="#iOS动态设置tableHeaderView高度" class="headerlink" title="iOS动态设置tableHeaderView高度"></a>iOS动态设置<code>tableHeaderView</code>高度</h2><h4 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h4><p>动态的设置<code>tableHeaderView</code>的高度</p>
-<h4 id="遇到的问题："><a href="#遇到的问题：" class="headerlink" title="遇到的问题："></a>遇到的问题：</h4><ul>
-<li>设置<code>tableHeaderView</code> 的<code>frame</code>无法实现，有时候会出现<code>tableView</code> 中间的 <code>cell</code> 不显示</li>
-<li><p>有时候会导致<code>headerView</code>和<code>cell</code>内容重叠</p>
-</li>
-<li><p>通过计算控件高度设置frame方式麻烦</p>
-</li>
-</ul>
-<h4 id="正确的步骤"><a href="#正确的步骤" class="headerlink" title="正确的步骤"></a>正确的步骤</h4><ul>
-<li>创建HeaderView</li>
-<li>取出<code>UITableView</code>的<code>tableHeaderView</code></li>
-<li>设置<code>frame</code>大小，调整headerView布局</li>
-<li>重新给<code>UITableView</code>的<code>tableHeaderView</code></li>
-</ul>
-<h4 id="使用AutoLayout"><a href="#使用AutoLayout" class="headerlink" title="使用AutoLayout"></a>使用AutoLayout</h4><p>给<code>UITableView</code>增加分类</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">extension UITableView &#123;</span><br><span class="line">    /// set tableHeaderView</span><br><span class="line">    func setTableHeaderView(_ headerView: UIView) &#123;</span><br><span class="line">        headerView.translatesAutoresizingMaskIntoConstraints = false</span><br><span class="line">        self.tableHeaderView = headerView</span><br><span class="line">        // autolayout</span><br><span class="line">        NSLayoutConstraint(item: headerView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0).isActive = true</span><br><span class="line">        NSLayoutConstraint(item: headerView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0).isActive = true</span><br><span class="line">        NSLayoutConstraint(item: headerView, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 1.0, constant: 0).isActive = true</span><br><span class="line">    &#125;</span><br><span class="line">    /// update</span><br><span class="line">    func updateHeaderView() &#123;</span><br><span class="line">        guard let headerView = self.tableHeaderView else &#123; return &#125;</span><br><span class="line">        headerView.layoutIfNeeded()</span><br><span class="line">        let header = self.tableHeaderView</span><br><span class="line">        self.tableHeaderView = header</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/iOS 动态设置TableHeaderView高度/" data-id="cjx1x9tdq002740fya40yhae3" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-iOS开发_于鸿鹏" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/iOS开发_于鸿鹏/" class="article-date">
@@ -170,7 +128,49 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/iOS开发_于鸿鹏/" data-id="cjx1x9tds002a40fy8pkw2yrk" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/iOS开发_于鸿鹏/" data-id="cjx1xeb8n0026a9fyno1o1l8q" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-iOS 动态设置TableHeaderView高度" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/iOS 动态设置TableHeaderView高度/" class="article-date">
+  <time datetime="2019-06-18T14:45:48.765Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="iOS动态设置tableHeaderView高度"><a href="#iOS动态设置tableHeaderView高度" class="headerlink" title="iOS动态设置tableHeaderView高度"></a>iOS动态设置<code>tableHeaderView</code>高度</h2><h4 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h4><p>动态的设置<code>tableHeaderView</code>的高度</p>
+<h4 id="遇到的问题："><a href="#遇到的问题：" class="headerlink" title="遇到的问题："></a>遇到的问题：</h4><ul>
+<li>设置<code>tableHeaderView</code> 的<code>frame</code>无法实现，有时候会出现<code>tableView</code> 中间的 <code>cell</code> 不显示</li>
+<li><p>有时候会导致<code>headerView</code>和<code>cell</code>内容重叠</p>
+</li>
+<li><p>通过计算控件高度设置frame方式麻烦</p>
+</li>
+</ul>
+<h4 id="正确的步骤"><a href="#正确的步骤" class="headerlink" title="正确的步骤"></a>正确的步骤</h4><ul>
+<li>创建HeaderView</li>
+<li>取出<code>UITableView</code>的<code>tableHeaderView</code></li>
+<li>设置<code>frame</code>大小，调整headerView布局</li>
+<li>重新给<code>UITableView</code>的<code>tableHeaderView</code></li>
+</ul>
+<h4 id="使用AutoLayout"><a href="#使用AutoLayout" class="headerlink" title="使用AutoLayout"></a>使用AutoLayout</h4><p>给<code>UITableView</code>增加分类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">extension UITableView &#123;</span><br><span class="line">    /// set tableHeaderView</span><br><span class="line">    func setTableHeaderView(_ headerView: UIView) &#123;</span><br><span class="line">        headerView.translatesAutoresizingMaskIntoConstraints = false</span><br><span class="line">        self.tableHeaderView = headerView</span><br><span class="line">        // autolayout</span><br><span class="line">        NSLayoutConstraint(item: headerView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0).isActive = true</span><br><span class="line">        NSLayoutConstraint(item: headerView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0).isActive = true</span><br><span class="line">        NSLayoutConstraint(item: headerView, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 1.0, constant: 0).isActive = true</span><br><span class="line">    &#125;</span><br><span class="line">    /// update</span><br><span class="line">    func updateHeaderView() &#123;</span><br><span class="line">        guard let headerView = self.tableHeaderView else &#123; return &#125;</span><br><span class="line">        headerView.layoutIfNeeded()</span><br><span class="line">        let header = self.tableHeaderView</span><br><span class="line">        self.tableHeaderView = header</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/iOS 动态设置TableHeaderView高度/" data-id="cjx1xeb8n0027a9fy57r8vyfg" class="article-share-link">Share</a>
       
       
     </footer>
@@ -230,7 +230,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Flutter常用组件/" data-id="cjx1x9tba000940fyeaymseb2" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Flutter常用组件/" data-id="cjx1xeb720005a9fyc10cyo6h" class="article-share-link">Share</a>
       
       
     </footer>
@@ -257,7 +257,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/flutter 安装/" data-id="cjx1x9tdm002440fyvjcyfbrm" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/flutter 安装/" data-id="cjx1xeb8l0021a9fyphykiyc0" class="article-share-link">Share</a>
       
       
     </footer>
@@ -285,7 +285,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Flutter入门/" data-id="cjx1x9tb6000740fyigkjbfio" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Flutter入门/" data-id="cjx1xeb8t002ha9fyqdx1cvpj" class="article-share-link">Share</a>
       
       
     </footer>
@@ -315,7 +315,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Xcode中使用Debug Memory Graph检查内存泄漏/" data-id="cjx1x9tdk002140fyzzie7uhv" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Xcode中使用Debug Memory Graph检查内存泄漏/" data-id="cjx1xeb8k001za9fycgo93aku" class="article-share-link">Share</a>
       
       
     </footer>
@@ -348,7 +348,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift错误处理/" data-id="cjx1x9tdd001t40fy5jbbypf0" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift错误处理/" data-id="cjx1xeb8d001qa9fyhkgpmcp7" class="article-share-link">Share</a>
       
       
     </footer>
@@ -400,7 +400,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift项目中集成RN/" data-id="cjx1x9tdg001w40fynxiutobo" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift项目中集成RN/" data-id="cjx1xeb8g001ua9fy4u5tssaj" class="article-share-link">Share</a>
       
       
     </footer>
@@ -562,7 +562,7 @@ func shoutWins() {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift协议别名/" data-id="cjx1x9td9001o40fyonyrfl49" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift协议别名/" data-id="cjx1xeb8a001oa9fylhru6fnd" class="article-share-link">Share</a>
       
       
     </footer>
@@ -618,7 +618,7 @@ func shoutWins() {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift协议扩展/" data-id="cjx1x9tda001q40fyunche095" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift协议扩展/" data-id="cjx1xeb8e001ra9fyowle0fat" class="article-share-link">Share</a>
       
       
     </footer>
@@ -682,11 +682,11 @@ func shoutWins() {
           </li>
         
           <li>
-            <a href="/2019/06/18/第十一章设计模式面试/">(no title)</a>
+            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
+            <a href="/2019/06/18/第十一章设计模式面试/">(no title)</a>
           </li>
         
           <li>
@@ -694,7 +694,7 @@ func shoutWins() {
           </li>
         
           <li>
-            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
+            <a href="/2019/06/18/第十章网络相关/">(no title)</a>
           </li>
         
       </ul>

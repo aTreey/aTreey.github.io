@@ -104,7 +104,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift泛型/" data-id="cjx1x9tdc001s40fy5chj69b7" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift泛型/" data-id="cjx1xeb8i001va9fy39ddvsar" class="article-share-link">Share</a>
       
       
     </footer>
@@ -132,7 +132,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/SwiftLint使用/" data-id="cjx1x9td0001h40fy7hdjqnke" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/SwiftLint使用/" data-id="cjx1xeb87001ga9fyibf57pj1" class="article-share-link">Share</a>
       
       
     </footer>
@@ -210,82 +210,7 @@ return one.x &gt; other.x &amp;&amp;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift下标和运算符重载/" data-id="cjx1x9td2001j40fy07gpobpq" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Swift 协议使用" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/Swift 协议使用/" class="article-date">
-  <time datetime="2019-06-18T14:45:48.755Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Swift-协议使用"><a href="#Swift-协议使用" class="headerlink" title="Swift 协议使用"></a>Swift 协议使用</h1><h2 id="对UIView-扩展"><a href="#对UIView-扩展" class="headerlink" title="对UIView 扩展"></a>对UIView 扩展</h2><h3 id="按钮-文本框抖动动画"><a href="#按钮-文本框抖动动画" class="headerlink" title="按钮/文本框抖动动画"></a>按钮/文本框抖动动画</h3><ul>
-<li><p>声明协议</p>
-<ul>
-<li><p>协议中定义属性：遵循该协议的类型都具有此属性</p>
-<ul>
-<li>必须明确规定该属性是可读的 <code>{get}</code> 或者可写的 <code>{set}</code>，或是可读可写的 <code>{get set}</code></li>
-<li>使用static修饰声明一个类类型属性</li>
-</ul>
-</li>
-<li><p>协议中定义方法</p>
-</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">protocol Shakable &#123;&#125;</span><br><span class="line">extension Shakable where Self: UIView &#123;</span><br><span class="line">    func shakeAnimation() &#123;</span><br><span class="line">        let animation = CABasicAnimation(keyPath: &quot;position&quot;)</span><br><span class="line">        animation.duration = 0.08</span><br><span class="line">        animation.repeatCount = 5</span><br><span class="line">        animation.autoreverses = true</span><br><span class="line">        animation.fromValue = NSValue(cgPoint: CGPoint(x: self.center.x - 4, y: self.center.y))</span><br><span class="line">        animation.toValue = NSValue(cgPoint: CGPoint(x: self.center.x + 4, y: self.center.y))</span><br><span class="line">        layer.add(animation, forKey: &quot;position&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>自定义UI控件并遵守协议</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class MyButton: UIButton, Shakable &#123;  &#125;</span><br><span class="line">class MySwitch: UISwitch, Shakable &#123;  &#125;</span><br><span class="line">class MyTextField: UITextField, Shakable &#123;  &#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>使用</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let mySwitch = MySwitch()</span><br><span class="line">mySwitch.isOn = true</span><br><span class="line">self.mySwitch = mySwitch</span><br><span class="line">view.addSubview(mySwitch)</span><br><span class="line">mySwitch.translatesAutoresizingMaskIntoConstraints = false</span><br><span class="line">mySwitch.topAnchor.constraint(equalTo: view.bottomAnchor, constant: 10).isActive = true</span><br><span class="line">mySwitch.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true</span><br><span class="line"></span><br><span class="line">// 调用</span><br><span class="line">mySwitch.shakeAnimation()</span><br></pre></td></tr></table></figure>
-<h2 id="UITableViewCell使用"><a href="#UITableViewCell使用" class="headerlink" title="UITableViewCell使用"></a>UITableViewCell使用</h2><h3 id="定义协议"><a href="#定义协议" class="headerlink" title="定义协议"></a>定义协议</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">protocol ReusableView: class &#123;	&#125;</span><br><span class="line"></span><br><span class="line">extension ReusableView where Self: UIView &#123;</span><br><span class="line">    static var reuseIdentifier: String &#123;</span><br><span class="line">        return String(describing: self)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">### 对tableView扩展</span><br></pre></td></tr></table></figure>
-<p>extension UITableView {<br>    /// 注册cell<br>    func register&lt;T: UITableViewCell&gt;(T: T.Type) where T: ReusableView {<br>        print(T.reuseIdentifier)<br>        self.register(T.self, forCellReuseIdentifier: T.reuseIdentifier)<br>    }</p>
-<pre><code>/// 调用cell
-func dequeueReusableCell&lt;T: UITableViewCell&gt;(_ indexPath: IndexPath) -&gt; T where T: ReusableView {
-    print(T.reuseIdentifier)
-    return self.dequeueReusableCell(withIdentifier: T.reuseIdentifier, for: indexPath) as! T
-}
-</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 用法</span><br><span class="line"></span><br><span class="line">- 创建自定义的cell，需要遵守协议</span><br></pre></td></tr></table></figure></p>
-<p>class TableProtocolCell: UITableViewCell, ReusableView {<br>    override var reuseIdentifier: String? {<br>        return “cell”<br>    }<br>    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {<br>        super.init(style: style, reuseIdentifier: reuseIdentifier)<br>        self.backgroundColor = .cyan<br>        self.textLabel?.text = “通过协议和泛型创建的cell”<br>        self.textLabel?.textColor = .blue<br>    }<br>    required init?(coder aDecoder: NSCoder) {<br>        fatalError(“init(coder:) has not been implemented”)<br>    }<br>}</p>
-<p>class TableProtocolCell2: UITableViewCell, ReusableView {<br>    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {<br>        super.init(style: style, reuseIdentifier: reuseIdentifier)<br>        self.backgroundColor = .red<br>        self.textLabel?.text = “cell1 - 通过协议和泛型创建的”<br>        self.textLabel?.textAlignment = .right<br>    }<br>    required init?(coder aDecoder: NSCoder) {<br>        fatalError(“init(coder:) has not been implemented”)<br>    }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 注册和使用</span><br></pre></td></tr></table></figure></p>
-<p>class TableViewProtocolController: UITableViewController {<br>    override func viewDidLoad() {<br>        super.viewDidLoad()<br>        tableView.register(T: TableProtocolCell.self)<br>        tableView.register(T: TableProtocolCell2.self)<br>    }</p>
-<pre><code>override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int {
-    return 10
-}
-
-override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -&gt; UITableViewCell {
-    var cell = UITableViewCell()
-    if indexPath.row % 2 == 0 {
-        cell = tableView.dequeueReusableCell(indexPath) as TableProtocolCell
-    } else {
-        cell = tableView.dequeueReusableCell(indexPath) as TableProtocolCell2
-    }
-    return cell
-}
-</code></pre><p>}</p>
-<p><code>`</code></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift 协议使用/" data-id="cjx1x9tcj001140fysm9dtct6" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift下标和运算符重载/" data-id="cjx1xeb88001ja9fyox8l7hx3" class="article-share-link">Share</a>
       
       
     </footer>
@@ -407,7 +332,82 @@ override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexP
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift 基础知识/" data-id="cjx1x9tcp001740fygm1caapk" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift 基础知识/" data-id="cjx1xeb810013a9fyufhnvfev" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Swift 协议使用" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/Swift 协议使用/" class="article-date">
+  <time datetime="2019-06-18T14:45:48.755Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Swift-协议使用"><a href="#Swift-协议使用" class="headerlink" title="Swift 协议使用"></a>Swift 协议使用</h1><h2 id="对UIView-扩展"><a href="#对UIView-扩展" class="headerlink" title="对UIView 扩展"></a>对UIView 扩展</h2><h3 id="按钮-文本框抖动动画"><a href="#按钮-文本框抖动动画" class="headerlink" title="按钮/文本框抖动动画"></a>按钮/文本框抖动动画</h3><ul>
+<li><p>声明协议</p>
+<ul>
+<li><p>协议中定义属性：遵循该协议的类型都具有此属性</p>
+<ul>
+<li>必须明确规定该属性是可读的 <code>{get}</code> 或者可写的 <code>{set}</code>，或是可读可写的 <code>{get set}</code></li>
+<li>使用static修饰声明一个类类型属性</li>
+</ul>
+</li>
+<li><p>协议中定义方法</p>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">protocol Shakable &#123;&#125;</span><br><span class="line">extension Shakable where Self: UIView &#123;</span><br><span class="line">    func shakeAnimation() &#123;</span><br><span class="line">        let animation = CABasicAnimation(keyPath: &quot;position&quot;)</span><br><span class="line">        animation.duration = 0.08</span><br><span class="line">        animation.repeatCount = 5</span><br><span class="line">        animation.autoreverses = true</span><br><span class="line">        animation.fromValue = NSValue(cgPoint: CGPoint(x: self.center.x - 4, y: self.center.y))</span><br><span class="line">        animation.toValue = NSValue(cgPoint: CGPoint(x: self.center.x + 4, y: self.center.y))</span><br><span class="line">        layer.add(animation, forKey: &quot;position&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>自定义UI控件并遵守协议</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class MyButton: UIButton, Shakable &#123;  &#125;</span><br><span class="line">class MySwitch: UISwitch, Shakable &#123;  &#125;</span><br><span class="line">class MyTextField: UITextField, Shakable &#123;  &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let mySwitch = MySwitch()</span><br><span class="line">mySwitch.isOn = true</span><br><span class="line">self.mySwitch = mySwitch</span><br><span class="line">view.addSubview(mySwitch)</span><br><span class="line">mySwitch.translatesAutoresizingMaskIntoConstraints = false</span><br><span class="line">mySwitch.topAnchor.constraint(equalTo: view.bottomAnchor, constant: 10).isActive = true</span><br><span class="line">mySwitch.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true</span><br><span class="line"></span><br><span class="line">// 调用</span><br><span class="line">mySwitch.shakeAnimation()</span><br></pre></td></tr></table></figure>
+<h2 id="UITableViewCell使用"><a href="#UITableViewCell使用" class="headerlink" title="UITableViewCell使用"></a>UITableViewCell使用</h2><h3 id="定义协议"><a href="#定义协议" class="headerlink" title="定义协议"></a>定义协议</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">protocol ReusableView: class &#123;	&#125;</span><br><span class="line"></span><br><span class="line">extension ReusableView where Self: UIView &#123;</span><br><span class="line">    static var reuseIdentifier: String &#123;</span><br><span class="line">        return String(describing: self)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">### 对tableView扩展</span><br></pre></td></tr></table></figure>
+<p>extension UITableView {<br>    /// 注册cell<br>    func register&lt;T: UITableViewCell&gt;(T: T.Type) where T: ReusableView {<br>        print(T.reuseIdentifier)<br>        self.register(T.self, forCellReuseIdentifier: T.reuseIdentifier)<br>    }</p>
+<pre><code>/// 调用cell
+func dequeueReusableCell&lt;T: UITableViewCell&gt;(_ indexPath: IndexPath) -&gt; T where T: ReusableView {
+    print(T.reuseIdentifier)
+    return self.dequeueReusableCell(withIdentifier: T.reuseIdentifier, for: indexPath) as! T
+}
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 用法</span><br><span class="line"></span><br><span class="line">- 创建自定义的cell，需要遵守协议</span><br></pre></td></tr></table></figure></p>
+<p>class TableProtocolCell: UITableViewCell, ReusableView {<br>    override var reuseIdentifier: String? {<br>        return “cell”<br>    }<br>    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {<br>        super.init(style: style, reuseIdentifier: reuseIdentifier)<br>        self.backgroundColor = .cyan<br>        self.textLabel?.text = “通过协议和泛型创建的cell”<br>        self.textLabel?.textColor = .blue<br>    }<br>    required init?(coder aDecoder: NSCoder) {<br>        fatalError(“init(coder:) has not been implemented”)<br>    }<br>}</p>
+<p>class TableProtocolCell2: UITableViewCell, ReusableView {<br>    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {<br>        super.init(style: style, reuseIdentifier: reuseIdentifier)<br>        self.backgroundColor = .red<br>        self.textLabel?.text = “cell1 - 通过协议和泛型创建的”<br>        self.textLabel?.textAlignment = .right<br>    }<br>    required init?(coder aDecoder: NSCoder) {<br>        fatalError(“init(coder:) has not been implemented”)<br>    }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 注册和使用</span><br></pre></td></tr></table></figure></p>
+<p>class TableViewProtocolController: UITableViewController {<br>    override func viewDidLoad() {<br>        super.viewDidLoad()<br>        tableView.register(T: TableProtocolCell.self)<br>        tableView.register(T: TableProtocolCell2.self)<br>    }</p>
+<pre><code>override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int {
+    return 10
+}
+
+override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -&gt; UITableViewCell {
+    var cell = UITableViewCell()
+    if indexPath.row % 2 == 0 {
+        cell = tableView.dequeueReusableCell(indexPath) as TableProtocolCell
+    } else {
+        cell = tableView.dequeueReusableCell(indexPath) as TableProtocolCell2
+    }
+    return cell
+}
+</code></pre><p>}</p>
+<p><code>`</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift 协议使用/" data-id="cjx1xeb820015a9fy7so1dku5" class="article-share-link">Share</a>
       
       
     </footer>
@@ -457,7 +457,7 @@ override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexP
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/ReactNative中ref使用/" data-id="cjx1x9tcc000x40fy05gs3joi" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/ReactNative中ref使用/" data-id="cjx1xeb7u000va9fy9sb6ayc5" class="article-share-link">Share</a>
       
       
     </footer>
@@ -526,7 +526,7 @@ override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexP
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/React-Native开发iOS打包/" data-id="cjx1x9tca000v40fyind9364b" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/React-Native开发iOS打包/" data-id="cjx1xeb7z000za9fye7fjwnsj" class="article-share-link">Share</a>
       
       
     </footer>
@@ -613,7 +613,7 @@ override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexP
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/RN报错/" data-id="cjx1x9tc8000t40fyrcd090i8" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/RN报错/" data-id="cjx1xeb7p000na9fyeodl2xsg" class="article-share-link">Share</a>
       
       
     </footer>
@@ -792,7 +792,7 @@ nullDataImageView.snp.makeConstraints {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/MasonrySnapkit使用总结/" data-id="cjx1x9tbp000i40fyu95bppj9" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/MasonrySnapkit使用总结/" data-id="cjx1xeb7l000ia9fyl4irfjyb" class="article-share-link">Share</a>
       
       
     </footer>
@@ -868,7 +868,7 @@ typeof(array)
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/JavaScript基础/" data-id="cjx1x9tbj000d40fyv7omglnn" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/JavaScript基础/" data-id="cjx1xeb7i000ea9fyzx3p5avj" class="article-share-link">Share</a>
       
       
     </footer>
@@ -932,11 +932,11 @@ typeof(array)
           </li>
         
           <li>
-            <a href="/2019/06/18/第十一章设计模式面试/">(no title)</a>
+            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
+            <a href="/2019/06/18/第十一章设计模式面试/">(no title)</a>
           </li>
         
           <li>
@@ -944,7 +944,7 @@ typeof(array)
           </li>
         
           <li>
-            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
+            <a href="/2019/06/18/第十章网络相关/">(no title)</a>
           </li>
         
       </ul>
