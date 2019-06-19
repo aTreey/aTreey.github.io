@@ -62,6 +62,74 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-GCD 信号量" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/GCD 信号量/" class="article-date">
+  <time datetime="2019-06-18T15:30:18.999Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>GCD信号量用法</p>
+<p>对于异步网络请求相互依赖问题一般用三种方式解决：</p>
+<ul>
+<li>网络请求嵌套</li>
+<li>使用 BlockOperation </li>
+<li>GCD DispatchGroup</li>
+<li>GCD semaphore（信号量）</li>
+</ul>
+<h3 id="GCD-信号量"><a href="#GCD-信号量" class="headerlink" title="GCD 信号量"></a>GCD 信号量</h3><ul>
+<li>semaphore 值 &lt;= 0 阻塞</li>
+<li>semaphore semaphore.signal() 使信号量值增加</li>
+<li>semaphore.wait() 等待，可设置时长</li>
+</ul>
+<p>request – 3 依赖 request – 1 和 request – 2，1 和 2 无需关注顺序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">private func gcdSemaphore() &#123;</span><br><span class="line">       let semaphore = DispatchSemaphore(value: 0)</span><br><span class="line">       DispatchQueue.global().async &#123;</span><br><span class="line">           for i in 0...300 &#123;</span><br><span class="line">               print(&quot;request -- 1&quot;)</span><br><span class="line">           &#125;</span><br><span class="line">           semaphore.signal()</span><br><span class="line">       &#125;</span><br><span class="line">       </span><br><span class="line">       DispatchQueue.global().async &#123;</span><br><span class="line">           for i in 0...200 &#123;</span><br><span class="line">               print(&quot;request -- 2&quot;)</span><br><span class="line">           &#125;</span><br><span class="line">           semaphore.signal()</span><br><span class="line">       &#125;</span><br><span class="line">       </span><br><span class="line">       </span><br><span class="line">       DispatchQueue.global().async &#123;</span><br><span class="line">           semaphore.wait()</span><br><span class="line">           semaphore.wait()</span><br><span class="line">           for i in 0...160 &#123;</span><br><span class="line">               print(&quot;request -- 3&quot;)</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>request – 3 ，request – 2 和 request – 1，依次相互依赖</p>
+<pre><code>private func gcdSemaphore() {
+        let semaphore = DispatchSemaphore(value: 0)
+        DispatchQueue.global().async {
+            for i in 0...300 {
+                print(&quot;request -- 1&quot;)
+            }
+            semaphore.signal()
+        }
+
+        DispatchQueue.global().async {
+            semaphore.wait()
+            for i in 0...200 {
+                print(&quot;request -- 2&quot;)
+            }
+            semaphore.signal()
+        }
+
+
+        DispatchQueue.global().async {
+            semaphore.wait()
+            for i in 0...160 {
+                print(&quot;request -- 3&quot;)
+            }
+        }
+    }
+
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/GCD 信号量/" data-id="cjx3du7b50009ucfytki1544x" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-ES6语法" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/ES6语法/" class="article-date">
@@ -178,75 +246,7 @@ let arrowFunction = (param1, param2) =&gt; {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/ES6语法/" data-id="cjx3dt2q7000ar6fyj5sjv02p" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-GCD 信号量" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/GCD 信号量/" class="article-date">
-  <time datetime="2019-06-18T15:30:18.999Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>GCD信号量用法</p>
-<p>对于异步网络请求相互依赖问题一般用三种方式解决：</p>
-<ul>
-<li>网络请求嵌套</li>
-<li>使用 BlockOperation </li>
-<li>GCD DispatchGroup</li>
-<li>GCD semaphore（信号量）</li>
-</ul>
-<h3 id="GCD-信号量"><a href="#GCD-信号量" class="headerlink" title="GCD 信号量"></a>GCD 信号量</h3><ul>
-<li>semaphore 值 &lt;= 0 阻塞</li>
-<li>semaphore semaphore.signal() 使信号量值增加</li>
-<li>semaphore.wait() 等待，可设置时长</li>
-</ul>
-<p>request – 3 依赖 request – 1 和 request – 2，1 和 2 无需关注顺序</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">private func gcdSemaphore() &#123;</span><br><span class="line">       let semaphore = DispatchSemaphore(value: 0)</span><br><span class="line">       DispatchQueue.global().async &#123;</span><br><span class="line">           for i in 0...300 &#123;</span><br><span class="line">               print(&quot;request -- 1&quot;)</span><br><span class="line">           &#125;</span><br><span class="line">           semaphore.signal()</span><br><span class="line">       &#125;</span><br><span class="line">       </span><br><span class="line">       DispatchQueue.global().async &#123;</span><br><span class="line">           for i in 0...200 &#123;</span><br><span class="line">               print(&quot;request -- 2&quot;)</span><br><span class="line">           &#125;</span><br><span class="line">           semaphore.signal()</span><br><span class="line">       &#125;</span><br><span class="line">       </span><br><span class="line">       </span><br><span class="line">       DispatchQueue.global().async &#123;</span><br><span class="line">           semaphore.wait()</span><br><span class="line">           semaphore.wait()</span><br><span class="line">           for i in 0...160 &#123;</span><br><span class="line">               print(&quot;request -- 3&quot;)</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<p>request – 3 ，request – 2 和 request – 1，依次相互依赖</p>
-<pre><code>private func gcdSemaphore() {
-        let semaphore = DispatchSemaphore(value: 0)
-        DispatchQueue.global().async {
-            for i in 0...300 {
-                print(&quot;request -- 1&quot;)
-            }
-            semaphore.signal()
-        }
-
-        DispatchQueue.global().async {
-            semaphore.wait()
-            for i in 0...200 {
-                print(&quot;request -- 2&quot;)
-            }
-            semaphore.signal()
-        }
-
-
-        DispatchQueue.global().async {
-            semaphore.wait()
-            for i in 0...160 {
-                print(&quot;request -- 3&quot;)
-            }
-        }
-    }
-
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/GCD 信号量/" data-id="cjx3dt2q8000br6fy8gl6cxda" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/ES6语法/" data-id="cjx3du7b5000aucfyb3kz3kqi" class="article-share-link">Share</a>
       
       
     </footer>
@@ -354,7 +354,7 @@ let arrowFunction = (param1, param2) =&gt; {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Charles 抓包/" data-id="cjx3dt2q30005r6fy5dtfenb8" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Charles 抓包/" data-id="cjx3du7au0001ucfyz6kmckrg" class="article-share-link">Share</a>
       
       
     </footer>
@@ -394,7 +394,7 @@ let arrowFunction = (param1, param2) =&gt; {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Flutterr入门/" data-id="cjx3dt2q50007r6fyi812bmo9" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Flutterr入门/" data-id="cjx3du7b9000ducfyu3cse7d9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flutter/">Flutter</a></li></ul>
@@ -423,7 +423,7 @@ let arrowFunction = (param1, param2) =&gt; {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/docs/15608702427054/" data-id="cjx3dt2t5003ir6fy3g17o6ob" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/docs/15608702427054/" data-id="cjx3du7e0003hucfy60pxdk1d" class="article-share-link">Share</a>
       
       
     </footer>
@@ -463,7 +463,7 @@ let arrowFunction = (param1, param2) =&gt; {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/02/03/Mac安装VirtualBox连接U盘/" data-id="cjx3dt2qe000kr6fyse343sbt" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/02/03/Mac安装VirtualBox连接U盘/" data-id="cjx3du7bg000kucfysz4y404q" class="article-share-link">Share</a>
       
       
     </footer>
@@ -519,7 +519,7 @@ let arrowFunction = (param1, param2) =&gt; {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/19/Block学习探究/" data-id="cjx3dt2pt0001r6fy9u9jpsl1" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/19/Block学习探究/" data-id="cjx3du7ax0003ucfyx6vkqc23" class="article-share-link">Share</a>
       
       
     </footer>
@@ -595,7 +595,7 @@ let arrowFunction = (param1, param2) =&gt; {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/18/常见问题总结-二/" data-id="cjx3dt2rx002vr6fyvbkh8c2g" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/18/常见问题总结-二/" data-id="cjx3du7cz002uucfyd0aui80h" class="article-share-link">Share</a>
       
       
     </footer>
@@ -705,7 +705,7 @@ let arrowFunction = (param1, param2) =&gt; {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/17/面试中常见问题总结/" data-id="cjx3dt2sm003hr6fydx87eag7" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/17/面试中常见问题总结/" data-id="cjx3du7dh003gucfytligoego" class="article-share-link">Share</a>
       
       
     </footer>
@@ -881,7 +881,7 @@ let arrowFunction = (param1, param2) =&gt; {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/12/iOS即时通讯实现二/" data-id="cjx3dt2rm002gr6fyxboa7lkk" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/12/iOS即时通讯实现二/" data-id="cjx3du7co002eucfyrskoc00o" class="article-share-link">Share</a>
       
       
     </footer>
@@ -957,7 +957,7 @@ let arrowFunction = (param1, param2) =&gt; {
           </li>
         
           <li>
-            <a href="/2019/06/18/第十一章设计模式面试/">(no title)</a>
+            <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
           </li>
         
       </ul>

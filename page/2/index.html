@@ -62,9 +62,9 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-第九章Runloop面试" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-第五章Runtime相关面试" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/18/第九章Runloop面试/" class="article-date">
+    <a href="/2019/06/18/第五章Runtime相关面试/" class="article-date">
   <time datetime="2019-06-18T15:30:19.017Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
@@ -74,13 +74,94 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>RunLop</p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNc79ly1g21ckps89dj31vy03cq56.jpg" alt></p>
+        <h1 id="Runtime-相关问题"><a href="#Runtime-相关问题" class="headerlink" title="Runtime 相关问题"></a>Runtime 相关问题</h1><h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><h3 id="objc-object-结构体"><a href="#objc-object-结构体" class="headerlink" title="objc_object 结构体"></a>objc_object 结构体</h3><h3 id="objc-class"><a href="#objc-class" class="headerlink" title="objc_class"></a>objc_class</h3><h4 id="对象、类对象、元类对象的区别"><a href="#对象、类对象、元类对象的区别" class="headerlink" title="对象、类对象、元类对象的区别"></a>对象、类对象、元类对象的区别</h4><ul>
+<li>类对象存储实例方法列表等信息</li>
+<li>元类对象存锤类方法列表等信息</li>
+</ul>
+<h2 id="消息传递"><a href="#消息传递" class="headerlink" title="消息传递"></a>消息传递</h2><p><code>void objc_msgSend(void /* id self, SEL op, ... */)</code></p>
+<p>经过编译器转变后<br><code>[self class]</code> &lt;==&gt;  <code>objc_msgSend(self, @selector(class))</code><br>第一个参数是消息传递的接收者self, 第二个参数是传递的消息名称（选择器）</p>
+<p><code>void objc_msgSendSuper(void /* struct objc_super *super, SEL op, ... */)</code><br>第一个参数是一个结构体指针</p>
+<p>//<br>struuch objc_super {<br>    __unsafe_unretained id receiver; // 就是当前的对象<br>}</p>
+<p><code>[superclass]</code> &lt;==&gt;  <code>objc_msgSendSuper(super, @selector(class))</code></p>
+<p>无论调用[super class] 还是 [self class] 最终这条消息的接收者都是当前对象</p>
+<p>图1</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79ly1g1viq97z3cj31k90u0qd3.jpg" alt></p>
+<h2 id="消息传递过程"><a href="#消息传递过程" class="headerlink" title="消息传递过程"></a>消息传递过程</h2><p>图2</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1g1vigugmvmj31qu0u07a4.jpg" alt></p>
+<p>问题1</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79ly1g1vikx3a6wj31hp0u0dmw.jpg" alt></p>
+<p><code>打印结果都是 Phone</code></p>
+<p>原因:</p>
+<ul>
+<li>无论调用[super class] 还是 [self class] 最终这条消息的接收者都是当前对象</li>
+<li>[self class] 在Phone的类对象中查找class 方法，没有去父类查找，父类也没有，如图1顺次往上查找到根类，调用根类中class 的具体实现</li>
+<li>[super class]只是跨越了当前类，直接从当前类的父类中查找 class 方法，父类中没有class 方法，如图1所示只能继续往上查找到根类对象，在NSObject 中有class 方法实现，所以接受者任然是当前的对象</li>
+</ul>
+<h3 id="缓存查找"><a href="#缓存查找" class="headerlink" title="缓存查找"></a>缓存查找</h3><p>根据给定的SEL（方法选择器）通过一个函数来映射出bucket_t 在数组当中的位置，本质上是哈希查找</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1g1vj2xha6gj318i0jc76s.jpg" alt></p>
+<h3 id="当前类中查找"><a href="#当前类中查找" class="headerlink" title="当前类中查找"></a>当前类中查找</h3><p>当前类中存在着对应的方法列表</p>
+<ul>
+<li>对于已经排序好的列表，采用二分查找算法查找对应的执行函数</li>
+<li>对于没有排序的列表，采用一般遍历查找方法查找对应的执行函数</li>
+</ul>
+<h3 id="父类逐级查找"><a href="#父类逐级查找" class="headerlink" title="父类逐级查找"></a>父类逐级查找</h3><p>图3<br><img src="https://ws1.sinaimg.cn/large/006tNc79ly1g1vkkjffglj31xm0ssgpn.jpg" alt></p>
+<ul>
+<li>最关键是通过当前类的 superclass 成员变量去查找父类，或者访问父类</li>
+<li>curClass 的父类是否为 nil？如果是NSObject 类，他的父类为空，所以会结束查找</li>
+<li>如果当前类有父类就要去该父类的缓存中查找，如果在缓存中命中，那么就结束查找，如果缓存中没有，就需要遍历当前类的父类的方法列表，如果没有就遍历父类的父类查找，沿着superclass指针逐级向上查找，直到查找到NSObject，再去Superclass。如果还是没有为nil时就结束父类逐级查找</li>
+</ul>
+<h2 id="消息转发"><a href="#消息转发" class="headerlink" title="消息转发"></a>消息转发</h2><h3 id="resolveInstanceMethod"><a href="#resolveInstanceMethod" class="headerlink" title="resolveInstanceMethod:"></a>resolveInstanceMethod:</h3><ul>
+<li>该方法是类方法不是实例方法，参数是SEL 方法选择器类型</li>
+<li>返回值是一个BOOL值</li>
+<li>告诉系统是否要解决当前实例方法的实现</li>
+<li>如果返回YES，结束消息转发</li>
+<li>如果返回NO，系统会给第二次机会处理这个消息，会回掉forwardingTargetForSelector:</li>
+</ul>
+<h3 id="forwardingTargetForSelector："><a href="#forwardingTargetForSelector：" class="headerlink" title="forwardingTargetForSelector："></a>forwardingTargetForSelector：</h3><ul>
+<li>参数是 SEL 方法选择器</li>
+<li>返回值是 id 类型，说明有哪个对象来处理，转发的对象是谁，如果返回了转发目标就会结束当前调用</li>
+<li>如果返回为nil，系统会调用 methodSignatureForSelector:方法，最后一次机会处理这个消息</li>
+</ul>
+<h3 id="methodSignatureForSelector："><a href="#methodSignatureForSelector：" class="headerlink" title="methodSignatureForSelector："></a>methodSignatureForSelector：</h3><ul>
+<li>参数是 SEL 方法选择器</li>
+<li>返回值是一个对象，实际上这个对象是对<code>methodSignatureForSelector</code> 方法的参数，参数个数，参数类型和返回值的包装</li>
+<li>如果返回一个方法签名的话，就会调用 forwardInvocation: 方法</li>
+<li>如果返回为nil，标记为消息无法处理，程序crash</li>
+</ul>
+<h3 id="forwardInvocation："><a href="#forwardInvocation：" class="headerlink" title="forwardInvocation："></a>forwardInvocation：</h3><ul>
+<li>如果此方法不能处理消息，程序crash</li>
+</ul>
+<p>代码示例</p>
+<p>.h 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@interface RunTimeObject : NSObject</span><br><span class="line">// 只声明，不实现，验证消息转发机制</span><br><span class="line">- (void)test;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>.m 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">@implementation RunTimeObject</span><br><span class="line"></span><br><span class="line">// 实现消息转发流程 中的方法</span><br><span class="line">/**</span><br><span class="line"> 是否要解决当前实例方法的实现</span><br><span class="line"> */</span><br><span class="line">+ (BOOL)resolveInstanceMethod:(SEL)sel &#123;</span><br><span class="line">    if (sel == @selector(test)) &#123;</span><br><span class="line">        NSLog(@&quot;resolveInstanceMethod:&quot;);</span><br><span class="line">        // 如果返回YES，消息转发就会结束</span><br><span class="line">//        return YES;</span><br><span class="line">        </span><br><span class="line">        return NO;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;super resolveInstanceMethod:&quot;);</span><br><span class="line">        // 返回父类的默认调用</span><br><span class="line">        return [super resolveInstanceMethod:sel];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> - 参数是 SEL 方法选择器</span><br><span class="line"> - 返回值是 id 类型，说明有哪个对象来处理，转发的对象是谁，如果返回了转发目标就会结束当前调用</span><br><span class="line"> - 如果返回为nil，系统会调用 methodSignatureForSelector:方法，最后一次机会处理这个消息</span><br><span class="line"> */</span><br><span class="line">- (id)forwardingTargetForSelector:(SEL)aSelector &#123;</span><br><span class="line">    NSLog(@&quot; forwardingTargetForSelector: &quot;);</span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> - 参数是 SEL 方法选择器</span><br><span class="line"> - 返回值是一个对象，实际上这个对象是对`methodSignatureForSelector` 方法的参数，参数个数，参数类型和返回值的包装</span><br><span class="line"> - 如果返回一个方法签名的话，就会调用 forwardInvocation: 方法</span><br><span class="line"> - 如果返回为nil，标记为消息无法处理，程序crash</span><br><span class="line"> </span><br><span class="line"> */</span><br><span class="line">- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector &#123;</span><br><span class="line">    if (aSelector == @selector(test)) &#123;</span><br><span class="line">        NSLog(@&quot;methodSignatureForSelector:&quot;);</span><br><span class="line">        /**</span><br><span class="line">         v: 表示这个方法返回值是 void</span><br><span class="line">         </span><br><span class="line">         固定参数@: 表示参数类型是 id, 即self</span><br><span class="line">         固定参数`:` : 表示参数类型是选择器类型，即 @selector(test)</span><br><span class="line">         */</span><br><span class="line">        return [NSMethodSignature signatureWithObjCTypes:&quot;v@:&quot;];</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;super methodSignatureForSelector:&quot;);</span><br><span class="line">        // 返回父类的默认调用</span><br><span class="line">        return [super methodSignatureForSelector:aSelector];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">- (void)forwardInvocation:(NSInvocation *)anInvocation &#123;</span><br><span class="line">    NSLog(@&quot;forwardInvocation:&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>调用 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)runTiemTest &#123;</span><br><span class="line">    RunTimeObject *obj = [[RunTimeObject alloc] init];</span><br><span class="line">    [obj test];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">resolveInstanceMethod:</span><br><span class="line">forwardingTargetForSelector:</span><br><span class="line">methodSignatureForSelector:</span><br><span class="line">super resolveInstanceMethod:</span><br><span class="line">forwardInvocation:</span><br></pre></td></tr></table></figure>
+<h2 id="为类动态添加方法"><a href="#为类动态添加方法" class="headerlink" title="为类动态添加方法"></a>为类动态添加方法</h2><p>methond Swizzling</p>
+<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
+<li>页面中的进出添加统计信息，使用 methond Swizzling 替换viewillAppear 方法</li>
+</ul>
+<h3 id="动态添加方法"><a href="#动态添加方法" class="headerlink" title="动态添加方法"></a>动态添加方法</h3><ul>
+<li>perforSelector: 实际上是考察class_addMethod 的方法使用</li>
+</ul>
+<h3 id="动态方法解析"><a href="#动态方法解析" class="headerlink" title="动态方法解析"></a>动态方法解析</h3><ul>
+<li>@dynamic关键字</li>
+<li>动态运行时语言将函数决议推迟到运行时</li>
+<li>编译时不生成setter/getter 方法，而是在运行时才添加具体的执行函数</li>
+</ul>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="obj-foo-和-obj-msgSend-函数之间有什么关系？"><a href="#obj-foo-和-obj-msgSend-函数之间有什么关系？" class="headerlink" title="[obj foo] 和 obj_msgSend()函数之间有什么关系？"></a>[obj foo] 和 obj_msgSend()函数之间有什么关系？</h3><ul>
+<li><code>[obj foo]</code>经过编译器处理过后会变成 <code>obj_msgSend()</code>有两个参数，一个是obj，第二个参数是foo 选择器</li>
+</ul>
+<h3 id="runtime-如何通过Selector找到对应的IMP地址的？"><a href="#runtime-如何通过Selector找到对应的IMP地址的？" class="headerlink" title="runtime 如何通过Selector找到对应的IMP地址的？"></a>runtime 如何通过Selector找到对应的IMP地址的？</h3><p>消息传递机制</p>
+<h3 id="能否向编译后的类增加实例变量"><a href="#能否向编译后的类增加实例变量" class="headerlink" title="能否向编译后的类增加实例变量"></a>能否向编译后的类增加实例变量</h3><p>编译之前就完成了实例变量的布局，<br>runtime_r_t 表示是readonly 的，编译后的类是不能添加实例变量的，可以向动态添加的类中添加实例变量</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第九章Runloop面试/" data-id="cjx3dt2s60036r6fyje9zhht1" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第五章Runtime相关面试/" data-id="cjx3du7d60035ucfym8io8a8h" class="article-share-link">Share</a>
       
       
     </footer>
@@ -176,7 +257,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第七章Blocks面试/" data-id="cjx3dt2s10031r6fym6g42xjo" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第七章Blocks面试/" data-id="cjx3du7d30030ucfyyhffem30" class="article-share-link">Share</a>
       
       
     </footer>
@@ -272,7 +353,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第三章UI视图响应链离屏渲染面试/" data-id="cjx3dt2s30034r6fyehkhynkx" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第三章UI视图响应链离屏渲染面试/" data-id="cjx3du7d40033ucfyiv5czgfk" class="article-share-link">Share</a>
       
       
     </footer>
@@ -330,7 +411,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/一自动引用计数/" data-id="cjx3dt2rv002ur6fysicnv893" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/一自动引用计数/" data-id="cjx3du7cy002tucfyg1j6jj4g" class="article-share-link">Share</a>
       
       
     </footer>
@@ -367,7 +448,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/is 关键字类型检查/" data-id="cjx3dt2rp002lr6fymgej31s1" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/is 关键字类型检查/" data-id="cjx3du7ct002lucfyben1ofq1" class="article-share-link">Share</a>
       
       
     </footer>
@@ -478,7 +559,63 @@ let owner = id?.person
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/swift中强引用循环和weak关键字/" data-id="cjx3dt2rs002qr6fytawvayt9" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/swift中强引用循环和weak关键字/" data-id="cjx3du7cv002pucfyzjtlz7rt" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-npm和cnpm" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/npm和cnpm/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.014Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="ReactNative配置-npm-和cnpm-相关"><a href="#ReactNative配置-npm-和cnpm-相关" class="headerlink" title="ReactNative配置.npm 和cnpm 相关"></a>ReactNative配置.npm 和cnpm 相关</h1><h3 id="npm"><a href="#npm" class="headerlink" title="npm"></a>npm</h3><p>Nodejs的包管理工具</p>
+<h3 id="npm-常用命令"><a href="#npm-常用命令" class="headerlink" title="npm 常用命令"></a>npm 常用命令</h3><ul>
+<li><p>更新或卸载</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm update/uninstall moduleName</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看当前目录下已安装的包</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm list</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看全局安装的包的路径</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm root -g</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>全部命令</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm help</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="cnpm"><a href="#cnpm" class="headerlink" title="cnpm"></a>cnpm</h3><p>因为npm安装插件是从国外服务器下载，受网络影响大，可能出现异常，cnpm <a href="https://npm.taobao.org/" target="_blank" rel="noopener">淘宝镜像</a></p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+<h3 id="设置镜像源"><a href="#设置镜像源" class="headerlink" title="设置镜像源"></a>设置镜像源</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cnpm set registry http://registry.cnpm.taobao.com</span><br><span class="line">npm set registry http://registry.cnpm.taobao.com</span><br></pre></td></tr></table></figure>
+<h3 id="配置-npmrc-文件"><a href="#配置-npmrc-文件" class="headerlink" title="配置 .npmrc 文件"></a>配置 .npmrc 文件</h3><p>前端项目开发离不开安装各种npm依赖包，可以选择远程的仓库也可以选择本地的仓库，但更改仓库地址需要在安装时控制台打命令，比较麻烦， 而npmrc可以很方便地解决上面问题</p>
+<h3 id="npmrc-原理"><a href="#npmrc-原理" class="headerlink" title=".npmrc 原理"></a>.npmrc 原理</h3><p>当安装项目的依赖包时，会查找并读取项目根目录下的.npmrc文件的配置，自动指定仓库地址</p>
+<ul>
+<li><p>打开 .npmrc</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open .npmrc</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>编辑文件, 指定特定的库的镜像源, 比如以<code>@test</code>开头的库镜像为：<code>http://registry.cnpm.test.com/</code> 而其他的正常</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@test:registry=http://registry.cnpm.lietou.com/</span><br><span class="line">registry=https://registry.npm.taobao.org/</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/npm和cnpm/" data-id="cjx3du7cv002qucfyrp92ds9w" class="article-share-link">Share</a>
       
       
     </footer>
@@ -580,7 +717,7 @@ npm start --reset-cache
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/typescripe 安装及语法/" data-id="cjx3dt2rt002rr6fylvlnjkah" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/typescripe 安装及语法/" data-id="cjx3du7cw002rucfyy7m4pstm" class="article-share-link">Share</a>
       
       
     </footer>
@@ -794,63 +931,7 @@ EOCConnectionState3Connected,
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/《52个方法第一章》/" data-id="cjx3dt2ru002sr6fyu51y01qe" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-npm和cnpm" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/npm和cnpm/" class="article-date">
-  <time datetime="2019-06-18T15:30:19.014Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="ReactNative配置-npm-和cnpm-相关"><a href="#ReactNative配置-npm-和cnpm-相关" class="headerlink" title="ReactNative配置.npm 和cnpm 相关"></a>ReactNative配置.npm 和cnpm 相关</h1><h3 id="npm"><a href="#npm" class="headerlink" title="npm"></a>npm</h3><p>Nodejs的包管理工具</p>
-<h3 id="npm-常用命令"><a href="#npm-常用命令" class="headerlink" title="npm 常用命令"></a>npm 常用命令</h3><ul>
-<li><p>更新或卸载</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm update/uninstall moduleName</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看当前目录下已安装的包</p>
-   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm list</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看全局安装的包的路径</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm root -g</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>全部命令</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm help</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="cnpm"><a href="#cnpm" class="headerlink" title="cnpm"></a>cnpm</h3><p>因为npm安装插件是从国外服务器下载，受网络影响大，可能出现异常，cnpm <a href="https://npm.taobao.org/" target="_blank" rel="noopener">淘宝镜像</a></p>
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
-<h3 id="设置镜像源"><a href="#设置镜像源" class="headerlink" title="设置镜像源"></a>设置镜像源</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cnpm set registry http://registry.cnpm.taobao.com</span><br><span class="line">npm set registry http://registry.cnpm.taobao.com</span><br></pre></td></tr></table></figure>
-<h3 id="配置-npmrc-文件"><a href="#配置-npmrc-文件" class="headerlink" title="配置 .npmrc 文件"></a>配置 .npmrc 文件</h3><p>前端项目开发离不开安装各种npm依赖包，可以选择远程的仓库也可以选择本地的仓库，但更改仓库地址需要在安装时控制台打命令，比较麻烦， 而npmrc可以很方便地解决上面问题</p>
-<h3 id="npmrc-原理"><a href="#npmrc-原理" class="headerlink" title=".npmrc 原理"></a>.npmrc 原理</h3><p>当安装项目的依赖包时，会查找并读取项目根目录下的.npmrc文件的配置，自动指定仓库地址</p>
-<ul>
-<li><p>打开 .npmrc</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open .npmrc</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li><p>编辑文件, 指定特定的库的镜像源, 比如以<code>@test</code>开头的库镜像为：<code>http://registry.cnpm.test.com/</code> 而其他的正常</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@test:registry=http://registry.cnpm.lietou.com/</span><br><span class="line">registry=https://registry.npm.taobao.org/</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/npm和cnpm/" data-id="cjx3dt2rv002tr6fy9wmig0lp" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/《52个方法第一章》/" data-id="cjx3du7cx002sucfy4v9e41op" class="article-share-link">Share</a>
       
       
     </footer>
@@ -920,7 +1001,7 @@ print(result3)
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/iOS通过URL获取HTML中标题/" data-id="cjx3dt2rr002nr6fyrhd1i4rk" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/iOS通过URL获取HTML中标题/" data-id="cjx3du7cr002iucfy1no6p9gg" class="article-share-link">Share</a>
       
       
     </footer>
@@ -996,7 +1077,7 @@ print(result3)
           </li>
         
           <li>
-            <a href="/2019/06/18/第十一章设计模式面试/">(no title)</a>
+            <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
           </li>
         
       </ul>

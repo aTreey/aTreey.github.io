@@ -98,7 +98,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Flutter中GridView组件/" data-id="cjx3dt2pv0003r6fy5hznlrx3" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Flutter中GridView组件/" data-id="cjx3du7az0005ucfys3msek6k" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flutter-GridView/">Flutter GridView</a></li></ul>
@@ -145,7 +145,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第十四章第三方库面试/" data-id="cjx3dt2sg003cr6fyom91kue8" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第十四章第三方库面试/" data-id="cjx3du7db003cucfydenbfh9q" class="article-share-link">Share</a>
       
       
     </footer>
@@ -317,7 +317,7 @@ max：10 最多发生多少个http请求和响应对
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第十章网络相关/" data-id="cjx3dt2sh003dr6fy7ygte9xp" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第十章网络相关/" data-id="cjx3du7dc003ducfyca589s7u" class="article-share-link">Share</a>
       
       
     </footer>
@@ -457,83 +457,7 @@ max：10 最多发生多少个http请求和响应对
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第四章OC语言特性面试/" data-id="cjx3dt2sk003fr6fyf4qwriy6" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-第十一章设计模式面试" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/第十一章设计模式面试/" class="article-date">
-  <time datetime="2019-06-18T15:30:19.019Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>第十一章 设计模式</p>
-<h2 id="六大设计原则"><a href="#六大设计原则" class="headerlink" title="六大设计原则"></a>六大设计原则</h2><p>单一职责原则：一个类只负责一件事</p>
-<p>开闭原则： 对修改关闭，对扩展开放</p>
-<p>接口隔离原则：使用多个专门的协议，而不是一个庞大臃肿的协议，iOS系统的UITableView的数据和代理协议分开</p>
-<p>依赖倒置原则：抽象不应该依赖于具体实现，具体实现可以依赖于抽象</p>
-<p>里氏替换原则：父类可以被子类无缝替换，且原有功能不受任何影响，iOS系统 的 KVO 机制遵守了这一原则，当调用 addObserver 方法时，因为系统在动态运行时为我们创建了一个子类，直观感受是仍然使用的是父类，实际上系统已经替换为创建的子类，所以KVO 机制 不但使用了管擦这模式，并且遵从了 里氏替换原则</p>
-<p>迪米特法则： 一个对象应对其他对象有尽可能少的了解，平时所说的高内聚，低耦合</p>
-<h2 id="常用设计模式"><a href="#常用设计模式" class="headerlink" title="常用设计模式"></a>常用设计模式</h2><h3 id="责任链"><a href="#责任链" class="headerlink" title="责任链"></a>责任链</h3><p>有三个业务分别为A/B/C，以前的调用顺序为 A -&gt; B -&gt; C ，现在顺序有调整，</p>
-<p>定义某一个类，有一个成员变量他的类型跟原有类类型一致，组成一个责任链，让处理具体业务的责任者去处理</p>
-<p><img src="https://i.loli.net/2019/04/18/5cb85694cd028.jpg" alt></p>
-<h3 id="桥接模式"><a href="#桥接模式" class="headerlink" title="桥接模式"></a>桥接模式</h3><p>业务解耦的问题：同一个列表和多套数据显示，多套数据通过后端来控制是共存，</p>
-<p><img src="https://i.loli.net/2019/04/18/5cb857a83803d.jpg" alt></p>
-<p>类构成</p>
-<p>抽象类A ——&gt; class B </p>
-<p><img src="https://i.loli.net/2019/04/18/5cb85da6d46b6.jpg" alt></p>
-<h3 id="适配器模式"><a href="#适配器模式" class="headerlink" title="适配器模式"></a>适配器模式</h3><p>一个现有类需要适应变化的问题， 年代比较久远的类或者对象</p>
-<p>类构成<br><img src="https://i.loli.net/2019/04/18/5cb8600aa067b.jpg" alt></p>
-<ul>
-<li>对象适配</li>
-<li>类适配</li>
-</ul>
-<h3 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h3><h3 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h3><p>行为参数化</p>
-<p>降低代码重合度</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第十一章设计模式面试/" data-id="cjx3dt2sd003ar6fyvitozklq" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-第十三章算法面试" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/第十三章算法面试/" class="article-date">
-  <time datetime="2019-06-18T15:30:19.019Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>第十三章算法</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第十三章算法面试/" data-id="cjx3dt2se003br6fytgdptcym" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第四章OC语言特性面试/" data-id="cjx3du7de003eucfyka8xzbst" class="article-share-link">Share</a>
       
       
     </footer>
@@ -639,7 +563,83 @@ max：10 最多发生多少个http请求和响应对
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第十二章架构和框架面试/" data-id="cjx3dt2sj003er6fybwdxykze" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第十二章架构和框架面试/" data-id="cjx3du7d70038ucfyjxwfqf49" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-第十一章设计模式面试" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/第十一章设计模式面试/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.019Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>第十一章 设计模式</p>
+<h2 id="六大设计原则"><a href="#六大设计原则" class="headerlink" title="六大设计原则"></a>六大设计原则</h2><p>单一职责原则：一个类只负责一件事</p>
+<p>开闭原则： 对修改关闭，对扩展开放</p>
+<p>接口隔离原则：使用多个专门的协议，而不是一个庞大臃肿的协议，iOS系统的UITableView的数据和代理协议分开</p>
+<p>依赖倒置原则：抽象不应该依赖于具体实现，具体实现可以依赖于抽象</p>
+<p>里氏替换原则：父类可以被子类无缝替换，且原有功能不受任何影响，iOS系统 的 KVO 机制遵守了这一原则，当调用 addObserver 方法时，因为系统在动态运行时为我们创建了一个子类，直观感受是仍然使用的是父类，实际上系统已经替换为创建的子类，所以KVO 机制 不但使用了管擦这模式，并且遵从了 里氏替换原则</p>
+<p>迪米特法则： 一个对象应对其他对象有尽可能少的了解，平时所说的高内聚，低耦合</p>
+<h2 id="常用设计模式"><a href="#常用设计模式" class="headerlink" title="常用设计模式"></a>常用设计模式</h2><h3 id="责任链"><a href="#责任链" class="headerlink" title="责任链"></a>责任链</h3><p>有三个业务分别为A/B/C，以前的调用顺序为 A -&gt; B -&gt; C ，现在顺序有调整，</p>
+<p>定义某一个类，有一个成员变量他的类型跟原有类类型一致，组成一个责任链，让处理具体业务的责任者去处理</p>
+<p><img src="https://i.loli.net/2019/04/18/5cb85694cd028.jpg" alt></p>
+<h3 id="桥接模式"><a href="#桥接模式" class="headerlink" title="桥接模式"></a>桥接模式</h3><p>业务解耦的问题：同一个列表和多套数据显示，多套数据通过后端来控制是共存，</p>
+<p><img src="https://i.loli.net/2019/04/18/5cb857a83803d.jpg" alt></p>
+<p>类构成</p>
+<p>抽象类A ——&gt; class B </p>
+<p><img src="https://i.loli.net/2019/04/18/5cb85da6d46b6.jpg" alt></p>
+<h3 id="适配器模式"><a href="#适配器模式" class="headerlink" title="适配器模式"></a>适配器模式</h3><p>一个现有类需要适应变化的问题， 年代比较久远的类或者对象</p>
+<p>类构成<br><img src="https://i.loli.net/2019/04/18/5cb8600aa067b.jpg" alt></p>
+<ul>
+<li>对象适配</li>
+<li>类适配</li>
+</ul>
+<h3 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h3><h3 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h3><p>行为参数化</p>
+<p>降低代码重合度</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/第十一章设计模式面试/" data-id="cjx3du7da003aucfy4i9walk1" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-第十三章算法面试" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/第十三章算法面试/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.019Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>第十三章算法</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/第十三章算法面试/" data-id="cjx3du7db003bucfyw3q2ludx" class="article-share-link">Share</a>
       
       
     </footer>
@@ -666,7 +666,7 @@ max：10 最多发生多少个http请求和响应对
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第八章多线程面试/" data-id="cjx3dt2s90038r6fy1qf8dnyg" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第八章多线程面试/" data-id="cjx3du7d60037ucfyrbawyks8" class="article-share-link">Share</a>
       
       
     </footer>
@@ -764,7 +764,7 @@ max：10 最多发生多少个http请求和响应对
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第六章内存管理面试/" data-id="cjx3dt2sa0039r6fytcdh1zu6" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第六章内存管理面试/" data-id="cjx3du7d90039ucfylfizycrq" class="article-share-link">Share</a>
       
       
     </footer>
@@ -774,9 +774,9 @@ max：10 最多发生多少个http请求和响应对
 
 
   
-    <article id="post-第五章Runtime相关面试" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-第九章Runloop面试" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/18/第五章Runtime相关面试/" class="article-date">
+    <a href="/2019/06/18/第九章Runloop面试/" class="article-date">
   <time datetime="2019-06-18T15:30:19.017Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
@@ -786,94 +786,13 @@ max：10 最多发生多少个http请求和响应对
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Runtime-相关问题"><a href="#Runtime-相关问题" class="headerlink" title="Runtime 相关问题"></a>Runtime 相关问题</h1><h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><h3 id="objc-object-结构体"><a href="#objc-object-结构体" class="headerlink" title="objc_object 结构体"></a>objc_object 结构体</h3><h3 id="objc-class"><a href="#objc-class" class="headerlink" title="objc_class"></a>objc_class</h3><h4 id="对象、类对象、元类对象的区别"><a href="#对象、类对象、元类对象的区别" class="headerlink" title="对象、类对象、元类对象的区别"></a>对象、类对象、元类对象的区别</h4><ul>
-<li>类对象存储实例方法列表等信息</li>
-<li>元类对象存锤类方法列表等信息</li>
-</ul>
-<h2 id="消息传递"><a href="#消息传递" class="headerlink" title="消息传递"></a>消息传递</h2><p><code>void objc_msgSend(void /* id self, SEL op, ... */)</code></p>
-<p>经过编译器转变后<br><code>[self class]</code> &lt;==&gt;  <code>objc_msgSend(self, @selector(class))</code><br>第一个参数是消息传递的接收者self, 第二个参数是传递的消息名称（选择器）</p>
-<p><code>void objc_msgSendSuper(void /* struct objc_super *super, SEL op, ... */)</code><br>第一个参数是一个结构体指针</p>
-<p>//<br>struuch objc_super {<br>    __unsafe_unretained id receiver; // 就是当前的对象<br>}</p>
-<p><code>[superclass]</code> &lt;==&gt;  <code>objc_msgSendSuper(super, @selector(class))</code></p>
-<p>无论调用[super class] 还是 [self class] 最终这条消息的接收者都是当前对象</p>
-<p>图1</p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNc79ly1g1viq97z3cj31k90u0qd3.jpg" alt></p>
-<h2 id="消息传递过程"><a href="#消息传递过程" class="headerlink" title="消息传递过程"></a>消息传递过程</h2><p>图2</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1g1vigugmvmj31qu0u07a4.jpg" alt></p>
-<p>问题1</p>
-<p><img src="https://ws1.sinaimg.cn/large/006tNc79ly1g1vikx3a6wj31hp0u0dmw.jpg" alt></p>
-<p><code>打印结果都是 Phone</code></p>
-<p>原因:</p>
-<ul>
-<li>无论调用[super class] 还是 [self class] 最终这条消息的接收者都是当前对象</li>
-<li>[self class] 在Phone的类对象中查找class 方法，没有去父类查找，父类也没有，如图1顺次往上查找到根类，调用根类中class 的具体实现</li>
-<li>[super class]只是跨越了当前类，直接从当前类的父类中查找 class 方法，父类中没有class 方法，如图1所示只能继续往上查找到根类对象，在NSObject 中有class 方法实现，所以接受者任然是当前的对象</li>
-</ul>
-<h3 id="缓存查找"><a href="#缓存查找" class="headerlink" title="缓存查找"></a>缓存查找</h3><p>根据给定的SEL（方法选择器）通过一个函数来映射出bucket_t 在数组当中的位置，本质上是哈希查找</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1g1vj2xha6gj318i0jc76s.jpg" alt></p>
-<h3 id="当前类中查找"><a href="#当前类中查找" class="headerlink" title="当前类中查找"></a>当前类中查找</h3><p>当前类中存在着对应的方法列表</p>
-<ul>
-<li>对于已经排序好的列表，采用二分查找算法查找对应的执行函数</li>
-<li>对于没有排序的列表，采用一般遍历查找方法查找对应的执行函数</li>
-</ul>
-<h3 id="父类逐级查找"><a href="#父类逐级查找" class="headerlink" title="父类逐级查找"></a>父类逐级查找</h3><p>图3<br><img src="https://ws1.sinaimg.cn/large/006tNc79ly1g1vkkjffglj31xm0ssgpn.jpg" alt></p>
-<ul>
-<li>最关键是通过当前类的 superclass 成员变量去查找父类，或者访问父类</li>
-<li>curClass 的父类是否为 nil？如果是NSObject 类，他的父类为空，所以会结束查找</li>
-<li>如果当前类有父类就要去该父类的缓存中查找，如果在缓存中命中，那么就结束查找，如果缓存中没有，就需要遍历当前类的父类的方法列表，如果没有就遍历父类的父类查找，沿着superclass指针逐级向上查找，直到查找到NSObject，再去Superclass。如果还是没有为nil时就结束父类逐级查找</li>
-</ul>
-<h2 id="消息转发"><a href="#消息转发" class="headerlink" title="消息转发"></a>消息转发</h2><h3 id="resolveInstanceMethod"><a href="#resolveInstanceMethod" class="headerlink" title="resolveInstanceMethod:"></a>resolveInstanceMethod:</h3><ul>
-<li>该方法是类方法不是实例方法，参数是SEL 方法选择器类型</li>
-<li>返回值是一个BOOL值</li>
-<li>告诉系统是否要解决当前实例方法的实现</li>
-<li>如果返回YES，结束消息转发</li>
-<li>如果返回NO，系统会给第二次机会处理这个消息，会回掉forwardingTargetForSelector:</li>
-</ul>
-<h3 id="forwardingTargetForSelector："><a href="#forwardingTargetForSelector：" class="headerlink" title="forwardingTargetForSelector："></a>forwardingTargetForSelector：</h3><ul>
-<li>参数是 SEL 方法选择器</li>
-<li>返回值是 id 类型，说明有哪个对象来处理，转发的对象是谁，如果返回了转发目标就会结束当前调用</li>
-<li>如果返回为nil，系统会调用 methodSignatureForSelector:方法，最后一次机会处理这个消息</li>
-</ul>
-<h3 id="methodSignatureForSelector："><a href="#methodSignatureForSelector：" class="headerlink" title="methodSignatureForSelector："></a>methodSignatureForSelector：</h3><ul>
-<li>参数是 SEL 方法选择器</li>
-<li>返回值是一个对象，实际上这个对象是对<code>methodSignatureForSelector</code> 方法的参数，参数个数，参数类型和返回值的包装</li>
-<li>如果返回一个方法签名的话，就会调用 forwardInvocation: 方法</li>
-<li>如果返回为nil，标记为消息无法处理，程序crash</li>
-</ul>
-<h3 id="forwardInvocation："><a href="#forwardInvocation：" class="headerlink" title="forwardInvocation："></a>forwardInvocation：</h3><ul>
-<li>如果此方法不能处理消息，程序crash</li>
-</ul>
-<p>代码示例</p>
-<p>.h 文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@interface RunTimeObject : NSObject</span><br><span class="line">// 只声明，不实现，验证消息转发机制</span><br><span class="line">- (void)test;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-<p>.m 文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">@implementation RunTimeObject</span><br><span class="line"></span><br><span class="line">// 实现消息转发流程 中的方法</span><br><span class="line">/**</span><br><span class="line"> 是否要解决当前实例方法的实现</span><br><span class="line"> */</span><br><span class="line">+ (BOOL)resolveInstanceMethod:(SEL)sel &#123;</span><br><span class="line">    if (sel == @selector(test)) &#123;</span><br><span class="line">        NSLog(@&quot;resolveInstanceMethod:&quot;);</span><br><span class="line">        // 如果返回YES，消息转发就会结束</span><br><span class="line">//        return YES;</span><br><span class="line">        </span><br><span class="line">        return NO;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;super resolveInstanceMethod:&quot;);</span><br><span class="line">        // 返回父类的默认调用</span><br><span class="line">        return [super resolveInstanceMethod:sel];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> - 参数是 SEL 方法选择器</span><br><span class="line"> - 返回值是 id 类型，说明有哪个对象来处理，转发的对象是谁，如果返回了转发目标就会结束当前调用</span><br><span class="line"> - 如果返回为nil，系统会调用 methodSignatureForSelector:方法，最后一次机会处理这个消息</span><br><span class="line"> */</span><br><span class="line">- (id)forwardingTargetForSelector:(SEL)aSelector &#123;</span><br><span class="line">    NSLog(@&quot; forwardingTargetForSelector: &quot;);</span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> - 参数是 SEL 方法选择器</span><br><span class="line"> - 返回值是一个对象，实际上这个对象是对`methodSignatureForSelector` 方法的参数，参数个数，参数类型和返回值的包装</span><br><span class="line"> - 如果返回一个方法签名的话，就会调用 forwardInvocation: 方法</span><br><span class="line"> - 如果返回为nil，标记为消息无法处理，程序crash</span><br><span class="line"> </span><br><span class="line"> */</span><br><span class="line">- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector &#123;</span><br><span class="line">    if (aSelector == @selector(test)) &#123;</span><br><span class="line">        NSLog(@&quot;methodSignatureForSelector:&quot;);</span><br><span class="line">        /**</span><br><span class="line">         v: 表示这个方法返回值是 void</span><br><span class="line">         </span><br><span class="line">         固定参数@: 表示参数类型是 id, 即self</span><br><span class="line">         固定参数`:` : 表示参数类型是选择器类型，即 @selector(test)</span><br><span class="line">         */</span><br><span class="line">        return [NSMethodSignature signatureWithObjCTypes:&quot;v@:&quot;];</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;super methodSignatureForSelector:&quot;);</span><br><span class="line">        // 返回父类的默认调用</span><br><span class="line">        return [super methodSignatureForSelector:aSelector];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">- (void)forwardInvocation:(NSInvocation *)anInvocation &#123;</span><br><span class="line">    NSLog(@&quot;forwardInvocation:&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-<p>调用 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)runTiemTest &#123;</span><br><span class="line">    RunTimeObject *obj = [[RunTimeObject alloc] init];</span><br><span class="line">    [obj test];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">resolveInstanceMethod:</span><br><span class="line">forwardingTargetForSelector:</span><br><span class="line">methodSignatureForSelector:</span><br><span class="line">super resolveInstanceMethod:</span><br><span class="line">forwardInvocation:</span><br></pre></td></tr></table></figure>
-<h2 id="为类动态添加方法"><a href="#为类动态添加方法" class="headerlink" title="为类动态添加方法"></a>为类动态添加方法</h2><p>methond Swizzling</p>
-<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
-<li>页面中的进出添加统计信息，使用 methond Swizzling 替换viewillAppear 方法</li>
-</ul>
-<h3 id="动态添加方法"><a href="#动态添加方法" class="headerlink" title="动态添加方法"></a>动态添加方法</h3><ul>
-<li>perforSelector: 实际上是考察class_addMethod 的方法使用</li>
-</ul>
-<h3 id="动态方法解析"><a href="#动态方法解析" class="headerlink" title="动态方法解析"></a>动态方法解析</h3><ul>
-<li>@dynamic关键字</li>
-<li>动态运行时语言将函数决议推迟到运行时</li>
-<li>编译时不生成setter/getter 方法，而是在运行时才添加具体的执行函数</li>
-</ul>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="obj-foo-和-obj-msgSend-函数之间有什么关系？"><a href="#obj-foo-和-obj-msgSend-函数之间有什么关系？" class="headerlink" title="[obj foo] 和 obj_msgSend()函数之间有什么关系？"></a>[obj foo] 和 obj_msgSend()函数之间有什么关系？</h3><ul>
-<li><code>[obj foo]</code>经过编译器处理过后会变成 <code>obj_msgSend()</code>有两个参数，一个是obj，第二个参数是foo 选择器</li>
-</ul>
-<h3 id="runtime-如何通过Selector找到对应的IMP地址的？"><a href="#runtime-如何通过Selector找到对应的IMP地址的？" class="headerlink" title="runtime 如何通过Selector找到对应的IMP地址的？"></a>runtime 如何通过Selector找到对应的IMP地址的？</h3><p>消息传递机制</p>
-<h3 id="能否向编译后的类增加实例变量"><a href="#能否向编译后的类增加实例变量" class="headerlink" title="能否向编译后的类增加实例变量"></a>能否向编译后的类增加实例变量</h3><p>编译之前就完成了实例变量的布局，<br>runtime_r_t 表示是readonly 的，编译后的类是不能添加实例变量的，可以向动态添加的类中添加实例变量</p>
+        <p>RunLop</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79ly1g21ckps89dj31vy03cq56.jpg" alt></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第五章Runtime相关面试/" data-id="cjx3dt2s50035r6fypmnb4n11" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第九章Runloop面试/" data-id="cjx3du7d50034ucfykw9m9nfk" class="article-share-link">Share</a>
       
       
     </footer>
@@ -949,7 +868,7 @@ max：10 最多发生多少个http请求和响应对
           </li>
         
           <li>
-            <a href="/2019/06/18/第十一章设计模式面试/">(no title)</a>
+            <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
           </li>
         
       </ul>
