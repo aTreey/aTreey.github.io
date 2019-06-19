@@ -62,6 +62,76 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-iOS通过URL获取HTML中标题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/iOS通过URL获取HTML中标题/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.013Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>iOS通过URL获取HTML中标题</p>
+<h3 id="获取标题"><a href="#获取标题" class="headerlink" title="获取标题"></a>获取标题</h3><h5 id="String扩展一个方法"><a href="#String扩展一个方法" class="headerlink" title="String扩展一个方法"></a>String扩展一个方法</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">private let patternTitle = &quot;(?&lt;=title&gt;).*(?=&lt;/title)&quot;</span><br><span class="line">extension String &#123;</span><br><span class="line">    static func parseHTMLTitle(_ urlString: String) -&gt; String? &#123;</span><br><span class="line">        let url = URL(string: urlString)!</span><br><span class="line">        do &#123;</span><br><span class="line">            let html = try String(contentsOf: url, encoding: .utf8)</span><br><span class="line">            let range = html.range(of: patternTitle, options: String.CompareOptions.regularExpression, range: html.startIndex..&lt;html.endIndex, locale: nil)</span><br><span class="line">            guard let tempRange = range else &#123; return &quot;&quot; &#125;</span><br><span class="line">            let titleStr = html[tempRange]</span><br><span class="line">            return String(titleStr)</span><br><span class="line">        &#125; catch &#123;</span><br><span class="line">            return &quot;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="iOS-中简单正则表达式"><a href="#iOS-中简单正则表达式" class="headerlink" title="iOS 中简单正则表达式"></a>iOS 中简单正则表达式</h5><p>iOS 中 正则表达式中的\ 需要使用 \\ 来表示</p>
+<pre><code>// 获取
+let testStr = &quot;我到底是[iOS]开发还是[产品]经理&quot;
+
+// 获取 &quot;[&quot; 和 &quot;]&quot; 之间的所有内容, 左边[ 起一直到 右边 ] 结束的所有内容 
+let pattern1 = &quot;\\[.*\\]&quot; // [iOS]开发还是[产品]
+
+// 获取 &quot;[&quot; 和 &quot;]&quot; 之间的所有内容，包括[]
+let pattern2 = &quot;\\[.*?\\]&quot;    // [iOS]
+
+// 获取第一个 &quot;[&quot; 和 &quot;]&quot; 之间的所有内容 不包括[] 
+let pattern3 = &quot;(?&lt;=\\[).*?(?=\\])&quot; // iOS
+
+// 获取html中 title 标签中内容
+let pattern5 = &quot;(?&lt;=title&gt;).*(?=&lt;/title)&quot; 
+</code></pre><h5 id="获取范围截取子串"><a href="#获取范围截取子串" class="headerlink" title="获取范围截取子串"></a>获取范围截取子串</h5><pre><code>let testRange1 = testStr.range(of: pattern1, options: String.CompareOptions.regularExpression, range: testStr.startIndex..&lt;testStr.endIndex, locale: nil)
+    let result1 = String(testStr[testRange1!])
+
+
+let testRange2 = testStr.range(of: pattern2, options: String.CompareOptions.regularExpression, range: testStr.startIndex..&lt;testStr.endIndex, locale: nil)
+let result2 = String(testStr[testRange2!])
+
+
+let testRange3 = testStr.range(of: pattern3, options: String.CompareOptions.regularExpression, range: testStr.startIndex..&lt;testStr.endIndex, locale: nil)
+let result3 = String(testStr[testRange3!])
+
+print(result1) 
+print(result2) 
+print(result3) 
+</code></pre><h5 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h5><p>通过URL解析html中的标题</p>
+<ul>
+<li>获取html字符串</li>
+<li>正则匹配</li>
+<li>生成字符串Range</li>
+<li>截取字符串</li>
+</ul>
+<p>匹配一次直接返回结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// 生成表达式</span><br><span class="line">let regular = try NSRegularExpression(pattern: pattern5, options: .caseInsensitive) </span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">// 开始匹配  </span><br><span class="line">let matchResult1 = regular.firstMatch(in: html, options: NSRegularExpression.MatchingOptions.reportProgress, range: NSMakeRange(0, html.count))</span><br><span class="line"></span><br><span class="line">// 获取匹配结果范围</span><br><span class="line">let matchRange = matchResult1?.range</span><br><span class="line">let range = Range(matchRange!)!</span><br><span class="line">    </span><br><span class="line">// 生成String.Index 类型范围 </span><br><span class="line">let startIndex = html.index(html.startIndex, offsetBy: range.lowerBound)</span><br><span class="line">let endIndex = html.index(html.startIndex, offsetBy: range.upperBound)</span><br><span class="line">let range3 = Range(uncheckedBounds: (lower: startIndex, upper: endIndex))</span><br><span class="line"></span><br><span class="line">// 截取字符串</span><br><span class="line">let result1 = String(html[range3])</span><br><span class="line">print(result1)</span><br></pre></td></tr></table></figure>
+<p>全部匹配后返回结果时一个集合</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let matchResult2 = regular.matches(in: html, options: .reportProgress, range: NSMakeRange(0, html.count))</span><br><span class="line">            matchResult2.forEach &#123; (result) in</span><br><span class="line">let range = Range(result.range)!</span><br><span class="line">    </span><br><span class="line">let startIndex = html.index(html.startIndex, offsetBy: range.lowerBound)</span><br><span class="line">let endIndex = html.index(html.startIndex, offsetBy: range.upperBound)</span><br><span class="line">    </span><br><span class="line">let subStr2 = html[Range(uncheckedBounds: (startIndex, endIndex))]</span><br><span class="line">print(String(subStr2))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>将匹配到的内容提还</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let str3 = regular.stringByReplacingMatches(in: html, options: .reportProgress, range: NSMakeRange(0, html.count), withTemplate: &quot;====&quot;)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/iOS通过URL获取HTML中标题/" data-id="cjx3gd6ob002kobfylhh7amk3" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-iOS面试OC语言特性" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/iOS面试OC语言特性/" class="article-date">
@@ -192,7 +262,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/iOS面试OC语言特性/" data-id="cjx3du7cu002nucfys8zl65um" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/iOS面试OC语言特性/" data-id="cjx3gd6od002nobfy2r38d3u3" class="article-share-link">Share</a>
       
       
     </footer>
@@ -234,7 +304,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/iOS 动态设置TableHeaderView高度/" data-id="cjx3du7co002ducfypaf9q2lu" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/iOS 动态设置TableHeaderView高度/" data-id="cjx3gd6o8002gobfyfs9k9h41" class="article-share-link">Share</a>
       
       
     </footer>
@@ -310,7 +380,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/iOS开发_于鸿鹏/" data-id="cjx3du7cp002fucfy6ofl3mru" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/iOS开发_于鸿鹏/" data-id="cjx3gd6o9002hobfy8sw7tl3y" class="article-share-link">Share</a>
       
       
     </footer>
@@ -340,7 +410,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Xcode中使用Debug Memory Graph检查内存泄漏/" data-id="cjx3du7cl0027ucfywihpcawg" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Xcode中使用Debug Memory Graph检查内存泄漏/" data-id="cjx3gd6o50028obfy83h7qgis" class="article-share-link">Share</a>
       
       
     </footer>
@@ -368,7 +438,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/flutter安装/" data-id="cjx3du7cn002aucfyyy2a603r" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/flutter安装/" data-id="cjx3gd6o8002dobfyevdlzird" class="article-share-link">Share</a>
       
       
     </footer>
@@ -420,7 +490,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift项目中集成RN/" data-id="cjx3du7ci0022ucfyf71c3z9v" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift项目中集成RN/" data-id="cjx3gd6o20021obfym7r3fu92" class="article-share-link">Share</a>
       
       
     </footer>
@@ -472,7 +542,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift泛型/" data-id="cjx3du7cc001vucfykrx1jw6g" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift泛型/" data-id="cjx3gd6o1001zobfycp3xbim9" class="article-share-link">Share</a>
       
       
     </footer>
@@ -505,7 +575,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift错误处理/" data-id="cjx3du7cg001zucfymds6fs5i" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift错误处理/" data-id="cjx3gd6o30023obfyc00di07o" class="article-share-link">Share</a>
       
       
     </footer>
@@ -667,63 +737,7 @@ func shoutWins() {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift协议别名/" data-id="cjx3du7cb001uucfyqhaaurin" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Swift协议扩展" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/Swift协议扩展/" class="article-date">
-  <time datetime="2019-06-18T15:30:19.005Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Swift协议扩展</p>
-<h3 id="定义结构体"><a href="#定义结构体" class="headerlink" title="定义结构体"></a>定义结构体</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">struct Point &#123;</span><br><span class="line">    var x = 0.0</span><br><span class="line">    var y = 0.0</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Size &#123;</span><br><span class="line">    var height = 0.0</span><br><span class="line">    var width = 0.0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Rectangle &#123;</span><br><span class="line">    var origin = Point()</span><br><span class="line">    var size = Size()</span><br><span class="line">    </span><br><span class="line">    init(origin: Point, size: Size) &#123;</span><br><span class="line">        self.origin = origin</span><br><span class="line">        self.size = size</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><ul>
-<li>扩展方法</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">extension Rectangle &#123;</span><br><span class="line">    mutating func translate(x: Double, y: Double) &#123;</span><br><span class="line">        self.origin.x += x</span><br><span class="line">        self.origin.y += y</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>只能扩展计算型的属性，不能扩展存储型属性, 存储型属性需要在定义类或者结构体时声明</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">extension Rectangle &#123;</span><br><span class="line">    var center: Point &#123;</span><br><span class="line">        get &#123;</span><br><span class="line">            let center_x = origin.x + size.width / 2.0</span><br><span class="line">            let center_y = origin.y + size.height / 2.0</span><br><span class="line">            return Point(x: center_x, y: center_y)</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        set &#123;</span><br><span class="line">            origin.x = newValue.x - size.width / 2.0</span><br><span class="line">            origin.y = newValue.y - size.height / 2.0</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>扩展构造方法</p>
-<ul>
-<li>类中不能扩展指定构造方法，只能在结构体中扩展</li>
-<li>结构体中不能扩展便利构造方法m，只能在类中扩展</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">extension Rectangle &#123;</span><br><span class="line">    init(center: Point, size: Size) &#123;</span><br><span class="line">        let origin_x = center.x - size.width / 2.0</span><br><span class="line">        let origin_y = center.y - size.height / 2.0</span><br><span class="line">        self.origin = Point(x: origin_x, y: origin_y)</span><br><span class="line">        self.size = size</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 结构体中不能扩展便利构造函数 Delegating initializers in structs are not marked with &apos;convenience&apos;</span><br><span class="line">//    convenience init(center: Point, size: Size) &#123;</span><br><span class="line">//        let origin_x = center.x - size.width / 2.0</span><br><span class="line">//        let origin_y = center.y - size.height / 2.0</span><br><span class="line">//        self.origin = Point(x: origin_x, y: origin_y)</span><br><span class="line">//        self.size = size</span><br><span class="line">//    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>扩展嵌套类型</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">extension Rectangle &#123;</span><br><span class="line">    enum Vertex: Int &#123;</span><br><span class="line">        case left_top</span><br><span class="line">        case left_bottom</span><br><span class="line">        case right_bottom</span><br><span class="line">        case right_top</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 获取某一个顶点坐标</span><br><span class="line">    func point(of vertex: Vertex) -&gt; Point &#123;</span><br><span class="line">        switch vertex &#123;</span><br><span class="line">        case .left_top:</span><br><span class="line">            return origin</span><br><span class="line">        case .left_bottom:</span><br><span class="line">            return Point(x: origin.x, y: origin.y + size.height)</span><br><span class="line">        case .right_bottom:</span><br><span class="line">            return Point(x: origin.x + size.width, y: origin.y + size.height)</span><br><span class="line">        case .right_top:</span><br><span class="line">            return Point(x: origin.x + size.width, y: origin.y)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>扩展下标,根据传入的索引获取对应顶点坐标</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">extension Rectangle &#123;</span><br><span class="line">    subscript(index: Int) -&gt; Point? &#123;</span><br><span class="line">        assert(0 &lt;= index &amp;&amp; index &lt; 4, &quot;传入值非法&quot;)</span><br><span class="line">        return point(of: Vertex(rawValue: index)!)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="扩展系统方法"><a href="#扩展系统方法" class="headerlink" title="扩展系统方法"></a>扩展系统方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">extension Int &#123;</span><br><span class="line">    /// 平方</span><br><span class="line">    var square: Int &#123;</span><br><span class="line">        return self * self</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 立方</span><br><span class="line">    var cube: Int &#123;</span><br><span class="line">        return self * self * self</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 判断数组是否在某一个范围内</span><br><span class="line">    func inRange(clousedLeft left: Int, openRight right: Int) -&gt; Bool &#123;</span><br><span class="line">        return self &gt;= left &amp;&amp; self &gt; right</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 重复执行操作</span><br><span class="line">    func repeatitions(task: () -&gt; ()) &#123;</span><br><span class="line">        for _ in 0..&lt;self &#123;</span><br><span class="line">            task()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 变长函数</span><br><span class="line">    func stride(from: Int, to: Int, by: Int, task: () -&gt; ()) &#123;</span><br><span class="line">        // 系统变长函数</span><br><span class="line">        for i in Swift.stride(from: 0, to: 21, by: 3) &#123;</span><br><span class="line">            print(i)</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        for _ in Swift.stride(from: from, to: to, by: by) &#123;</span><br><span class="line">            task()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>扩展后使用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">print(2.square)</span><br><span class="line">print(3.cube)</span><br><span class="line">print(4.inRange(clousedLeft: 0, openRight: 4))</span><br><span class="line">4.repeatitions &#123;</span><br><span class="line">    print(&quot;extension&quot;)</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">// 使用变长函数</span><br><span class="line">4.stride(from: 0, to: 8, by: 4) &#123;</span><br><span class="line">    print(&quot;stride&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift协议扩展/" data-id="cjx3du7cg001yucfygw6crysp" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift协议别名/" data-id="cjx3gd6nz001vobfy2053cvs4" class="article-share-link">Share</a>
       
       
     </footer>
@@ -783,6 +797,10 @@ func shoutWins() {
       <ul>
         
           <li>
+            <a href="/2019/06/19/Flutter中布局/">(no title)</a>
+          </li>
+        
+          <li>
             <a href="/2019/06/18/Flutter中GridView组件/">GridView组件使用.md</a>
           </li>
         
@@ -796,10 +814,6 @@ func shoutWins() {
         
           <li>
             <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
           </li>
         
       </ul>

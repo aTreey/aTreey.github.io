@@ -62,6 +62,182 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-iOS即时通讯实现二" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/12/iOS即时通讯实现二/" class="article-date">
+  <time datetime="2018-01-12T13:54:26.000Z" itemprop="datePublished">2018-01-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/12/iOS即时通讯实现二/">iOS即时通讯实现二</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="实现IM通信所用协议"><a href="#实现IM通信所用协议" class="headerlink" title="实现IM通信所用协议"></a>实现IM通信所用协议</h2><p>几个协议理解</p>
+<p>xmpp 是基于xml协议主要是易于扩展，早起用于PC时代的产品使用，流量大，耗电大交互复杂其实并不适合移动互联网时代的IM产品</p>
+<p>MQTT 协议 适配多平台，需自己扩展好友，群组等功能</p>
+<p>protobut 协议</p>
+<h2 id="封装socket，自己实现"><a href="#封装socket，自己实现" class="headerlink" title="封装socket，自己实现"></a>封装socket，自己实现</h2><p>所要考虑的问题</p>
+<ul>
+<li><p>传输协议选择 </p>
+<ul>
+<li>TCP ？ 一般公司都选用（技术不是很成熟）</li>
+<li>UDP ？QQ 腾讯增加自己的私有协议，保证数据传递的可靠性，解决了丢包，乱序的问题</li>
+</ul>
+</li>
+<li><p>聊天协议选择及代表框架</p>
+<ul>
+<li>Socket ？ CocoaAsyncSocket </li>
+<li>WebSockt ？是传输通讯协议，基于socket封装的一个协议 SocketRocket</li>
+<li>MQTT ？MQTTKit 聊天协议为上层协议</li>
+<li>protobut 协议 ？</li>
+<li>XMPP ？XMPPFramework  聊天协议为上层协议</li>
+<li>自定义</li>
+</ul>
+</li>
+<li><p>传输数据格式</p>
+<ul>
+<li>Json？</li>
+<li>XML？</li>
+<li>ProtocolBuffer？</li>
+</ul>
+</li>
+<li><p>细节相关</p>
+<ul>
+<li>TCP 长连接如何保持，</li>
+<li>心跳机制</li>
+<li>重连机制</li>
+<li>数据安全机制</li>
+</ul>
+</li>
+</ul>
+<h3 id="CocoaAsyncSocket"><a href="#CocoaAsyncSocket" class="headerlink" title="CocoaAsyncSocket"></a>CocoaAsyncSocket</h3><ul>
+<li>CocoaAsyncSocket 的 delegate 用来设置代理处理各个回调</li>
+<li>delegateQueue </li>
+<li>socketQueue 串行队列，贯穿全类并没有任何加锁，确保了socket 操作中每一步都是线程安全的</li>
+<li><p>创建了两个读写队列（本质是数组）</p>
+<ul>
+<li><code>NSMutableArray *readQueue;</code> </li>
+<li><code>NSMutableArray *writeQueue;</code></li>
+</ul>
+</li>
+<li><p>全局数据缓冲: 当前socket未获取完的数据大小</p>
+<ul>
+<li><code>GCDAsyncSocketPreBuffer *preBuffer;</code></li>
+</ul>
+</li>
+<li><p>交替延时变量: 用于进行另一服务端地址请求的延时 </p>
+<ul>
+<li><code>alternateAddressDelay</code></li>
+</ul>
+</li>
+<li><p>connect</p>
+</li>
+<li><p>disconnect</p>
+</li>
+</ul>
+<h2 id="数据粘包-断包"><a href="#数据粘包-断包" class="headerlink" title="数据粘包,断包"></a>数据粘包,断包</h2><ul>
+<li><p>粘包: 如果客户端同一时间发送几条数据，而服务器只收到一大条数据</p>
+<ul>
+<li>原因：</li>
+<li><p>由于传输的是数据流，经过TCP传输后，TCP使用了优化算法将多次间隔较小且数据量小的数据合并成一个大的数据块，因此三条数据合并成了一条</p>
+<p>  <strong>TCP,UDP都可能造成粘包的原因</strong></p>
+</li>
+<li><p>发送端需要等缓冲区满了才发送出去，做成粘包</p>
+</li>
+<li>接收方不及时接收缓冲区的包，造成多个包接收</li>
+</ul>
+</li>
+<li><p>断包: 因为一次发送很大的数据包，缓冲区有限，会分段发送或读取数据</p>
+</li>
+</ul>
+<h2 id="CocoaAsyncSocket的封包，拆包处理"><a href="#CocoaAsyncSocket的封包，拆包处理" class="headerlink" title="CocoaAsyncSocket的封包，拆包处理"></a>CocoaAsyncSocket的封包，拆包处理</h2><ul>
+<li><p>读取数据方法：</p>
+<pre><code>// 有数据时调用，读取当前消息队列中的未读消息
+- (void)readDataWithTimeout:(NSTimeInterval)timeout tag:(long)tag
+</code></pre></li>
+</ul>
+<pre><code>**每次读取数据，每次都必须手动调用上述 readData 方法超时设置为不超时才能触发消息回调的代理**
+
+**因此在第一连接时调用，再在接到消息时调用，上述方法就可以达到每次收到消息都会触发读取消息的代理**
+
+以上做法存在的问题就是没有考虑数据的拆包会有粘包情况，这时候需要用下面两个`read`方法，1. 读取指定长度、2.读取指定边界
+
+    // 读取特定长度数据时调用
+    - (void)readDataToLength:(NSUInteger)length withTimeout:(NSTimeInterval)timeout tag:(long)tag
+
+    // 读到特定的 data 边界时调用
+    - (void)readDataToData:(NSData *)data withTimeout:(NSTimeInterval)timeout tag:(long)tag
+
+
+**解决办法及具体思路**
+
+- 封包：给每个数据包增加一个长度或者加一个开始结束标记，表明数据的长度和类型（根据自己的项目：文本、图片、语音、红包、视频、话题、提问等等）
+    - 可以在数据包之后加一个结束标识符，解决了传输过程中丢包，丢失头部信息的错误包读取，读到这样的就丢弃直接读下一个数据包
+
+- 拆包：获取每个包的标记，根据标记的数据长度获取数据，最后根据类型处理数据,最后读取数据包头部的边界
+</code></pre><ul>
+<li><p>利用缓冲区对数据进行读取</p>
+<ul>
+<li>创建读取数据包</li>
+<li>添加到读取的队列中</li>
+<li>从队列中取出读取任务包 </li>
+<li><p>使用偏移量 <code>maxLength</code> 读取数据 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">		- (void)readDataWithTimeout:(NSTimeInterval)timeout</span><br><span class="line">                     buffer:(NSMutableData *)buffer</span><br><span class="line">               bufferOffset:(NSUInteger)offset</span><br><span class="line">                  maxLength:(NSUInteger)length</span><br><span class="line">                        tag:(long)tag</span><br><span class="line">&#123;</span><br><span class="line">	if (offset &gt; [buffer length]) &#123;</span><br><span class="line">		LogWarn(@&quot;Cannot read: offset &gt; [buffer length]&quot;);</span><br><span class="line">		return;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	// 1. 创建读取数据包</span><br><span class="line">	GCDAsyncReadPacket *packet = [[GCDAsyncReadPacket alloc] initWithData:buffer</span><br><span class="line">	                                                          startOffset:offset</span><br><span class="line">	                                                            maxLength:length</span><br><span class="line">	                                                              timeout:timeout</span><br><span class="line">	                                                           readLength:0</span><br><span class="line">	                                                           terminator:nil</span><br><span class="line">	                                                                  tag:tag];</span><br><span class="line">	</span><br><span class="line">	dispatch_async(socketQueue, ^&#123; @autoreleasepool &#123;</span><br><span class="line">		</span><br><span class="line">		LogTrace();</span><br><span class="line">		</span><br><span class="line">		if ((flags &amp; kSocketStarted) &amp;&amp; !(flags &amp; kForbidReadsWrites))</span><br><span class="line">		&#123;</span><br><span class="line">			// 2. 向读的队列添加任务包</span><br><span class="line">			[readQueue addObject:packet];</span><br><span class="line">			// 3. 从队列中取出读取任务包 </span><br><span class="line">			[self maybeDequeueRead];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;&#125;);</span><br><span class="line">	</span><br><span class="line">	// Do not rely on the block being run in order to release the packet,</span><br><span class="line">	// as the queue might get released without the block completing.</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<p>doReadData 方法时读取数据的核心方法</p>
+<ul>
+<li>如果读取对列中没有数据，就去判是否是上次已经读取了数据，但是因为没有目前还没有读取到数据的标记，这是正好设置了 read 方法中的超时时间，所以要断开socket 连接</li>
+</ul>
+<p><img src="https://www.jianshu.com/p/fdd3d429bdb3" alt>                </p>
+<ul>
+<li>接收到数据后在 socket系统进程的数据缓冲区中<ul>
+<li>（基于TLS的分为两种）他们在各自管道中流动，完成数据解密后又流向了全局数据缓冲区<ul>
+<li>CFStreem </li>
+<li>SSLPrebuffer</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>处理数据逻辑： 如果当前读取包长度给明了，则直接流向currentRead，如果数据长度不清楚，那么则去判断这一次读取的长度，和currentRead可用空间长度去对比，如果长度比currentRead可用空间小，则流向currentRead，否则先用prebuffer来缓冲。</p>
+<h3 id="心跳机制"><a href="#心跳机制" class="headerlink" title="心跳机制"></a>心跳机制</h3><ul>
+<li>TCP 自带的keep-alive 使用空闲时间来发并且默认超时时间太长是2 小时，</li>
+<li>如果应用使用了socks ，socks proxy会让tcp keep-alive失效，因为socks 协议只管转发TCP层具体的数据包，并不会转发TCP协议内的实现具体细节数据包</li>
+<li><p>TCP 的长连接理论上是一直保持连接的，可以设置 TCP keep-alive的时间 但是实际情况下中，可能出现故障或者是因为防火墙的原因会自动把一定时间段内没有数据交互的连接给断开，心跳机制就可以维持长连接，保持活跃状态</p>
+</li>
+<li><p>iOS 中使用 NSTimer  <code>scheduledTimerWithTimeInterval</code> 需要在调用之前的关键位置设置 fireDate 为未来的某个时间, 然后再需要的时候开启</p>
+</li>
+<li>或者直接使用 <code>timerWithTimeInterval</code> 创建，然后添加到<code>runloop</code>中</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2018/01/12/iOS即时通讯实现二/" data-id="cjx3gd6o7002cobfyhtz3tymr" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-网络七层协议" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/01/10/网络七层协议/" class="article-date">
@@ -126,7 +302,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/10/网络七层协议/" data-id="cjx3du7df003fucfyi26kj8h4" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/10/网络七层协议/" data-id="cjx3gd6p0003hobfyqvdsoue9" class="article-share-link">Share</a>
       
       
     </footer>
@@ -385,7 +561,7 @@ print(cbc_decryptedStr3)
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/08/Swift加密相关/" data-id="cjx3du7ca001sucfyfmjsamla" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/08/Swift加密相关/" data-id="cjx3gd6ny001tobfylye9wrag" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li></ul>
@@ -449,7 +625,7 @@ print(cbc_decryptedStr3)
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/12/14/Mac-安装MySQL/" data-id="cjx3du7bc000gucfyv7e4kl12" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/12/14/Mac-安装MySQL/" data-id="cjx3gd6nb000kobfypnk9z97x" class="article-share-link">Share</a>
       
       
     </footer>
@@ -501,7 +677,7 @@ EmotionKeyboard.podspec passed validation.
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/12/02/本地已有项目添加Pod/" data-id="cjx3du7d1002wucfyyw0ye3fu" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/12/02/本地已有项目添加Pod/" data-id="cjx3gd6ok002yobfyj30hy18j" class="article-share-link">Share</a>
       
       
     </footer>
@@ -582,7 +758,7 @@ EmotionKeyboard.podspec passed validation.
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/11/29/CocoaPods制作私有pod/" data-id="cjx3du7ay0004ucfy43kgte0x" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/11/29/CocoaPods制作私有pod/" data-id="cjx3gd6mr0001obfy24xh2i3z" class="article-share-link">Share</a>
       
       
     </footer>
@@ -636,7 +812,7 @@ EmotionKeyboard.podspec passed validation.
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/04/10/Alamofire源码学习/" data-id="cjx3du7ao0000ucfyqjv6dnwr" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/04/10/Alamofire源码学习/" data-id="cjx3gd6ms0002obfy59r90ye3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Alamofire/">Alamofire</a></li></ul>
@@ -684,7 +860,7 @@ EmotionKeyboard.podspec passed validation.
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/03/25/知识点总结/" data-id="cjx3du7d2002zucfytx73n7tu" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/03/25/知识点总结/" data-id="cjx3gd6ol0031obfyx79eh1ce" class="article-share-link">Share</a>
       
       
     </footer>
@@ -741,7 +917,7 @@ EmotionKeyboard.podspec passed validation.
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/03/08/Swift3.0学习(三)/" data-id="cjx3du7c4001gucfy5awig8jf" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/03/08/Swift3.0学习(三)/" data-id="cjx3gd6nt001gobfyyox7belm" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
@@ -904,117 +1080,10 @@ let closure = {() -&gt; () in
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/03/05/Swift3.0学习(二)/" data-id="cjx3du7c2001fucfye3dvx0w1" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/03/05/Swift3.0学习(二)/" data-id="cjx3gd6nu001iobfy5qdem6l8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Swift3.0学习(一)" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/03/01/Swift3.0学习(一)/" class="article-date">
-  <time datetime="2017-03-01T14:39:10.000Z" itemprop="datePublished">2017-03-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/01/Swift3.0学习(一)/">Swift 3.0 学习</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="和OC区别"><a href="#和OC区别" class="headerlink" title="和OC区别"></a>和OC区别</h2><ul>
-<li>没有了.h 和 .m 文件，没有main.m 文件</li>
-<li>程序入口发生变化 在appdelegate中的 @UIApplicationMain</li>
-<li>每行代码可以不写 ‘;’</li>
-<li>self可以不写，建议不写self，因为闭包中必须要写</li>
-<li>真假表示只有 true／ false，没有非0即真的概念</li>
-<li>类型自动推到</li>
-</ul>
-<h2 id="类型自动推到"><a href="#类型自动推到" class="headerlink" title="类型自动推到"></a>类型自动推到</h2><h2 id="提前指定类型"><a href="#提前指定类型" class="headerlink" title="提前指定类型"></a>提前指定类型</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let float :Double = 9.6 </span><br><span class="line">print(float)</span><br></pre></td></tr></table></figure>
-<h2 id="常量和变量"><a href="#常量和变量" class="headerlink" title="常量和变量"></a>常量和变量</h2><ul>
-<li>let 声明常量，有且只有一次赋值机会</li>
-<li>var 声明变量</li>
-<li>尽量选择使用let如需修改值再使用var 系统会报警告</li>
-</ul>
-<h2 id="可选项"><a href="#可选项" class="headerlink" title="可选项"></a>可选项</h2><ul>
-<li>Optional: 表示一个常量或者是变量可能有值可能为nil，在打印的时候会带有Optional字样</li>
-<li>? 表示是一个可选项</li>
-<li>可选项不能参与运算</li>
-<li><p>! 表示可选项中一定要有值，可以强制解包,解包时如果没有值会boom</p>
-</li>
-<li><p>?? 合并空选项 快速判断可选项是否为nil, 如果为nil取后面的默认值，在基本数据类型和字符串使用较多</p>
-</li>
-</ul>
-<h2 id="条件分支"><a href="#条件分支" class="headerlink" title="条件分支"></a>条件分支</h2><ul>
-<li>if let</li>
-</ul>
-<p>快速赋值，判断赋值对象是否为nil，如果不为nil，就赋值进入分支<br>生成request是url是一个可选项，需要强制解包或者合并空选项</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let urlString = &quot;http://www.baidu.com&quot;</span><br><span class="line">let url = NSURL(string: urlString)</span><br><span class="line">let request = NSURLRequest(URL: url!)</span><br><span class="line">print(request)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>以上代码使用if let实现</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if let u = NSURL(string: urlString) &#123;</span><br><span class="line">    let request = NSURLRequest(URL: u)</span><br><span class="line">    print(request)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>where条件语句配合多重判断</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if url != nil  &#123;</span><br><span class="line">    if url?.host == &quot;www.baidu.com&quot; &#123;</span><br><span class="line">        let request = NSURLRequest(URL: url!)</span><br><span class="line">        print(request)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>使用if let</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if let u = url where u.host == &quot;www.baidu.com&quot; &#123;</span><br><span class="line">    let request = NSURLRequest(URL: u)</span><br><span class="line">    print(request)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>多重判断</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if let u = url, s = string &#123;</span><br><span class="line">    let request = NSURLRequest(URL: u)</span><br><span class="line">    print(request)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>guard let 和 if let 相反如果为nil，可以直接返回</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let urlString  = &quot;http://www.baidi.com&quot;</span><br><span class="line">let url = NSURL(string: urlString)</span><br><span class="line">guard let u = url else &#123; return &#125;</span><br><span class="line">    </span><br><span class="line">//程序走到这个地方就表示 u 一定有值</span><br><span class="line">let request = NSURLRequest(URL: u)</span><br><span class="line">print(request)</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>swith语句</p>
-<ul>
-<li>swift语句中可以case任意类型，</li>
-<li>在OC中只能case整数</li>
-<li>不需要写break,会自动跳出，</li>
-<li>如果需要实现case穿透，需要加入fallthrough语句</li>
-<li>case语句中临时变量不需要写‘{ }’</li>
-<li>可同时case多个值    </li>
-<li>每句case语句中至少要有一行可执行的代码</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">let string = &quot;string1&quot;</span><br><span class="line">       switch string &#123;</span><br><span class="line">       case &quot;string&quot;, &quot;string1&quot;:</span><br><span class="line">           let str = &quot;stringOne&quot;</span><br><span class="line">           print(str)</span><br><span class="line">           </span><br><span class="line">       case &quot;string2&quot;:</span><br><span class="line">           let str = &quot;stringTWO&quot;</span><br><span class="line">           print(str)</span><br><span class="line">           </span><br><span class="line">       case &quot;string3&quot;:</span><br><span class="line">           print(string)</span><br><span class="line">           </span><br><span class="line">       case &quot;string4&quot;:</span><br><span class="line">           print(string)</span><br><span class="line">       default:</span><br><span class="line">           print(&quot;empty&quot;)</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>switch 中同样能够赋值和使用 where 子句</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">let point = CGPoint(x: 10, y: 10)</span><br><span class="line">switch point &#123;</span><br><span class="line">case let p where p.x == 0 &amp;&amp; p.y == 0:</span><br><span class="line">    print(&quot;中心点&quot;)</span><br><span class="line">case let p where p.x == 0:</span><br><span class="line">    print(&quot;Y轴&quot;)</span><br><span class="line">case let p where p.y == 0:</span><br><span class="line">    print(&quot;X轴&quot;)</span><br><span class="line">case let p where abs(p.x) == abs(p.y):</span><br><span class="line">    print(&quot;对角线&quot;)</span><br><span class="line">default:</span><br><span class="line">    print(&quot;其他&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>循环语句</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">for i in 0 ..&lt; 10 &#123; // 不包含10  循环范围中两边的值格式必须一直（空格问题）</span><br><span class="line">       print(i)</span><br><span class="line">   &#125;</span><br><span class="line">       </span><br><span class="line">for _ in 0...5 &#123;// 包含5  _ 表示忽略，不关心，只占位</span><br><span class="line">    print(&quot;循环语句&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/03/01/Swift3.0学习(一)/" data-id="cjx3du7c1001cucfy9hjl2sie" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
 
     </footer>
   </div>
@@ -1073,6 +1142,10 @@ let closure = {() -&gt; () in
       <ul>
         
           <li>
+            <a href="/2019/06/19/Flutter中布局/">(no title)</a>
+          </li>
+        
+          <li>
             <a href="/2019/06/18/Flutter中GridView组件/">GridView组件使用.md</a>
           </li>
         
@@ -1086,10 +1159,6 @@ let closure = {() -&gt; () in
         
           <li>
             <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
           </li>
         
       </ul>

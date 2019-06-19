@@ -62,6 +62,34 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-第九章Runloop面试" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/第九章Runloop面试/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.017Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>RunLop</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79ly1g21ckps89dj31vy03cq56.jpg" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/第九章Runloop面试/" data-id="cjx3gd6oo0036obfyrowgk6m8" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-第五章Runtime相关面试" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/第五章Runtime相关面试/" class="article-date">
@@ -161,7 +189,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第五章Runtime相关面试/" data-id="cjx3du7d60035ucfym8io8a8h" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第五章Runtime相关面试/" data-id="cjx3gd6oo0037obfyzpm869ig" class="article-share-link">Share</a>
       
       
     </footer>
@@ -257,7 +285,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第七章Blocks面试/" data-id="cjx3du7d30030ucfyyhffem30" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第七章Blocks面试/" data-id="cjx3gd6om0032obfyo0oid21d" class="article-share-link">Share</a>
       
       
     </footer>
@@ -353,7 +381,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第三章UI视图响应链离屏渲染面试/" data-id="cjx3du7d40033ucfyiv5czgfk" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第三章UI视图响应链离屏渲染面试/" data-id="cjx3gd6on0035obfy10jos41x" class="article-share-link">Share</a>
       
       
     </footer>
@@ -411,7 +439,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/一自动引用计数/" data-id="cjx3du7cy002tucfyg1j6jj4g" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/一自动引用计数/" data-id="cjx3gd6oi002vobfy1bwduf6q" class="article-share-link">Share</a>
       
       
     </footer>
@@ -448,118 +476,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/is 关键字类型检查/" data-id="cjx3du7ct002lucfyben1ofq1" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-swift中强引用循环和weak关键字" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/swift中强引用循环和weak关键字/" class="article-date">
-  <time datetime="2019-06-18T15:30:19.014Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Swift中内存管理</p>
-<h3 id="强引用循环和-weak-关键字"><a href="#强引用循环和-weak-关键字" class="headerlink" title="强引用循环和 weak 关键字"></a>强引用循环和 weak 关键字</h3><p>房东</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Landlord &#123;</span><br><span class="line">    var name: String</span><br><span class="line">    var house: House?</span><br><span class="line">    </span><br><span class="line">    init(name: String) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    deinit &#123;</span><br><span class="line">        print(&quot;Landlord内存释放&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>房子</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class House &#123;</span><br><span class="line">    var name: String</span><br><span class="line">    var landlord: Landlord?</span><br><span class="line">    </span><br><span class="line">    init(person: String) &#123;</span><br><span class="line">        self.name = person</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    deinit &#123;</span><br><span class="line">        print(&quot;House内存释放&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>循环引用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">func strongRetain() &#123;</span><br><span class="line">    var landlord: Landlord? = Landlord(name: &quot;老李&quot;)</span><br><span class="line">    var house: House? = House(person: &quot;望京府邸&quot;)</span><br><span class="line">    // 房东有个房子</span><br><span class="line">    landlord?.house = house</span><br><span class="line">    // 房子有个主人</span><br><span class="line">    house?.landlord = landlord</span><br><span class="line">    </span><br><span class="line">    landlord = nil</span><br><span class="line">    house = nil</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>虽然 landlord = nil 和 house = nil，但是 Landlord 和 House 内存空间并没有释放 （并未执行 deinit 函数）</p>
-</li>
-<li><p>原因：因为两个内存空间相互引用，引用计数不为0，形成了强循环引用</p>
-</li>
-<li><p>解决办法：使用weak 关键字来修饰两者中其中一个变量</p>
-<ul>
-<li>使用weak修饰的变量必须是可选类型，可以赋值为nil</li>
-<li>使用weak修饰必须是var 类型变量</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class House &#123;</span><br><span class="line">    var name: String</span><br><span class="line">    weak var landlord: Landlord?</span><br><span class="line">    </span><br><span class="line">    init(person: String) &#123;</span><br><span class="line">        self.name = person</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    deinit &#123;</span><br><span class="line">        print(&quot;House内存释放&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="unowned-关键字的使用"><a href="#unowned-关键字的使用" class="headerlink" title="unowned 关键字的使用"></a>unowned 关键字的使用</h3><h4 id="相互循环引用的两个变量有一个是可选的"><a href="#相互循环引用的两个变量有一个是可选的" class="headerlink" title="相互循环引用的两个变量有一个是可选的"></a>相互循环引用的两个变量有一个是可选的</h4><p>有个身份证的类，每个身份证肯定对应一个人</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class ID &#123;</span><br><span class="line">    var number: String</span><br><span class="line">    let person: Landlord</span><br><span class="line">    </span><br><span class="line">    init(person: Landlord, number: String) &#123;</span><br><span class="line">        self.person = person</span><br><span class="line">        self.number = number</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    deinit &#123;</span><br><span class="line">        print(&quot;ID内存释放&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">房东</span><br></pre></td></tr></table></figure>
-<p>class Landlord {<br>    var name: String<br>    var house: House?<br>    /// 身份证可以为nil，<br>    var id: ID?</p>
-<pre><code>init(name: String) {
-    self.name = name
-}
-
-deinit {
-    print(&quot;Landlord内存释放&quot;)
-}
-</code></pre><p>}</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">循环引用</span><br></pre></td></tr></table></figure>
-<p>func unownedTest() {<br>    var person: Landlord? = Landlord(name: “老王”)<br>    var id: ID? = ID(person: person!, number: “10010”)</p>
-<pre><code>person?.id = id
-person = nil
-id = nil
-</code></pre><p>}</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">-  person 和 id 之间有强引用关系</span><br><span class="line">-  每个id必须有一个对应的人并且是固定的只能使用let 修饰，不能为nil, 而id可以为空 </span><br><span class="line">- 	unowned和 weak 作用相同都是弱引用，只是unowned 修改的变量不能是nil （可选型的）</span><br><span class="line">-  unowned只能使用在 class 类型上，不能修饰函数类型，例如闭包存在循环引用时不能使用unowned修饰</span><br><span class="line">-  解决方法：</span><br><span class="line">	-  此时可以通过使用 weak 修饰 id 的方式，因为 id 可以为nil</span><br><span class="line">	-  let 修饰并且不能为nil 这种情况可以使用 unowned 修饰解决</span><br></pre></td></tr></table></figure>
-<pre><code>class ID {
-    var number: String
-    unowned let person: Landlord
-
-    init(person: Landlord, number: String) {
-        self.person = person
-        self.number = number
-    }
-
-    deinit {
-        print(&quot;ID内存释放&quot;)
-    }
-}
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">**unowned有一定的危险性** </span><br><span class="line"></span><br><span class="line">因为unowned 修饰的对象不能赋值为nil，所以执行下面的代码会crash，</span><br></pre></td></tr></table></figure>
-</code></pre><p>func unownedTest() {<br>        var person: Landlord? = Landlord(name: “老王”)<br>        var id: ID? = ID(person: person!, number: “10010”)</p>
-<pre><code>person?.id = id
-
-// 提前释放 person 内存
-person = nil
-
-// 获取身份证对应的人
-print(id?.person) // 此处奔溃，
-let owner = id?.person
-id = nil
-</code></pre><p> }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">正确的写法因该是先将🆔设置为nil，再将 Person 设置为nil，再调用 print(id?.person) 就不会再报错</span><br></pre></td></tr></table></figure></p>
-<p>func unownedTest() {<br>        var person: Landlord? = Landlord(name: “老王”)<br>        var id: ID? = ID(person: person!, number: “10010”)</p>
-<pre><code>person?.id = id
-
-id = nil
-
-// 提前释放 person 内存
-person = nil
-
-// 获取身份证对应的人
-print(id?.person) // 此处奔溃，
-let owner = id?.person
-</code></pre><p> }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 相互循环引用的两个变量都不是可选的</span><br><span class="line"></span><br><span class="line">使用隐式可选类型</span><br><span class="line"></span><br><span class="line">### 闭包中的强引用循环</span><br><span class="line"></span><br><span class="line">- 并不是所有的闭包都会产生循环引用，只有相互引用的两个对象会产生循环引用</span><br><span class="line"></span><br><span class="line">- 使用swift闭包捕获列表，在闭包的声明参数之前使用 [unowned self], 不需要解包</span><br><span class="line"></span><br><span class="line">- 使用 unowned表示这个对象不能为空，可能存在风险，如果对象为空就会crash</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">使用 unowned 对象不能为空，可能存在风险</span><br></pre></td></tr></table></figure></p>
-<p>class Closure {<br>    var closure: ((Int) -&gt; Void)?</p>
-<pre><code>init() {
-    closure = { [unowned self] index in
-        print(self)
-        print(index)
-    }
-}
-</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">使用 weak, 此时需要解包</span><br></pre></td></tr></table></figure></p>
-<p>closure = { [weak self] index in<br>            // 解包<br>            if let <code>self</code> = self {<br>                print(self)<br>                print(index)<br>            }<br>        }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">强制解包</span><br></pre></td></tr></table></figure></p>
-<p>closure = { [weak self] index in<br>            // 强制解包<br>            print(self!)<br>            print(index)<br>        }<br><code>`</code></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/swift中强引用循环和weak关键字/" data-id="cjx3du7cv002pucfyzjtlz7rt" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/is 关键字类型检查/" data-id="cjx3gd6oe002pobfyqgkpfkqk" class="article-share-link">Share</a>
       
       
     </footer>
@@ -615,109 +532,7 @@ let owner = id?.person
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/npm和cnpm/" data-id="cjx3du7cv002qucfyrp92ds9w" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-typescripe 安装及语法" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/typescripe 安装及语法/" class="article-date">
-  <time datetime="2019-06-18T15:30:19.014Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="ReactNative-中使用-TypeScript"><a href="#ReactNative-中使用-TypeScript" class="headerlink" title="ReactNative 中使用 TypeScript"></a>ReactNative 中使用 TypeScript</h2><blockquote>
-<p>从RN0.57版本开始已经可以直接支持typescript，无需任何配置。在保留根入口文件index.js的前提下，其他文件都可以直接使用.ts或.tsx后缀。但这一由babel进行的转码过程并不进行实际的类型检查，因此仍然需要编辑器和插件来共同进行类型检查</p>
-</blockquote>
-<h3 id="TypeScript和JavaScript对比"><a href="#TypeScript和JavaScript对比" class="headerlink" title="TypeScript和JavaScript对比"></a>TypeScript和JavaScript对比</h3><p><a href="https://juejin.im/entry/5a52ed336fb9a01cbd586f9f" target="_blank" rel="noopener">两者深度对比</a></p>
-<p>最大的区别：</p>
-<ul>
-<li>TypeScript是强类型语⾔和静态类型语⾔（需要指定类型）</li>
-<li>JavaScript是弱类型语⾔和动态类型语⾔（不需要指定类型）</li>
-</ul>
-<h3 id="TypeScript"><a href="#TypeScript" class="headerlink" title="TypeScript"></a>TypeScript</h3><p>由微软开发的自由和开源的编程语言，是JavaScript的一个严格超集，并添加了可选的静态类型和基于类的面向对象编程</p>
-<p><a href="https://zh.wikipedia.org/wiki/TypeScript" target="_blank" rel="noopener">TypeScript定义</a></p>
-<h3 id="安装及语法"><a href="#安装及语法" class="headerlink" title="安装及语法"></a>安装及语法</h3><p><a href="https://www.tslang.cn/docs/home.html" target="_blank" rel="noopener">教程</a></p>
-<h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g typescript</span><br></pre></td></tr></table></figure>
-<h5 id="安装-typescript-依赖管理器-typings"><a href="#安装-typescript-依赖管理器-typings" class="headerlink" title="安装 typescript 依赖管理器 typings"></a>安装 typescript 依赖管理器 typings</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g typings</span><br></pre></td></tr></table></figure>
-<h5 id="安装-typings-依赖"><a href="#安装-typings-依赖" class="headerlink" title="安装 typings 依赖"></a>安装 typings 依赖</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">typings install npm~react --save</span><br><span class="line">typings install dt~react-native --globals --save</span><br></pre></td></tr></table></figure>
-<h5 id="使用-yarn-安装"><a href="#使用-yarn-安装" class="headerlink" title="使用 yarn 安装"></a>使用 yarn 安装</h5><p>如果已经安装了 yarn 安装如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yarn add tslib @types/react @types/react-native</span><br><span class="line">yarn add --dev react-native-typescript-transformer typescript</span><br></pre></td></tr></table></figure>
-<h5 id="创建-tsconfig-json-配置文件"><a href="#创建-tsconfig-json-配置文件" class="headerlink" title="创建 tsconfig.json 配置文件"></a>创建 tsconfig.json 配置文件</h5><ul>
-<li><p>cd 到 ReactNative 项目根文件夹下</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tsc --init</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>修改 tsconfig.json 文件 </p>
-<p>  如果一个目录下存在一个tsconfig.json文件，那么它意味着这个目录是TypeScript项目的根目录。 tsconfig.json文件中指定了用来编译这个项目的根文件和编译选项</p>
-<p>  <a href="https://www.tslang.cn/docs/handbook/tsconfig-json.html" target="_blank" rel="noopener">tsconfig.json文件配置详解</a></p>
-<p>  <a href="https://github.com/hstarorg/HstarDoc/blob/master/%E5%89%8D%E7%AB%AF%E7%9B%B8%E5%85%B3/TypeScript%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6tsconfig%E7%AE%80%E6%9E%90.md">TypeScript配置文件tsconfig简析</a></p>
-<p>  <strong>务必设置”jsx”:”react”<br>注意多余的注释可能会不兼容，需要移除</strong></p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;compilerOptions&quot;: &#123;</span><br><span class="line">        &quot;target&quot;: &quot;es6&quot;,</span><br><span class="line">        &quot;allowJs&quot;: true,</span><br><span class="line">        &quot;jsx&quot;: &quot;react&quot;,</span><br><span class="line">        &quot;outDir&quot;: &quot;./dist&quot;,</span><br><span class="line">        &quot;sourceMap&quot;: true,</span><br><span class="line">        &quot;noImplicitAny&quot;: false</span><br><span class="line">    &#125;,</span><br><span class="line">    </span><br><span class="line">    // &quot;files&quot;属性 ：指定一个包含相对或绝对文件路径的列表。 &quot;include&quot;和&quot;exclude&quot;属性指定一个文件glob匹配模式列表</span><br><span class="line">    </span><br><span class="line">    &quot;include&quot;: [</span><br><span class="line">        &quot;typings/**/*.d.ts&quot;,</span><br><span class="line">        &quot;src/**/*.ts&quot;,</span><br><span class="line">        &quot;src/**/*.tsx&quot;</span><br><span class="line">    ],</span><br><span class="line">    &quot;exclude&quot;: [</span><br><span class="line">        &quot;node_modules&quot;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>cd 到项目根目录中新建存放 typescripe 源代码的文件夹</p>
-</li>
-</ul>
-<h5 id="建立-rn-cli-config-js-文件，使用支持typescript的transfomer"><a href="#建立-rn-cli-config-js-文件，使用支持typescript的transfomer" class="headerlink" title="建立 rn-cli.config.js 文件，使用支持typescript的transfomer"></a>建立 rn-cli.config.js 文件，使用支持typescript的transfomer</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">module.exports = &#123;</span><br><span class="line">  getTransformModulePath() &#123;</span><br><span class="line">    return require.resolve(&apos;react-native-typescript-transformer&apos;);</span><br><span class="line">  &#125;,</span><br><span class="line">  getSourceExts() &#123;</span><br><span class="line">    return [&apos;ts&apos;, &apos;tsx&apos;];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="修改-babelrc-文件"><a href="#修改-babelrc-文件" class="headerlink" title="修改 .babelrc 文件"></a>修改 .babelrc 文件</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"> &quot;presets&quot;: [&quot;react-native&quot;],</span><br><span class="line"> &quot;plugins&quot;: [&quot;transform-decorators-legacy&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="修改项目中文件导入"><a href="#修改项目中文件导入" class="headerlink" title="修改项目中文件导入"></a>修改项目中文件导入</h5><ul>
-<li>入口<code>index.js</code>和<code>App.js</code>的文件名请不要修改，项目根目录下新建<code>src</code>文件夹</li>
-<li>在<code>src</code>文件夹下新建 <code>.tsx</code> 后缀的文件</li>
-<li><p><code>.tsx</code> 后缀的文件引用react的写法有所区别</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import * as React from &apos;react&apos;</span><br><span class="line">import &#123; Text, View &#125; from &apos;react-native&apos;;</span><br><span class="line">import &#123; Component &#125; from &apos;react&apos;;</span><br><span class="line"></span><br><span class="line">export default class HelloWorld extends Component&#123;</span><br><span class="line">    render() &#123;</span><br><span class="line">        return (</span><br><span class="line">            &lt;View&gt;</span><br><span class="line">                &lt;Text&gt;Hello!&lt;/Text&gt;</span><br><span class="line">                &lt;Text&gt;Typescript&lt;/Text&gt;</span><br><span class="line">            &lt;/View&gt;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>在<code>App.js</code>中使用</p>
-<ul>
-<li><p><code>App.js</code> 导入方式修改为如下方式</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">	import &apos;./src&apos;;</span><br><span class="line">	``` </span><br><span class="line">	</span><br><span class="line">- 导入 .tsx 类型的组建</span><br></pre></td></tr></table></figure>
-<p>  import HelloWorld from “./src/HelloWorld”;</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 配置jsconfig</span><br><span class="line"></span><br><span class="line">`jsconfig.json`目录中存在文件表明该目录是JavaScript项目的根目录。该jsconfig.json文件指定根文件和JavaScript语言服务提供的功能选项</span><br><span class="line"></span><br><span class="line">[jsconfig详解](https://code.visualstudio.com/docs/languages/jsconfig)</span><br><span class="line"></span><br><span class="line">[jsconfig.json](https://jeasonstudio.gitbooks.io/vscode-cn-doc/content/md/%E8%AF%AD%E8%A8%80/javascript.html?q=)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">##### 新建 `jsconfig.json` 文件</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<p>touch jsconfig.json<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### 编辑 `jsconfig.json` 文件</span><br></pre></td></tr></table></figure></p>
-<p>{<br>    “compilerOptions”: {<br>    “allowJs”: true,<br>    “allowSyntheticDefaultImports”: true,<br>    “emitDecoratorMetadata”: true<br>    },<br>    “exclude”: [<br>    “node_modules”,<br>    “rnApp/Tools” // 项目根目录下新建的存放RN中所用的一些工具类<br>    ]<br>}</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">### package.json 文件配置</span><br></pre></td></tr></table></figure>
-<p>{<br>  “name”: “RNProject”,<br>  “version”: “0.0.1”,<br>  “private”: true,<br>  “scripts”: { // 通过设置这个可以使npm调用一些命令脚本，封装一些功能<br>    “start”: “node node_modules/react-native/local-cli/cli.js start”,<br>    “test”: “jest”<br>  },<br>  “dependencies”: { // 发布后依赖的包<br>    “@types/react”: “^16.4.16”,<br>    “@types/react-native”: “^0.57.4”,<br>    “react”: “16.5.0”,<br>    “react-native”: “0.57.2”,<br>    “react-transform-hmr”: “^1.0.4”,<br>    “tslib”: “^1.9.3”<br>  },</p>
-<p>  “devDependencies”: { // 开发中依赖的其它包<br>    “babel-jest”: “23.6.0”,<br>    “jest”: “23.6.0”,<br>    “metro-react-native-babel-preset”: “0.48.0”,<br>    “react-native-typescript-transformer”: “^1.2.10”,<br>    “react-test-renderer”: “16.5.0”,<br>    “typescript”: “^3.1.2”<br>  },</p>
-<p>  “jest”: { // JavaScript 的单元测试框架<br>    “preset”: “react-native”<br>  }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### `–save` 和 `-–save-dev` 区别</span><br><span class="line"></span><br><span class="line">- --save参数表示将该模块写入dependencies属性，</span><br><span class="line">- --save-dev表示将该模块写入devDependencies属性。</span><br><span class="line"></span><br><span class="line">##### 添加开发依赖库</span><br><span class="line"></span><br><span class="line">- 类型检查</span><br></pre></td></tr></table></figure></p>
-<pre><code>npm install @types/jest --save-dev
-npm install @types/react --save-dev
-npm install @types/react-native --save-dev 
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- 装饰器转化核心插件</span><br></pre></td></tr></table></figure>
-
-npm install babel-plugin-transform-decorators-legacy --save-dev
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">- 测试框架</span><br></pre></td></tr></table></figure>
-
-npm install react-addons-test-utils --save-dev
-npm install react-native-mock --save-dev
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### 删除依赖库</span><br></pre></td></tr></table></figure>
-</code></pre><p>npm uninstall @types/jest –save<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
-<p>npm uninstall @types/jest –save-dev<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### 彻底删除，-d 表示 devDependencies， -O 表示 optionalDependencies 中</span><br></pre></td></tr></table></figure></p>
-<p>npm uninstall -s -D -O @types/jest</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 报错汇总</span><br><span class="line"></span><br><span class="line">##### 错误1 `Cannot find module &apos;react-transform-hmr/lib/index.js&apos;`</span><br><span class="line"></span><br><span class="line"> [解决1](https://stackoverflow.com/questions/50142561/cannot-find-module-react-transform-hmr-lib-index-js?noredirect=1&amp;lq=1)</span><br><span class="line">	</span><br><span class="line"> [解决2](https://github.com/facebook/react-native/issues/21530)</span><br><span class="line"></span><br><span class="line">- 安装 `react-transform-hmr`</span><br></pre></td></tr></table></figure>
-<pre><code>npm install react-transform-hmr --save
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 清除缓存重新启动服务</span><br></pre></td></tr></table></figure>
-
-npm start --reset-cache
-```
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/typescripe 安装及语法/" data-id="cjx3du7cw002rucfyy7m4pstm" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/npm和cnpm/" data-id="cjx3gd6of002robfy6nnl93ig" class="article-share-link">Share</a>
       
       
     </footer>
@@ -931,7 +746,7 @@ EOCConnectionState3Connected,
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/《52个方法第一章》/" data-id="cjx3du7cx002sucfy4v9e41op" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/《52个方法第一章》/" data-id="cjx3gd6of002sobfyrmv0oifs" class="article-share-link">Share</a>
       
       
     </footer>
@@ -941,10 +756,10 @@ EOCConnectionState3Connected,
 
 
   
-    <article id="post-iOS通过URL获取HTML中标题" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-swift中强引用循环和weak关键字" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/18/iOS通过URL获取HTML中标题/" class="article-date">
-  <time datetime="2019-06-18T15:30:19.013Z" itemprop="datePublished">2019-06-18</time>
+    <a href="/2019/06/18/swift中强引用循环和weak关键字/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.014Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -953,55 +768,198 @@ EOCConnectionState3Connected,
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>iOS通过URL获取HTML中标题</p>
-<h3 id="获取标题"><a href="#获取标题" class="headerlink" title="获取标题"></a>获取标题</h3><h5 id="String扩展一个方法"><a href="#String扩展一个方法" class="headerlink" title="String扩展一个方法"></a>String扩展一个方法</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">private let patternTitle = &quot;(?&lt;=title&gt;).*(?=&lt;/title)&quot;</span><br><span class="line">extension String &#123;</span><br><span class="line">    static func parseHTMLTitle(_ urlString: String) -&gt; String? &#123;</span><br><span class="line">        let url = URL(string: urlString)!</span><br><span class="line">        do &#123;</span><br><span class="line">            let html = try String(contentsOf: url, encoding: .utf8)</span><br><span class="line">            let range = html.range(of: patternTitle, options: String.CompareOptions.regularExpression, range: html.startIndex..&lt;html.endIndex, locale: nil)</span><br><span class="line">            guard let tempRange = range else &#123; return &quot;&quot; &#125;</span><br><span class="line">            let titleStr = html[tempRange]</span><br><span class="line">            return String(titleStr)</span><br><span class="line">        &#125; catch &#123;</span><br><span class="line">            return &quot;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="iOS-中简单正则表达式"><a href="#iOS-中简单正则表达式" class="headerlink" title="iOS 中简单正则表达式"></a>iOS 中简单正则表达式</h5><p>iOS 中 正则表达式中的\ 需要使用 \\ 来表示</p>
-<pre><code>// 获取
-let testStr = &quot;我到底是[iOS]开发还是[产品]经理&quot;
-
-// 获取 &quot;[&quot; 和 &quot;]&quot; 之间的所有内容, 左边[ 起一直到 右边 ] 结束的所有内容 
-let pattern1 = &quot;\\[.*\\]&quot; // [iOS]开发还是[产品]
-
-// 获取 &quot;[&quot; 和 &quot;]&quot; 之间的所有内容，包括[]
-let pattern2 = &quot;\\[.*?\\]&quot;    // [iOS]
-
-// 获取第一个 &quot;[&quot; 和 &quot;]&quot; 之间的所有内容 不包括[] 
-let pattern3 = &quot;(?&lt;=\\[).*?(?=\\])&quot; // iOS
-
-// 获取html中 title 标签中内容
-let pattern5 = &quot;(?&lt;=title&gt;).*(?=&lt;/title)&quot; 
-</code></pre><h5 id="获取范围截取子串"><a href="#获取范围截取子串" class="headerlink" title="获取范围截取子串"></a>获取范围截取子串</h5><pre><code>let testRange1 = testStr.range(of: pattern1, options: String.CompareOptions.regularExpression, range: testStr.startIndex..&lt;testStr.endIndex, locale: nil)
-    let result1 = String(testStr[testRange1!])
-
-
-let testRange2 = testStr.range(of: pattern2, options: String.CompareOptions.regularExpression, range: testStr.startIndex..&lt;testStr.endIndex, locale: nil)
-let result2 = String(testStr[testRange2!])
-
-
-let testRange3 = testStr.range(of: pattern3, options: String.CompareOptions.regularExpression, range: testStr.startIndex..&lt;testStr.endIndex, locale: nil)
-let result3 = String(testStr[testRange3!])
-
-print(result1) 
-print(result2) 
-print(result3) 
-</code></pre><h5 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h5><p>通过URL解析html中的标题</p>
+        <p>Swift中内存管理</p>
+<h3 id="强引用循环和-weak-关键字"><a href="#强引用循环和-weak-关键字" class="headerlink" title="强引用循环和 weak 关键字"></a>强引用循环和 weak 关键字</h3><p>房东</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Landlord &#123;</span><br><span class="line">    var name: String</span><br><span class="line">    var house: House?</span><br><span class="line">    </span><br><span class="line">    init(name: String) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    deinit &#123;</span><br><span class="line">        print(&quot;Landlord内存释放&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>房子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class House &#123;</span><br><span class="line">    var name: String</span><br><span class="line">    var landlord: Landlord?</span><br><span class="line">    </span><br><span class="line">    init(person: String) &#123;</span><br><span class="line">        self.name = person</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    deinit &#123;</span><br><span class="line">        print(&quot;House内存释放&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>循环引用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">func strongRetain() &#123;</span><br><span class="line">    var landlord: Landlord? = Landlord(name: &quot;老李&quot;)</span><br><span class="line">    var house: House? = House(person: &quot;望京府邸&quot;)</span><br><span class="line">    // 房东有个房子</span><br><span class="line">    landlord?.house = house</span><br><span class="line">    // 房子有个主人</span><br><span class="line">    house?.landlord = landlord</span><br><span class="line">    </span><br><span class="line">    landlord = nil</span><br><span class="line">    house = nil</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
-<li>获取html字符串</li>
-<li>正则匹配</li>
-<li>生成字符串Range</li>
-<li>截取字符串</li>
+<li><p>虽然 landlord = nil 和 house = nil，但是 Landlord 和 House 内存空间并没有释放 （并未执行 deinit 函数）</p>
+</li>
+<li><p>原因：因为两个内存空间相互引用，引用计数不为0，形成了强循环引用</p>
+</li>
+<li><p>解决办法：使用weak 关键字来修饰两者中其中一个变量</p>
+<ul>
+<li>使用weak修饰的变量必须是可选类型，可以赋值为nil</li>
+<li>使用weak修饰必须是var 类型变量</li>
 </ul>
-<p>匹配一次直接返回结果</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// 生成表达式</span><br><span class="line">let regular = try NSRegularExpression(pattern: pattern5, options: .caseInsensitive) </span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">// 开始匹配  </span><br><span class="line">let matchResult1 = regular.firstMatch(in: html, options: NSRegularExpression.MatchingOptions.reportProgress, range: NSMakeRange(0, html.count))</span><br><span class="line"></span><br><span class="line">// 获取匹配结果范围</span><br><span class="line">let matchRange = matchResult1?.range</span><br><span class="line">let range = Range(matchRange!)!</span><br><span class="line">    </span><br><span class="line">// 生成String.Index 类型范围 </span><br><span class="line">let startIndex = html.index(html.startIndex, offsetBy: range.lowerBound)</span><br><span class="line">let endIndex = html.index(html.startIndex, offsetBy: range.upperBound)</span><br><span class="line">let range3 = Range(uncheckedBounds: (lower: startIndex, upper: endIndex))</span><br><span class="line"></span><br><span class="line">// 截取字符串</span><br><span class="line">let result1 = String(html[range3])</span><br><span class="line">print(result1)</span><br></pre></td></tr></table></figure>
-<p>全部匹配后返回结果时一个集合</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let matchResult2 = regular.matches(in: html, options: .reportProgress, range: NSMakeRange(0, html.count))</span><br><span class="line">            matchResult2.forEach &#123; (result) in</span><br><span class="line">let range = Range(result.range)!</span><br><span class="line">    </span><br><span class="line">let startIndex = html.index(html.startIndex, offsetBy: range.lowerBound)</span><br><span class="line">let endIndex = html.index(html.startIndex, offsetBy: range.upperBound)</span><br><span class="line">    </span><br><span class="line">let subStr2 = html[Range(uncheckedBounds: (startIndex, endIndex))]</span><br><span class="line">print(String(subStr2))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>将匹配到的内容提还</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let str3 = regular.stringByReplacingMatches(in: html, options: .reportProgress, range: NSMakeRange(0, html.count), withTemplate: &quot;====&quot;)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class House &#123;</span><br><span class="line">    var name: String</span><br><span class="line">    weak var landlord: Landlord?</span><br><span class="line">    </span><br><span class="line">    init(person: String) &#123;</span><br><span class="line">        self.name = person</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    deinit &#123;</span><br><span class="line">        print(&quot;House内存释放&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="unowned-关键字的使用"><a href="#unowned-关键字的使用" class="headerlink" title="unowned 关键字的使用"></a>unowned 关键字的使用</h3><h4 id="相互循环引用的两个变量有一个是可选的"><a href="#相互循环引用的两个变量有一个是可选的" class="headerlink" title="相互循环引用的两个变量有一个是可选的"></a>相互循环引用的两个变量有一个是可选的</h4><p>有个身份证的类，每个身份证肯定对应一个人</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class ID &#123;</span><br><span class="line">    var number: String</span><br><span class="line">    let person: Landlord</span><br><span class="line">    </span><br><span class="line">    init(person: Landlord, number: String) &#123;</span><br><span class="line">        self.person = person</span><br><span class="line">        self.number = number</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    deinit &#123;</span><br><span class="line">        print(&quot;ID内存释放&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">房东</span><br></pre></td></tr></table></figure>
+<p>class Landlord {<br>    var name: String<br>    var house: House?<br>    /// 身份证可以为nil，<br>    var id: ID?</p>
+<pre><code>init(name: String) {
+    self.name = name
+}
+
+deinit {
+    print(&quot;Landlord内存释放&quot;)
+}
+</code></pre><p>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">循环引用</span><br></pre></td></tr></table></figure>
+<p>func unownedTest() {<br>    var person: Landlord? = Landlord(name: “老王”)<br>    var id: ID? = ID(person: person!, number: “10010”)</p>
+<pre><code>person?.id = id
+person = nil
+id = nil
+</code></pre><p>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">-  person 和 id 之间有强引用关系</span><br><span class="line">-  每个id必须有一个对应的人并且是固定的只能使用let 修饰，不能为nil, 而id可以为空 </span><br><span class="line">- 	unowned和 weak 作用相同都是弱引用，只是unowned 修改的变量不能是nil （可选型的）</span><br><span class="line">-  unowned只能使用在 class 类型上，不能修饰函数类型，例如闭包存在循环引用时不能使用unowned修饰</span><br><span class="line">-  解决方法：</span><br><span class="line">	-  此时可以通过使用 weak 修饰 id 的方式，因为 id 可以为nil</span><br><span class="line">	-  let 修饰并且不能为nil 这种情况可以使用 unowned 修饰解决</span><br></pre></td></tr></table></figure>
+<pre><code>class ID {
+    var number: String
+    unowned let person: Landlord
+
+    init(person: Landlord, number: String) {
+        self.person = person
+        self.number = number
+    }
+
+    deinit {
+        print(&quot;ID内存释放&quot;)
+    }
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">**unowned有一定的危险性** </span><br><span class="line"></span><br><span class="line">因为unowned 修饰的对象不能赋值为nil，所以执行下面的代码会crash，</span><br></pre></td></tr></table></figure>
+</code></pre><p>func unownedTest() {<br>        var person: Landlord? = Landlord(name: “老王”)<br>        var id: ID? = ID(person: person!, number: “10010”)</p>
+<pre><code>person?.id = id
+
+// 提前释放 person 内存
+person = nil
+
+// 获取身份证对应的人
+print(id?.person) // 此处奔溃，
+let owner = id?.person
+id = nil
+</code></pre><p> }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">正确的写法因该是先将🆔设置为nil，再将 Person 设置为nil，再调用 print(id?.person) 就不会再报错</span><br></pre></td></tr></table></figure></p>
+<p>func unownedTest() {<br>        var person: Landlord? = Landlord(name: “老王”)<br>        var id: ID? = ID(person: person!, number: “10010”)</p>
+<pre><code>person?.id = id
+
+id = nil
+
+// 提前释放 person 内存
+person = nil
+
+// 获取身份证对应的人
+print(id?.person) // 此处奔溃，
+let owner = id?.person
+</code></pre><p> }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 相互循环引用的两个变量都不是可选的</span><br><span class="line"></span><br><span class="line">使用隐式可选类型</span><br><span class="line"></span><br><span class="line">### 闭包中的强引用循环</span><br><span class="line"></span><br><span class="line">- 并不是所有的闭包都会产生循环引用，只有相互引用的两个对象会产生循环引用</span><br><span class="line"></span><br><span class="line">- 使用swift闭包捕获列表，在闭包的声明参数之前使用 [unowned self], 不需要解包</span><br><span class="line"></span><br><span class="line">- 使用 unowned表示这个对象不能为空，可能存在风险，如果对象为空就会crash</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">使用 unowned 对象不能为空，可能存在风险</span><br></pre></td></tr></table></figure></p>
+<p>class Closure {<br>    var closure: ((Int) -&gt; Void)?</p>
+<pre><code>init() {
+    closure = { [unowned self] index in
+        print(self)
+        print(index)
+    }
+}
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">使用 weak, 此时需要解包</span><br></pre></td></tr></table></figure></p>
+<p>closure = { [weak self] index in<br>            // 解包<br>            if let <code>self</code> = self {<br>                print(self)<br>                print(index)<br>            }<br>        }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">强制解包</span><br></pre></td></tr></table></figure></p>
+<p>closure = { [weak self] index in<br>            // 强制解包<br>            print(self!)<br>            print(index)<br>        }<br><code>`</code></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/iOS通过URL获取HTML中标题/" data-id="cjx3du7cr002iucfy1no6p9gg" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/swift中强引用循环和weak关键字/" data-id="cjx3gd6oh002tobfyudim18c8" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-typescripe 安装及语法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/typescripe 安装及语法/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.014Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="ReactNative-中使用-TypeScript"><a href="#ReactNative-中使用-TypeScript" class="headerlink" title="ReactNative 中使用 TypeScript"></a>ReactNative 中使用 TypeScript</h2><blockquote>
+<p>从RN0.57版本开始已经可以直接支持typescript，无需任何配置。在保留根入口文件index.js的前提下，其他文件都可以直接使用.ts或.tsx后缀。但这一由babel进行的转码过程并不进行实际的类型检查，因此仍然需要编辑器和插件来共同进行类型检查</p>
+</blockquote>
+<h3 id="TypeScript和JavaScript对比"><a href="#TypeScript和JavaScript对比" class="headerlink" title="TypeScript和JavaScript对比"></a>TypeScript和JavaScript对比</h3><p><a href="https://juejin.im/entry/5a52ed336fb9a01cbd586f9f" target="_blank" rel="noopener">两者深度对比</a></p>
+<p>最大的区别：</p>
+<ul>
+<li>TypeScript是强类型语⾔和静态类型语⾔（需要指定类型）</li>
+<li>JavaScript是弱类型语⾔和动态类型语⾔（不需要指定类型）</li>
+</ul>
+<h3 id="TypeScript"><a href="#TypeScript" class="headerlink" title="TypeScript"></a>TypeScript</h3><p>由微软开发的自由和开源的编程语言，是JavaScript的一个严格超集，并添加了可选的静态类型和基于类的面向对象编程</p>
+<p><a href="https://zh.wikipedia.org/wiki/TypeScript" target="_blank" rel="noopener">TypeScript定义</a></p>
+<h3 id="安装及语法"><a href="#安装及语法" class="headerlink" title="安装及语法"></a>安装及语法</h3><p><a href="https://www.tslang.cn/docs/home.html" target="_blank" rel="noopener">教程</a></p>
+<h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g typescript</span><br></pre></td></tr></table></figure>
+<h5 id="安装-typescript-依赖管理器-typings"><a href="#安装-typescript-依赖管理器-typings" class="headerlink" title="安装 typescript 依赖管理器 typings"></a>安装 typescript 依赖管理器 typings</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g typings</span><br></pre></td></tr></table></figure>
+<h5 id="安装-typings-依赖"><a href="#安装-typings-依赖" class="headerlink" title="安装 typings 依赖"></a>安装 typings 依赖</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">typings install npm~react --save</span><br><span class="line">typings install dt~react-native --globals --save</span><br></pre></td></tr></table></figure>
+<h5 id="使用-yarn-安装"><a href="#使用-yarn-安装" class="headerlink" title="使用 yarn 安装"></a>使用 yarn 安装</h5><p>如果已经安装了 yarn 安装如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yarn add tslib @types/react @types/react-native</span><br><span class="line">yarn add --dev react-native-typescript-transformer typescript</span><br></pre></td></tr></table></figure>
+<h5 id="创建-tsconfig-json-配置文件"><a href="#创建-tsconfig-json-配置文件" class="headerlink" title="创建 tsconfig.json 配置文件"></a>创建 tsconfig.json 配置文件</h5><ul>
+<li><p>cd 到 ReactNative 项目根文件夹下</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tsc --init</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改 tsconfig.json 文件 </p>
+<p>  如果一个目录下存在一个tsconfig.json文件，那么它意味着这个目录是TypeScript项目的根目录。 tsconfig.json文件中指定了用来编译这个项目的根文件和编译选项</p>
+<p>  <a href="https://www.tslang.cn/docs/handbook/tsconfig-json.html" target="_blank" rel="noopener">tsconfig.json文件配置详解</a></p>
+<p>  <a href="https://github.com/hstarorg/HstarDoc/blob/master/%E5%89%8D%E7%AB%AF%E7%9B%B8%E5%85%B3/TypeScript%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6tsconfig%E7%AE%80%E6%9E%90.md">TypeScript配置文件tsconfig简析</a></p>
+<p>  <strong>务必设置”jsx”:”react”<br>注意多余的注释可能会不兼容，需要移除</strong></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;compilerOptions&quot;: &#123;</span><br><span class="line">        &quot;target&quot;: &quot;es6&quot;,</span><br><span class="line">        &quot;allowJs&quot;: true,</span><br><span class="line">        &quot;jsx&quot;: &quot;react&quot;,</span><br><span class="line">        &quot;outDir&quot;: &quot;./dist&quot;,</span><br><span class="line">        &quot;sourceMap&quot;: true,</span><br><span class="line">        &quot;noImplicitAny&quot;: false</span><br><span class="line">    &#125;,</span><br><span class="line">    </span><br><span class="line">    // &quot;files&quot;属性 ：指定一个包含相对或绝对文件路径的列表。 &quot;include&quot;和&quot;exclude&quot;属性指定一个文件glob匹配模式列表</span><br><span class="line">    </span><br><span class="line">    &quot;include&quot;: [</span><br><span class="line">        &quot;typings/**/*.d.ts&quot;,</span><br><span class="line">        &quot;src/**/*.ts&quot;,</span><br><span class="line">        &quot;src/**/*.tsx&quot;</span><br><span class="line">    ],</span><br><span class="line">    &quot;exclude&quot;: [</span><br><span class="line">        &quot;node_modules&quot;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>cd 到项目根目录中新建存放 typescripe 源代码的文件夹</p>
+</li>
+</ul>
+<h5 id="建立-rn-cli-config-js-文件，使用支持typescript的transfomer"><a href="#建立-rn-cli-config-js-文件，使用支持typescript的transfomer" class="headerlink" title="建立 rn-cli.config.js 文件，使用支持typescript的transfomer"></a>建立 rn-cli.config.js 文件，使用支持typescript的transfomer</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">module.exports = &#123;</span><br><span class="line">  getTransformModulePath() &#123;</span><br><span class="line">    return require.resolve(&apos;react-native-typescript-transformer&apos;);</span><br><span class="line">  &#125;,</span><br><span class="line">  getSourceExts() &#123;</span><br><span class="line">    return [&apos;ts&apos;, &apos;tsx&apos;];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="修改-babelrc-文件"><a href="#修改-babelrc-文件" class="headerlink" title="修改 .babelrc 文件"></a>修改 .babelrc 文件</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"> &quot;presets&quot;: [&quot;react-native&quot;],</span><br><span class="line"> &quot;plugins&quot;: [&quot;transform-decorators-legacy&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="修改项目中文件导入"><a href="#修改项目中文件导入" class="headerlink" title="修改项目中文件导入"></a>修改项目中文件导入</h5><ul>
+<li>入口<code>index.js</code>和<code>App.js</code>的文件名请不要修改，项目根目录下新建<code>src</code>文件夹</li>
+<li>在<code>src</code>文件夹下新建 <code>.tsx</code> 后缀的文件</li>
+<li><p><code>.tsx</code> 后缀的文件引用react的写法有所区别</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import * as React from &apos;react&apos;</span><br><span class="line">import &#123; Text, View &#125; from &apos;react-native&apos;;</span><br><span class="line">import &#123; Component &#125; from &apos;react&apos;;</span><br><span class="line"></span><br><span class="line">export default class HelloWorld extends Component&#123;</span><br><span class="line">    render() &#123;</span><br><span class="line">        return (</span><br><span class="line">            &lt;View&gt;</span><br><span class="line">                &lt;Text&gt;Hello!&lt;/Text&gt;</span><br><span class="line">                &lt;Text&gt;Typescript&lt;/Text&gt;</span><br><span class="line">            &lt;/View&gt;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在<code>App.js</code>中使用</p>
+<ul>
+<li><p><code>App.js</code> 导入方式修改为如下方式</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">	import &apos;./src&apos;;</span><br><span class="line">	``` </span><br><span class="line">	</span><br><span class="line">- 导入 .tsx 类型的组建</span><br></pre></td></tr></table></figure>
+<p>  import HelloWorld from “./src/HelloWorld”;</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 配置jsconfig</span><br><span class="line"></span><br><span class="line">`jsconfig.json`目录中存在文件表明该目录是JavaScript项目的根目录。该jsconfig.json文件指定根文件和JavaScript语言服务提供的功能选项</span><br><span class="line"></span><br><span class="line">[jsconfig详解](https://code.visualstudio.com/docs/languages/jsconfig)</span><br><span class="line"></span><br><span class="line">[jsconfig.json](https://jeasonstudio.gitbooks.io/vscode-cn-doc/content/md/%E8%AF%AD%E8%A8%80/javascript.html?q=)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">##### 新建 `jsconfig.json` 文件</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<p>touch jsconfig.json<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### 编辑 `jsconfig.json` 文件</span><br></pre></td></tr></table></figure></p>
+<p>{<br>    “compilerOptions”: {<br>    “allowJs”: true,<br>    “allowSyntheticDefaultImports”: true,<br>    “emitDecoratorMetadata”: true<br>    },<br>    “exclude”: [<br>    “node_modules”,<br>    “rnApp/Tools” // 项目根目录下新建的存放RN中所用的一些工具类<br>    ]<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">### package.json 文件配置</span><br></pre></td></tr></table></figure>
+<p>{<br>  “name”: “RNProject”,<br>  “version”: “0.0.1”,<br>  “private”: true,<br>  “scripts”: { // 通过设置这个可以使npm调用一些命令脚本，封装一些功能<br>    “start”: “node node_modules/react-native/local-cli/cli.js start”,<br>    “test”: “jest”<br>  },<br>  “dependencies”: { // 发布后依赖的包<br>    “@types/react”: “^16.4.16”,<br>    “@types/react-native”: “^0.57.4”,<br>    “react”: “16.5.0”,<br>    “react-native”: “0.57.2”,<br>    “react-transform-hmr”: “^1.0.4”,<br>    “tslib”: “^1.9.3”<br>  },</p>
+<p>  “devDependencies”: { // 开发中依赖的其它包<br>    “babel-jest”: “23.6.0”,<br>    “jest”: “23.6.0”,<br>    “metro-react-native-babel-preset”: “0.48.0”,<br>    “react-native-typescript-transformer”: “^1.2.10”,<br>    “react-test-renderer”: “16.5.0”,<br>    “typescript”: “^3.1.2”<br>  },</p>
+<p>  “jest”: { // JavaScript 的单元测试框架<br>    “preset”: “react-native”<br>  }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### `–save` 和 `-–save-dev` 区别</span><br><span class="line"></span><br><span class="line">- --save参数表示将该模块写入dependencies属性，</span><br><span class="line">- --save-dev表示将该模块写入devDependencies属性。</span><br><span class="line"></span><br><span class="line">##### 添加开发依赖库</span><br><span class="line"></span><br><span class="line">- 类型检查</span><br></pre></td></tr></table></figure></p>
+<pre><code>npm install @types/jest --save-dev
+npm install @types/react --save-dev
+npm install @types/react-native --save-dev 
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- 装饰器转化核心插件</span><br></pre></td></tr></table></figure>
+
+npm install babel-plugin-transform-decorators-legacy --save-dev
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">- 测试框架</span><br></pre></td></tr></table></figure>
+
+npm install react-addons-test-utils --save-dev
+npm install react-native-mock --save-dev
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### 删除依赖库</span><br></pre></td></tr></table></figure>
+</code></pre><p>npm uninstall @types/jest –save<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<p>npm uninstall @types/jest –save-dev<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### 彻底删除，-d 表示 devDependencies， -O 表示 optionalDependencies 中</span><br></pre></td></tr></table></figure></p>
+<p>npm uninstall -s -D -O @types/jest</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 报错汇总</span><br><span class="line"></span><br><span class="line">##### 错误1 `Cannot find module &apos;react-transform-hmr/lib/index.js&apos;`</span><br><span class="line"></span><br><span class="line"> [解决1](https://stackoverflow.com/questions/50142561/cannot-find-module-react-transform-hmr-lib-index-js?noredirect=1&amp;lq=1)</span><br><span class="line">	</span><br><span class="line"> [解决2](https://github.com/facebook/react-native/issues/21530)</span><br><span class="line"></span><br><span class="line">- 安装 `react-transform-hmr`</span><br></pre></td></tr></table></figure>
+<pre><code>npm install react-transform-hmr --save
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 清除缓存重新启动服务</span><br></pre></td></tr></table></figure>
+
+npm start --reset-cache
+```
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/typescripe 安装及语法/" data-id="cjx3gd6oh002uobfye8k2v99y" class="article-share-link">Share</a>
       
       
     </footer>
@@ -1061,6 +1019,10 @@ print(result3)
       <ul>
         
           <li>
+            <a href="/2019/06/19/Flutter中布局/">(no title)</a>
+          </li>
+        
+          <li>
             <a href="/2019/06/18/Flutter中GridView组件/">GridView组件使用.md</a>
           </li>
         
@@ -1074,10 +1036,6 @@ print(result3)
         
           <li>
             <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
           </li>
         
       </ul>

@@ -62,6 +62,113 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Swift3.0学习(一)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/01/Swift3.0学习(一)/" class="article-date">
+  <time datetime="2017-03-01T14:39:10.000Z" itemprop="datePublished">2017-03-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/01/Swift3.0学习(一)/">Swift 3.0 学习</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="和OC区别"><a href="#和OC区别" class="headerlink" title="和OC区别"></a>和OC区别</h2><ul>
+<li>没有了.h 和 .m 文件，没有main.m 文件</li>
+<li>程序入口发生变化 在appdelegate中的 @UIApplicationMain</li>
+<li>每行代码可以不写 ‘;’</li>
+<li>self可以不写，建议不写self，因为闭包中必须要写</li>
+<li>真假表示只有 true／ false，没有非0即真的概念</li>
+<li>类型自动推到</li>
+</ul>
+<h2 id="类型自动推到"><a href="#类型自动推到" class="headerlink" title="类型自动推到"></a>类型自动推到</h2><h2 id="提前指定类型"><a href="#提前指定类型" class="headerlink" title="提前指定类型"></a>提前指定类型</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let float :Double = 9.6 </span><br><span class="line">print(float)</span><br></pre></td></tr></table></figure>
+<h2 id="常量和变量"><a href="#常量和变量" class="headerlink" title="常量和变量"></a>常量和变量</h2><ul>
+<li>let 声明常量，有且只有一次赋值机会</li>
+<li>var 声明变量</li>
+<li>尽量选择使用let如需修改值再使用var 系统会报警告</li>
+</ul>
+<h2 id="可选项"><a href="#可选项" class="headerlink" title="可选项"></a>可选项</h2><ul>
+<li>Optional: 表示一个常量或者是变量可能有值可能为nil，在打印的时候会带有Optional字样</li>
+<li>? 表示是一个可选项</li>
+<li>可选项不能参与运算</li>
+<li><p>! 表示可选项中一定要有值，可以强制解包,解包时如果没有值会boom</p>
+</li>
+<li><p>?? 合并空选项 快速判断可选项是否为nil, 如果为nil取后面的默认值，在基本数据类型和字符串使用较多</p>
+</li>
+</ul>
+<h2 id="条件分支"><a href="#条件分支" class="headerlink" title="条件分支"></a>条件分支</h2><ul>
+<li>if let</li>
+</ul>
+<p>快速赋值，判断赋值对象是否为nil，如果不为nil，就赋值进入分支<br>生成request是url是一个可选项，需要强制解包或者合并空选项</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let urlString = &quot;http://www.baidu.com&quot;</span><br><span class="line">let url = NSURL(string: urlString)</span><br><span class="line">let request = NSURLRequest(URL: url!)</span><br><span class="line">print(request)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>以上代码使用if let实现</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if let u = NSURL(string: urlString) &#123;</span><br><span class="line">    let request = NSURLRequest(URL: u)</span><br><span class="line">    print(request)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>where条件语句配合多重判断</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if url != nil  &#123;</span><br><span class="line">    if url?.host == &quot;www.baidu.com&quot; &#123;</span><br><span class="line">        let request = NSURLRequest(URL: url!)</span><br><span class="line">        print(request)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用if let</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if let u = url where u.host == &quot;www.baidu.com&quot; &#123;</span><br><span class="line">    let request = NSURLRequest(URL: u)</span><br><span class="line">    print(request)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>多重判断</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if let u = url, s = string &#123;</span><br><span class="line">    let request = NSURLRequest(URL: u)</span><br><span class="line">    print(request)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>guard let 和 if let 相反如果为nil，可以直接返回</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let urlString  = &quot;http://www.baidi.com&quot;</span><br><span class="line">let url = NSURL(string: urlString)</span><br><span class="line">guard let u = url else &#123; return &#125;</span><br><span class="line">    </span><br><span class="line">//程序走到这个地方就表示 u 一定有值</span><br><span class="line">let request = NSURLRequest(URL: u)</span><br><span class="line">print(request)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>swith语句</p>
+<ul>
+<li>swift语句中可以case任意类型，</li>
+<li>在OC中只能case整数</li>
+<li>不需要写break,会自动跳出，</li>
+<li>如果需要实现case穿透，需要加入fallthrough语句</li>
+<li>case语句中临时变量不需要写‘{ }’</li>
+<li>可同时case多个值    </li>
+<li>每句case语句中至少要有一行可执行的代码</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">let string = &quot;string1&quot;</span><br><span class="line">       switch string &#123;</span><br><span class="line">       case &quot;string&quot;, &quot;string1&quot;:</span><br><span class="line">           let str = &quot;stringOne&quot;</span><br><span class="line">           print(str)</span><br><span class="line">           </span><br><span class="line">       case &quot;string2&quot;:</span><br><span class="line">           let str = &quot;stringTWO&quot;</span><br><span class="line">           print(str)</span><br><span class="line">           </span><br><span class="line">       case &quot;string3&quot;:</span><br><span class="line">           print(string)</span><br><span class="line">           </span><br><span class="line">       case &quot;string4&quot;:</span><br><span class="line">           print(string)</span><br><span class="line">       default:</span><br><span class="line">           print(&quot;empty&quot;)</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>switch 中同样能够赋值和使用 where 子句</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">let point = CGPoint(x: 10, y: 10)</span><br><span class="line">switch point &#123;</span><br><span class="line">case let p where p.x == 0 &amp;&amp; p.y == 0:</span><br><span class="line">    print(&quot;中心点&quot;)</span><br><span class="line">case let p where p.x == 0:</span><br><span class="line">    print(&quot;Y轴&quot;)</span><br><span class="line">case let p where p.y == 0:</span><br><span class="line">    print(&quot;X轴&quot;)</span><br><span class="line">case let p where abs(p.x) == abs(p.y):</span><br><span class="line">    print(&quot;对角线&quot;)</span><br><span class="line">default:</span><br><span class="line">    print(&quot;其他&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>循环语句</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">for i in 0 ..&lt; 10 &#123; // 不包含10  循环范围中两边的值格式必须一直（空格问题）</span><br><span class="line">       print(i)</span><br><span class="line">   &#125;</span><br><span class="line">       </span><br><span class="line">for _ in 0...5 &#123;// 包含5  _ 表示忽略，不关心，只占位</span><br><span class="line">    print(&quot;循环语句&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2017/03/01/Swift3.0学习(一)/" data-id="cjx3gd6nt001eobfy6gcnso6n" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-OC与js交互学习" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/02/20/OC与js交互学习/" class="article-date">
@@ -99,7 +206,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/02/20/OC与js交互学习/" data-id="cjx3du7bi000nucfy9wx1ogau" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/02/20/OC与js交互学习/" data-id="cjx3gd6ni000robfyjeni3cpv" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OC-JS/">OC, JS</a></li></ul>
@@ -210,7 +317,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/02/08/SDWebImage学习/" data-id="cjx3du7bw0015ucfypqcy7tlp" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/02/08/SDWebImage学习/" data-id="cjx3gd6no0014obfye7987x9l" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li></ul>
@@ -287,7 +394,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/02/02/iOS静态库动态库/" data-id="cjx3du7cs002kucfy3zzdgjle" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/02/02/iOS静态库动态库/" data-id="cjx3gd6oc002mobfy1kit1l1v" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WKWebView/">WKWebView</a></li></ul>
@@ -373,7 +480,7 @@ if (imageData != nil) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/01/18/异步下载图片/" data-id="cjx3du7d0002vucfymyn0k5ab" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/01/18/异步下载图片/" data-id="cjx3gd6oj002xobfyqjd7ofdn" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/异步/">异步</a></li></ul>
@@ -423,7 +530,7 @@ if (imageData != nil) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/12/10/Quartz2D绘制形状/" data-id="cjx3du7bm000tucfylii3cyl1" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2016/12/10/Quartz2D绘制形状/" data-id="cjx3gd6nj000tobfyyrxw7760" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li></ul>
@@ -508,7 +615,7 @@ if (imageData != nil) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/12/05/GCD实现按钮定时亮起/" data-id="cjx3du7b6000bucfyvxv6m6k6" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2016/12/05/GCD实现按钮定时亮起/" data-id="cjx3gd6n6000fobfya5t2qvof" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GCD/">GCD</a></li></ul>
@@ -636,7 +743,7 @@ CGContextClosePath(ctx);
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/12/04/Quartz2D绘制曲线/" data-id="cjx3du7bo000xucfypdgc60tk" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2016/12/04/Quartz2D绘制曲线/" data-id="cjx3gd6nl000xobfyddgq3gix" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li></ul>
@@ -802,7 +909,7 @@ Layer Graphics Context
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/12/04/Quartz2D初识/" data-id="cjx3du7bj000pucfy6h9wtobl" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2016/12/04/Quartz2D初识/" data-id="cjx3gd6nk000vobfyas0424r1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li></ul>
@@ -854,99 +961,10 @@ Layer Graphics Context
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/11/22/OC RunTime学习/" data-id="cjx3du7bl000rucfymxidx4f5" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2016/11/22/OC RunTime学习/" data-id="cjx3gd6nc000lobfyewxtcpkj" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RunTime/">RunTime</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Quartz2D绘制线条" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/11/22/Quartz2D绘制线条/" class="article-date">
-  <time datetime="2016-11-22T03:10:31.000Z" itemprop="datePublished">2016-11-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/22/Quartz2D绘制线条/">WKWebiView 使用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="WKWebiView-iOS8-0-出现，性能要远远好于-iOS-2-0时出现的-UIWebView-主要记录WKWebView-的创建和代理方法"><a href="#WKWebiView-iOS8-0-出现，性能要远远好于-iOS-2-0时出现的-UIWebView-主要记录WKWebView-的创建和代理方法" class="headerlink" title="WKWebiView iOS8.0 出现，性能要远远好于 iOS 2.0时出现的 UIWebView,主要记录WKWebView 的创建和代理方法"></a>WKWebiView iOS8.0 出现，性能要远远好于 iOS 2.0时出现的 UIWebView,主要记录WKWebView 的创建和代理方法</h4><h2 id="创建WKWebView"><a href="#创建WKWebView" class="headerlink" title="创建WKWebView"></a>创建WKWebView</h2><pre><code>WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
-self.webView = webView;
-[self.view addSubview:webView];
-webView.UIDelegate = self;
-webView.navigationDelegate = self;
-[webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@&quot;https://www.baidu.com&quot;]]];
-</code></pre><p>遵守协议 WKNavgationDelegate WKUIDelegate</p>
-<h2 id="代理方法"><a href="#代理方法" class="headerlink" title="代理方法"></a>代理方法</h2><ul>
-<li><p>WKNavgationDelegate 方法</p>
-<ul>
-<li><p>发送请求之前决定是否跳转</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler &#123;</span><br><span class="line"></span><br><span class="line">	decisionHandler(WKNavigationActionPolicyAllow);</span><br><span class="line">	// 不允许跳转</span><br><span class="line">   decisionHandler(WKNavigationActionPolicyCancel);</span><br><span class="line">	NSLog(@&quot;decidePolicyForNavigationAction&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>收到相应之后决定是否跳转</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler &#123;</span><br><span class="line"></span><br><span class="line">	decisionHandler(WKNavigationResponsePolicyAllow);</span><br><span class="line">	</span><br><span class="line">	decisionHandler(WKNavigationResponsePolicyCancel);</span><br><span class="line">	</span><br><span class="line">	NSLog(@&quot;decidePolicyForNavigationResponse&quot;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>开始加载时调用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;didStartProvisionalNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>接受到服务器的跳转请求时调用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line">	NSLog(@&quot;didReceiveServerRedirectForProvisionalNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<pre><code>- 页面加载失败时调用 **存在缓存问题**
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error &#123;</span><br><span class="line">		</span><br><span class="line">	NSLog(@&quot;error= %@&quot;, error);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-- 内容开始返回时调用
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didCommitNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;didCommitNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</code></pre><ul>
-<li><p>内容返回成功后调用</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;didFinishNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>开始返回错误时调用</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didFailNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;didFailNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li><p>目前不知道什么时候调用</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable credential))completionHandler &#123;</span><br><span class="line">	NSLog(@&quot;didReceiveAuthenticationChallenge&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>目前不知道什么时候调用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView API_AVAILABLE(macosx(10.11), ios(9.0)) &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;webViewWebContentProcessDidTerminate&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/11/22/Quartz2D绘制线条/" data-id="cjx3du7bm000uucfyjb9mqpuv" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WKWebView/">WKWebView</a></li></ul>
 
     </footer>
   </div>
@@ -1005,6 +1023,10 @@ webView.navigationDelegate = self;
       <ul>
         
           <li>
+            <a href="/2019/06/19/Flutter中布局/">(no title)</a>
+          </li>
+        
+          <li>
             <a href="/2019/06/18/Flutter中GridView组件/">GridView组件使用.md</a>
           </li>
         
@@ -1018,10 +1040,6 @@ webView.navigationDelegate = self;
         
           <li>
             <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
           </li>
         
       </ul>

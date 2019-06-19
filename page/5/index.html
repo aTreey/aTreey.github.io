@@ -62,74 +62,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-GCD 信号量" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/GCD 信号量/" class="article-date">
-  <time datetime="2019-06-18T15:30:18.999Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>GCD信号量用法</p>
-<p>对于异步网络请求相互依赖问题一般用三种方式解决：</p>
-<ul>
-<li>网络请求嵌套</li>
-<li>使用 BlockOperation </li>
-<li>GCD DispatchGroup</li>
-<li>GCD semaphore（信号量）</li>
-</ul>
-<h3 id="GCD-信号量"><a href="#GCD-信号量" class="headerlink" title="GCD 信号量"></a>GCD 信号量</h3><ul>
-<li>semaphore 值 &lt;= 0 阻塞</li>
-<li>semaphore semaphore.signal() 使信号量值增加</li>
-<li>semaphore.wait() 等待，可设置时长</li>
-</ul>
-<p>request – 3 依赖 request – 1 和 request – 2，1 和 2 无需关注顺序</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">private func gcdSemaphore() &#123;</span><br><span class="line">       let semaphore = DispatchSemaphore(value: 0)</span><br><span class="line">       DispatchQueue.global().async &#123;</span><br><span class="line">           for i in 0...300 &#123;</span><br><span class="line">               print(&quot;request -- 1&quot;)</span><br><span class="line">           &#125;</span><br><span class="line">           semaphore.signal()</span><br><span class="line">       &#125;</span><br><span class="line">       </span><br><span class="line">       DispatchQueue.global().async &#123;</span><br><span class="line">           for i in 0...200 &#123;</span><br><span class="line">               print(&quot;request -- 2&quot;)</span><br><span class="line">           &#125;</span><br><span class="line">           semaphore.signal()</span><br><span class="line">       &#125;</span><br><span class="line">       </span><br><span class="line">       </span><br><span class="line">       DispatchQueue.global().async &#123;</span><br><span class="line">           semaphore.wait()</span><br><span class="line">           semaphore.wait()</span><br><span class="line">           for i in 0...160 &#123;</span><br><span class="line">               print(&quot;request -- 3&quot;)</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<p>request – 3 ，request – 2 和 request – 1，依次相互依赖</p>
-<pre><code>private func gcdSemaphore() {
-        let semaphore = DispatchSemaphore(value: 0)
-        DispatchQueue.global().async {
-            for i in 0...300 {
-                print(&quot;request -- 1&quot;)
-            }
-            semaphore.signal()
-        }
-
-        DispatchQueue.global().async {
-            semaphore.wait()
-            for i in 0...200 {
-                print(&quot;request -- 2&quot;)
-            }
-            semaphore.signal()
-        }
-
-
-        DispatchQueue.global().async {
-            semaphore.wait()
-            for i in 0...160 {
-                print(&quot;request -- 3&quot;)
-            }
-        }
-    }
-
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/GCD 信号量/" data-id="cjx3du7b50009ucfytki1544x" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-ES6语法" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/ES6语法/" class="article-date">
@@ -246,7 +178,136 @@ let arrowFunction = (param1, param2) =&gt; {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/ES6语法/" data-id="cjx3du7b5000aucfyb3kz3kqi" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/ES6语法/" data-id="cjx3gd6n1000aobfyg7hfu60i" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-GCD 信号量" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/GCD 信号量/" class="article-date">
+  <time datetime="2019-06-18T15:30:18.999Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>GCD信号量用法</p>
+<p>对于异步网络请求相互依赖问题一般用三种方式解决：</p>
+<ul>
+<li>网络请求嵌套</li>
+<li>使用 BlockOperation </li>
+<li>GCD DispatchGroup</li>
+<li>GCD semaphore（信号量）</li>
+</ul>
+<h3 id="GCD-信号量"><a href="#GCD-信号量" class="headerlink" title="GCD 信号量"></a>GCD 信号量</h3><ul>
+<li>semaphore 值 &lt;= 0 阻塞</li>
+<li>semaphore semaphore.signal() 使信号量值增加</li>
+<li>semaphore.wait() 等待，可设置时长</li>
+</ul>
+<p>request – 3 依赖 request – 1 和 request – 2，1 和 2 无需关注顺序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">private func gcdSemaphore() &#123;</span><br><span class="line">       let semaphore = DispatchSemaphore(value: 0)</span><br><span class="line">       DispatchQueue.global().async &#123;</span><br><span class="line">           for i in 0...300 &#123;</span><br><span class="line">               print(&quot;request -- 1&quot;)</span><br><span class="line">           &#125;</span><br><span class="line">           semaphore.signal()</span><br><span class="line">       &#125;</span><br><span class="line">       </span><br><span class="line">       DispatchQueue.global().async &#123;</span><br><span class="line">           for i in 0...200 &#123;</span><br><span class="line">               print(&quot;request -- 2&quot;)</span><br><span class="line">           &#125;</span><br><span class="line">           semaphore.signal()</span><br><span class="line">       &#125;</span><br><span class="line">       </span><br><span class="line">       </span><br><span class="line">       DispatchQueue.global().async &#123;</span><br><span class="line">           semaphore.wait()</span><br><span class="line">           semaphore.wait()</span><br><span class="line">           for i in 0...160 &#123;</span><br><span class="line">               print(&quot;request -- 3&quot;)</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>request – 3 ，request – 2 和 request – 1，依次相互依赖</p>
+<pre><code>private func gcdSemaphore() {
+        let semaphore = DispatchSemaphore(value: 0)
+        DispatchQueue.global().async {
+            for i in 0...300 {
+                print(&quot;request -- 1&quot;)
+            }
+            semaphore.signal()
+        }
+
+        DispatchQueue.global().async {
+            semaphore.wait()
+            for i in 0...200 {
+                print(&quot;request -- 2&quot;)
+            }
+            semaphore.signal()
+        }
+
+
+        DispatchQueue.global().async {
+            semaphore.wait()
+            for i in 0...160 {
+                print(&quot;request -- 3&quot;)
+            }
+        }
+    }
+
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/GCD 信号量/" data-id="cjx3gd6n4000bobfy5h9j86cr" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Flutter常用组件" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/Flutter常用组件/" class="article-date">
+  <time datetime="2019-06-18T15:30:18.999Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>flutter 常用组件</p>
+<h2 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h2><ul>
+<li>StatefulWidget<ul>
+<li>具有可变状态的窗口部件，使用应用时可随时变化，例如进度条</li>
+</ul>
+</li>
+<li>StatelessWidget <ul>
+<li>不可变窗口部件</li>
+</ul>
+</li>
+</ul>
+<h2 id="Text-组件"><a href="#Text-组件" class="headerlink" title="Text 组件"></a>Text 组件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//  Text 组件</span><br><span class="line">class MyText extends StatelessWidget&#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context)&#123;</span><br><span class="line">    return Text(&apos;reacctNative、 flutter 学习之路是非常坚信不疑的，作为一个程序员，因该对于技术有着追求，不断的提高自己才是王道，可是道理都懂依然过不好这一生&apos;,</span><br><span class="line">      maxLines: 2,</span><br><span class="line">      overflow: TextOverflow.fade,</span><br><span class="line">      textAlign: TextAlign.center,</span><br><span class="line">      style: TextStyle(</span><br><span class="line">        fontSize: 20.0,</span><br><span class="line">        color: Colors.deepOrange,</span><br><span class="line">        decoration: TextDecoration.underline,</span><br><span class="line">        decorationColor: Colors.redAccent,</span><br><span class="line">        decorationStyle: TextDecorationStyle.dotted</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="COntainer-组件"><a href="#COntainer-组件" class="headerlink" title="COntainer 组件"></a>COntainer 组件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">// Container容器组件</span><br><span class="line">class MyContainer extends StatelessWidget &#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return Container(</span><br><span class="line">      child: Text(&apos;Container 容器中有文字&apos;,</span><br><span class="line">        style: TextStyle(</span><br><span class="line">          backgroundColor: Colors.cyan,</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">      alignment: Alignment.center, // 容器中内容对其方式</span><br><span class="line">      width: 300.0,</span><br><span class="line">      height: 200.0,</span><br><span class="line">      padding: const EdgeInsets.all(10), // 容器内边距</span><br><span class="line">      margin: const EdgeInsets.fromLTRB(10, 5, 10, 5), // container 和外部控件的边距</span><br><span class="line">      decoration: new BoxDecoration(</span><br><span class="line">        gradient: const LinearGradient(</span><br><span class="line">          colors: [Colors.lightBlue, Colors.greenAccent, Colors.yellow]</span><br><span class="line">        ),</span><br><span class="line"></span><br><span class="line">        // 设置 border 的宽度</span><br><span class="line">        border: Border.all(width: 5, color: Colors.black) </span><br><span class="line"></span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Image-组件"><a href="#Image-组件" class="headerlink" title="Image 组件"></a>Image 组件</h2><h3 id="fit属性"><a href="#fit属性" class="headerlink" title="fit属性"></a>fit属性</h3><ul>
+<li>BoxFit.fill:全图显示，图片会被拉伸，并充满父容器。</li>
+<li>BoxFit.contain:全图显示，显示原比例，可能会有空隙。</li>
+<li>BoxFit.cover：显示可能拉伸，可能裁切，充满（图片要充满整个容器，还不变形）。</li>
+<li>BoxFit.fitWidth：宽度充满（横向充满），显示可能拉伸，可能裁切。</li>
+<li>BoxFit.fitHeight ：高度充满（竖向充满）,显示可能拉伸，可能裁切。</li>
+<li>BoxFit.scaleDown：效果和contain差不多，但是此属性不允许显示超过源图片大小，可小不可大。</li>
+</ul>
+<h3 id="图片的混合模式"><a href="#图片的混合模式" class="headerlink" title="图片的混合模式"></a>图片的混合模式</h3><ul>
+<li>color：是要混合的颜色，如果你只设置color是没有意义的。</li>
+<li>colorBlendMode: 是混合模式。</li>
+</ul>
+<h3 id="repeat-图片填充模式"><a href="#repeat-图片填充模式" class="headerlink" title="repeat 图片填充模式"></a>repeat 图片填充模式</h3><ul>
+<li>ImageRepeat.repeat : 横向和纵向都进行重复，直到铺满整个画布。</li>
+<li>ImageRepeat.repeatX: 横向重复，纵向不重复。</li>
+<li>ImageRepeat.repeatY：纵向重复，横向不重复</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">class MyImage extends StatelessWidget &#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context)&#123;</span><br><span class="line">    return Container(</span><br><span class="line">      child: new Image.network(</span><br><span class="line">        // &apos;https://images.xiaozhuanlan.com/photo/2019/28ed76123023e46483fcf0ae5c2ba11b.png&apos;,</span><br><span class="line">        &apos;https://p.ampmake.com/mall/product/9666f00e-f02a-46ce-9b7c-090bf6aba9aa.png&apos;,</span><br><span class="line"></span><br><span class="line">        // 1. 设置填充模式</span><br><span class="line">        // fit: BoxFit.scaleDown,</span><br><span class="line">        // fit: BoxFit.none,</span><br><span class="line">        // fit: BoxFit.fill,</span><br><span class="line">        // fit: BoxFit.fitHeight,</span><br><span class="line">        // fit: BoxFit.fitWidth,</span><br><span class="line"></span><br><span class="line">        // 保持原图比例</span><br><span class="line">        // fit: BoxFit.contain,</span><br><span class="line"></span><br><span class="line">        // 充满整个容器，图片被裁切</span><br><span class="line">        // fit: BoxFit.cover,</span><br><span class="line">        // scale: 1.0,</span><br><span class="line"></span><br><span class="line">        // 2. 图片混合</span><br><span class="line">        color: Colors.red,</span><br><span class="line">        colorBlendMode: BlendMode.overlay,</span><br><span class="line">        </span><br><span class="line">        // 3. reap</span><br><span class="line">        repeat: ImageRepeat.repeat,</span><br><span class="line">      ),</span><br><span class="line">      width: 300.0,</span><br><span class="line">      height: 200.0,</span><br><span class="line">      color: Colors.lightBlue,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="ListView-列表组件"><a href="#ListView-列表组件" class="headerlink" title="ListView 列表组件"></a>ListView 列表组件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">class MyListView extends StatelessWidget&#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext contex)&#123;</span><br><span class="line">    </span><br><span class="line">    return ListView(</span><br><span class="line">      children: &lt;Widget&gt;[</span><br><span class="line">        new ListTile(</span><br><span class="line">              leading: new Icon(Icons.camera),</span><br><span class="line">              title: Text(&apos;相册&apos;),</span><br><span class="line">            ),</span><br><span class="line">            </span><br><span class="line">            new ListTile(</span><br><span class="line">              leading: new Icon(Icons.camera_alt),</span><br><span class="line">              title: Text(&apos;相机&apos;),</span><br><span class="line">            ),</span><br><span class="line"></span><br><span class="line">            new ListTile(</span><br><span class="line">              leading: new Icon(Icons.camera_enhance),</span><br><span class="line">              title: Text(&apos;相机1&apos;),</span><br><span class="line">            ),</span><br><span class="line"></span><br><span class="line">            new ListTile(</span><br><span class="line">              leading: new Icon(Icons.camera_front),</span><br><span class="line">              title: Text(&apos;相机2&apos;),</span><br><span class="line">            ),</span><br><span class="line"></span><br><span class="line">            new ListTile(</span><br><span class="line">              leading: new Icon(Icons.camera_rear),</span><br><span class="line">              title: Text(&apos;相机3&apos;),</span><br><span class="line">            ),</span><br><span class="line">      ],</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="ListView-builder-适合列表项比较多（或者无限）的情况"><a href="#ListView-builder-适合列表项比较多（或者无限）的情况" class="headerlink" title="ListView.builder 适合列表项比较多（或者无限）的情况"></a>ListView.builder 适合列表项比较多（或者无限）的情况</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class MyListViewBuilder extends StatelessWidget &#123;</span><br><span class="line">  </span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context)&#123;</span><br><span class="line">    return ListView.builder(</span><br><span class="line">      itemCount: 100, // 数量</span><br><span class="line">      itemExtent: 40, // Tile 高度</span><br><span class="line">      itemBuilder: (BuildContext context, int index)&#123;</span><br><span class="line">        return ListTile(title: Text(&quot;$index&quot;));</span><br><span class="line">      &#125;</span><br><span class="line">    ); </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="横向列表"><a href="#横向列表" class="headerlink" title="横向列表"></a>横向列表</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">class MyHorizontalListView extends StatelessWidget &#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return Container(</span><br><span class="line">      height: 100,</span><br><span class="line">      child: ListView(</span><br><span class="line">        // 设置滚动方式</span><br><span class="line">        scrollDirection: Axis.horizontal,</span><br><span class="line">        children: &lt;Widget&gt;[</span><br><span class="line">          new Container(</span><br><span class="line">            width: 180.0,</span><br><span class="line">            color: Colors.green,</span><br><span class="line">          ),</span><br><span class="line">          new Container(</span><br><span class="line">            width: 180.0,</span><br><span class="line">            color: Colors.yellow,</span><br><span class="line">          ),</span><br><span class="line">          new Container(</span><br><span class="line">            width: 180.0,</span><br><span class="line">            color: Colors.blue,</span><br><span class="line">          ),</span><br><span class="line">          new Container(</span><br><span class="line">            width: 180.0,</span><br><span class="line">            color: Colors.cyan,</span><br><span class="line">          ),</span><br><span class="line">          new Container(</span><br><span class="line">            width: 180.0,</span><br><span class="line">            color: Colors.purple,</span><br><span class="line">          ),</span><br><span class="line">        ],</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="动态列表和构造方法的创建"><a href="#动态列表和构造方法的创建" class="headerlink" title="动态列表和构造方法的创建"></a>动态列表和构造方法的创建</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class MyDynamicListView extends StatelessWidget &#123;</span><br><span class="line">  // 声明参数</span><br><span class="line">  final List&lt;String&gt; items;</span><br><span class="line">  // 构造方法</span><br><span class="line">  MyDynamicListView(&#123;Key key, @required this.items&#125;):super(key:key);</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return Container(</span><br><span class="line">      child: new ListView.builder(</span><br><span class="line">          itemCount: items.length,</span><br><span class="line">          itemBuilder: (context, index)&#123;</span><br><span class="line">            return ListTile(</span><br><span class="line">              title: new Text(&apos;通过构造方法创建的动态列表$&#123;items[index]&#125;&apos;),</span><br><span class="line">            );</span><br><span class="line">          &#125;,</span><br><span class="line">        ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="GridView-网格列表的使用"><a href="#GridView-网格列表的使用" class="headerlink" title="GridView 网格列表的使用"></a>GridView 网格列表的使用</h2>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/Flutter常用组件/" data-id="cjx3gd6n5000dobfy4qmdsooq" class="article-share-link">Share</a>
       
       
     </footer>
@@ -354,7 +415,7 @@ let arrowFunction = (param1, param2) =&gt; {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Charles 抓包/" data-id="cjx3du7au0001ucfyz6kmckrg" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Charles 抓包/" data-id="cjx3gd6mx0005obfygnmpomou" class="article-share-link">Share</a>
       
       
     </footer>
@@ -394,7 +455,7 @@ let arrowFunction = (param1, param2) =&gt; {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Flutterr入门/" data-id="cjx3du7b9000ducfyu3cse7d9" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Flutterr入门/" data-id="cjx3gd6mz0007obfy86fqpw38" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flutter/">Flutter</a></li></ul>
@@ -423,7 +484,7 @@ let arrowFunction = (param1, param2) =&gt; {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/docs/15608702427054/" data-id="cjx3du7e0003hucfy60pxdk1d" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/docs/15608702427054/" data-id="cjx3gd6p7003jobfya69dlhqs" class="article-share-link">Share</a>
       
       
     </footer>
@@ -463,7 +524,7 @@ let arrowFunction = (param1, param2) =&gt; {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/02/03/Mac安装VirtualBox连接U盘/" data-id="cjx3du7bg000kucfysz4y404q" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/02/03/Mac安装VirtualBox连接U盘/" data-id="cjx3gd6ng000oobfyxbt6vexr" class="article-share-link">Share</a>
       
       
     </footer>
@@ -519,7 +580,7 @@ let arrowFunction = (param1, param2) =&gt; {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/19/Block学习探究/" data-id="cjx3du7ax0003ucfyx6vkqc23" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/19/Block学习探究/" data-id="cjx3gd6mm0000obfyczkxz1hu" class="article-share-link">Share</a>
       
       
     </footer>
@@ -595,7 +656,7 @@ let arrowFunction = (param1, param2) =&gt; {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/18/常见问题总结-二/" data-id="cjx3du7cz002uucfyd0aui80h" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/18/常见问题总结-二/" data-id="cjx3gd6oi002wobfy0r50hmnd" class="article-share-link">Share</a>
       
       
     </footer>
@@ -705,183 +766,7 @@ let arrowFunction = (param1, param2) =&gt; {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/17/面试中常见问题总结/" data-id="cjx3du7dh003gucfytligoego" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-iOS即时通讯实现二" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/01/12/iOS即时通讯实现二/" class="article-date">
-  <time datetime="2018-01-12T13:54:26.000Z" itemprop="datePublished">2018-01-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/12/iOS即时通讯实现二/">iOS即时通讯实现二</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="实现IM通信所用协议"><a href="#实现IM通信所用协议" class="headerlink" title="实现IM通信所用协议"></a>实现IM通信所用协议</h2><p>几个协议理解</p>
-<p>xmpp 是基于xml协议主要是易于扩展，早起用于PC时代的产品使用，流量大，耗电大交互复杂其实并不适合移动互联网时代的IM产品</p>
-<p>MQTT 协议 适配多平台，需自己扩展好友，群组等功能</p>
-<p>protobut 协议</p>
-<h2 id="封装socket，自己实现"><a href="#封装socket，自己实现" class="headerlink" title="封装socket，自己实现"></a>封装socket，自己实现</h2><p>所要考虑的问题</p>
-<ul>
-<li><p>传输协议选择 </p>
-<ul>
-<li>TCP ？ 一般公司都选用（技术不是很成熟）</li>
-<li>UDP ？QQ 腾讯增加自己的私有协议，保证数据传递的可靠性，解决了丢包，乱序的问题</li>
-</ul>
-</li>
-<li><p>聊天协议选择及代表框架</p>
-<ul>
-<li>Socket ？ CocoaAsyncSocket </li>
-<li>WebSockt ？是传输通讯协议，基于socket封装的一个协议 SocketRocket</li>
-<li>MQTT ？MQTTKit 聊天协议为上层协议</li>
-<li>protobut 协议 ？</li>
-<li>XMPP ？XMPPFramework  聊天协议为上层协议</li>
-<li>自定义</li>
-</ul>
-</li>
-<li><p>传输数据格式</p>
-<ul>
-<li>Json？</li>
-<li>XML？</li>
-<li>ProtocolBuffer？</li>
-</ul>
-</li>
-<li><p>细节相关</p>
-<ul>
-<li>TCP 长连接如何保持，</li>
-<li>心跳机制</li>
-<li>重连机制</li>
-<li>数据安全机制</li>
-</ul>
-</li>
-</ul>
-<h3 id="CocoaAsyncSocket"><a href="#CocoaAsyncSocket" class="headerlink" title="CocoaAsyncSocket"></a>CocoaAsyncSocket</h3><ul>
-<li>CocoaAsyncSocket 的 delegate 用来设置代理处理各个回调</li>
-<li>delegateQueue </li>
-<li>socketQueue 串行队列，贯穿全类并没有任何加锁，确保了socket 操作中每一步都是线程安全的</li>
-<li><p>创建了两个读写队列（本质是数组）</p>
-<ul>
-<li><code>NSMutableArray *readQueue;</code> </li>
-<li><code>NSMutableArray *writeQueue;</code></li>
-</ul>
-</li>
-<li><p>全局数据缓冲: 当前socket未获取完的数据大小</p>
-<ul>
-<li><code>GCDAsyncSocketPreBuffer *preBuffer;</code></li>
-</ul>
-</li>
-<li><p>交替延时变量: 用于进行另一服务端地址请求的延时 </p>
-<ul>
-<li><code>alternateAddressDelay</code></li>
-</ul>
-</li>
-<li><p>connect</p>
-</li>
-<li><p>disconnect</p>
-</li>
-</ul>
-<h2 id="数据粘包-断包"><a href="#数据粘包-断包" class="headerlink" title="数据粘包,断包"></a>数据粘包,断包</h2><ul>
-<li><p>粘包: 如果客户端同一时间发送几条数据，而服务器只收到一大条数据</p>
-<ul>
-<li>原因：</li>
-<li><p>由于传输的是数据流，经过TCP传输后，TCP使用了优化算法将多次间隔较小且数据量小的数据合并成一个大的数据块，因此三条数据合并成了一条</p>
-<p>  <strong>TCP,UDP都可能造成粘包的原因</strong></p>
-</li>
-<li><p>发送端需要等缓冲区满了才发送出去，做成粘包</p>
-</li>
-<li>接收方不及时接收缓冲区的包，造成多个包接收</li>
-</ul>
-</li>
-<li><p>断包: 因为一次发送很大的数据包，缓冲区有限，会分段发送或读取数据</p>
-</li>
-</ul>
-<h2 id="CocoaAsyncSocket的封包，拆包处理"><a href="#CocoaAsyncSocket的封包，拆包处理" class="headerlink" title="CocoaAsyncSocket的封包，拆包处理"></a>CocoaAsyncSocket的封包，拆包处理</h2><ul>
-<li><p>读取数据方法：</p>
-<pre><code>// 有数据时调用，读取当前消息队列中的未读消息
-- (void)readDataWithTimeout:(NSTimeInterval)timeout tag:(long)tag
-</code></pre></li>
-</ul>
-<pre><code>**每次读取数据，每次都必须手动调用上述 readData 方法超时设置为不超时才能触发消息回调的代理**
-
-**因此在第一连接时调用，再在接到消息时调用，上述方法就可以达到每次收到消息都会触发读取消息的代理**
-
-以上做法存在的问题就是没有考虑数据的拆包会有粘包情况，这时候需要用下面两个`read`方法，1. 读取指定长度、2.读取指定边界
-
-    // 读取特定长度数据时调用
-    - (void)readDataToLength:(NSUInteger)length withTimeout:(NSTimeInterval)timeout tag:(long)tag
-
-    // 读到特定的 data 边界时调用
-    - (void)readDataToData:(NSData *)data withTimeout:(NSTimeInterval)timeout tag:(long)tag
-
-
-**解决办法及具体思路**
-
-- 封包：给每个数据包增加一个长度或者加一个开始结束标记，表明数据的长度和类型（根据自己的项目：文本、图片、语音、红包、视频、话题、提问等等）
-    - 可以在数据包之后加一个结束标识符，解决了传输过程中丢包，丢失头部信息的错误包读取，读到这样的就丢弃直接读下一个数据包
-
-- 拆包：获取每个包的标记，根据标记的数据长度获取数据，最后根据类型处理数据,最后读取数据包头部的边界
-</code></pre><ul>
-<li><p>利用缓冲区对数据进行读取</p>
-<ul>
-<li>创建读取数据包</li>
-<li>添加到读取的队列中</li>
-<li>从队列中取出读取任务包 </li>
-<li><p>使用偏移量 <code>maxLength</code> 读取数据 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">		- (void)readDataWithTimeout:(NSTimeInterval)timeout</span><br><span class="line">                     buffer:(NSMutableData *)buffer</span><br><span class="line">               bufferOffset:(NSUInteger)offset</span><br><span class="line">                  maxLength:(NSUInteger)length</span><br><span class="line">                        tag:(long)tag</span><br><span class="line">&#123;</span><br><span class="line">	if (offset &gt; [buffer length]) &#123;</span><br><span class="line">		LogWarn(@&quot;Cannot read: offset &gt; [buffer length]&quot;);</span><br><span class="line">		return;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	// 1. 创建读取数据包</span><br><span class="line">	GCDAsyncReadPacket *packet = [[GCDAsyncReadPacket alloc] initWithData:buffer</span><br><span class="line">	                                                          startOffset:offset</span><br><span class="line">	                                                            maxLength:length</span><br><span class="line">	                                                              timeout:timeout</span><br><span class="line">	                                                           readLength:0</span><br><span class="line">	                                                           terminator:nil</span><br><span class="line">	                                                                  tag:tag];</span><br><span class="line">	</span><br><span class="line">	dispatch_async(socketQueue, ^&#123; @autoreleasepool &#123;</span><br><span class="line">		</span><br><span class="line">		LogTrace();</span><br><span class="line">		</span><br><span class="line">		if ((flags &amp; kSocketStarted) &amp;&amp; !(flags &amp; kForbidReadsWrites))</span><br><span class="line">		&#123;</span><br><span class="line">			// 2. 向读的队列添加任务包</span><br><span class="line">			[readQueue addObject:packet];</span><br><span class="line">			// 3. 从队列中取出读取任务包 </span><br><span class="line">			[self maybeDequeueRead];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;&#125;);</span><br><span class="line">	</span><br><span class="line">	// Do not rely on the block being run in order to release the packet,</span><br><span class="line">	// as the queue might get released without the block completing.</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<p>doReadData 方法时读取数据的核心方法</p>
-<ul>
-<li>如果读取对列中没有数据，就去判是否是上次已经读取了数据，但是因为没有目前还没有读取到数据的标记，这是正好设置了 read 方法中的超时时间，所以要断开socket 连接</li>
-</ul>
-<p><img src="https://www.jianshu.com/p/fdd3d429bdb3" alt>                </p>
-<ul>
-<li>接收到数据后在 socket系统进程的数据缓冲区中<ul>
-<li>（基于TLS的分为两种）他们在各自管道中流动，完成数据解密后又流向了全局数据缓冲区<ul>
-<li>CFStreem </li>
-<li>SSLPrebuffer</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p>处理数据逻辑： 如果当前读取包长度给明了，则直接流向currentRead，如果数据长度不清楚，那么则去判断这一次读取的长度，和currentRead可用空间长度去对比，如果长度比currentRead可用空间小，则流向currentRead，否则先用prebuffer来缓冲。</p>
-<h3 id="心跳机制"><a href="#心跳机制" class="headerlink" title="心跳机制"></a>心跳机制</h3><ul>
-<li>TCP 自带的keep-alive 使用空闲时间来发并且默认超时时间太长是2 小时，</li>
-<li>如果应用使用了socks ，socks proxy会让tcp keep-alive失效，因为socks 协议只管转发TCP层具体的数据包，并不会转发TCP协议内的实现具体细节数据包</li>
-<li><p>TCP 的长连接理论上是一直保持连接的，可以设置 TCP keep-alive的时间 但是实际情况下中，可能出现故障或者是因为防火墙的原因会自动把一定时间段内没有数据交互的连接给断开，心跳机制就可以维持长连接，保持活跃状态</p>
-</li>
-<li><p>iOS 中使用 NSTimer  <code>scheduledTimerWithTimeInterval</code> 需要在调用之前的关键位置设置 fireDate 为未来的某个时间, 然后再需要的时候开启</p>
-</li>
-<li>或者直接使用 <code>timerWithTimeInterval</code> 创建，然后添加到<code>runloop</code>中</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/12/iOS即时通讯实现二/" data-id="cjx3du7co002eucfyrskoc00o" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/17/面试中常见问题总结/" data-id="cjx3gd6p1003iobfynhp1jqr9" class="article-share-link">Share</a>
       
       
     </footer>
@@ -941,6 +826,10 @@ let arrowFunction = (param1, param2) =&gt; {
       <ul>
         
           <li>
+            <a href="/2019/06/19/Flutter中布局/">(no title)</a>
+          </li>
+        
+          <li>
             <a href="/2019/06/18/Flutter中GridView组件/">GridView组件使用.md</a>
           </li>
         
@@ -954,10 +843,6 @@ let arrowFunction = (param1, param2) =&gt; {
         
           <li>
             <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
           </li>
         
       </ul>
