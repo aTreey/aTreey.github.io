@@ -108,7 +108,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift协议扩展/" data-id="cjx3gd6o0001xobfyvgbnfirw" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift协议扩展/" data-id="cjx3gfxy60022xvfyge08x41u" class="article-share-link">Share</a>
       
       
     </footer>
@@ -136,7 +136,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/SwiftLint使用/" data-id="cjx3gd6nw001oobfykbgh9rku" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/SwiftLint使用/" data-id="cjx3gfxxy001kxvfye1wu6re3" class="article-share-link">Share</a>
       
       
     </footer>
@@ -214,7 +214,82 @@ return one.x &gt; other.x &amp;&amp;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift下标和运算符重载/" data-id="cjx3gd6nx001robfyadc152h3" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift下标和运算符重载/" data-id="cjx3gfxy1001pxvfynk6wyv8x" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Swift 协议使用" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/Swift 协议使用/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.002Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Swift-协议使用"><a href="#Swift-协议使用" class="headerlink" title="Swift 协议使用"></a>Swift 协议使用</h1><h2 id="对UIView-扩展"><a href="#对UIView-扩展" class="headerlink" title="对UIView 扩展"></a>对UIView 扩展</h2><h3 id="按钮-文本框抖动动画"><a href="#按钮-文本框抖动动画" class="headerlink" title="按钮/文本框抖动动画"></a>按钮/文本框抖动动画</h3><ul>
+<li><p>声明协议</p>
+<ul>
+<li><p>协议中定义属性：遵循该协议的类型都具有此属性</p>
+<ul>
+<li>必须明确规定该属性是可读的 <code>{get}</code> 或者可写的 <code>{set}</code>，或是可读可写的 <code>{get set}</code></li>
+<li>使用static修饰声明一个类类型属性</li>
+</ul>
+</li>
+<li><p>协议中定义方法</p>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">protocol Shakable &#123;&#125;</span><br><span class="line">extension Shakable where Self: UIView &#123;</span><br><span class="line">    func shakeAnimation() &#123;</span><br><span class="line">        let animation = CABasicAnimation(keyPath: &quot;position&quot;)</span><br><span class="line">        animation.duration = 0.08</span><br><span class="line">        animation.repeatCount = 5</span><br><span class="line">        animation.autoreverses = true</span><br><span class="line">        animation.fromValue = NSValue(cgPoint: CGPoint(x: self.center.x - 4, y: self.center.y))</span><br><span class="line">        animation.toValue = NSValue(cgPoint: CGPoint(x: self.center.x + 4, y: self.center.y))</span><br><span class="line">        layer.add(animation, forKey: &quot;position&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>自定义UI控件并遵守协议</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class MyButton: UIButton, Shakable &#123;  &#125;</span><br><span class="line">class MySwitch: UISwitch, Shakable &#123;  &#125;</span><br><span class="line">class MyTextField: UITextField, Shakable &#123;  &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let mySwitch = MySwitch()</span><br><span class="line">mySwitch.isOn = true</span><br><span class="line">self.mySwitch = mySwitch</span><br><span class="line">view.addSubview(mySwitch)</span><br><span class="line">mySwitch.translatesAutoresizingMaskIntoConstraints = false</span><br><span class="line">mySwitch.topAnchor.constraint(equalTo: view.bottomAnchor, constant: 10).isActive = true</span><br><span class="line">mySwitch.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true</span><br><span class="line"></span><br><span class="line">// 调用</span><br><span class="line">mySwitch.shakeAnimation()</span><br></pre></td></tr></table></figure>
+<h2 id="UITableViewCell使用"><a href="#UITableViewCell使用" class="headerlink" title="UITableViewCell使用"></a>UITableViewCell使用</h2><h3 id="定义协议"><a href="#定义协议" class="headerlink" title="定义协议"></a>定义协议</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">protocol ReusableView: class &#123;	&#125;</span><br><span class="line"></span><br><span class="line">extension ReusableView where Self: UIView &#123;</span><br><span class="line">    static var reuseIdentifier: String &#123;</span><br><span class="line">        return String(describing: self)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">### 对tableView扩展</span><br></pre></td></tr></table></figure>
+<p>extension UITableView {<br>    /// 注册cell<br>    func register&lt;T: UITableViewCell&gt;(T: T.Type) where T: ReusableView {<br>        print(T.reuseIdentifier)<br>        self.register(T.self, forCellReuseIdentifier: T.reuseIdentifier)<br>    }</p>
+<pre><code>/// 调用cell
+func dequeueReusableCell&lt;T: UITableViewCell&gt;(_ indexPath: IndexPath) -&gt; T where T: ReusableView {
+    print(T.reuseIdentifier)
+    return self.dequeueReusableCell(withIdentifier: T.reuseIdentifier, for: indexPath) as! T
+}
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 用法</span><br><span class="line"></span><br><span class="line">- 创建自定义的cell，需要遵守协议</span><br></pre></td></tr></table></figure></p>
+<p>class TableProtocolCell: UITableViewCell, ReusableView {<br>    override var reuseIdentifier: String? {<br>        return “cell”<br>    }<br>    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {<br>        super.init(style: style, reuseIdentifier: reuseIdentifier)<br>        self.backgroundColor = .cyan<br>        self.textLabel?.text = “通过协议和泛型创建的cell”<br>        self.textLabel?.textColor = .blue<br>    }<br>    required init?(coder aDecoder: NSCoder) {<br>        fatalError(“init(coder:) has not been implemented”)<br>    }<br>}</p>
+<p>class TableProtocolCell2: UITableViewCell, ReusableView {<br>    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {<br>        super.init(style: style, reuseIdentifier: reuseIdentifier)<br>        self.backgroundColor = .red<br>        self.textLabel?.text = “cell1 - 通过协议和泛型创建的”<br>        self.textLabel?.textAlignment = .right<br>    }<br>    required init?(coder aDecoder: NSCoder) {<br>        fatalError(“init(coder:) has not been implemented”)<br>    }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 注册和使用</span><br></pre></td></tr></table></figure></p>
+<p>class TableViewProtocolController: UITableViewController {<br>    override func viewDidLoad() {<br>        super.viewDidLoad()<br>        tableView.register(T: TableProtocolCell.self)<br>        tableView.register(T: TableProtocolCell2.self)<br>    }</p>
+<pre><code>override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int {
+    return 10
+}
+
+override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -&gt; UITableViewCell {
+    var cell = UITableViewCell()
+    if indexPath.row % 2 == 0 {
+        cell = tableView.dequeueReusableCell(indexPath) as TableProtocolCell
+    } else {
+        cell = tableView.dequeueReusableCell(indexPath) as TableProtocolCell2
+    }
+    return cell
+}
+</code></pre><p>}</p>
+<p><code>`</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift 协议使用/" data-id="cjx3gfxxs0019xvfy0chrbhh3" class="article-share-link">Share</a>
       
       
     </footer>
@@ -336,7 +411,7 @@ return one.x &gt; other.x &amp;&amp;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift 基础知识/" data-id="cjx3gd6nr001aobfyt9wlfd29" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift 基础知识/" data-id="cjx3gfxxt001bxvfym2bxg3h3" class="article-share-link">Share</a>
       
       
     </footer>
@@ -346,10 +421,10 @@ return one.x &gt; other.x &amp;&amp;
 
 
   
-    <article id="post-Swift 协议使用" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-ReactNative中ref使用" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/18/Swift 协议使用/" class="article-date">
-  <time datetime="2019-06-18T15:30:19.002Z" itemprop="datePublished">2019-06-18</time>
+    <a href="/2019/06/18/ReactNative中ref使用/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.001Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -358,60 +433,35 @@ return one.x &gt; other.x &amp;&amp;
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Swift-协议使用"><a href="#Swift-协议使用" class="headerlink" title="Swift 协议使用"></a>Swift 协议使用</h1><h2 id="对UIView-扩展"><a href="#对UIView-扩展" class="headerlink" title="对UIView 扩展"></a>对UIView 扩展</h2><h3 id="按钮-文本框抖动动画"><a href="#按钮-文本框抖动动画" class="headerlink" title="按钮/文本框抖动动画"></a>按钮/文本框抖动动画</h3><ul>
-<li><p>声明协议</p>
+        <p>Reat Native ref 使用</p>
+<h3 id="State-状态的使用"><a href="#State-状态的使用" class="headerlink" title="State 状态的使用"></a>State 状态的使用</h3><p>在父控件中指定,整个生命周期讲不再改变<br>需求：一段闪烁的文字， Props 属性显示文字内容创建时初始化，State控制随时间变化是否显示，在父控件中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">class Blink extends Component&#123;</span><br><span class="line">    // 构造</span><br><span class="line">      constructor(props) &#123;</span><br><span class="line">        super(props);</span><br><span class="line">        // 初始状态</span><br><span class="line">        this.state = &#123;showWithText:true&#125;;</span><br><span class="line">    this.state = &#123;&#125;</span><br><span class="line">        setInterval(() =&gt; &#123;</span><br><span class="line">            this.setState(previousState =&gt; &#123;</span><br><span class="line">                return &#123;showWithText: !previousState.showWithText&#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;, 100);</span><br><span class="line">      &#125;</span><br><span class="line">      render() &#123;</span><br><span class="line">          let display= this.state.showWithText ? this.props.text : &apos; &apos;;</span><br><span class="line">          return(</span><br><span class="line">              &lt;Text&gt;&#123;display&#125;&lt;/Text&gt;</span><br><span class="line">          );</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">export default class App extends Component&lt;Props&gt; &#123;</span><br><span class="line">    render() &#123;</span><br><span class="line">        return(</span><br><span class="line">            &lt;View style=&#123;styles.container&#125;&gt;</span><br><span class="line">                &lt;Blink</span><br><span class="line">                    text=&apos;I love to blink&apos;</span><br><span class="line">                /&gt;</span><br><span class="line"></span><br><span class="line">                &lt;Blink</span><br><span class="line">                  text=&apos;猜猜猜&apos;</span><br><span class="line">                /&gt;</span><br><span class="line"></span><br><span class="line">                &lt;Blink</span><br><span class="line">                    text=&apos;Blink is great&apos;</span><br><span class="line">                /&gt;</span><br><span class="line">            &lt;/View&gt;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Props-属性的使用"><a href="#Props-属性的使用" class="headerlink" title="Props 属性的使用"></a>Props 属性的使用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 定义一个组件</span><br><span class="line">class Greeting extends Component &#123;</span><br><span class="line">    render() &#123;</span><br><span class="line">        return(</span><br><span class="line">            &lt;Text&gt; Hello &#123;this.props.name&#125;!</span><br><span class="line">            &lt;/Text&gt;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">export default class App extends Component&lt;Props&gt; &#123;</span><br><span class="line">    render() &#123;</span><br><span class="line">        return(</span><br><span class="line">            &lt;View style=&#123;styles.container&#125;&gt;</span><br><span class="line">                &lt;Image source=&#123;&#123;uri:&apos;https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg&apos;&#125;&#125;</span><br><span class="line">                       style=&#123;&#123;width: 190, height: 110&#125;&#125;</span><br><span class="line">                /&gt;</span><br><span class="line">                &lt;Text style=&#123;styles.instructions&#125;&gt;</span><br><span class="line">                    使用Props属性</span><br><span class="line">                &lt;/Text&gt;</span><br><span class="line">                &lt;View&gt;</span><br><span class="line">                    &lt;Greeting name=&apos;React-Native&apos;</span><br><span class="line">                    /&gt;</span><br><span class="line">                    &lt;Greeting name=&apos;iOS&apos;</span><br><span class="line">                    /&gt;</span><br><span class="line">                    &lt;Greeting name=&apos;Swift&apos;</span><br><span class="line">                    /&gt;</span><br><span class="line">                &lt;/View&gt;</span><br><span class="line"></span><br><span class="line">            &lt;/View&gt;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="ref的使用"><a href="#ref的使用" class="headerlink" title="ref的使用"></a>ref的使用</h4><ul>
+<li>可以理解为组件渲染后指向组件的一个应用，可以通过ref获取到真实的组件（类似指针？）</li>
+</ul>
+<p>定义</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ref=&apos;scrollView&apos;</span><br></pre></td></tr></table></figure>
+<p>获取</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let scrollView = this.refs.scrollView</span><br><span class="line">let scrollView = this.refs[&apos;scrollView&apos;]</span><br></pre></td></tr></table></figure>
 <ul>
-<li><p>协议中定义属性：遵循该协议的类型都具有此属性</p>
+<li>可以通过ref访问组件的属性和方法</li>
+</ul>
+<h4 id="ES6-定时器"><a href="#ES6-定时器" class="headerlink" title="ES6 定时器"></a>ES6 定时器</h4><ul>
+<li>开启定时器</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">let scrollView = this.refs.scrollView;</span><br><span class="line">// 2.4timer 定时器的写法</span><br><span class="line">this.timer = setInterval(</span><br><span class="line">    ()=&gt;&#123;</span><br><span class="line">        var tempPage = 0;</span><br><span class="line">        //  修改banner索引</span><br><span class="line">        if ((this.state.currentPage+1) &gt;= ImageData.data.length) &#123;</span><br><span class="line">            tempPage = 0;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            tempPage = this.state.currentPage+1;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 更新状态</span><br><span class="line">        this.setState(&#123;</span><br><span class="line">            currentPage: tempPage</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">        let offSet_x = width * tempPage</span><br><span class="line">        scrollView.scrollResponderScrollTo(&#123;x:offSet_x, y:0, animated: true&#125;)</span><br><span class="line">    &#125;,</span><br><span class="line">    this.state.duration</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 <ul>
-<li>必须明确规定该属性是可读的 <code>{get}</code> 或者可写的 <code>{set}</code>，或是可读可写的 <code>{get set}</code></li>
-<li>使用static修饰声明一个类类型属性</li>
+<li>暂停定时器</li>
 </ul>
-</li>
-<li><p>协议中定义方法</p>
-</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">protocol Shakable &#123;&#125;</span><br><span class="line">extension Shakable where Self: UIView &#123;</span><br><span class="line">    func shakeAnimation() &#123;</span><br><span class="line">        let animation = CABasicAnimation(keyPath: &quot;position&quot;)</span><br><span class="line">        animation.duration = 0.08</span><br><span class="line">        animation.repeatCount = 5</span><br><span class="line">        animation.autoreverses = true</span><br><span class="line">        animation.fromValue = NSValue(cgPoint: CGPoint(x: self.center.x - 4, y: self.center.y))</span><br><span class="line">        animation.toValue = NSValue(cgPoint: CGPoint(x: self.center.x + 4, y: self.center.y))</span><br><span class="line">        layer.add(animation, forKey: &quot;position&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>自定义UI控件并遵守协议</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class MyButton: UIButton, Shakable &#123;  &#125;</span><br><span class="line">class MySwitch: UISwitch, Shakable &#123;  &#125;</span><br><span class="line">class MyTextField: UITextField, Shakable &#123;  &#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>使用</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let mySwitch = MySwitch()</span><br><span class="line">mySwitch.isOn = true</span><br><span class="line">self.mySwitch = mySwitch</span><br><span class="line">view.addSubview(mySwitch)</span><br><span class="line">mySwitch.translatesAutoresizingMaskIntoConstraints = false</span><br><span class="line">mySwitch.topAnchor.constraint(equalTo: view.bottomAnchor, constant: 10).isActive = true</span><br><span class="line">mySwitch.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true</span><br><span class="line"></span><br><span class="line">// 调用</span><br><span class="line">mySwitch.shakeAnimation()</span><br></pre></td></tr></table></figure>
-<h2 id="UITableViewCell使用"><a href="#UITableViewCell使用" class="headerlink" title="UITableViewCell使用"></a>UITableViewCell使用</h2><h3 id="定义协议"><a href="#定义协议" class="headerlink" title="定义协议"></a>定义协议</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">protocol ReusableView: class &#123;	&#125;</span><br><span class="line"></span><br><span class="line">extension ReusableView where Self: UIView &#123;</span><br><span class="line">    static var reuseIdentifier: String &#123;</span><br><span class="line">        return String(describing: self)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">### 对tableView扩展</span><br></pre></td></tr></table></figure>
-<p>extension UITableView {<br>    /// 注册cell<br>    func register&lt;T: UITableViewCell&gt;(T: T.Type) where T: ReusableView {<br>        print(T.reuseIdentifier)<br>        self.register(T.self, forCellReuseIdentifier: T.reuseIdentifier)<br>    }</p>
-<pre><code>/// 调用cell
-func dequeueReusableCell&lt;T: UITableViewCell&gt;(_ indexPath: IndexPath) -&gt; T where T: ReusableView {
-    print(T.reuseIdentifier)
-    return self.dequeueReusableCell(withIdentifier: T.reuseIdentifier, for: indexPath) as! T
-}
-</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 用法</span><br><span class="line"></span><br><span class="line">- 创建自定义的cell，需要遵守协议</span><br></pre></td></tr></table></figure></p>
-<p>class TableProtocolCell: UITableViewCell, ReusableView {<br>    override var reuseIdentifier: String? {<br>        return “cell”<br>    }<br>    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {<br>        super.init(style: style, reuseIdentifier: reuseIdentifier)<br>        self.backgroundColor = .cyan<br>        self.textLabel?.text = “通过协议和泛型创建的cell”<br>        self.textLabel?.textColor = .blue<br>    }<br>    required init?(coder aDecoder: NSCoder) {<br>        fatalError(“init(coder:) has not been implemented”)<br>    }<br>}</p>
-<p>class TableProtocolCell2: UITableViewCell, ReusableView {<br>    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {<br>        super.init(style: style, reuseIdentifier: reuseIdentifier)<br>        self.backgroundColor = .red<br>        self.textLabel?.text = “cell1 - 通过协议和泛型创建的”<br>        self.textLabel?.textAlignment = .right<br>    }<br>    required init?(coder aDecoder: NSCoder) {<br>        fatalError(“init(coder:) has not been implemented”)<br>    }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 注册和使用</span><br></pre></td></tr></table></figure></p>
-<p>class TableViewProtocolController: UITableViewController {<br>    override func viewDidLoad() {<br>        super.viewDidLoad()<br>        tableView.register(T: TableProtocolCell.self)<br>        tableView.register(T: TableProtocolCell2.self)<br>    }</p>
-<pre><code>override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int {
-    return 10
-}
-
-override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -&gt; UITableViewCell {
-    var cell = UITableViewCell()
-    if indexPath.row % 2 == 0 {
-        cell = tableView.dequeueReusableCell(indexPath) as TableProtocolCell
-    } else {
-        cell = tableView.dequeueReusableCell(indexPath) as TableProtocolCell2
-    }
-    return cell
-}
-</code></pre><p>}</p>
-<p><code>`</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this.timer &amp;&amp; clearInterval(this.timer)</span><br></pre></td></tr></table></figure>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift 协议使用/" data-id="cjx3gd6ns001cobfyuwdctyqu" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/ReactNative中ref使用/" data-id="cjx3gfxxn000zxvfyeru8cc5h" class="article-share-link">Share</a>
       
       
     </footer>
@@ -498,57 +548,7 @@ override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexP
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/RN报错/" data-id="cjx3gd6nm0011obfyptowomh6" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-ReactNative中ref使用" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/ReactNative中ref使用/" class="article-date">
-  <time datetime="2019-06-18T15:30:19.001Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Reat Native ref 使用</p>
-<h3 id="State-状态的使用"><a href="#State-状态的使用" class="headerlink" title="State 状态的使用"></a>State 状态的使用</h3><p>在父控件中指定,整个生命周期讲不再改变<br>需求：一段闪烁的文字， Props 属性显示文字内容创建时初始化，State控制随时间变化是否显示，在父控件中</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">class Blink extends Component&#123;</span><br><span class="line">    // 构造</span><br><span class="line">      constructor(props) &#123;</span><br><span class="line">        super(props);</span><br><span class="line">        // 初始状态</span><br><span class="line">        this.state = &#123;showWithText:true&#125;;</span><br><span class="line">    this.state = &#123;&#125;</span><br><span class="line">        setInterval(() =&gt; &#123;</span><br><span class="line">            this.setState(previousState =&gt; &#123;</span><br><span class="line">                return &#123;showWithText: !previousState.showWithText&#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;, 100);</span><br><span class="line">      &#125;</span><br><span class="line">      render() &#123;</span><br><span class="line">          let display= this.state.showWithText ? this.props.text : &apos; &apos;;</span><br><span class="line">          return(</span><br><span class="line">              &lt;Text&gt;&#123;display&#125;&lt;/Text&gt;</span><br><span class="line">          );</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">export default class App extends Component&lt;Props&gt; &#123;</span><br><span class="line">    render() &#123;</span><br><span class="line">        return(</span><br><span class="line">            &lt;View style=&#123;styles.container&#125;&gt;</span><br><span class="line">                &lt;Blink</span><br><span class="line">                    text=&apos;I love to blink&apos;</span><br><span class="line">                /&gt;</span><br><span class="line"></span><br><span class="line">                &lt;Blink</span><br><span class="line">                  text=&apos;猜猜猜&apos;</span><br><span class="line">                /&gt;</span><br><span class="line"></span><br><span class="line">                &lt;Blink</span><br><span class="line">                    text=&apos;Blink is great&apos;</span><br><span class="line">                /&gt;</span><br><span class="line">            &lt;/View&gt;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Props-属性的使用"><a href="#Props-属性的使用" class="headerlink" title="Props 属性的使用"></a>Props 属性的使用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 定义一个组件</span><br><span class="line">class Greeting extends Component &#123;</span><br><span class="line">    render() &#123;</span><br><span class="line">        return(</span><br><span class="line">            &lt;Text&gt; Hello &#123;this.props.name&#125;!</span><br><span class="line">            &lt;/Text&gt;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">export default class App extends Component&lt;Props&gt; &#123;</span><br><span class="line">    render() &#123;</span><br><span class="line">        return(</span><br><span class="line">            &lt;View style=&#123;styles.container&#125;&gt;</span><br><span class="line">                &lt;Image source=&#123;&#123;uri:&apos;https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg&apos;&#125;&#125;</span><br><span class="line">                       style=&#123;&#123;width: 190, height: 110&#125;&#125;</span><br><span class="line">                /&gt;</span><br><span class="line">                &lt;Text style=&#123;styles.instructions&#125;&gt;</span><br><span class="line">                    使用Props属性</span><br><span class="line">                &lt;/Text&gt;</span><br><span class="line">                &lt;View&gt;</span><br><span class="line">                    &lt;Greeting name=&apos;React-Native&apos;</span><br><span class="line">                    /&gt;</span><br><span class="line">                    &lt;Greeting name=&apos;iOS&apos;</span><br><span class="line">                    /&gt;</span><br><span class="line">                    &lt;Greeting name=&apos;Swift&apos;</span><br><span class="line">                    /&gt;</span><br><span class="line">                &lt;/View&gt;</span><br><span class="line"></span><br><span class="line">            &lt;/View&gt;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="ref的使用"><a href="#ref的使用" class="headerlink" title="ref的使用"></a>ref的使用</h4><ul>
-<li>可以理解为组件渲染后指向组件的一个应用，可以通过ref获取到真实的组件（类似指针？）</li>
-</ul>
-<p>定义</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ref=&apos;scrollView&apos;</span><br></pre></td></tr></table></figure>
-<p>获取</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let scrollView = this.refs.scrollView</span><br><span class="line">let scrollView = this.refs[&apos;scrollView&apos;]</span><br></pre></td></tr></table></figure>
-<ul>
-<li>可以通过ref访问组件的属性和方法</li>
-</ul>
-<h4 id="ES6-定时器"><a href="#ES6-定时器" class="headerlink" title="ES6 定时器"></a>ES6 定时器</h4><ul>
-<li>开启定时器</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">let scrollView = this.refs.scrollView;</span><br><span class="line">// 2.4timer 定时器的写法</span><br><span class="line">this.timer = setInterval(</span><br><span class="line">    ()=&gt;&#123;</span><br><span class="line">        var tempPage = 0;</span><br><span class="line">        //  修改banner索引</span><br><span class="line">        if ((this.state.currentPage+1) &gt;= ImageData.data.length) &#123;</span><br><span class="line">            tempPage = 0;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            tempPage = this.state.currentPage+1;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 更新状态</span><br><span class="line">        this.setState(&#123;</span><br><span class="line">            currentPage: tempPage</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">        let offSet_x = width * tempPage</span><br><span class="line">        scrollView.scrollResponderScrollTo(&#123;x:offSet_x, y:0, animated: true&#125;)</span><br><span class="line">    &#125;,</span><br><span class="line">    this.state.duration</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>暂停定时器</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this.timer &amp;&amp; clearInterval(this.timer)</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/ReactNative中ref使用/" data-id="cjx3gd6nn0012obfyfmfjbcga" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/RN报错/" data-id="cjx3gfxxo0012xvfyoerzca53" class="article-share-link">Share</a>
       
       
     </footer>
@@ -617,7 +617,7 @@ override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexP
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/React-Native开发iOS打包/" data-id="cjx3gd6no0016obfyyz5b8s7f" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/React-Native开发iOS打包/" data-id="cjx3gfxxp0013xvfy2q7cwjqp" class="article-share-link">Share</a>
       
       
     </footer>
@@ -693,7 +693,7 @@ typeof(array)
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/JavaScript基础/" data-id="cjx3gd6n8000jobfyweczhl65" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/JavaScript基础/" data-id="cjx3gfxxg000hxvfyz9qd6qj5" class="article-share-link">Share</a>
       
       
     </footer>
@@ -872,7 +872,7 @@ nullDataImageView.snp.makeConstraints {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/MasonrySnapkit使用总结/" data-id="cjx3gd6nh000pobfy560iohr0" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/MasonrySnapkit使用总结/" data-id="cjx3gfxxh000lxvfy415i7tgs" class="article-share-link">Share</a>
       
       
     </footer>
