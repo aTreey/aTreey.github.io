@@ -62,6 +62,248 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Block学习探究" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/19/Block学习探究/" class="article-date">
+  <time datetime="2018-01-18T16:06:55.000Z" itemprop="datePublished">2018-01-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/19/Block学习探究/">Block学习探究</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="代码及结果"><a href="#代码及结果" class="headerlink" title="代码及结果"></a>代码及结果</h3><ul>
+<li><p>普通局部变量</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- (void)block1 &#123;</span><br><span class="line">    </span><br><span class="line">    NSInteger num = 100;</span><br><span class="line">    </span><br><span class="line">    // 定义一个block</span><br><span class="line">    dispatch_block_t block = ^ &#123;</span><br><span class="line">        NSLog(@&quot;block1 -- numer = %zd&quot;, num);</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    num = 200;</span><br><span class="line">    </span><br><span class="line">    block();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用__block修饰变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- (void)block2 &#123;</span><br><span class="line">    </span><br><span class="line">    __block NSInteger num = 100;</span><br><span class="line">    </span><br><span class="line">    // 定义一个block</span><br><span class="line">    dispatch_block_t block = ^ &#123;</span><br><span class="line">        NSLog(@&quot;block2 -- numer = %zd&quot;, num);</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    num = 200;</span><br><span class="line">    </span><br><span class="line">    block();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>全局变量</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (void)block3 &#123;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    // 定义一个block</span><br><span class="line">    dispatch_block_t block = ^ &#123;</span><br><span class="line">        NSLog(@&quot;block3 -- numer = %zd&quot;, blockNum);</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    blockNum = 200;</span><br><span class="line">    </span><br><span class="line">    block();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>静态常量</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- (void)block4 &#123;</span><br><span class="line">    </span><br><span class="line">    static NSInteger num = 100;</span><br><span class="line">    </span><br><span class="line">    // 定义一个block</span><br><span class="line">    dispatch_block_t block = ^ &#123;</span><br><span class="line">        NSLog(@&quot;block4 -- numer = %zd&quot;, num);</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    num = 200;</span><br><span class="line">    </span><br><span class="line">    block();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h3><pre><code>2018-01-19 00:04:13.759416+0800 CycleRetain[91251:2382380] block1 -- numer = 100
+2018-01-19 00:04:13.760206+0800 CycleRetain[91251:2382380] block2 -- numer = 200
+2018-01-19 00:04:13.760473+0800 CycleRetain[91251:2382380] block3 -- numer = 200
+2018-01-19 00:04:13.760603+0800 CycleRetain[91251:2382380] block4 -- numer = 200
+</code></pre><h3 id="原理及本质"><a href="#原理及本质" class="headerlink" title="原理及本质"></a>原理及本质</h3><p>block 根据创建位置不同,共有三种:栈block,堆block,全局block</p>
+<p>使用<strong>block本质就是为了保证栈上和堆上block内访问和修改的是同一个变量,具体的实现是将</strong>block 修饰的变动自动封装成一个结构体,让他在堆上创建<br>基于OC 底层的runtime 机制<br>block 在内部会有一个指向结构体的指针,当调用block的时候其实就是让block找出对应的指针所指的函数地址进行调用。并传入了block自己本身</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2018/01/19/Block学习探究/" data-id="cjx92w8jr00019bfyrw3alj7w" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-常见问题总结-二" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/18/常见问题总结-二/" class="article-date">
+  <time datetime="2018-01-18T02:23:13.000Z" itemprop="datePublished">2018-01-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/18/常见问题总结-二/">面试中常见问题总结(二)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="非正式协议和正式协议"><a href="#非正式协议和正式协议" class="headerlink" title="非正式协议和正式协议"></a>非正式协议和正式协议</h3><p>非正式协议：凡是给NSObject或者其子类添加的类别都是非正式协议<br>正式协议：使用 @protocol 方式声明的方法列表，有 @require 和 @optional 两种类型</p>
+<h3 id="KVC-键值编码"><a href="#KVC-键值编码" class="headerlink" title="KVC 键值编码"></a>KVC 键值编码</h3><p> 之所以可以使用就是因为给 NObject 增加了 NSKeyValueCoding 非正式协议，NSObject 实现了协议，OC中几乎所有的对象都支持KVC，获取值的方法是不通过属性的setter、getter 方法，而是通过属性名称的key间接访问了实例变量，<strong>可以访问私有变量</strong></p>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> // 官方注释</span><br><span class="line"> /* Send -setObject:forKey: to the receiver, unless the value is nil, in which case send -removeObjectForKey:.</span><br><span class="line">*/</span><br><span class="line"> - (void)setValue:(nullable ObjectType)value forKey:(NSString *)key;</span><br></pre></td></tr></table></figure>
+</code></pre><p>如果为nil, 就会自动过滤掉, 此方法常用在字典中过滤空值</p>
+<p>// forKeyPath: 用于符合属性,能够通过层层访问内部属性，相当于调用属性点语法, 拥有forKey 的所有功能</p>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)setValue:(nullable id)value forKeyPath:(NSString *)keyPath;</span><br></pre></td></tr></table></figure>
+</code></pre><ul>
+<li>实现原理<ul>
+<li>利用 setValue: forKeyPath: 赋值</li>
+</ul>
+<ol>
+<li>底层实现还是使用 runtime 给对象发消息，先去查找属性是否有setter方法，存在setter 就会通过 setter 方法复制，</li>
+<li>如果没有setter方法，接着查找下是否划线的成员变量，如果有直接给赋值</li>
+<li>如果没有下划线的成员变量，查找是否存在和key值相同的属性，如果有就直接给属性赋值</li>
+<li>如果没有和key值相同的属性，就会执行 setValue: forUndefinedKey: 抛出一个异常程序奔溃，这也是字典转模型中需要实现这个方法的原因</li>
+</ol>
+</li>
+</ul>
+<h3 id="KVO-键值监听"><a href="#KVO-键值监听" class="headerlink" title="KVO 键值监听"></a>KVO 键值监听</h3><p>利用一个key值来找到某个属性并监听某个属性的值的变化发送给观察者，可以理解为简单的观察者模式</p>
+<ul>
+<li><p>KVO 使用</p>
+<ol>
+<li><p>为目标对象的属性添加观察者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (void)testKVO &#123;</span><br><span class="line">    Person *p = [[Person alloc] init];</span><br><span class="line">    self.person = p;</span><br><span class="line">    p.name = @&quot;哈哈&quot;;</span><br><span class="line">    </span><br><span class="line">    [p addObserver:self forKeyPath:@&quot;name&quot; options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];</span><br><span class="line">    </span><br><span class="line">    p.name = @&quot;我不是原来的我!你能监听到我 ？？？&quot;;</span><br><span class="line">    p.name = @&quot;看我七十二变&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ul>
+<pre><code>2. 实现监听的方法
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#pragma mark - kvo 回调方法</span><br><span class="line">	- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary&lt;NSKeyValueChangeKey,id&gt; *)change context:(void *)context &#123;</span><br><span class="line">	    </span><br><span class="line">	    NSLog(@&quot;KVO监听到的对象是 = %@, 值 = %@ , change = %@&quot;, [object class], keyPath, change);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+3. 移除观察者
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (void)dealloc &#123;</span><br><span class="line">   </span><br><span class="line">   [self removeObserver:self forKeyPath:@&quot;name&quot;];</span><br><span class="line">   NSLog(@&quot;-----控制器销毁-----&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre><ul>
+<li><p>KVO原理</p>
+<p>   类的属性被添加了观察者后，OC底层就会通过Runtime 动态的创建一个这个类的派生类，当前类内部的isa 指针指向了这个派生类，在派生类中重写基类被观察属性的 setter 方法，调用前后会调用 willChangeValueForKey, setValueForKey, didChangeValue 方法, 从而达到监听属性值的方法</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2018/01/18/常见问题总结-二/" data-id="cjx92w8lm002z9bfy25bj6zta" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-面试中常见问题总结" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/17/面试中常见问题总结/" class="article-date">
+  <time datetime="2018-01-17T14:54:12.000Z" itemprop="datePublished">2018-01-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/17/面试中常见问题总结/">面试中常见问题总结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="OC-的动态性"><a href="#OC-的动态性" class="headerlink" title="OC 的动态性"></a>OC 的动态性</h3><p>OC是基于C语言的，C语言在编译阶段就会确定了调用具体的那个函数，OC它的底层是通过runtime 运行时机制来调用函数，在OC中成为消息发送，具体来说就是在编译阶段OC可以调用任何函数，即时这个函数是没有实现的，只有在运行的时候才会根据isa指针和已经注册的方法列表中找到 IMP(函数指针)真正要调用的那个函数，我们平时写的OC代码，在运行的时候也都是转换成了runtime 的方式进行的，不管是什么方法本质都是发送一个消息</p>
+<h3 id="runtime"><a href="#runtime" class="headerlink" title="runtime"></a>runtime</h3><ul>
+<li>消息机制原理: 根据方法编号列表 SEL 去映射表中查找对应方法的实现</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Person *p = [Person allo] init];</span><br><span class="line"></span><br><span class="line">// 底层的写法</span><br><span class="line">// alloc</span><br><span class="line">Person *p = objc_msgSend(objc_getClass(&quot;Person&quot;), sel_registerName(&quot;alloc&quot;),);</span><br><span class="line"></span><br><span class="line">// init</span><br><span class="line">p = objc_msgSend(p, sel-registerName(&quot;init&quot;));</span><br><span class="line"></span><br><span class="line">// 调用对象方法本质就是：让对象发消息</span><br><span class="line">objc_msgSend(p, @selector(eat));</span><br><span class="line"></span><br><span class="line">// 调用类方法本质： 让类发消息</span><br><span class="line">objc_msgSend([Person class], @selector(run:), 20);</span><br><span class="line"></span><br><span class="line">// alloc init 也可以理解为：</span><br><span class="line"></span><br><span class="line">id objc = objc_msgSend([NSObject class], @selector(alloc));</span><br><span class="line"></span><br><span class="line">objc = objc_msgSend(objc, @selector(alloc));</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>runtime 消息机制调用流程</p>
+<p>  每个对象内部都有一个isa指针，指向他自己真实的类来确定调用的是那个类的方法; 每个方法sel都有一个IMP指针（指向现实函数的指针），不管是对象方法还是类方法,都会有一个方法列表</p>
+<ol>
+<li>发消息时根据对象内部的isa 指针去该类所对应的方法类表中查找方法,如果没有去父类中查找</li>
+<li>注册每个方法编号，为了以后快速查找调用</li>
+<li>根据方法编号查找对应方法</li>
+<li>通过isa指针和IMP指针确定最终调用的函数</li>
+</ol>
+</li>
+<li><p>runtime 常见使用</p>
+<ol>
+<li>运行是动态添加方法</li>
+<li>给分类添加属性，（关联属性）</li>
+<li>字典转模型中从先遍历模型属性再从字典中查找相关值实现模型属性赋值</li>
+<li>NSCoding 自动归档解档时对象属性过多时 <code>encodeWithCoder:</code> 和 <code>initWithCoder</code> 两个方法实现</li>
+</ol>
+</li>
+</ul>
+<h3 id="Runloop"><a href="#Runloop" class="headerlink" title="Runloop"></a>Runloop</h3><ul>
+<li><p>概念</p>
+<p>NSRunloop 是封装 CFRunloopRef 一套纯<code>C</code>的函数，</p>
+</li>
+<li><p>作用</p>
+<ol>
+<li>保持程序持续运行</li>
+<li>处理App中各种事件，具体的有：toches事件, NSTimer 事件, Selector 事件, PerformSelector 事件，source 源等等</li>
+<li>有事件触发时就运行，没有就休眠</li>
+<li>渲染app 中唯一一个主线程上所有UI界面的更新</li>
+</ol>
+</li>
+<li><p>使用和要点</p>
+<ol>
+<li>Runloop 在程序入口 main 函数中就会开启，并且开启的是主线程不会销毁除非退出程序，保证了程序一直运行并能响应事件和交互</li>
+<li>每一条线程都是唯一对应一个Runloop</li>
+<li>主线程不需要创建，因为在程序启动的时候就已经创建了，而子线程的需要手动创建 直接获取currentRunloop 方式（本质是使用了懒加载）</li>
+<li><p>Runloop 对象是利用字典进行存储，因为一一对应，所有key 和value 就是线程和 他所对应的runloop</p>
+</li>
+<li><p>Runloop 中 NSDefaultRunLoopMode 一般情况下主线程运行的 Mode</p>
+</li>
+<li>UIInitializationRunLoopMode 初始化mode,通常不用</li>
+<li>UITrackingRunLoopMode 界面跟踪, 用于scrollView 追踪触摸滑动，保证界面不受其他mode影响</li>
+<li><p>GSEventReceiveRunLoopMode 用于接收系统事件内部 mode， 通常不用</p>
+</li>
+<li><p>NSRunLoopCommonModes, 并不是某种具体的 mode ，开发中使用最多，他是一个组合 mode，组合了 NSDefaultRunLoopMode和 NSRunLoopCommonModes</p>
+</li>
+</ol>
+</li>
+<li><p>Runloop 相关类</p>
+<ol>
+<li>Source 事件源/输入源可以理解为 激发源</li>
+<li>Timer 基于事件触发，CADisplayLink，NSTimer 都是加到了 Runloop，受 Mode 的影响，GCD 定时器不受Runloop 影响</li>
+<li>Observer 相当于runloop 循环中的监听器，时刻监听当前Runloop的运行状态</li>
+<li>休眠没事情做的时候可以停下来，处于休眠状态</li>
+</ol>
+</li>
+<li><p>使用场景</p>
+<ol>
+<li>创建NSTimer</li>
+<li>PersforSelector方法</li>
+<li>常驻线程：（创建后处于等待状态，有事件时响应事件）<ul>
+<li>实现后台收集用户停留时间或者是某个按钮的点击次数，如果使用主线程会不方便，使用runloop解决</li>
+</ul>
+</li>
+<li>AutoreleasePool 自动释放池</li>
+<li>UI更新    </li>
+</ol>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2018/01/17/面试中常见问题总结/" data-id="cjx92w8m1003k9bfyp6uhfu17" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-iOS即时通讯实现二" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/01/12/iOS即时通讯实现二/" class="article-date">
@@ -228,7 +470,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/12/iOS即时通讯实现二/" data-id="cjx3gfxyc002exvfye4l5tnv7" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/12/iOS即时通讯实现二/" data-id="cjx92w8ld002j9bfyq30s7856" class="article-share-link">Share</a>
       
       
     </footer>
@@ -302,7 +544,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/10/网络七层协议/" data-id="cjx3gfxz1003gxvfybxb42fwb" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/10/网络七层协议/" data-id="cjx92w8m0003j9bfymr0015o6" class="article-share-link">Share</a>
       
       
     </footer>
@@ -561,7 +803,7 @@ print(cbc_decryptedStr3)
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/08/Swift加密相关/" data-id="cjx3gfxy2001sxvfyz91n55ed" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2018/01/08/Swift加密相关/" data-id="cjx92w8l1001v9bfy8j1cssya" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li></ul>
@@ -625,7 +867,7 @@ print(cbc_decryptedStr3)
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/12/14/Mac-安装MySQL/" data-id="cjx3gfxxk000sxvfytetc95nu" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/12/14/Mac-安装MySQL/" data-id="cjx92w8ke000n9bfy0xvqrbfn" class="article-share-link">Share</a>
       
       
     </footer>
@@ -677,7 +919,7 @@ EmotionKeyboard.podspec passed validation.
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/12/02/本地已有项目添加Pod/" data-id="cjx3gfxyq002zxvfy1ibyvlkg" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/12/02/本地已有项目添加Pod/" data-id="cjx92w8ln00319bfyrxr5val5" class="article-share-link">Share</a>
       
       
     </footer>
@@ -758,7 +1000,7 @@ EmotionKeyboard.podspec passed validation.
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/11/29/CocoaPods制作私有pod/" data-id="cjx3gfxxa000axvfyob1n8bp9" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/11/29/CocoaPods制作私有pod/" data-id="cjx92w8ju00039bfy73qdlnfg" class="article-share-link">Share</a>
       
       
     </footer>
@@ -812,278 +1054,10 @@ EmotionKeyboard.podspec passed validation.
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/04/10/Alamofire源码学习/" data-id="cjx3gfxwq0000xvfy9p9dyj8g" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/04/10/Alamofire源码学习/" data-id="cjx92w8jn00009bfycslnbaob" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Alamofire/">Alamofire</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-知识点总结" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/03/25/知识点总结/" class="article-date">
-  <time datetime="2017-03-25T05:41:28.000Z" itemprop="datePublished">2017-03-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/25/知识点总结/">知识点总结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>开发中的知识点总结</p>
-<p>textField</p>
-<p>使用textField自定义搜索框，textField及leftView等属性<br>使用leftView 时需要设置model为始终显示<br>可以设置leftView的frame 调整图片大小<br>IBInsepectable IBDesignable 的使用</p>
-<p>给属性检查器面板中添加属性设置选项<br>IBDesignalbe 实时显示UI控件，需要讲对应的xib和对应类绑定</p>
-<p>增加分类</p>
-<p>新建一个swift 文件，</p>
-<p>使用extension，重写 get set方法<br>使用newValue 时需要判断,注意返回值的类型是否匹配<br>试图切换</p>
-<p>一个控制器中加载不同视图，可以在loadView 方法中自定义根视图</p>
-<p>loadView 使用注意事项<br>如果实现loadView 未调用 super loadView ，sb／xib实效<br>loadView调用时，如果根视图是nil（本质是未调用super loadView），会自动调用loadView 方法初始化根视图，形成递归调用<br>判断当前登陆标识的状态确定是调用 super loadView 还是 把创建自定义的根视图赋值给 view<br>VFL 的使用</p>
-<p>使用之前需要先 关闭frame 的布局才能手动的添加约束 translatesAutoresizingMaskIntoConstraints = false<br>基本动画使用</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/03/25/知识点总结/" data-id="cjx3gfxyr0030xvfy6nfyw4zp" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Swift3.0学习(三)" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/03/08/Swift3.0学习(三)/" class="article-date">
-  <time datetime="2017-03-08T15:29:43.000Z" itemprop="datePublished">2017-03-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/08/Swift3.0学习(三)/">Swift3.0学习(三)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>面向对象–必选属性</p>
-<p>构造函数时是分段构造，先构造子类，给’必选属性’设置初始值，然后再构造父类，<br>定义全局变量（属性）时，需要在构造函数中设置初始化变量值<br>super.init()是一个类构造结束<br>重写： override 函数重写（覆盖），如果在重写的方法中 没有super, 父类相关的一些操作就不会被执行<br>重载：函数名相同, 参数的类型 或者参数的个数不同 就形成了函数的重载<br>注意：重载构造函数,并且父类默认的构造函数 init()不重写， 父类默认的构造函数就不能够被访问,不能够确保必选属性设置初始值，只能调用重载的构造函数<br>面向对象–可选属性</p>
-<p>使用KVC给对象设置值<br>注意: 在swift中使用KVC 基本数据类型不能声明为可选项,必须设置为必选项给定初始值</p>
-<p>KVC实现的流程<br>遍历字典的键值 给对象发送 setValue: forKey消息<br>如果key 对象的属性不存在就将消息转发给 setVale: forUndefinedKey:<br>如果存在就直接设置值<br>注意:setVale: forUndefinedKey: 默认抛出异常 不能够super，如果super 相当于没有实现此方法</p>
-<p>面向对象–便利构造函数</p>
-<p>作用：方便快捷的创建对象<br>场景：<br>可检查参数是否正确来实例化<br>实例化控件<br>特点<br>必须以self来调用构造函数<br>指定的构造函数不能被重写，也不能被super调用<br>便利构造函数可被子类继承<br>可以构造失败，返回nil<br>面向对象 – 描述信息</p>
-<p>重写 description 方法，返回值是string类型<br>使用kvc讲对象属性转换为字典<br>将字典转化为string类型</p>
-<pre><code>override var description: String {
-        let keys = [&quot;name&quot;,&quot;age&quot;,&quot;number&quot;,&quot;sex&quot;]
-
-        // 对象转为字典
-        let dict = self.dictionaryWithValuesForKeys(keys)
-
-        // 每个对象都有描述属性
-        return dict.description
-    }
-</code></pre><p>面向对象 – 存储属性</p>
-<p>面向对象 – 计算属性(readOnly)</p>
-<p>只有getter，没有setter<br>只能取值不能赋值<br>每次调用都会被执行，消耗cpu<br>不占内存空间，依赖其他的属性来计算<br>面向对象 – didset 属性设置监察器</p>
-<p>能获取 oldValue 和 newValue 的值<br>通常用来重写setter方法，实现视图绑定模型<br>在一个属性的didset中计算其他属性</p>
-<p>缺点：消耗内存，被计算的属性占内存<br>优点：减少了cpu消耗<br>懒加载</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/03/08/Swift3.0学习(三)/" data-id="cjx3gfxxw001hxvfy723yqzyz" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Swift3.0学习(二)" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/03/05/Swift3.0学习(二)/" class="article-date">
-  <time datetime="2017-03-05T15:36:21.000Z" itemprop="datePublished">2017-03-05</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/05/Swift3.0学习(二)/">Swift3.0学习(二)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>字符串</p>
-<p>字符串遍历<br>字符串字节长度<br>字符串长度</p>
-<p>let string = “我是switf,语言”</p>
-<p>   // 字符串遍历<br>   for s in string.characters {<br>       print(s)<br>   }</p>
-<p>   // 字符串的长度<br>   let length = string.characters.count;<br>   print(length)</p>
-<p>   // 字符串字节长度 汉字对应3个字节，英文是1个字节<br>   let characterLength = string.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)<br>   print(characterLength)</p>
-<p>字符串拼接</p>
-<pre><code>let str1 = &quot;你好&quot;
-   let str2 = &quot;不好&quot;
-   let a = 20
-
-   // 第一种拼接
-   print(&quot;\(str1)\(str2)\(a)&quot;)
-
-   // 第二种拼接
-   let str = str1 + str2
-   let strA = str1 + String(a)
-   print(str)
-   print(strA)
-</code></pre><p>截取子串 as 的使用</p>
-<pre><code>let subString = str1.substringToIndex(&quot;小程生生世世&quot;.endIndex);
-   print(subString)
-
-   let subStr = str1.substringFromIndex(&quot;听说&quot;.startIndex)
-   print(subStr)
-
-   let range = str1.rangeOfString(&quot;小程序&quot;)
-   let subStr1 = str1.substringWithRange(range!)
-
-   print(subStr1)
-
-   // 截取到某一个位置
-   let subStr2 = str1.substringFromIndex(str1.endIndex.advancedBy(-2))
-   print(subStr2)
-
-   // 限制截取几个字符
-   let subStr3 = str1.substringToIndex(str1.startIndex.advancedBy(5, limit: str1.characters.endIndex))
-   print(subStr3)
-String 和 NSString 之间的 使用 as 无缝转换
-let helloString = &quot;我们一起飞&quot;
-(helloString as NSString).substringWithRange(NSMakeRange(2, 3))
-数组
-</code></pre><p>可以放不同类型的元素<br>let不可变数组,var可变数组</p>
-<pre><code>// 初始化一个空数组 [String]声明是一个装有字符串的数组类型
-   var emptyArray: [String] = [String]()
-
-// 可变数组
-   var array = [&quot;哈哈&quot;,&quot;呵呵&quot;,&quot;嘿嘿&quot;]
-   array.append(&quot;咯咯&quot;)
-   print(&quot;array = \(array)&quot;)
-
-   // 不可变数组
-   let array2 = [&quot;可可&quot;,&quot;噗噗&quot;]
-
-   // 数组拼接
-   let arr = array + array2
-   print(&quot;arr = \(arr)&quot;)
-
-   array += array2
-   print(&quot;array = \(array)&quot;)
-</code></pre><p>数组遍历</p>
-<pre><code>// 1. 
-   for i in 0 ..&lt; tempArray.count {
-       print(tempArray[i])
-   }
-
-
-   // 2. 
-   for obj in tempArray {
-       print(&quot;第二种方法:\(obj)&quot;)
-   }
-
-
-   // 3. 快速便利
-   for (index,value) in tempArray.enumerate() {
-       print(&quot;index = \(index), value = \(value)&quot;)
-   }
-</code></pre><p>字典和OC类似</p>
-<p>函数调用</p>
-<p>必须在函数声明的下面调用内部函数</p>
-<p>可以定义函数的外部参数和内部参数</p>
-<p>可以在参数前面加上 ‘# ’ 表明函数的外部参数和内部参数名称一样 swift3.0 以后废弃</p>
-<p>无参无返回值<br>三种写法</p>
-<pre><code>func demo9() -&gt; Void {
-       print(&quot;无参无返回值第一种写法&quot;)
-   }
-
-
-   func demo_9() -&gt; () {
-       print(&quot;无参无返回值第二种写法&quot;)
-   }
-
-   func demo_99() {
-       print(&quot;无参无返回值第三种写法&quot;)
-   }
-</code></pre><p>有参有返回值</p>
-<pre><code>func demo10(width a: Int, height b: Int) -&gt; Int {
-   return a * b
-</code></pre><p>   }</p>
-<p>闭包</p>
-<p>和OC中block类似，<br>和在函数中调用一个内部函数原理相同<br>可当作参数传递<br>在需要时执行闭包实现回调</p>
-<pre><code>// 定义闭包
-let closure = {() -&gt; () in
-       print(&quot;闭包实现&quot;)
-   }
-
-   // 执行闭包
-   closure()
-</code></pre><p>注意循环引用</p>
-<p>只有两个对象相互强引用或者三个对象相互强引用形成闭环时才会形成循环引用</p>
-<p>weak 和 unsafe_unretained的区别</p>
-<p>__weak iOS5.0 推出，当对象被系统回收时，对象的地址会自动指向nil</p>
-<p>____unsafe_unretained iOS4.0 推出，当对象被系统回收时，对象的地址不会自动指向nil,会造成野指针访问<br>解决办法：(官方推荐)weak - strong -dance 解决循环引用，AFNetworking中</p>
-<p>尾随闭包</p>
-<p>函数的最后一个参数时闭包的时候，函数的参数 ‘()’可以提前关闭，闭包写在 ‘（）’后面，当作尾随闭包来使用</p>
-<p>swift 和 OC 区别</p>
-<p>swift 和 OC语法的快速的对比</p>
-<p>XXX.init(xxx) ==&gt; XXX.(xxx)<br>selector 类型 ==&gt; ‘函数名’<br>对象方法的调用 是 ‘.’ self是可以省略的<br>枚举 枚举名 + 枚举值的名 =&gt; .枚举值的名<br>常量 和变量</p>
-<p>let 声明常量 var 声明变量<br>变量/常量的类型是自动推到的<br>不同类型之间不能够直接运算 需要手动转换数据类型<br>可选项<br>‘?’ 表示表示可选项 可能有值 可能为 nil<br>可选项会自动带上 Optional 字样<br>可选项不能够直接参与运算 需要强制解包<br>‘!’ 表示强制解包 获取可选项中具体的值<br>‘??’ 快速判断可选项是否为nil 如果为 nil 就去取 ‘??’后面的默认值<br>控制流<br>if 没有非零即真的概念 必须制定明确的条件<br>if let 快速赋值 并且判断赋值对象是否为 nil 如果不为nil 就进入分之执行相关逻辑代码<br>guard let 作用和 if let 相反 好处: 可以减少一层分支嵌套<br>where 多重判断 注意 和 &amp;&amp; || 不一样的<br>循环</p>
-<p>for in<br>0..&lt;10<br>0…10<br>字符串</p>
-<p>更加轻量级 更加高效 是 结构体<br>支持快速遍历<br>长度<br>拼接<br>截取 as<br>集合 let 声明不可变的集合 var 声明可变的集合</p>
-<p>声明 []<br>声明一个 空的集合<br>增删改查<br>合并<br>遍历<br>函数</p>
-<p>func 函数名称(外部参数1 内部参数1: 类型, 外部参数2 内部参数2: 类型) -&gt; Int {执行的代码}<br>函数没有返回值的三种方式<br>函数内部函数<br>闭包 () -&gt; () 没有参数没有返回值的闭包类型</p>
-<p>提前准备好的一段可以执行代码块<br>可以当做参数传递<br>在需要的时候执行闭包产生回调的效果<br>在闭包中使用self 需要考虑循环引用<br>函数是一种特殊的闭包</p>
-<p>block 的循环引用的解除<br><strong>weak 和 weak关键字作用类似 当属性对象被回收是 会自动指向nil<br>_</strong>unsafeunretained 和 assgin关键字作用类似 当属性对象被回收是 不会自动指向nil, 会造成野指针访问 weak -strong - dance</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/03/05/Swift3.0学习(二)/" data-id="cjx3gfxxv001fxvfy6nde1gor" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
 
     </footer>
   </div>
@@ -1096,7 +1070,7 @@ let closure = {() -&gt; () in
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -1142,23 +1116,23 @@ let closure = {() -&gt; () in
       <ul>
         
           <li>
+            <a href="/2019/06/23/Flutter打包/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/23/Flutter中本地图片资源使用/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/20/Flutter页面导航/">(no title)</a>
+          </li>
+        
+          <li>
             <a href="/2019/06/19/Flutter中布局/">(no title)</a>
           </li>
         
           <li>
             <a href="/2019/06/18/Flutter中GridView组件/">GridView组件使用.md</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/18/第十章网络相关/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
           </li>
         
       </ul>

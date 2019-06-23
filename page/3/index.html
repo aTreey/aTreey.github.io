@@ -62,6 +62,433 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-swift中强引用循环和weak关键字" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/swift中强引用循环和weak关键字/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.014Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Swift中内存管理</p>
+<h3 id="强引用循环和-weak-关键字"><a href="#强引用循环和-weak-关键字" class="headerlink" title="强引用循环和 weak 关键字"></a>强引用循环和 weak 关键字</h3><p>房东</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Landlord &#123;</span><br><span class="line">    var name: String</span><br><span class="line">    var house: House?</span><br><span class="line">    </span><br><span class="line">    init(name: String) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    deinit &#123;</span><br><span class="line">        print(&quot;Landlord内存释放&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>房子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class House &#123;</span><br><span class="line">    var name: String</span><br><span class="line">    var landlord: Landlord?</span><br><span class="line">    </span><br><span class="line">    init(person: String) &#123;</span><br><span class="line">        self.name = person</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    deinit &#123;</span><br><span class="line">        print(&quot;House内存释放&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>循环引用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">func strongRetain() &#123;</span><br><span class="line">    var landlord: Landlord? = Landlord(name: &quot;老李&quot;)</span><br><span class="line">    var house: House? = House(person: &quot;望京府邸&quot;)</span><br><span class="line">    // 房东有个房子</span><br><span class="line">    landlord?.house = house</span><br><span class="line">    // 房子有个主人</span><br><span class="line">    house?.landlord = landlord</span><br><span class="line">    </span><br><span class="line">    landlord = nil</span><br><span class="line">    house = nil</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>虽然 landlord = nil 和 house = nil，但是 Landlord 和 House 内存空间并没有释放 （并未执行 deinit 函数）</p>
+</li>
+<li><p>原因：因为两个内存空间相互引用，引用计数不为0，形成了强循环引用</p>
+</li>
+<li><p>解决办法：使用weak 关键字来修饰两者中其中一个变量</p>
+<ul>
+<li>使用weak修饰的变量必须是可选类型，可以赋值为nil</li>
+<li>使用weak修饰必须是var 类型变量</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class House &#123;</span><br><span class="line">    var name: String</span><br><span class="line">    weak var landlord: Landlord?</span><br><span class="line">    </span><br><span class="line">    init(person: String) &#123;</span><br><span class="line">        self.name = person</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    deinit &#123;</span><br><span class="line">        print(&quot;House内存释放&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="unowned-关键字的使用"><a href="#unowned-关键字的使用" class="headerlink" title="unowned 关键字的使用"></a>unowned 关键字的使用</h3><h4 id="相互循环引用的两个变量有一个是可选的"><a href="#相互循环引用的两个变量有一个是可选的" class="headerlink" title="相互循环引用的两个变量有一个是可选的"></a>相互循环引用的两个变量有一个是可选的</h4><p>有个身份证的类，每个身份证肯定对应一个人</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class ID &#123;</span><br><span class="line">    var number: String</span><br><span class="line">    let person: Landlord</span><br><span class="line">    </span><br><span class="line">    init(person: Landlord, number: String) &#123;</span><br><span class="line">        self.person = person</span><br><span class="line">        self.number = number</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    deinit &#123;</span><br><span class="line">        print(&quot;ID内存释放&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">房东</span><br></pre></td></tr></table></figure>
+<p>class Landlord {<br>    var name: String<br>    var house: House?<br>    /// 身份证可以为nil，<br>    var id: ID?</p>
+<pre><code>init(name: String) {
+    self.name = name
+}
+
+deinit {
+    print(&quot;Landlord内存释放&quot;)
+}
+</code></pre><p>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">循环引用</span><br></pre></td></tr></table></figure>
+<p>func unownedTest() {<br>    var person: Landlord? = Landlord(name: “老王”)<br>    var id: ID? = ID(person: person!, number: “10010”)</p>
+<pre><code>person?.id = id
+person = nil
+id = nil
+</code></pre><p>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">-  person 和 id 之间有强引用关系</span><br><span class="line">-  每个id必须有一个对应的人并且是固定的只能使用let 修饰，不能为nil, 而id可以为空 </span><br><span class="line">- 	unowned和 weak 作用相同都是弱引用，只是unowned 修改的变量不能是nil （可选型的）</span><br><span class="line">-  unowned只能使用在 class 类型上，不能修饰函数类型，例如闭包存在循环引用时不能使用unowned修饰</span><br><span class="line">-  解决方法：</span><br><span class="line">	-  此时可以通过使用 weak 修饰 id 的方式，因为 id 可以为nil</span><br><span class="line">	-  let 修饰并且不能为nil 这种情况可以使用 unowned 修饰解决</span><br></pre></td></tr></table></figure>
+<pre><code>class ID {
+    var number: String
+    unowned let person: Landlord
+
+    init(person: Landlord, number: String) {
+        self.person = person
+        self.number = number
+    }
+
+    deinit {
+        print(&quot;ID内存释放&quot;)
+    }
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">**unowned有一定的危险性** </span><br><span class="line"></span><br><span class="line">因为unowned 修饰的对象不能赋值为nil，所以执行下面的代码会crash，</span><br></pre></td></tr></table></figure>
+</code></pre><p>func unownedTest() {<br>        var person: Landlord? = Landlord(name: “老王”)<br>        var id: ID? = ID(person: person!, number: “10010”)</p>
+<pre><code>person?.id = id
+
+// 提前释放 person 内存
+person = nil
+
+// 获取身份证对应的人
+print(id?.person) // 此处奔溃，
+let owner = id?.person
+id = nil
+</code></pre><p> }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">正确的写法因该是先将🆔设置为nil，再将 Person 设置为nil，再调用 print(id?.person) 就不会再报错</span><br></pre></td></tr></table></figure></p>
+<p>func unownedTest() {<br>        var person: Landlord? = Landlord(name: “老王”)<br>        var id: ID? = ID(person: person!, number: “10010”)</p>
+<pre><code>person?.id = id
+
+id = nil
+
+// 提前释放 person 内存
+person = nil
+
+// 获取身份证对应的人
+print(id?.person) // 此处奔溃，
+let owner = id?.person
+</code></pre><p> }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 相互循环引用的两个变量都不是可选的</span><br><span class="line"></span><br><span class="line">使用隐式可选类型</span><br><span class="line"></span><br><span class="line">### 闭包中的强引用循环</span><br><span class="line"></span><br><span class="line">- 并不是所有的闭包都会产生循环引用，只有相互引用的两个对象会产生循环引用</span><br><span class="line"></span><br><span class="line">- 使用swift闭包捕获列表，在闭包的声明参数之前使用 [unowned self], 不需要解包</span><br><span class="line"></span><br><span class="line">- 使用 unowned表示这个对象不能为空，可能存在风险，如果对象为空就会crash</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">使用 unowned 对象不能为空，可能存在风险</span><br></pre></td></tr></table></figure></p>
+<p>class Closure {<br>    var closure: ((Int) -&gt; Void)?</p>
+<pre><code>init() {
+    closure = { [unowned self] index in
+        print(self)
+        print(index)
+    }
+}
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">使用 weak, 此时需要解包</span><br></pre></td></tr></table></figure></p>
+<p>closure = { [weak self] index in<br>            // 解包<br>            if let <code>self</code> = self {<br>                print(self)<br>                print(index)<br>            }<br>        }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">强制解包</span><br></pre></td></tr></table></figure></p>
+<p>closure = { [weak self] index in<br>            // 强制解包<br>            print(self!)<br>            print(index)<br>        }<br><code>`</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/swift中强引用循环和weak关键字/" data-id="cjx92w8lj002v9bfyq40dojrv" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-typescripe 安装及语法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/typescripe 安装及语法/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.014Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="ReactNative-中使用-TypeScript"><a href="#ReactNative-中使用-TypeScript" class="headerlink" title="ReactNative 中使用 TypeScript"></a>ReactNative 中使用 TypeScript</h2><blockquote>
+<p>从RN0.57版本开始已经可以直接支持typescript，无需任何配置。在保留根入口文件index.js的前提下，其他文件都可以直接使用.ts或.tsx后缀。但这一由babel进行的转码过程并不进行实际的类型检查，因此仍然需要编辑器和插件来共同进行类型检查</p>
+</blockquote>
+<h3 id="TypeScript和JavaScript对比"><a href="#TypeScript和JavaScript对比" class="headerlink" title="TypeScript和JavaScript对比"></a>TypeScript和JavaScript对比</h3><p><a href="https://juejin.im/entry/5a52ed336fb9a01cbd586f9f" target="_blank" rel="noopener">两者深度对比</a></p>
+<p>最大的区别：</p>
+<ul>
+<li>TypeScript是强类型语⾔和静态类型语⾔（需要指定类型）</li>
+<li>JavaScript是弱类型语⾔和动态类型语⾔（不需要指定类型）</li>
+</ul>
+<h3 id="TypeScript"><a href="#TypeScript" class="headerlink" title="TypeScript"></a>TypeScript</h3><p>由微软开发的自由和开源的编程语言，是JavaScript的一个严格超集，并添加了可选的静态类型和基于类的面向对象编程</p>
+<p><a href="https://zh.wikipedia.org/wiki/TypeScript" target="_blank" rel="noopener">TypeScript定义</a></p>
+<h3 id="安装及语法"><a href="#安装及语法" class="headerlink" title="安装及语法"></a>安装及语法</h3><p><a href="https://www.tslang.cn/docs/home.html" target="_blank" rel="noopener">教程</a></p>
+<h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g typescript</span><br></pre></td></tr></table></figure>
+<h5 id="安装-typescript-依赖管理器-typings"><a href="#安装-typescript-依赖管理器-typings" class="headerlink" title="安装 typescript 依赖管理器 typings"></a>安装 typescript 依赖管理器 typings</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g typings</span><br></pre></td></tr></table></figure>
+<h5 id="安装-typings-依赖"><a href="#安装-typings-依赖" class="headerlink" title="安装 typings 依赖"></a>安装 typings 依赖</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">typings install npm~react --save</span><br><span class="line">typings install dt~react-native --globals --save</span><br></pre></td></tr></table></figure>
+<h5 id="使用-yarn-安装"><a href="#使用-yarn-安装" class="headerlink" title="使用 yarn 安装"></a>使用 yarn 安装</h5><p>如果已经安装了 yarn 安装如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yarn add tslib @types/react @types/react-native</span><br><span class="line">yarn add --dev react-native-typescript-transformer typescript</span><br></pre></td></tr></table></figure>
+<h5 id="创建-tsconfig-json-配置文件"><a href="#创建-tsconfig-json-配置文件" class="headerlink" title="创建 tsconfig.json 配置文件"></a>创建 tsconfig.json 配置文件</h5><ul>
+<li><p>cd 到 ReactNative 项目根文件夹下</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tsc --init</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改 tsconfig.json 文件 </p>
+<p>  如果一个目录下存在一个tsconfig.json文件，那么它意味着这个目录是TypeScript项目的根目录。 tsconfig.json文件中指定了用来编译这个项目的根文件和编译选项</p>
+<p>  <a href="https://www.tslang.cn/docs/handbook/tsconfig-json.html" target="_blank" rel="noopener">tsconfig.json文件配置详解</a></p>
+<p>  <a href="https://github.com/hstarorg/HstarDoc/blob/master/%E5%89%8D%E7%AB%AF%E7%9B%B8%E5%85%B3/TypeScript%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6tsconfig%E7%AE%80%E6%9E%90.md">TypeScript配置文件tsconfig简析</a></p>
+<p>  <strong>务必设置”jsx”:”react”<br>注意多余的注释可能会不兼容，需要移除</strong></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;compilerOptions&quot;: &#123;</span><br><span class="line">        &quot;target&quot;: &quot;es6&quot;,</span><br><span class="line">        &quot;allowJs&quot;: true,</span><br><span class="line">        &quot;jsx&quot;: &quot;react&quot;,</span><br><span class="line">        &quot;outDir&quot;: &quot;./dist&quot;,</span><br><span class="line">        &quot;sourceMap&quot;: true,</span><br><span class="line">        &quot;noImplicitAny&quot;: false</span><br><span class="line">    &#125;,</span><br><span class="line">    </span><br><span class="line">    // &quot;files&quot;属性 ：指定一个包含相对或绝对文件路径的列表。 &quot;include&quot;和&quot;exclude&quot;属性指定一个文件glob匹配模式列表</span><br><span class="line">    </span><br><span class="line">    &quot;include&quot;: [</span><br><span class="line">        &quot;typings/**/*.d.ts&quot;,</span><br><span class="line">        &quot;src/**/*.ts&quot;,</span><br><span class="line">        &quot;src/**/*.tsx&quot;</span><br><span class="line">    ],</span><br><span class="line">    &quot;exclude&quot;: [</span><br><span class="line">        &quot;node_modules&quot;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>cd 到项目根目录中新建存放 typescripe 源代码的文件夹</p>
+</li>
+</ul>
+<h5 id="建立-rn-cli-config-js-文件，使用支持typescript的transfomer"><a href="#建立-rn-cli-config-js-文件，使用支持typescript的transfomer" class="headerlink" title="建立 rn-cli.config.js 文件，使用支持typescript的transfomer"></a>建立 rn-cli.config.js 文件，使用支持typescript的transfomer</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">module.exports = &#123;</span><br><span class="line">  getTransformModulePath() &#123;</span><br><span class="line">    return require.resolve(&apos;react-native-typescript-transformer&apos;);</span><br><span class="line">  &#125;,</span><br><span class="line">  getSourceExts() &#123;</span><br><span class="line">    return [&apos;ts&apos;, &apos;tsx&apos;];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="修改-babelrc-文件"><a href="#修改-babelrc-文件" class="headerlink" title="修改 .babelrc 文件"></a>修改 .babelrc 文件</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"> &quot;presets&quot;: [&quot;react-native&quot;],</span><br><span class="line"> &quot;plugins&quot;: [&quot;transform-decorators-legacy&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="修改项目中文件导入"><a href="#修改项目中文件导入" class="headerlink" title="修改项目中文件导入"></a>修改项目中文件导入</h5><ul>
+<li>入口<code>index.js</code>和<code>App.js</code>的文件名请不要修改，项目根目录下新建<code>src</code>文件夹</li>
+<li>在<code>src</code>文件夹下新建 <code>.tsx</code> 后缀的文件</li>
+<li><p><code>.tsx</code> 后缀的文件引用react的写法有所区别</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import * as React from &apos;react&apos;</span><br><span class="line">import &#123; Text, View &#125; from &apos;react-native&apos;;</span><br><span class="line">import &#123; Component &#125; from &apos;react&apos;;</span><br><span class="line"></span><br><span class="line">export default class HelloWorld extends Component&#123;</span><br><span class="line">    render() &#123;</span><br><span class="line">        return (</span><br><span class="line">            &lt;View&gt;</span><br><span class="line">                &lt;Text&gt;Hello!&lt;/Text&gt;</span><br><span class="line">                &lt;Text&gt;Typescript&lt;/Text&gt;</span><br><span class="line">            &lt;/View&gt;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在<code>App.js</code>中使用</p>
+<ul>
+<li><p><code>App.js</code> 导入方式修改为如下方式</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">	import &apos;./src&apos;;</span><br><span class="line">	``` </span><br><span class="line">	</span><br><span class="line">- 导入 .tsx 类型的组建</span><br></pre></td></tr></table></figure>
+<p>  import HelloWorld from “./src/HelloWorld”;</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 配置jsconfig</span><br><span class="line"></span><br><span class="line">`jsconfig.json`目录中存在文件表明该目录是JavaScript项目的根目录。该jsconfig.json文件指定根文件和JavaScript语言服务提供的功能选项</span><br><span class="line"></span><br><span class="line">[jsconfig详解](https://code.visualstudio.com/docs/languages/jsconfig)</span><br><span class="line"></span><br><span class="line">[jsconfig.json](https://jeasonstudio.gitbooks.io/vscode-cn-doc/content/md/%E8%AF%AD%E8%A8%80/javascript.html?q=)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">##### 新建 `jsconfig.json` 文件</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<p>touch jsconfig.json<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### 编辑 `jsconfig.json` 文件</span><br></pre></td></tr></table></figure></p>
+<p>{<br>    “compilerOptions”: {<br>    “allowJs”: true,<br>    “allowSyntheticDefaultImports”: true,<br>    “emitDecoratorMetadata”: true<br>    },<br>    “exclude”: [<br>    “node_modules”,<br>    “rnApp/Tools” // 项目根目录下新建的存放RN中所用的一些工具类<br>    ]<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">### package.json 文件配置</span><br></pre></td></tr></table></figure>
+<p>{<br>  “name”: “RNProject”,<br>  “version”: “0.0.1”,<br>  “private”: true,<br>  “scripts”: { // 通过设置这个可以使npm调用一些命令脚本，封装一些功能<br>    “start”: “node node_modules/react-native/local-cli/cli.js start”,<br>    “test”: “jest”<br>  },<br>  “dependencies”: { // 发布后依赖的包<br>    “@types/react”: “^16.4.16”,<br>    “@types/react-native”: “^0.57.4”,<br>    “react”: “16.5.0”,<br>    “react-native”: “0.57.2”,<br>    “react-transform-hmr”: “^1.0.4”,<br>    “tslib”: “^1.9.3”<br>  },</p>
+<p>  “devDependencies”: { // 开发中依赖的其它包<br>    “babel-jest”: “23.6.0”,<br>    “jest”: “23.6.0”,<br>    “metro-react-native-babel-preset”: “0.48.0”,<br>    “react-native-typescript-transformer”: “^1.2.10”,<br>    “react-test-renderer”: “16.5.0”,<br>    “typescript”: “^3.1.2”<br>  },</p>
+<p>  “jest”: { // JavaScript 的单元测试框架<br>    “preset”: “react-native”<br>  }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### `–save` 和 `-–save-dev` 区别</span><br><span class="line"></span><br><span class="line">- --save参数表示将该模块写入dependencies属性，</span><br><span class="line">- --save-dev表示将该模块写入devDependencies属性。</span><br><span class="line"></span><br><span class="line">##### 添加开发依赖库</span><br><span class="line"></span><br><span class="line">- 类型检查</span><br></pre></td></tr></table></figure></p>
+<pre><code>npm install @types/jest --save-dev
+npm install @types/react --save-dev
+npm install @types/react-native --save-dev 
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- 装饰器转化核心插件</span><br></pre></td></tr></table></figure>
+
+npm install babel-plugin-transform-decorators-legacy --save-dev
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">- 测试框架</span><br></pre></td></tr></table></figure>
+
+npm install react-addons-test-utils --save-dev
+npm install react-native-mock --save-dev
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### 删除依赖库</span><br></pre></td></tr></table></figure>
+</code></pre><p>npm uninstall @types/jest –save<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<p>npm uninstall @types/jest –save-dev<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### 彻底删除，-d 表示 devDependencies， -O 表示 optionalDependencies 中</span><br></pre></td></tr></table></figure></p>
+<p>npm uninstall -s -D -O @types/jest</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 报错汇总</span><br><span class="line"></span><br><span class="line">##### 错误1 `Cannot find module &apos;react-transform-hmr/lib/index.js&apos;`</span><br><span class="line"></span><br><span class="line"> [解决1](https://stackoverflow.com/questions/50142561/cannot-find-module-react-transform-hmr-lib-index-js?noredirect=1&amp;lq=1)</span><br><span class="line">	</span><br><span class="line"> [解决2](https://github.com/facebook/react-native/issues/21530)</span><br><span class="line"></span><br><span class="line">- 安装 `react-transform-hmr`</span><br></pre></td></tr></table></figure>
+<pre><code>npm install react-transform-hmr --save
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 清除缓存重新启动服务</span><br></pre></td></tr></table></figure>
+
+npm start --reset-cache
+```
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/typescripe 安装及语法/" data-id="cjx92w8lk002x9bfy0a7v5m67" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-《52个方法第一章》" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/《52个方法第一章》/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.014Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>《52个方法-第一章》</p>
+<h3 id="一、OC起源"><a href="#一、OC起源" class="headerlink" title="一、OC起源"></a>一、OC起源</h3><ul>
+<li>OC使用的是“消息结构”而不是“函数调用”</li>
+<li>两者区别：<ul>
+<li>消息结构：在运行时所执行的代码由运行环境来决定，无论是否多态总会在运行时才会去查找所要执行的方法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NSObject *objc = [NSObject new];</span><br><span class="line">[objc performWith: parameter1 and: parameter2];</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>- 函数调用：由编译器决定，如果函数多态，编译时就要查处到底应该执行那个函数实现
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Object *objc = new Object;</span><br><span class="line">   objc -&gt; perform(parameter1, parameter2);</span><br></pre></td></tr></table></figure>
+</code></pre><ul>
+<li>消息结构中编译器不会关心接收消息的对象是何种类型，接收消息的对象问题也要在运行时处理，此过程叫做“动态绑定”</li>
+</ul>
+<p><strong>要点：</strong></p>
+<ol>
+<li>OC语言使用的动态绑定的消息结构，在运行时所执行的代码由运行环境来决定，无论是否多态总会在运行时才会去查找所要执行的方法，</li>
+<li>OC 中对象总是分配在“堆空间”，而绝不会分配在”栈“上，不带 “*”的变量或者结构体等可能会使用“栈空间”</li>
+</ol>
+<h3 id="二、类头文件尽量少导入其他头文件"><a href="#二、类头文件尽量少导入其他头文件" class="headerlink" title="二、类头文件尽量少导入其他头文件"></a>二、类头文件尽量少导入其他头文件</h3><p><strong>要点：</strong></p>
+<ol>
+<li>除非必要，否则不要引入头文件，使用向前声明降低类之间的耦合</li>
+<li>有时无法使用向前声明，应该把该类遵守协议的声明放到“class-continuation分类”（匿名分类）中。</li>
+<li>如果“class-continuation分类”也不行的话，就把协议单独放在一个文件中，再将其引入### 三、多用字面量语法，少用与之等价的方法</li>
+</ol>
+<h3 id="三、多用字面量语法，少用与之等价的方法"><a href="#三、多用字面量语法，少用与之等价的方法" class="headerlink" title="三、多用字面量语法，少用与之等价的方法"></a>三、多用字面量语法，少用与之等价的方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">- (void)tempMethond &#123;</span><br><span class="line">    // OC1.0 起，支持简单方式创建基本类型对象</span><br><span class="line">    </span><br><span class="line">    // - 使用字符串字面量：简介易读</span><br><span class="line">    NSString *someString = @&quot;Effective Objective-C 2.0&quot;;</span><br><span class="line">    // 传统方式</span><br><span class="line">    NSString *someStrongOld = [NSString stringWithFormat:@&quot;Effective Objective-C 2.0&quot;];</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    // - 字面数值</span><br><span class="line">    NSNumber *someNumber = @1;</span><br><span class="line">    NSNumber *floatNumber = @2.5f;</span><br><span class="line">    NSNumber *doubleNumber = @3.1415926;</span><br><span class="line">    NSNumber *boolNumber = @YES;</span><br><span class="line">    NSNumber *charNumber = @&apos;a&apos;;</span><br><span class="line">    // 字面量语法用于表达式</span><br><span class="line">    int x = 5;</span><br><span class="line">    float y = 6.23f;</span><br><span class="line">    NSNumber *expressionNumber = @(x * y);</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    // - 字面量数组</span><br><span class="line">    NSArray *animals = @[@&quot;cat&quot;, @&quot;dog&quot;, @&quot;mouse&quot;, @&quot;badger&quot;];</span><br><span class="line">    NSString *dog = animals[1];</span><br><span class="line">    </span><br><span class="line">    // arrayWithObjects 和 字面量 的区别:</span><br><span class="line">    // arrayWithObjects 方法依次处理各个参数，直到发现nil为止</span><br><span class="line">    // 字面量数组遇到nil直接抛出异常</span><br><span class="line">    NSArray *animalsOld = [NSArray arrayWithObjects:@&quot;cat&quot;, @&quot;dog&quot;, @&quot;mouse&quot;, @&quot;badger&quot;, nil];</span><br><span class="line">    NSString *dogOld = [animalsOld objectAtIndex:1];</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    // - 字面量字典</span><br><span class="line">    // 如果有nil直接抛出异常</span><br><span class="line">    NSDictionary *personData = @&#123;@&quot;firtName&quot;: @&quot;Matt&quot;,</span><br><span class="line">                                 @&quot;lastName&quot;: @&quot;Galloway&quot;,</span><br><span class="line">                                 @&quot;age&quot;: @28&#125;;</span><br><span class="line">    NSString *lastName = personData[@&quot;lastName&quot;];</span><br><span class="line">    </span><br><span class="line">    // dictionaryWithObjectsAndKeys 方法依次处理各个参数，直到发现nil为止</span><br><span class="line">    NSDictionary *personDataOld = [NSDictionary dictionaryWithObjectsAndKeys:@&quot;Matt&quot;,@&quot;firtName&quot;,</span><br><span class="line">                                     @&quot;Galloway&quot;, @&quot;lastName&quot;,</span><br><span class="line">                                     [NSNumber numberWithInteger:28], @&quot;age&quot;, nil];</span><br><span class="line">    </span><br><span class="line">    NSString *lastNameOld = [personData objectForKey:@&quot;lastName&quot;];</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    // - 可变数组和字典</span><br><span class="line">    NSMutableArray *mutableArray = animals.mutableCopy;</span><br><span class="line">    mutableArray[1] = @&quot;dog&quot;;</span><br><span class="line">    </span><br><span class="line">    NSMutableDictionary *mutableDict = [personData mutableCopy];</span><br><span class="line">    mutableDict[@&quot;lastName&quot;] = @&quot;Galloway&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>要点：</strong></p>
+<ol>
+<li>使用字面量语法创建字符串，数值，数组，字典简明扼要</li>
+<li>通过下标操作获取数组，字典对应的元素</li>
+<li>使用字面量创建数组，字典时若有nil ，会抛出异常，确保值里不含nil### 五、用枚举表示状态、选项、状态码</li>
+</ol>
+<h3 id="四、多用类型常量，少用-define预处理指令"><a href="#四、多用类型常量，少用-define预处理指令" class="headerlink" title="四、多用类型常量，少用#define预处理指令"></a>四、多用类型常量，少用#define预处理指令</h3><h5 id="宏定义"><a href="#宏定义" class="headerlink" title="宏定义"></a>宏定义</h5><ul>
+<li>缺点：<ul>
+<li>可以把所有相同的字符串值都替换为定义的值，<ul>
+<li>定义出来的常量没有具体的类型信息</li>
+<li>如果有人重新定义了宏定义，不会有警告或者提醒，导致程序中值不一样</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="类型常量"><a href="#类型常量" class="headerlink" title="类型常量"></a>类型常量</h5><ul>
+<li><p>命名规则：</p>
+<ul>
+<li>如果只是在实现文件.m 中使用，则在前面加字母k</li>
+<li>如果此常量在类之外也可见，则以类名为前缀，（第19条详细了解命名习惯）</li>
+</ul>
+</li>
+<li><p>声明位置：</p>
+<ul>
+<li>总是喜欢在头文件中声明宏定义，可能和常量名冲突，</li>
+<li>所有引入这个头文件的类都会出现宏定义或者常量，相当于声明了一个名叫kAnimationDuration的全局变量</li>
+<li>应该加上前缀，表明其所属的具体类，例如：EOCViewClassAnimationDuration</li>
+</ul>
+</li>
+<li><p>常量从右往左解读依次是: 具体类型，不可修改</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">	// const 修饰的是常量不希望别人修改， NSString * 指向NSString对象</span><br><span class="line">	extern NSString *const EOCStringConstant; </span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	//	两者写法都可以</span><br><span class="line">	extern const NSTimeInterval EOCAnimatedViewAnimationDuration;</span><br><span class="line">	extern NSTimeInterval const EOCAnimatedViewAnimationDuration1;</span><br><span class="line">	```	</span><br><span class="line"></span><br><span class="line">- 如果不打算公开常量，可以定义在 .m 实现文件里</span><br></pre></td></tr></table></figure>
+<p>  static const NSTimeInterval kAnimationDuration = 0.3;</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- static关键字</span><br><span class="line">	- static 修饰意味着该变量仅在定义此变量的编译单元（实现文件.m）中可见，作用域就是当前.m文件</span><br></pre></td></tr></table></figure>
+<pre><code>static const NSTimeInterval kAnimationDuration = 0.3;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- 如果需要声明一个外部可见的常值变量，需要在头文件中声明并使用 extern 关键词修饰 &quot;extern </span><br><span class="line"></span><br><span class="line">	在 .h 文件中</span><br></pre></td></tr></table></figure>
+
+extern NSString *const EOCStringConstant;
+
+// 两者写法都可以
+extern const NSTimeInterval EOCAnimatedViewAnimationDuration;
+extern NSTimeInterval const EOCAnimatedViewAnimationDuration1;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">在 .m 文件中</span><br></pre></td></tr></table></figure>
+
+NSString *const EOCStringConstant = @&quot;VALUE&quot;;
+const NSTimeInterval EOCAnimatedViewAnimationDuration = 0.3;
+NSTimeInterval const EOCAnimatedViewAnimationDuration1 = 0.3;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">**要点：**</span><br><span class="line"></span><br><span class="line">1. 定义常量时static const定义编译单元（实现文件.m)中可见的常量，无需为其名称加前缀</span><br><span class="line">2. 在头文件中使用extern 声明全局常量，并在实现文件中定义其值，这种常量要出现在全局符号表中，所以加相关类作为前缀</span><br><span class="line"></span><br><span class="line">### 五、用枚举表示状态、选项、状态码</span><br><span class="line"></span><br><span class="line">- 普通枚举</span><br></pre></td></tr></table></figure>
+</code></pre><p>  enum EOCConnectionState {</p>
+<pre><code>EOCConnectionStateDisconnected, // 断开连接
+EOCConnectionStateConnecting,   // 连接中...
+EOCConnectionStateConnected,    // 已连接
+</code></pre><p>  };</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">普通枚举如果要使用如下：</span><br></pre></td></tr></table></figure>
+<p>  enum EOCConnectionState status = EOCConnectionStateConnected;</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">如果每次都不需要输入enum关键字，只需要typedef关键字重新定义枚举类型</span><br></pre></td></tr></table></figure>
+<p>  EOCConnectionState status1 = EOCConnectionStateConnecting;</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 设置枚举的初始值</span><br></pre></td></tr></table></figure>
+<p>  enum EOCConnectionStateConnectionState {</p>
+<pre><code>EOCConnectionStateConnectionStateDisconnected = 1, // 断开连接
+EOCConnectionStateConnectionStateConnecting,   // 连接中...
+EOCConnectionStateConnectionStateConnected,    // 已连接
+</code></pre><p>  };</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 可选枚举</span><br><span class="line"></span><br><span class="line">	- &lt;&lt; 位操作符(左移)， 表示往左移动N位，使用 位运算符 | (或)来组合使用</span><br><span class="line">	- 使用位运算符 &amp;（与） 判断是否开启了某个选项</span><br></pre></td></tr></table></figure>
+<p>  enum UIViewAutoresizing {</p>
+<pre><code>UIViewAutoresizingNone                 = 0,
+UIViewAutoresizingFlexibleLeftMargin   = 1 &lt;&lt; 0,
+UIViewAutoresizingFlexibleWidth        = 1 &lt;&lt; 1,
+UIViewAutoresizingFlexibleRightMargin  = 1 &lt;&lt; 2,
+UIViewAutoresizingFlexibleTopMargin    = 1 &lt;&lt; 3,
+UIViewAutoresizingFlexibleHeight       = 1 &lt;&lt; 4,
+UIViewAutoresizingFlexibleBottomMargin = 1 &lt;&lt; 5
+</code></pre><p>  }</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 使用宏定义枚举</span><br><span class="line"></span><br><span class="line">	普通枚举类型（老式语法定义枚举）</span><br></pre></td></tr></table></figure>
+<p>  typedef enum : NSUInteger {</p>
+<pre><code>EOCConnectionState2DisConnected,
+EOCConnectionState2DisConnecting,
+EOCConnectionState2Connected,
+</code></pre><p>  } EOCConnectionState2;</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">NS_ENUM 宏定义的枚举展开后：</span><br></pre></td></tr></table></figure>
+<p>  typedef enum EOCConnectionState_3 : NSUInteger EOCConnectionState_3;<br>  enum EOCConnectionState_3 : NSUInteger {</p>
+<pre><code>EOCConnectionState_3DisConnected,
+EOCConnectionState_3DisConnecting,
+EOCConnectionState_3Connected,
+</code></pre><p>  };</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 定义新特性枚举</span><br></pre></td></tr></table></figure>
+<p>  typedef NS_ENUM(NSUInteger, EOCConnectionState3) {</p>
+<pre><code>EOCConnectionState3DisConnected,
+EOCConnectionState3DisConnecting,
+EOCConnectionState3Connected,
+</code></pre><p>  };</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 枚举使用</span><br><span class="line"></span><br><span class="line">	.h文件</span><br></pre></td></tr></table></figure>
+<p>  #import &lt;UIKit/UIKit.h&gt;</p>
+<p>  typedef enum EOCConnectionState EOCConnectionState;</p>
+<p>  typedef NS_ENUM(NSUInteger, EOCConnectionState3) {</p>
+<pre><code>EOCConnectionState3DisConnected,
+EOCConnectionState3DisConnecting,
+EOCConnectionState3Connected,
+</code></pre><p>  };</p>
+</li>
+</ul>
+<pre><code>@interface EOCEnum : NSObject
+@property (nonatomic, assign) enum EOCConnectionState state;
+@property (nonatomic, assign) EOCConnectionState3 state3;
+@end
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">.m 文件中</span><br></pre></td></tr></table></figure>
+
+#import &quot;EOCEnum.h&quot;
+
+@implementation EOCEnum
+
+- (void)testEnum {
+    // 未使用typedef 关键字
+    enum EOCConnectionState status = EOCConnectionStateConnected;
+    NSLog(@&quot;%u&quot;, status);
+
+    // 使用typedef 关键字
+    EOCConnectionState status1 = EOCConnectionStateConnecting;
+    NSLog(@&quot;%u&quot;, status1);
+
+    UIViewAutoresizing resizing = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    if (resizing &amp; UIViewAutoresizingFlexibleWidth) {
+        // 设置了 UIViewAutoresizingFlexibleWidth 约束
+    }
+}
+
+// UIKit 试图所支持的设置显示方向
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskLandscapeLeft;
+}
+
+// 枚举使用
+- (void)userEnum {
+    switch (_state3) {
+        case EOCConnectionState3DisConnected:
+            // ...
+            break;
+
+        case EOCConnectionState3DisConnecting:
+            // ...
+            break;
+
+        case EOCConnectionState3Connected:
+            // ...
+            break;
+
+        default: // 最好不用，防止以后增加一种状态机之后，编译器不发出警告
+            break;
+    }
+}
+
+@end
+```
+</code></pre><p><strong>要点：</strong></p>
+<ol>
+<li>使用枚举表示状态机的状态、传递给方法的选项以及状态码等值，给枚举值起名时要注重易懂</li>
+<li>如果一个类型可以使用状态机的状态来表示，并且多个选项可同时使用，那么就定义为可选的枚举类型，枚举各值定义为2的幂，以便通过“按位或”操作组合</li>
+<li>使用NS_ENUM 和 NS_OPTIONS 宏来定义枚举，并指明底层的数据类型。这样可以确保枚举是用开发者所选的底层数据类型实现出来的，而不会采用编译器所选的类型</li>
+<li>switch语句处理枚举类型时不要实现default 分支，如果以后加入枚举的新状态之后，编译器会发出警告</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/《52个方法第一章》/" data-id="cjx92w8ll002y9bfyua5gv8rf" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-iOS通过URL获取HTML中标题" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/iOS通过URL获取HTML中标题/" class="article-date">
@@ -122,7 +549,7 @@ print(result3)
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/iOS通过URL获取HTML中标题/" data-id="cjx3gfxye002jxvfyuaq9w835" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/iOS通过URL获取HTML中标题/" data-id="cjx92w8lf002n9bfyo2rdikqu" class="article-share-link">Share</a>
       
       
     </footer>
@@ -262,7 +689,7 @@ print(result3)
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/iOS面试OC语言特性/" data-id="cjx3gfxyk002sxvfyg2dy5edi" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/iOS面试OC语言特性/" data-id="cjx92w8li002u9bfyc6lz356i" class="article-share-link">Share</a>
       
       
     </footer>
@@ -304,7 +731,7 @@ print(result3)
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/iOS 动态设置TableHeaderView高度/" data-id="cjx3gfxyb002cxvfyo5reyowa" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/iOS 动态设置TableHeaderView高度/" data-id="cjx92w8lc002g9bfy0ik7fnoa" class="article-share-link">Share</a>
       
       
     </footer>
@@ -380,7 +807,7 @@ print(result3)
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/iOS开发_于鸿鹏/" data-id="cjx3gfxyd002hxvfyynxhujzf" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/iOS开发_于鸿鹏/" data-id="cjx92w8le002k9bfy9ouvisax" class="article-share-link">Share</a>
       
       
     </footer>
@@ -410,7 +837,7 @@ print(result3)
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Xcode中使用Debug Memory Graph检查内存泄漏/" data-id="cjx3gfxy90027xvfyjg2eos0p" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Xcode中使用Debug Memory Graph检查内存泄漏/" data-id="cjx92w8l9002a9bfylcq3x9xq" class="article-share-link">Share</a>
       
       
     </footer>
@@ -438,7 +865,7 @@ print(result3)
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/flutter安装/" data-id="cjx3gfxyd002gxvfyc2den7uq" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/flutter安装/" data-id="cjx92w8la002d9bfyb3ulua4z" class="article-share-link">Share</a>
       
       
     </footer>
@@ -490,254 +917,7 @@ print(result3)
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift项目中集成RN/" data-id="cjx3gfxy4001yxvfy0typswci" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Swift泛型" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/Swift泛型/" class="article-date">
-  <time datetime="2019-06-18T15:30:19.006Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Swift-泛型"><a href="#Swift-泛型" class="headerlink" title="Swift 泛型"></a>Swift 泛型</h2><h3 id="泛型定义–wikipedia"><a href="#泛型定义–wikipedia" class="headerlink" title="泛型定义–wikipedia"></a>泛型定义–<code>wikipedia</code></h3><ol>
-<li>在程序编码中一些包含类型参数的类型，也就是说泛型的参数只可以代表类，不能代表个别对象。（这是当今较常见的定义）</li>
-<li>在程序编码中一些包含参数的类。其参数可以代表类或对象等等。（现在人们大多把这称作模板）</li>
-</ol>
-<h3 id="泛型的用处"><a href="#泛型的用处" class="headerlink" title="泛型的用处"></a>泛型的用处</h3><p>泛型可以实现传入一个指定类型后做一些操作然后返回后还是原来指定的类型，你可以指定特定的类型（特定是指约束）</p>
-<h3 id="泛型和-Any-的区别"><a href="#泛型和-Any-的区别" class="headerlink" title="泛型和 Any 的区别"></a>泛型和 <code>Any</code> 的区别</h3><p>区别：<code>Any</code>能代表任何类型，但是不能返回某个具体的类型，都需要使用 as 去转化，而泛型正好相反</p>
-<ul>
-<li>Any 可以代表任何类型，除了class之外还可以代表struct，enum，</li>
-<li><code>AnyObject</code> 可以代码任何 <code>class</code> 的类型, swift 中基本类型， <code>Array</code> 和 <code>Dictionary</code> 都是 <code>struct</code> 类型，都不能使用 <code>AnyObject</code> 来接受</li>
-</ul>
-<p><a href="http://swifter.tips/any-anyobject/" target="_blank" rel="noopener">Swift中Any 和 AnyObject用法</a></p>
-<h3 id="泛型函数和泛型参数"><a href="#泛型函数和泛型参数" class="headerlink" title="泛型函数和泛型参数"></a>泛型函数和泛型参数</h3><p><code>swapTwoValues</code>是一个泛型函数，可以接收或者返回任何类型</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">func swapTwoValues&lt;T&gt;(inout a: T, inout b: T) &#123;</span><br><span class="line">    let temporaryA = a</span><br><span class="line">    a = b</span><br><span class="line">    b = temporaryA</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p><code>swapTwoValues</code> 函数名后面的 <code>&lt;T&gt;</code> 表示这个 <code>T</code> 类型是函数所定义的一个类型, <code>T</code> 只是一个类型的占位符，不用关心具体类型</p>
-</li>
-<li><p><code>(inout a: T, inout b: T)</code> 中a和b两个参数类型<code>T</code>是泛型参数</p>
-</li>
-</ul>
-<h3 id="类型约束"><a href="#类型约束" class="headerlink" title="类型约束"></a>类型约束</h3><p>两个泛型参数的泛型函数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">func someFunction&lt;T: SomeClass, U: SomeProtocol&gt;(someT: T, someU: U) &#123;</span><br><span class="line">    // function body goes here</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>泛型参数<code>T</code>约束条件：必须是<code>SomeClass</code>类的子类</li>
-<li>泛型参数<code>U</code>约束条件：必须遵守<code>SomeProtocol</code>协议</li>
-<li>使用where指定约束</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift泛型/" data-id="cjx3gfxy4001wxvfyavbzu7o7" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Swift错误处理" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/Swift错误处理/" class="article-date">
-  <time datetime="2019-06-18T15:30:19.006Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Swift 中错误处理</p>
-<h3 id="assert-断言"><a href="#assert-断言" class="headerlink" title="assert 断言"></a>assert 断言</h3><p>只在debug 模式下程序会自动退出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public func assert(_ condition: @autoclosure () -&gt; Bool, _ message: @autoclosure () -&gt; String = default, file: StaticString = #file, line: UInt = #line)</span><br></pre></td></tr></table></figure>
-<h3 id="assertionFailure-断言错误"><a href="#assertionFailure-断言错误" class="headerlink" title="assertionFailure 断言错误"></a>assertionFailure 断言错误</h3><p>只在debug 模式下程序会自动退出, 没有条件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public func assertionFailure(_ message: @autoclosure () -&gt; String = default, file: StaticString = #file, line: UInt = #line)</span><br></pre></td></tr></table></figure>
-<h3 id="precondition"><a href="#precondition" class="headerlink" title="precondition"></a>precondition</h3><p>releas 模式程序也会退出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public func precondition(_ condition: @autoclosure () -&gt; Bool, _ message: @autoclosure () -&gt; String = default, file: StaticString = #file, line: UInt = #line)</span><br></pre></td></tr></table></figure>
-<h3 id="throw"><a href="#throw" class="headerlink" title="throw"></a>throw</h3>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift错误处理/" data-id="cjx3gfxy50020xvfy7qloc7sp" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Swift协议别名" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/Swift协议别名/" class="article-date">
-  <time datetime="2019-06-18T15:30:19.005Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Swift协议和别名</p>
-<h3 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h3><p>某些属性的集合，可以有多个协议组成，具有的特点</p>
-<ol>
-<li>可以声明函数，但是不能实现，由实现这协议的具体结构或者类来实现</li>
-<li>声明的函数如果有参数也不能设置参数的默认值， 默认参数被认为也是函的一种实现</li>
-<li>可以声明属性，必须是计算型属性 只能使用var 修饰，不能是存储型属，必须在 {} 中明确指出属性的读取类型 例如 {get set}</li>
-<li>遵守协议的类可选择存储型属性或者计算型属性来实现协议中定义的属性</li>
-<li>protocol Person: class { } 表示此协议只能被类来遵守，结构体能遵守</li>
-<li><p>协议可以看着是一种类型，如果协议中的属性是只读的，如果是协议类型只能访问get 方法， 但是遵守协议的具体类或者结构可以设置属性的读和写</p>
-</li>
-<li><p>协议中的构造函数</p>
-<pre><code>- 如果父类中遵守了协议中的构造函数，子类中必须重写父类中的构造函数并且使用require修饰构造函数，表示继承此类的子类也必须实现该构造函数
-- 如果class 使用了final 修饰，表示不能被继承，此时不需要 require 关键词修饰
-</code></pre></li>
-</ol>
-<h3 id="类型别名"><a href="#类型别名" class="headerlink" title="类型别名"></a>类型别名</h3><ul>
-<li><p>定义别名 <code>typealias</code>, 供扩展使用</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">typealias Length = Double</span><br><span class="line">extension Double &#123;</span><br><span class="line">    var km: Length &#123;return self * 1_000.0&#125;</span><br><span class="line">    var m: Length &#123;return self * 100.0&#125;</span><br><span class="line">    var cm: Length &#123;return self / 10.0&#125;</span><br><span class="line">    /// 英尺</span><br><span class="line">    var ft: Length &#123; return self / 3.28084&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<pre><code>使用
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let distance: Length = 10.5.km</span><br></pre></td></tr></table></figure>
-</code></pre><ul>
-<li><p>定义别名防止硬编码</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">	// 音频采样率</span><br><span class="line">typealias AudioSample = UInt64</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="协议中-typealias"><a href="#协议中-typealias" class="headerlink" title="协议中 typealias"></a>协议中 <code>typealias</code></h3><p><strong>协议中定义一个属性，该属性的类型根据不同的情况返回不同的类型（我理解为类似泛型），具体的类型由遵守此协议的类或者结构指定</strong></p>
-<ul>
-<li>定义协议中别名</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">protocol WeightCalculable &#123;</span><br><span class="line">    // 属性重量根据不同体积返回的可能是Int，可以可能是double类型，所以使用别名, 协议中使用associatedtype关键词，</span><br><span class="line">    associatedtype WeightType</span><br><span class="line">    var weight: WeightType &#123;  get  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>扩展 Int 中的吨单位</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">extension Int &#123;</span><br><span class="line">    typealias Weight = Int</span><br><span class="line">    var t: Weight &#123;return self * 1_000&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>使用协议中别名</li>
-</ul>
-<ul>
-<li>一部手机的时使用该协议<code>WeightCalculable</code></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class iPhone: WeightCalculable &#123;</span><br><span class="line">    typealias WeightType = Double</span><br><span class="line">    var weight: WeightType &#123;</span><br><span class="line">        return 0.5</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>一辆大卡时使用该协议<code>WeightCalculable</code></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Car: WeightCalculable &#123;</span><br><span class="line">    typealias WeightType = Int</span><br><span class="line">    let weight: WeightType</span><br><span class="line">    </span><br><span class="line">    init(weight: Int) &#123;</span><br><span class="line">        self.weight = weight</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let bigCar = Car(weight: 8_000.t) // 8 吨</span><br></pre></td></tr></table></figure>
-<h3 id="面向协议编程"><a href="#面向协议编程" class="headerlink" title="面向协议编程"></a>面向协议编程</h3><ul>
-<li>定义比赛协议，具有 赢/输/总场次/胜率 等特性</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">protocol Recordable: CustomStringConvertible &#123;</span><br><span class="line">    var wins: Int &#123; get &#125;</span><br><span class="line">    var losses: Int &#123; get &#125;</span><br><span class="line">    </span><br><span class="line">    func winningPerent() -&gt; Double</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>协议中方法或者属性的默认实现</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">extension Recordable &#123;</span><br><span class="line">	// CustomStringConvertible 协议默认实现</span><br><span class="line">    var description: String &#123;</span><br><span class="line">        return String(format: &quot;WINS: %d---LOSSES: %d&quot;, [wins, losses])</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 默认实现总场数计算型属性</span><br><span class="line">    var totalGames: Int &#123;</span><br><span class="line">        return wins + losses</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 默认实现的方法</span><br><span class="line">    func shoutWins() &#123;</span><br><span class="line">        print(&quot;come on&quot;, wins, &quot;times!&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="篮球比赛："><a href="#篮球比赛：" class="headerlink" title="篮球比赛："></a>篮球比赛：</h4><ul>
-<li>Equatable 协议 - 相等比较 需要重载 <code>==</code></li>
-<li>Comparable 协议 - 是否可比较 ，重载 <code>&lt;</code> 可直接调用sort()函数</li>
-<li>CustomStringConvertible 协议 - 打印信息，需重写 <code>description</code></li>
-<li>Recordable协议 - 比赛协议，没有平局 </li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">struct BasketballRecord:Equatable, Comparable, CustomStringConvertible, Recordable &#123;</span><br><span class="line">    var wins: Int</span><br><span class="line">    var losses: Int</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    /// 在具体定义的类型中实现 协议中的属性或者方法就会覆盖协议中的</span><br><span class="line">    var totalGames: Int = 200</span><br><span class="line">    </span><br><span class="line">    var description: String &#123;</span><br><span class="line">        return &quot;本次比赛胜: &quot; + String(wins) + &quot;负&quot; + &quot;\(losses)&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 胜率</span><br><span class="line">    func winningPerent() -&gt; Double &#123;</span><br><span class="line">        return (Double(wins) / Double(totalGames))</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // swift4.1 后，不需要再重写此方法，swift 会自动合成，如果不想让某一个属性参与比较，就需要重写该方法</span><br><span class="line">    static func == (lhs: BasketballRecord, rhs: BasketballRecord) -&gt; Bool &#123;</span><br><span class="line">        return lhs.wins == rhs.wins &amp;&amp; lhs.losses == rhs.losses</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // Comparable</span><br><span class="line">    static func &lt; (lhs: BasketballRecord, rhs: BasketballRecord) -&gt; Bool &#123;</span><br><span class="line">        if lhs.wins != rhs.wins &#123;</span><br><span class="line">            return lhs.wins &lt; rhs.wins</span><br><span class="line">        &#125;</span><br><span class="line">        return lhs.losses &gt; rhs.losses</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">#### 足球比赛：</span><br><span class="line"></span><br><span class="line">有平局的情况，原来的协议不能满足，需要增加一个平局的协议</span><br><span class="line"></span><br><span class="line">- 定义平局协议</span><br></pre></td></tr></table></figure>
-<p>protocol Tieable {<br>    /// 平局，可读写<br>    var ties: Int { get set }</p>
-<p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 足球比赛需要遵守的协议 `Recordable` 和 `Tieable`</span><br><span class="line"></span><br><span class="line">	- 总场数需要加上平局的场数，需要实现totalGames的get方法</span><br></pre></td></tr></table></figure></p>
-<p>struct FootableRecord: Recordable, Tieable {<br>    var wins: Int<br>    var losses: Int<br>    // 平局数<br>    var ties: Int</p>
-<pre><code>// 总场数
-var totalGames: Int {
-    return wins + losses + ties
-}
-
-var description: String {
-    return &quot;本次比赛胜: &quot; + String(wins) + &quot;负&quot; + &quot;\(losses)&quot;
-}
-
-func winningPerent() -&gt; Double {
-    return (Double(wins) / Double(totalGames))
-}
-</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 足球比赛中以上写法存在的问题</span><br><span class="line">	</span><br><span class="line">	- 所有有平局的比赛计算总场次的逻辑都是一样，每次都要写一次实现</span><br><span class="line">	- 单一修改 Recordable 协议不能解决问题，</span><br><span class="line">	- 存在平局和没有平局两种情况 totalGames 的计算逻辑不相同 </span><br><span class="line"></span><br><span class="line">- 解决办法：</span><br><span class="line">	- 扩展遵守了`Recordable`协议的类型，前提条件是：这个类型遵守了 Tieable 同时也遵守了 `Recordable ` 协议，可以理解为如果该类型遵守了 `Tieable `协议之后，`Recordable` 协议中的 totalGames 属性实现是另一种方式了，不在是以前的 `totalGames` 中直接返回 `wins + losses` 的值</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">定义协议</span><br></pre></td></tr></table></figure></p>
-<p>protocol Recordable: CustomStringConvertible {<br>    var wins: Int { get }<br>    var losses: Int { get }</p>
-<pre><code>func winningPerent() -&gt; Double
-</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">协议默认实现</span><br></pre></td></tr></table></figure></p>
-<p>extension Recordable {<br>    var description: String {<br>        return String(format: “WINS: %d—LOSSES: %d”, [wins, losses])<br>    }</p>
-<pre><code>// 默认实现总场数计算型属性
-var totalGames: Int {
-    return wins + losses
-}
-
-// 默认实现胜率
-func winningPerent() -&gt; Double {
-    return (Double(wins) / Double(totalGames))
-}
-
-// 默认实现的方法
-func shoutWins() {
-    print(&quot;come on&quot;, wins, &quot;times!&quot;)
-}
-</code></pre><p>}</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">扩展遵守了Tieable 的 类型的 Recordable 协议</span><br></pre></td></tr></table></figure>
-<p>extension Recordable where Self: Tieable {<br>    var totalGames: Int {<br>        return wins + losses + ties<br>    }<br>}</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 协议聚合</span><br><span class="line"></span><br><span class="line">如果对某一类型需要限制他必须遵守某些协议，可以使用协议聚合来定义</span><br><span class="line"></span><br><span class="line">比如： 有个奖赏协议</span><br></pre></td></tr></table></figure>
-<p>protocol Prizable {<br>    func isPrizable() -&gt; Bool<br>}</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">篮球比赛遵守此协议</span><br></pre></td></tr></table></figure>
-<p>// 篮球比赛奖赏<br>extension BasketballRecord: Prizable {<br>    func isPrizable() -&gt; Bool {<br>        return totalGames &gt; 10 &amp;&amp; winningPerent() &gt; 0.5<br>    }<br>}</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">足球比赛奖赏遵守此协议</span><br></pre></td></tr></table></figure>
-<p>extension FootableRecord: Prizable {<br>    func isPrizable() -&gt; Bool {<br>        return wins &gt; 1<br>    }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">现在有某一个学生也遵守了此协议</span><br></pre></td></tr></table></figure></p>
-<p>struct Student: Prizable {<br>    var name: String<br>    var score: Int</p>
-<pre><code>func isPrizable() -&gt; Bool {
-    return score &gt;= 60
-}
-</code></pre><p>}</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">定义奖赏的方法，参数类型必须是遵守了此协议的结构或者类型</span><br></pre></td></tr></table></figure>
-<p>private func award(_ one: Prizable) {<br>    if one.isPrizable() {<br>        print(one)<br>        print(“恭喜获得奖励”)<br>    } else {<br>        print(one)<br>        print(“很遗憾”)<br>    }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">如果说 BasketballRecord 这个类还遵守了其他的协议，例如遵守了 `Recordable` 协议， 并且这个协议也遵守了 `CustomStringConvertible` 并且默认实现了`description` 的`get` 方法</span><br></pre></td></tr></table></figure></p>
-<p>// MARK: - 比赛协议，具有 赢。输。总场次。胜率 特性<br>protocol Recordable: CustomStringConvertible {<br>    var wins: Int { get }<br>    var losses: Int { get }</p>
-<pre><code>func winningPerent() -&gt; Double
-</code></pre><p>}</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">`Recordable` 默认实现</span><br></pre></td></tr></table></figure>
-<p>extension Recordable {<br>    var description: String {<br>        return String(format: “WINS: %d—LOSSES: %d”, [wins, losses])<br>    }</p>
-<pre><code>// 默认实现总场数计算型属性
-var totalGames: Int {
-    return wins + losses
-}
-
-// 默认实现胜率
-func winningPerent() -&gt; Double {
-    return (Double(wins) / Double(totalGames))
-}
-
-// 默认实现的方法
-func shoutWins() {
-    print(&quot;come on&quot;, wins, &quot;times!&quot;)
-}
-</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">此时如果 `Student` 类还是调用 `award` 方法的话，print(one) 打印的信息将是`Recordable `中默认实现的内容，因此需要约束`award`函数的参数必须遵守两个协议让`Student` 也重写自己的`description `属性的`get`方法，不能再让 `Prizable` 扩展 默认实现</span><br><span class="line"></span><br><span class="line">- swift 3 写法： protocol&lt;A, B&gt;</span><br><span class="line">- swift 4 写法： A &amp; B</span><br></pre></td></tr></table></figure></p>
-<p>private func award2(_ one: Prizable &amp; CustomStringConvertible) {<br>    if one.isPrizable() {<br>        print(one)<br>        print(“恭喜获得奖励”)<br>    } else {<br>        print(one)<br>        print(“很遗憾”)<br>    }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 泛型约束</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-  定义一个函数，找出一个学生数组中分数最大的</span><br><span class="line">	- 参数：一个学生数组，都遵守了 Comparable 的类型</span><br><span class="line">	- 返回值：某个遵守了 Comparable 的类型实例</span><br><span class="line">   	- 此时函数报错 `Protocol &apos;Comparable&apos; can only be used as a generic constraint because it has Self or associated type requirements`, </span><br><span class="line">   	</span><br><span class="line">   	因为 Comparable 协议中定义的方法  public static func &lt; (lhs: Self, rhs: Self) -&gt; Bool 的参数类型是Self，是具体的某个类型</span><br></pre></td></tr></table></figure></p>
-<p>func maxScore(seq: [Comparable]) -&gt; Comparable { }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">- 如果需要定义一个函数实现在一个数组中找出需要奖励的人的名字该如何实现呢</span><br><span class="line">	- 参数：遵守两个协议 Comparable 和 Prizable 协议, 并且使用泛型</span><br><span class="line">	- 返回值：返回值是可选值，有可能没有任何奖励的对象</span><br></pre></td></tr></table></figure></p>
-<p>func topPrizable&lt;T: Comparable &amp; Prizable&gt;(seq: [T]) -&gt; T? {<br>    return seq.reduce(nil) { (tempTop: T?, condender: T) in<br>        guard condender.isPrizable() else { return tempTop }<br>        // 解包 condender 失败, 上一层验证了他必须是奖励的那个<br>        guard let tempTop = tempTop else { return condender }<br>        return max(tempTop, condender)<br>    }<br>}</p>
-<p><code>`</code></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift协议别名/" data-id="cjx3gfxy3001uxvfy066cth2n" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift项目中集成RN/" data-id="cjx92w8l600259bfyp32ghjau" class="article-share-link">Share</a>
       
       
     </footer>
@@ -751,7 +931,7 @@ func shoutWins() {
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -797,23 +977,23 @@ func shoutWins() {
       <ul>
         
           <li>
+            <a href="/2019/06/23/Flutter打包/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/23/Flutter中本地图片资源使用/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/20/Flutter页面导航/">(no title)</a>
+          </li>
+        
+          <li>
             <a href="/2019/06/19/Flutter中布局/">(no title)</a>
           </li>
         
           <li>
             <a href="/2019/06/18/Flutter中GridView组件/">GridView组件使用.md</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/18/第十章网络相关/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
           </li>
         
       </ul>

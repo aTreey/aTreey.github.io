@@ -62,6 +62,253 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Swift错误处理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/Swift错误处理/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.006Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Swift 中错误处理</p>
+<h3 id="assert-断言"><a href="#assert-断言" class="headerlink" title="assert 断言"></a>assert 断言</h3><p>只在debug 模式下程序会自动退出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public func assert(_ condition: @autoclosure () -&gt; Bool, _ message: @autoclosure () -&gt; String = default, file: StaticString = #file, line: UInt = #line)</span><br></pre></td></tr></table></figure>
+<h3 id="assertionFailure-断言错误"><a href="#assertionFailure-断言错误" class="headerlink" title="assertionFailure 断言错误"></a>assertionFailure 断言错误</h3><p>只在debug 模式下程序会自动退出, 没有条件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public func assertionFailure(_ message: @autoclosure () -&gt; String = default, file: StaticString = #file, line: UInt = #line)</span><br></pre></td></tr></table></figure>
+<h3 id="precondition"><a href="#precondition" class="headerlink" title="precondition"></a>precondition</h3><p>releas 模式程序也会退出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public func precondition(_ condition: @autoclosure () -&gt; Bool, _ message: @autoclosure () -&gt; String = default, file: StaticString = #file, line: UInt = #line)</span><br></pre></td></tr></table></figure>
+<h3 id="throw"><a href="#throw" class="headerlink" title="throw"></a>throw</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift错误处理/" data-id="cjx92w8l2001z9bfyb85tgq2q" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Swift泛型" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/Swift泛型/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.006Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Swift-泛型"><a href="#Swift-泛型" class="headerlink" title="Swift 泛型"></a>Swift 泛型</h2><h3 id="泛型定义–wikipedia"><a href="#泛型定义–wikipedia" class="headerlink" title="泛型定义–wikipedia"></a>泛型定义–<code>wikipedia</code></h3><ol>
+<li>在程序编码中一些包含类型参数的类型，也就是说泛型的参数只可以代表类，不能代表个别对象。（这是当今较常见的定义）</li>
+<li>在程序编码中一些包含参数的类。其参数可以代表类或对象等等。（现在人们大多把这称作模板）</li>
+</ol>
+<h3 id="泛型的用处"><a href="#泛型的用处" class="headerlink" title="泛型的用处"></a>泛型的用处</h3><p>泛型可以实现传入一个指定类型后做一些操作然后返回后还是原来指定的类型，你可以指定特定的类型（特定是指约束）</p>
+<h3 id="泛型和-Any-的区别"><a href="#泛型和-Any-的区别" class="headerlink" title="泛型和 Any 的区别"></a>泛型和 <code>Any</code> 的区别</h3><p>区别：<code>Any</code>能代表任何类型，但是不能返回某个具体的类型，都需要使用 as 去转化，而泛型正好相反</p>
+<ul>
+<li>Any 可以代表任何类型，除了class之外还可以代表struct，enum，</li>
+<li><code>AnyObject</code> 可以代码任何 <code>class</code> 的类型, swift 中基本类型， <code>Array</code> 和 <code>Dictionary</code> 都是 <code>struct</code> 类型，都不能使用 <code>AnyObject</code> 来接受</li>
+</ul>
+<p><a href="http://swifter.tips/any-anyobject/" target="_blank" rel="noopener">Swift中Any 和 AnyObject用法</a></p>
+<h3 id="泛型函数和泛型参数"><a href="#泛型函数和泛型参数" class="headerlink" title="泛型函数和泛型参数"></a>泛型函数和泛型参数</h3><p><code>swapTwoValues</code>是一个泛型函数，可以接收或者返回任何类型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">func swapTwoValues&lt;T&gt;(inout a: T, inout b: T) &#123;</span><br><span class="line">    let temporaryA = a</span><br><span class="line">    a = b</span><br><span class="line">    b = temporaryA</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><code>swapTwoValues</code> 函数名后面的 <code>&lt;T&gt;</code> 表示这个 <code>T</code> 类型是函数所定义的一个类型, <code>T</code> 只是一个类型的占位符，不用关心具体类型</p>
+</li>
+<li><p><code>(inout a: T, inout b: T)</code> 中a和b两个参数类型<code>T</code>是泛型参数</p>
+</li>
+</ul>
+<h3 id="类型约束"><a href="#类型约束" class="headerlink" title="类型约束"></a>类型约束</h3><p>两个泛型参数的泛型函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">func someFunction&lt;T: SomeClass, U: SomeProtocol&gt;(someT: T, someU: U) &#123;</span><br><span class="line">    // function body goes here</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>泛型参数<code>T</code>约束条件：必须是<code>SomeClass</code>类的子类</li>
+<li>泛型参数<code>U</code>约束条件：必须遵守<code>SomeProtocol</code>协议</li>
+<li>使用where指定约束</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift泛型/" data-id="cjx92w8l700269bfy8dus39ru" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Swift协议别名" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/Swift协议别名/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.005Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Swift协议和别名</p>
+<h3 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h3><p>某些属性的集合，可以有多个协议组成，具有的特点</p>
+<ol>
+<li>可以声明函数，但是不能实现，由实现这协议的具体结构或者类来实现</li>
+<li>声明的函数如果有参数也不能设置参数的默认值， 默认参数被认为也是函的一种实现</li>
+<li>可以声明属性，必须是计算型属性 只能使用var 修饰，不能是存储型属，必须在 {} 中明确指出属性的读取类型 例如 {get set}</li>
+<li>遵守协议的类可选择存储型属性或者计算型属性来实现协议中定义的属性</li>
+<li>protocol Person: class { } 表示此协议只能被类来遵守，结构体能遵守</li>
+<li><p>协议可以看着是一种类型，如果协议中的属性是只读的，如果是协议类型只能访问get 方法， 但是遵守协议的具体类或者结构可以设置属性的读和写</p>
+</li>
+<li><p>协议中的构造函数</p>
+<pre><code>- 如果父类中遵守了协议中的构造函数，子类中必须重写父类中的构造函数并且使用require修饰构造函数，表示继承此类的子类也必须实现该构造函数
+- 如果class 使用了final 修饰，表示不能被继承，此时不需要 require 关键词修饰
+</code></pre></li>
+</ol>
+<h3 id="类型别名"><a href="#类型别名" class="headerlink" title="类型别名"></a>类型别名</h3><ul>
+<li><p>定义别名 <code>typealias</code>, 供扩展使用</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">typealias Length = Double</span><br><span class="line">extension Double &#123;</span><br><span class="line">    var km: Length &#123;return self * 1_000.0&#125;</span><br><span class="line">    var m: Length &#123;return self * 100.0&#125;</span><br><span class="line">    var cm: Length &#123;return self / 10.0&#125;</span><br><span class="line">    /// 英尺</span><br><span class="line">    var ft: Length &#123; return self / 3.28084&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<pre><code>使用
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let distance: Length = 10.5.km</span><br></pre></td></tr></table></figure>
+</code></pre><ul>
+<li><p>定义别名防止硬编码</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">	// 音频采样率</span><br><span class="line">typealias AudioSample = UInt64</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="协议中-typealias"><a href="#协议中-typealias" class="headerlink" title="协议中 typealias"></a>协议中 <code>typealias</code></h3><p><strong>协议中定义一个属性，该属性的类型根据不同的情况返回不同的类型（我理解为类似泛型），具体的类型由遵守此协议的类或者结构指定</strong></p>
+<ul>
+<li>定义协议中别名</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">protocol WeightCalculable &#123;</span><br><span class="line">    // 属性重量根据不同体积返回的可能是Int，可以可能是double类型，所以使用别名, 协议中使用associatedtype关键词，</span><br><span class="line">    associatedtype WeightType</span><br><span class="line">    var weight: WeightType &#123;  get  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>扩展 Int 中的吨单位</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">extension Int &#123;</span><br><span class="line">    typealias Weight = Int</span><br><span class="line">    var t: Weight &#123;return self * 1_000&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用协议中别名</li>
+</ul>
+<ul>
+<li>一部手机的时使用该协议<code>WeightCalculable</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class iPhone: WeightCalculable &#123;</span><br><span class="line">    typealias WeightType = Double</span><br><span class="line">    var weight: WeightType &#123;</span><br><span class="line">        return 0.5</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>一辆大卡时使用该协议<code>WeightCalculable</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Car: WeightCalculable &#123;</span><br><span class="line">    typealias WeightType = Int</span><br><span class="line">    let weight: WeightType</span><br><span class="line">    </span><br><span class="line">    init(weight: Int) &#123;</span><br><span class="line">        self.weight = weight</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let bigCar = Car(weight: 8_000.t) // 8 吨</span><br></pre></td></tr></table></figure>
+<h3 id="面向协议编程"><a href="#面向协议编程" class="headerlink" title="面向协议编程"></a>面向协议编程</h3><ul>
+<li>定义比赛协议，具有 赢/输/总场次/胜率 等特性</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">protocol Recordable: CustomStringConvertible &#123;</span><br><span class="line">    var wins: Int &#123; get &#125;</span><br><span class="line">    var losses: Int &#123; get &#125;</span><br><span class="line">    </span><br><span class="line">    func winningPerent() -&gt; Double</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>协议中方法或者属性的默认实现</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">extension Recordable &#123;</span><br><span class="line">	// CustomStringConvertible 协议默认实现</span><br><span class="line">    var description: String &#123;</span><br><span class="line">        return String(format: &quot;WINS: %d---LOSSES: %d&quot;, [wins, losses])</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 默认实现总场数计算型属性</span><br><span class="line">    var totalGames: Int &#123;</span><br><span class="line">        return wins + losses</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 默认实现的方法</span><br><span class="line">    func shoutWins() &#123;</span><br><span class="line">        print(&quot;come on&quot;, wins, &quot;times!&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="篮球比赛："><a href="#篮球比赛：" class="headerlink" title="篮球比赛："></a>篮球比赛：</h4><ul>
+<li>Equatable 协议 - 相等比较 需要重载 <code>==</code></li>
+<li>Comparable 协议 - 是否可比较 ，重载 <code>&lt;</code> 可直接调用sort()函数</li>
+<li>CustomStringConvertible 协议 - 打印信息，需重写 <code>description</code></li>
+<li>Recordable协议 - 比赛协议，没有平局 </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">struct BasketballRecord:Equatable, Comparable, CustomStringConvertible, Recordable &#123;</span><br><span class="line">    var wins: Int</span><br><span class="line">    var losses: Int</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    /// 在具体定义的类型中实现 协议中的属性或者方法就会覆盖协议中的</span><br><span class="line">    var totalGames: Int = 200</span><br><span class="line">    </span><br><span class="line">    var description: String &#123;</span><br><span class="line">        return &quot;本次比赛胜: &quot; + String(wins) + &quot;负&quot; + &quot;\(losses)&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 胜率</span><br><span class="line">    func winningPerent() -&gt; Double &#123;</span><br><span class="line">        return (Double(wins) / Double(totalGames))</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // swift4.1 后，不需要再重写此方法，swift 会自动合成，如果不想让某一个属性参与比较，就需要重写该方法</span><br><span class="line">    static func == (lhs: BasketballRecord, rhs: BasketballRecord) -&gt; Bool &#123;</span><br><span class="line">        return lhs.wins == rhs.wins &amp;&amp; lhs.losses == rhs.losses</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // Comparable</span><br><span class="line">    static func &lt; (lhs: BasketballRecord, rhs: BasketballRecord) -&gt; Bool &#123;</span><br><span class="line">        if lhs.wins != rhs.wins &#123;</span><br><span class="line">            return lhs.wins &lt; rhs.wins</span><br><span class="line">        &#125;</span><br><span class="line">        return lhs.losses &gt; rhs.losses</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">#### 足球比赛：</span><br><span class="line"></span><br><span class="line">有平局的情况，原来的协议不能满足，需要增加一个平局的协议</span><br><span class="line"></span><br><span class="line">- 定义平局协议</span><br></pre></td></tr></table></figure>
+<p>protocol Tieable {<br>    /// 平局，可读写<br>    var ties: Int { get set }</p>
+<p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 足球比赛需要遵守的协议 `Recordable` 和 `Tieable`</span><br><span class="line"></span><br><span class="line">	- 总场数需要加上平局的场数，需要实现totalGames的get方法</span><br></pre></td></tr></table></figure></p>
+<p>struct FootableRecord: Recordable, Tieable {<br>    var wins: Int<br>    var losses: Int<br>    // 平局数<br>    var ties: Int</p>
+<pre><code>// 总场数
+var totalGames: Int {
+    return wins + losses + ties
+}
+
+var description: String {
+    return &quot;本次比赛胜: &quot; + String(wins) + &quot;负&quot; + &quot;\(losses)&quot;
+}
+
+func winningPerent() -&gt; Double {
+    return (Double(wins) / Double(totalGames))
+}
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 足球比赛中以上写法存在的问题</span><br><span class="line">	</span><br><span class="line">	- 所有有平局的比赛计算总场次的逻辑都是一样，每次都要写一次实现</span><br><span class="line">	- 单一修改 Recordable 协议不能解决问题，</span><br><span class="line">	- 存在平局和没有平局两种情况 totalGames 的计算逻辑不相同 </span><br><span class="line"></span><br><span class="line">- 解决办法：</span><br><span class="line">	- 扩展遵守了`Recordable`协议的类型，前提条件是：这个类型遵守了 Tieable 同时也遵守了 `Recordable ` 协议，可以理解为如果该类型遵守了 `Tieable `协议之后，`Recordable` 协议中的 totalGames 属性实现是另一种方式了，不在是以前的 `totalGames` 中直接返回 `wins + losses` 的值</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">定义协议</span><br></pre></td></tr></table></figure></p>
+<p>protocol Recordable: CustomStringConvertible {<br>    var wins: Int { get }<br>    var losses: Int { get }</p>
+<pre><code>func winningPerent() -&gt; Double
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">协议默认实现</span><br></pre></td></tr></table></figure></p>
+<p>extension Recordable {<br>    var description: String {<br>        return String(format: “WINS: %d—LOSSES: %d”, [wins, losses])<br>    }</p>
+<pre><code>// 默认实现总场数计算型属性
+var totalGames: Int {
+    return wins + losses
+}
+
+// 默认实现胜率
+func winningPerent() -&gt; Double {
+    return (Double(wins) / Double(totalGames))
+}
+
+// 默认实现的方法
+func shoutWins() {
+    print(&quot;come on&quot;, wins, &quot;times!&quot;)
+}
+</code></pre><p>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">扩展遵守了Tieable 的 类型的 Recordable 协议</span><br></pre></td></tr></table></figure>
+<p>extension Recordable where Self: Tieable {<br>    var totalGames: Int {<br>        return wins + losses + ties<br>    }<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 协议聚合</span><br><span class="line"></span><br><span class="line">如果对某一类型需要限制他必须遵守某些协议，可以使用协议聚合来定义</span><br><span class="line"></span><br><span class="line">比如： 有个奖赏协议</span><br></pre></td></tr></table></figure>
+<p>protocol Prizable {<br>    func isPrizable() -&gt; Bool<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">篮球比赛遵守此协议</span><br></pre></td></tr></table></figure>
+<p>// 篮球比赛奖赏<br>extension BasketballRecord: Prizable {<br>    func isPrizable() -&gt; Bool {<br>        return totalGames &gt; 10 &amp;&amp; winningPerent() &gt; 0.5<br>    }<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">足球比赛奖赏遵守此协议</span><br></pre></td></tr></table></figure>
+<p>extension FootableRecord: Prizable {<br>    func isPrizable() -&gt; Bool {<br>        return wins &gt; 1<br>    }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">现在有某一个学生也遵守了此协议</span><br></pre></td></tr></table></figure></p>
+<p>struct Student: Prizable {<br>    var name: String<br>    var score: Int</p>
+<pre><code>func isPrizable() -&gt; Bool {
+    return score &gt;= 60
+}
+</code></pre><p>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">定义奖赏的方法，参数类型必须是遵守了此协议的结构或者类型</span><br></pre></td></tr></table></figure>
+<p>private func award(_ one: Prizable) {<br>    if one.isPrizable() {<br>        print(one)<br>        print(“恭喜获得奖励”)<br>    } else {<br>        print(one)<br>        print(“很遗憾”)<br>    }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">如果说 BasketballRecord 这个类还遵守了其他的协议，例如遵守了 `Recordable` 协议， 并且这个协议也遵守了 `CustomStringConvertible` 并且默认实现了`description` 的`get` 方法</span><br></pre></td></tr></table></figure></p>
+<p>// MARK: - 比赛协议，具有 赢。输。总场次。胜率 特性<br>protocol Recordable: CustomStringConvertible {<br>    var wins: Int { get }<br>    var losses: Int { get }</p>
+<pre><code>func winningPerent() -&gt; Double
+</code></pre><p>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">`Recordable` 默认实现</span><br></pre></td></tr></table></figure>
+<p>extension Recordable {<br>    var description: String {<br>        return String(format: “WINS: %d—LOSSES: %d”, [wins, losses])<br>    }</p>
+<pre><code>// 默认实现总场数计算型属性
+var totalGames: Int {
+    return wins + losses
+}
+
+// 默认实现胜率
+func winningPerent() -&gt; Double {
+    return (Double(wins) / Double(totalGames))
+}
+
+// 默认实现的方法
+func shoutWins() {
+    print(&quot;come on&quot;, wins, &quot;times!&quot;)
+}
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">此时如果 `Student` 类还是调用 `award` 方法的话，print(one) 打印的信息将是`Recordable `中默认实现的内容，因此需要约束`award`函数的参数必须遵守两个协议让`Student` 也重写自己的`description `属性的`get`方法，不能再让 `Prizable` 扩展 默认实现</span><br><span class="line"></span><br><span class="line">- swift 3 写法： protocol&lt;A, B&gt;</span><br><span class="line">- swift 4 写法： A &amp; B</span><br></pre></td></tr></table></figure></p>
+<p>private func award2(_ one: Prizable &amp; CustomStringConvertible) {<br>    if one.isPrizable() {<br>        print(one)<br>        print(“恭喜获得奖励”)<br>    } else {<br>        print(one)<br>        print(“很遗憾”)<br>    }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 泛型约束</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-  定义一个函数，找出一个学生数组中分数最大的</span><br><span class="line">	- 参数：一个学生数组，都遵守了 Comparable 的类型</span><br><span class="line">	- 返回值：某个遵守了 Comparable 的类型实例</span><br><span class="line">   	- 此时函数报错 `Protocol &apos;Comparable&apos; can only be used as a generic constraint because it has Self or associated type requirements`, </span><br><span class="line">   	</span><br><span class="line">   	因为 Comparable 协议中定义的方法  public static func &lt; (lhs: Self, rhs: Self) -&gt; Bool 的参数类型是Self，是具体的某个类型</span><br></pre></td></tr></table></figure></p>
+<p>func maxScore(seq: [Comparable]) -&gt; Comparable { }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">- 如果需要定义一个函数实现在一个数组中找出需要奖励的人的名字该如何实现呢</span><br><span class="line">	- 参数：遵守两个协议 Comparable 和 Prizable 协议, 并且使用泛型</span><br><span class="line">	- 返回值：返回值是可选值，有可能没有任何奖励的对象</span><br></pre></td></tr></table></figure></p>
+<p>func topPrizable&lt;T: Comparable &amp; Prizable&gt;(seq: [T]) -&gt; T? {<br>    return seq.reduce(nil) { (tempTop: T?, condender: T) in<br>        guard condender.isPrizable() else { return tempTop }<br>        // 解包 condender 失败, 上一层验证了他必须是奖励的那个<br>        guard let tempTop = tempTop else { return condender }<br>        return max(tempTop, condender)<br>    }<br>}</p>
+<p><code>`</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift协议别名/" data-id="cjx92w8l1001x9bfyqc0ioyil" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Swift协议扩展" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/Swift协议扩展/" class="article-date">
@@ -108,7 +355,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift协议扩展/" data-id="cjx3gfxy60022xvfyge08x41u" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift协议扩展/" data-id="cjx92w8l400229bfyeno1ixnk" class="article-share-link">Share</a>
       
       
     </footer>
@@ -136,7 +383,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/SwiftLint使用/" data-id="cjx3gfxxy001kxvfye1wu6re3" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/SwiftLint使用/" data-id="cjx92w8kz001q9bfyjfur4859" class="article-share-link">Share</a>
       
       
     </footer>
@@ -214,7 +461,7 @@ return one.x &gt; other.x &amp;&amp;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift下标和运算符重载/" data-id="cjx3gfxy1001pxvfynk6wyv8x" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift下标和运算符重载/" data-id="cjx92w8l0001s9bfys0x4lyna" class="article-share-link">Share</a>
       
       
     </footer>
@@ -289,7 +536,7 @@ override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexP
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift 协议使用/" data-id="cjx3gfxxs0019xvfy0chrbhh3" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift 协议使用/" data-id="cjx92w8ks001c9bfyt4vpw8xz" class="article-share-link">Share</a>
       
       
     </footer>
@@ -411,57 +658,7 @@ override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexP
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift 基础知识/" data-id="cjx3gfxxt001bxvfym2bxg3h3" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-ReactNative中ref使用" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/ReactNative中ref使用/" class="article-date">
-  <time datetime="2019-06-18T15:30:19.001Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Reat Native ref 使用</p>
-<h3 id="State-状态的使用"><a href="#State-状态的使用" class="headerlink" title="State 状态的使用"></a>State 状态的使用</h3><p>在父控件中指定,整个生命周期讲不再改变<br>需求：一段闪烁的文字， Props 属性显示文字内容创建时初始化，State控制随时间变化是否显示，在父控件中</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">class Blink extends Component&#123;</span><br><span class="line">    // 构造</span><br><span class="line">      constructor(props) &#123;</span><br><span class="line">        super(props);</span><br><span class="line">        // 初始状态</span><br><span class="line">        this.state = &#123;showWithText:true&#125;;</span><br><span class="line">    this.state = &#123;&#125;</span><br><span class="line">        setInterval(() =&gt; &#123;</span><br><span class="line">            this.setState(previousState =&gt; &#123;</span><br><span class="line">                return &#123;showWithText: !previousState.showWithText&#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;, 100);</span><br><span class="line">      &#125;</span><br><span class="line">      render() &#123;</span><br><span class="line">          let display= this.state.showWithText ? this.props.text : &apos; &apos;;</span><br><span class="line">          return(</span><br><span class="line">              &lt;Text&gt;&#123;display&#125;&lt;/Text&gt;</span><br><span class="line">          );</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">export default class App extends Component&lt;Props&gt; &#123;</span><br><span class="line">    render() &#123;</span><br><span class="line">        return(</span><br><span class="line">            &lt;View style=&#123;styles.container&#125;&gt;</span><br><span class="line">                &lt;Blink</span><br><span class="line">                    text=&apos;I love to blink&apos;</span><br><span class="line">                /&gt;</span><br><span class="line"></span><br><span class="line">                &lt;Blink</span><br><span class="line">                  text=&apos;猜猜猜&apos;</span><br><span class="line">                /&gt;</span><br><span class="line"></span><br><span class="line">                &lt;Blink</span><br><span class="line">                    text=&apos;Blink is great&apos;</span><br><span class="line">                /&gt;</span><br><span class="line">            &lt;/View&gt;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Props-属性的使用"><a href="#Props-属性的使用" class="headerlink" title="Props 属性的使用"></a>Props 属性的使用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 定义一个组件</span><br><span class="line">class Greeting extends Component &#123;</span><br><span class="line">    render() &#123;</span><br><span class="line">        return(</span><br><span class="line">            &lt;Text&gt; Hello &#123;this.props.name&#125;!</span><br><span class="line">            &lt;/Text&gt;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">export default class App extends Component&lt;Props&gt; &#123;</span><br><span class="line">    render() &#123;</span><br><span class="line">        return(</span><br><span class="line">            &lt;View style=&#123;styles.container&#125;&gt;</span><br><span class="line">                &lt;Image source=&#123;&#123;uri:&apos;https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg&apos;&#125;&#125;</span><br><span class="line">                       style=&#123;&#123;width: 190, height: 110&#125;&#125;</span><br><span class="line">                /&gt;</span><br><span class="line">                &lt;Text style=&#123;styles.instructions&#125;&gt;</span><br><span class="line">                    使用Props属性</span><br><span class="line">                &lt;/Text&gt;</span><br><span class="line">                &lt;View&gt;</span><br><span class="line">                    &lt;Greeting name=&apos;React-Native&apos;</span><br><span class="line">                    /&gt;</span><br><span class="line">                    &lt;Greeting name=&apos;iOS&apos;</span><br><span class="line">                    /&gt;</span><br><span class="line">                    &lt;Greeting name=&apos;Swift&apos;</span><br><span class="line">                    /&gt;</span><br><span class="line">                &lt;/View&gt;</span><br><span class="line"></span><br><span class="line">            &lt;/View&gt;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="ref的使用"><a href="#ref的使用" class="headerlink" title="ref的使用"></a>ref的使用</h4><ul>
-<li>可以理解为组件渲染后指向组件的一个应用，可以通过ref获取到真实的组件（类似指针？）</li>
-</ul>
-<p>定义</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ref=&apos;scrollView&apos;</span><br></pre></td></tr></table></figure>
-<p>获取</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let scrollView = this.refs.scrollView</span><br><span class="line">let scrollView = this.refs[&apos;scrollView&apos;]</span><br></pre></td></tr></table></figure>
-<ul>
-<li>可以通过ref访问组件的属性和方法</li>
-</ul>
-<h4 id="ES6-定时器"><a href="#ES6-定时器" class="headerlink" title="ES6 定时器"></a>ES6 定时器</h4><ul>
-<li>开启定时器</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">let scrollView = this.refs.scrollView;</span><br><span class="line">// 2.4timer 定时器的写法</span><br><span class="line">this.timer = setInterval(</span><br><span class="line">    ()=&gt;&#123;</span><br><span class="line">        var tempPage = 0;</span><br><span class="line">        //  修改banner索引</span><br><span class="line">        if ((this.state.currentPage+1) &gt;= ImageData.data.length) &#123;</span><br><span class="line">            tempPage = 0;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            tempPage = this.state.currentPage+1;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 更新状态</span><br><span class="line">        this.setState(&#123;</span><br><span class="line">            currentPage: tempPage</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">        let offSet_x = width * tempPage</span><br><span class="line">        scrollView.scrollResponderScrollTo(&#123;x:offSet_x, y:0, animated: true&#125;)</span><br><span class="line">    &#125;,</span><br><span class="line">    this.state.duration</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>暂停定时器</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this.timer &amp;&amp; clearInterval(this.timer)</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/ReactNative中ref使用/" data-id="cjx3gfxxn000zxvfyeru8cc5h" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift 基础知识/" data-id="cjx92w8ku001e9bfyd0tbzsr7" class="article-share-link">Share</a>
       
       
     </footer>
@@ -548,7 +745,7 @@ override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexP
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/RN报错/" data-id="cjx3gfxxo0012xvfyoerzca53" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/RN报错/" data-id="cjx92w8kn00129bfywf5bi4c9" class="article-share-link">Share</a>
       
       
     </footer>
@@ -617,262 +814,7 @@ override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexP
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/React-Native开发iOS打包/" data-id="cjx3gfxxp0013xvfy2q7cwjqp" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-JavaScript基础" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/JavaScript基础/" class="article-date">
-  <time datetime="2019-06-18T15:30:19.000Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>js 学习</p>
-<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var fullName;</span><br><span class="line">//  undefined</span><br><span class="line"></span><br><span class="line">fullName</span><br><span class="line">// undefined</span><br><span class="line"></span><br><span class="line">fullName + 2</span><br><span class="line">// NaN</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>判断类型名称</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">fullName = &apos;张&apos;</span><br><span class="line">&quot;张&quot;</span><br><span class="line">typeof(fullName)</span><br><span class="line">// &quot;string&quot;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var weight = 100;</span><br><span class="line">undefined</span><br><span class="line">typeof(weight)</span><br><span class="line">// &quot;number&quot;</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var firstName = &apos;王&apos;, lastName = &apos;张&apos;</span><br><span class="line">undefined</span><br><span class="line">firstName + lastName</span><br><span class="line">// &quot;王张&quot;</span><br></pre></td></tr></table></figure>
-</code></pre><ul>
-<li><p>类型不相同时转换后在拼接 </p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var weightIncrease = &apos;2.5斤&apos;</span><br><span class="line">undefined</span><br><span class="line">weight + weightIncrease</span><br><span class="line">// &quot;1002.5斤&quot;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><pre><code>var array = [];
-undefined
-array.length
-// 0
-typeof(array)
-// &quot;object&quot;
-</code></pre><ul>
-<li><p>增加元素</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">array.push(&apos;1&apos;)</span><br><span class="line">// 4</span><br><span class="line">array</span><br><span class="line">// (4) [&quot;ab&quot;, &quot;cbd&quot;, &quot;fcg&quot;, &quot;1&quot;]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>数组前面添加</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">array.unshift(&apos;0&apos;)</span><br><span class="line">// 6</span><br><span class="line">array</span><br><span class="line">// (6) [&quot;0&quot;, &quot;ab&quot;, &quot;cbd&quot;, &quot;fcg&quot;, &quot;1&quot;, Array(2)]</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>删除最后元素</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">array.pop() // 返回删除的元素</span><br><span class="line">// (2) [&quot;2&quot;, &quot;3&quot;]</span><br><span class="line">array</span><br><span class="line">// (5) [&quot;0&quot;, &quot;ab&quot;, &quot;cbd&quot;, &quot;fcg&quot;, &quot;1&quot;]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>删除第一个元素</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	array.shift()</span><br><span class="line">	// &quot;0&quot;</span><br><span class="line">	array</span><br><span class="line"> 	// (4) [&quot;ab&quot;, &quot;cbd&quot;, &quot;fcg&quot;, &quot;1&quot;]</span><br><span class="line">	```	</span><br><span class="line">- 删除指定的值，但数组元素没有被删</span><br></pre></td></tr></table></figure>
-<p>  delete array[2]<br>  // true<br>  array<br>  // (4) [“ab”, “cbd”, empty, “1”]</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">- 删除指定的元素</span><br></pre></td></tr></table></figure>
-<p>  array.splice(1)<br>  // (3) [“cbd”, empty, “1”]<br>  array<br>  // [“ab”]</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">## 函数</span><br><span class="line"></span><br><span class="line">### 调用调用</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>alertMessage();</p>
-<p>function alertMessageWithParamter(message) {<br>    alert(message)<br>}</p>
-<p>alertMessageWithParamter(‘有参数的函数’)<br>alertMessageWithParamter(250)<br>alertMessageWithParamter(<br>    console.log(‘test’)<br>)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">### 函数表达式，使用函数声明的方式</span><br></pre></td></tr></table></figure>
-<p>var alertMessage_expression = function expression_alert (message) {<br>    alert(message)<br>}</p>
-<p>alertMessage_expression(‘匿名函数调用’)</p>
-<p>expression_alert(‘函数表达式’)<br><code>`</code></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/JavaScript基础/" data-id="cjx3gfxxg000hxvfyz9qd6qj5" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-MasonrySnapkit使用总结" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/MasonrySnapkit使用总结/" class="article-date">
-  <time datetime="2019-06-18T15:30:19.000Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Masonry使用"><a href="#Masonry使用" class="headerlink" title="Masonry使用"></a>Masonry使用</h2><p>基本使用官网Demo非常详细，以下总结的是常见问题和技巧</p>
-<h3 id="安装遇到的问题"><a href="#安装遇到的问题" class="headerlink" title="安装遇到的问题"></a>安装遇到的问题</h3><ul>
-<li><p>pod 安装后出现⚠️，项目运行报错</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[UIView mas_makeConstraints:]: unrecognized selector sent to instance</span><br></pre></td></tr></table></figure>
-<p>  <a href="https://github.com/SnapKit/Masonry/issues/188">github</a></p>
-<p>  <a href="https://www.jianshu.com/p/3c3fc3cf1218" target="_blank" rel="noopener">解决方法</a></p>
-</li>
-<li><p>使用<code>lastBaseline</code>属性<code>crash</code></p>
-<p>  <a href="https://github.com/SnapKit/Masonry/issues/353">解决办法</a></p>
-</li>
-</ul>
-<h3 id="使用时注意点"><a href="#使用时注意点" class="headerlink" title="使用时注意点"></a>使用时注意点</h3><ul>
-<li><p><code>edgesForExtendedLayout</code> 方法</p>
-<p>  重写此方法的目的是为了确定布局位置从什么位置开始什么位置结束，</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (UIRectEdge)edgesForExtendedLayout &#123;</span><br><span class="line">   return UIRectEdgeNone;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<pre><code>**重写后**
-![](https://ws1.sinaimg.cn/large/006tNc79ly1fsgcn3fmo0j30s61iyalk.jpg)
-
-**重写前**
-![](https://ws4.sinaimg.cn/large/006tNc79ly1fsgcokvpdwj30s61iy7eq.jpg)
-</code></pre><ul>
-<li><p><code>translucent</code> 设置<code>UINavigationBar</code>是否半透明, 如果设置了导航栏的<code>style</code> 为<code>UIBarStyleBlackTranslucent</code> 就为true</p>
-<p>  <strong>设置为false不透明效果</strong><br>  <img src="https://ws4.sinaimg.cn/large/006tNc79ly1fsgg7ugz8mj30ow0nqq4h.jpg" alt></p>
-</li>
-</ul>
-<ul>
-<li><p><code>extendedLayoutIncludesOpaqueBars</code> 导航栏不透明条件下是否可以扩展，默认是NO不可以扩展</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">self.navigationController?.navigationBar.isTranslucent = false</span><br><span class="line"> self.extendedLayoutIncludesOpaqueBars = true</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<pre><code>**设置不透明，设置可以扩展此时从坐标的（0，0）点开始布局**
-![](https://ws2.sinaimg.cn/large/006tNc79ly1fsggem13mjj30ow0j83zy.jpg)    
-</code></pre><ul>
-<li><p><code>inset</code> 的使用，当约束控件的属性相同时不用再考虑正负值的问题，例如要约束一个控件左边距离另一控件的右边位置时还需要使用负值情况</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[yellowdView makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">       make.height.equalTo(@150);</span><br><span class="line">       make.top.equalTo(self).inset(220);</span><br><span class="line">       make.leading.equalTo(self).inset(10);</span><br><span class="line">       make.trailing.equalTo(greenView.leading).inset(10);</span><br><span class="line">       make.width.equalTo(greenView);</span><br><span class="line">   &#125;];</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code>edges</code>的使用，约束边距更方便</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[edgeView remakeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">           make.edges.equalTo(lasView).insets(UIEdgeInsetsMake(10, 5, 5, 5));</span><br><span class="line">       &#125;];</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li><p><code>Priority</code> 设置约束的优先级</p>
-<ul>
-<li><code>priorityHigh</code></li>
-<li><code>priorityMedium</code></li>
-<li><code>priorityLow</code></li>
-</ul>
-</li>
-<li><p><code>makeConstraints</code>、<code>updateConstraints</code>、<code>remakeConstraints</code>三者区别</p>
-<ul>
-<li><code>makeConstraints</code> 添加约束</li>
-<li><code>updateConstraints</code> 更新约束，更新之前会查找一边控件已经存在的约束，没有就添加，有就更新到最新的约束</li>
-<li><code>remakeConstraints</code>删除控件以前的所有约束重新添加约束</li>
-</ul>
-</li>
-<li><p>设置控件或者某一约束的’key’ 方便冲突时⚠️查找</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">	greenView.mas_key = @&quot;greenView&quot;;</span><br><span class="line">    [greenView makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">        make.height.equalTo(yellowdView).key(@&quot;greenView-height&quot;);</span><br><span class="line">        make.top.equalTo(yellowdView).key(@&quot;greenView-top&quot;);</span><br><span class="line">        make.width.equalTo(yellowdView).key(@&quot;greenView-width&quot;);</span><br><span class="line">        make.trailing.equalTo(self).inset(10).key(@&quot;greenView-trailing&quot;);</span><br><span class="line">        // 冲突约束</span><br><span class="line">//        make.leading.equalTo(greenView.trailing).inset(10).key(@&quot;greenView-leading&quot;);</span><br><span class="line">    &#125;];</span><br><span class="line">	```	</span><br><span class="line"></span><br><span class="line">- 使用 `MASAttachKeys`批量给`view`设置key</span><br></pre></td></tr></table></figure>
-<p>  MASAttachKeys(greenView, yellowdView);</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">	![](https://ws3.sinaimg.cn/large/006tNc79ly1fsgalvd4l6j31a20modnp.jpg)</span><br><span class="line">	</span><br><span class="line">- `dividedBy`和 `multipliedBy` 约束宽高比</span><br></pre></td></tr></table></figure>
-<p>  [topInnerView makeConstraints:^(MASConstraintMaker *make) {</p>
-<pre><code>// 设置自己的宽高比是3:1
-make.width.equalTo( topInnerView.height).multipliedBy(3); // 乘因数
-
-// 设置宽高并且设置他们的优先级最低
-make.width.height.lessThanOrEqualTo(topView);
-make.width.height.equalTo(topView).priorityLow();
-
-// 设置位置
-make.top.equalTo(topView);
-</code></pre><p>  }];</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- 多个控件批量约束</span><br></pre></td></tr></table></figure>
-<p>  NSValue <em>sizeValue = [NSValue valueWithCGSize:CGSizeMake(100, 100)];<br>  [@[blueView, redView, yellowView] makeConstraints:^(MASConstraintMaker </em>make) {</p>
-<pre><code>make.size.equalTo(sizeValue);
-</code></pre><p>  }];</p>
-<p>  [@[blueView, redView, yellowView] mas_makeConstraints:^(MASConstraintMaker *make) {</p>
-<pre><code>make.top.equalTo(self).inset(20);
-</code></pre><p>  }];</p>
-<p>  [blueView makeConstraints:^(MASConstraintMaker *make) {</p>
-<pre><code>make.left.equalTo(self).inset(20);
-</code></pre><p>  }];</p>
-<p>  [redView makeConstraints:^(MASConstraintMaker *make) {</p>
-<pre><code>make.left.equalTo(blueView.right).inset(10);
-</code></pre><p>  }];</p>
-<p>  [yellowView makeConstraints:^(MASConstraintMaker *make) {</p>
-<pre><code>make.left.equalTo(redView.right).inset(10);
-</code></pre><p>  }];</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">![批量约束](https://ws1.sinaimg.cn/large/006tNc79ly1fsgaz670hvj30s61iyn2l.jpg)</span><br><span class="line"></span><br><span class="line">**以上代码也可以简化为**</span><br></pre></td></tr></table></figure>
-<p>  [redView makeConstraints:^(MASConstraintMaker *make) {</p>
-<pre><code>make.left.equalTo(blueView.right).inset(10);
-</code></pre><p>  }];</p>
-<p>  [yellowView makeConstraints:^(MASConstraintMaker *make) {</p>
-<pre><code>make.left.equalTo(redView.right).inset(10);
-</code></pre><p>  }];</p>
-</li>
-</ul>
-<pre><code>[blueView makeConstraints:^(MASConstraintMaker *make) {
-    make.top.left.equalTo(self);
-    make.size.equalTo(@[redView, yellowView, sizeValue]);
-}];
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">	![](https://ws2.sinaimg.cn/large/006tNc79ly1fsgbhz8lw5j30s61iyte5.jpg)</span><br><span class="line"></span><br><span class="line">## Snapkit 使用</span><br><span class="line"></span><br><span class="line">- Swift 中`edgesForExtendedLayout:UIRectEdge` 扩展布局的边缘是一个属性，默认是`All`</span><br></pre></td></tr></table></figure>
-
-self.edgesForExtendedLayout = []
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">	在Swift中闭包参数可以使用$0、$1、$2 一次代表第一个，第二个，第三个参数</span><br><span class="line"></span><br><span class="line">- 使用$0 来代替闭包参数</span><br></pre></td></tr></table></figure>
-
-nullDataImageView.snp.makeConstraints {
-    $0.top.equalTo(view).offset(44)
-    $0.centerX.equalTo(view)
-    $0.width.height.equalTo(200)
-}
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">- `deactivate` 和 `activate` 使用</span><br><span class="line">	</span><br><span class="line">	- `activate` 激活指定的约束</span><br><span class="line">	- `deactivate` 移除指定的约束</span><br><span class="line"></span><br><span class="line">	添加约束</span><br></pre></td></tr></table></figure>
-
-nullDataImageView.snp.makeConstraints {
-    nullDataViewTopConstraint = $0.top.equalTo(view).offset(80).constraint
-    nullDataViewLeftConstraint = $0.left.equalTo(view).inset(10).constraint
-    $0.width.height.equalTo(200)
-}
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">移除对应约束，设置约束再激活约束</span><br></pre></td></tr></table></figure>
-
-nullDataViewLeftConstraint?.deactivate()
-nullDataViewLeftConstraint?.update(inset: 100)
-nullDataViewLeftConstraint?.activate()
-UIView.animate(withDuration: 1.5) {
-    self.view.layoutIfNeeded()
-}
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 更新约束</span><br><span class="line"></span><br><span class="line">	- 添加约束</span><br></pre></td></tr></table></figure>
-
-nullDataImageView.snp.makeConstraints {
-    nullDataViewTopConstraint = $0.top.equalTo(view).offset(64).constraint
-    $0.centerX.equalTo(view)
-    $0.width.height.equalTo(200)
-}
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 更新约束</span><br></pre></td></tr></table></figure>
-
-nullDataViewTopConstraint?.update(inset: 84)
-UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut, animations: {
-    self.view.layoutIfNeeded()
-}) { (finished) in
-    print(&quot;动画执行完毕&quot;)
-}
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">- 添加`debug`模式中的	`key`使用`labeled()`方法</span><br></pre></td></tr></table></figure>
-
-nullDataImageView.snp.makeConstraints {
-    nullDataViewTopConstraint = $0.top.equalTo(view).offset(80).constraint
-    nullDataViewLeftConstraint = $0.left.equalTo(view).inset(10).constraint
-    $0.width.height.equalTo(200).labeled(&quot;width和height约束&quot;)
-}
-```
-</code></pre><ul>
-<li>其他注意点都和<code>Masnory</code>相同</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/MasonrySnapkit使用总结/" data-id="cjx3gfxxh000lxvfy415i7tgs" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/React-Native开发iOS打包/" data-id="cjx92w8ko00149bfy0dr1voi4" class="article-share-link">Share</a>
       
       
     </footer>
@@ -886,7 +828,7 @@ nullDataImageView.snp.makeConstraints {
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -932,23 +874,23 @@ nullDataImageView.snp.makeConstraints {
       <ul>
         
           <li>
+            <a href="/2019/06/23/Flutter打包/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/23/Flutter中本地图片资源使用/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/20/Flutter页面导航/">(no title)</a>
+          </li>
+        
+          <li>
             <a href="/2019/06/19/Flutter中布局/">(no title)</a>
           </li>
         
           <li>
             <a href="/2019/06/18/Flutter中GridView组件/">GridView组件使用.md</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/18/第十章网络相关/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
           </li>
         
       </ul>

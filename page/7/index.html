@@ -62,6 +62,274 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-知识点总结" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/25/知识点总结/" class="article-date">
+  <time datetime="2017-03-25T05:41:28.000Z" itemprop="datePublished">2017-03-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/25/知识点总结/">知识点总结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>开发中的知识点总结</p>
+<p>textField</p>
+<p>使用textField自定义搜索框，textField及leftView等属性<br>使用leftView 时需要设置model为始终显示<br>可以设置leftView的frame 调整图片大小<br>IBInsepectable IBDesignable 的使用</p>
+<p>给属性检查器面板中添加属性设置选项<br>IBDesignalbe 实时显示UI控件，需要讲对应的xib和对应类绑定</p>
+<p>增加分类</p>
+<p>新建一个swift 文件，</p>
+<p>使用extension，重写 get set方法<br>使用newValue 时需要判断,注意返回值的类型是否匹配<br>试图切换</p>
+<p>一个控制器中加载不同视图，可以在loadView 方法中自定义根视图</p>
+<p>loadView 使用注意事项<br>如果实现loadView 未调用 super loadView ，sb／xib实效<br>loadView调用时，如果根视图是nil（本质是未调用super loadView），会自动调用loadView 方法初始化根视图，形成递归调用<br>判断当前登陆标识的状态确定是调用 super loadView 还是 把创建自定义的根视图赋值给 view<br>VFL 的使用</p>
+<p>使用之前需要先 关闭frame 的布局才能手动的添加约束 translatesAutoresizingMaskIntoConstraints = false<br>基本动画使用</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2017/03/25/知识点总结/" data-id="cjx92w8lo00349bfyie3giqvi" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Swift3.0学习(三)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/08/Swift3.0学习(三)/" class="article-date">
+  <time datetime="2017-03-08T15:29:43.000Z" itemprop="datePublished">2017-03-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/08/Swift3.0学习(三)/">Swift3.0学习(三)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>面向对象–必选属性</p>
+<p>构造函数时是分段构造，先构造子类，给’必选属性’设置初始值，然后再构造父类，<br>定义全局变量（属性）时，需要在构造函数中设置初始化变量值<br>super.init()是一个类构造结束<br>重写： override 函数重写（覆盖），如果在重写的方法中 没有super, 父类相关的一些操作就不会被执行<br>重载：函数名相同, 参数的类型 或者参数的个数不同 就形成了函数的重载<br>注意：重载构造函数,并且父类默认的构造函数 init()不重写， 父类默认的构造函数就不能够被访问,不能够确保必选属性设置初始值，只能调用重载的构造函数<br>面向对象–可选属性</p>
+<p>使用KVC给对象设置值<br>注意: 在swift中使用KVC 基本数据类型不能声明为可选项,必须设置为必选项给定初始值</p>
+<p>KVC实现的流程<br>遍历字典的键值 给对象发送 setValue: forKey消息<br>如果key 对象的属性不存在就将消息转发给 setVale: forUndefinedKey:<br>如果存在就直接设置值<br>注意:setVale: forUndefinedKey: 默认抛出异常 不能够super，如果super 相当于没有实现此方法</p>
+<p>面向对象–便利构造函数</p>
+<p>作用：方便快捷的创建对象<br>场景：<br>可检查参数是否正确来实例化<br>实例化控件<br>特点<br>必须以self来调用构造函数<br>指定的构造函数不能被重写，也不能被super调用<br>便利构造函数可被子类继承<br>可以构造失败，返回nil<br>面向对象 – 描述信息</p>
+<p>重写 description 方法，返回值是string类型<br>使用kvc讲对象属性转换为字典<br>将字典转化为string类型</p>
+<pre><code>override var description: String {
+        let keys = [&quot;name&quot;,&quot;age&quot;,&quot;number&quot;,&quot;sex&quot;]
+
+        // 对象转为字典
+        let dict = self.dictionaryWithValuesForKeys(keys)
+
+        // 每个对象都有描述属性
+        return dict.description
+    }
+</code></pre><p>面向对象 – 存储属性</p>
+<p>面向对象 – 计算属性(readOnly)</p>
+<p>只有getter，没有setter<br>只能取值不能赋值<br>每次调用都会被执行，消耗cpu<br>不占内存空间，依赖其他的属性来计算<br>面向对象 – didset 属性设置监察器</p>
+<p>能获取 oldValue 和 newValue 的值<br>通常用来重写setter方法，实现视图绑定模型<br>在一个属性的didset中计算其他属性</p>
+<p>缺点：消耗内存，被计算的属性占内存<br>优点：减少了cpu消耗<br>懒加载</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2017/03/08/Swift3.0学习(三)/" data-id="cjx92w8kv001g9bfyfxhpacvj" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Swift3.0学习(二)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/05/Swift3.0学习(二)/" class="article-date">
+  <time datetime="2017-03-05T15:36:21.000Z" itemprop="datePublished">2017-03-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/05/Swift3.0学习(二)/">Swift3.0学习(二)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>字符串</p>
+<p>字符串遍历<br>字符串字节长度<br>字符串长度</p>
+<p>let string = “我是switf,语言”</p>
+<p>   // 字符串遍历<br>   for s in string.characters {<br>       print(s)<br>   }</p>
+<p>   // 字符串的长度<br>   let length = string.characters.count;<br>   print(length)</p>
+<p>   // 字符串字节长度 汉字对应3个字节，英文是1个字节<br>   let characterLength = string.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)<br>   print(characterLength)</p>
+<p>字符串拼接</p>
+<pre><code>let str1 = &quot;你好&quot;
+   let str2 = &quot;不好&quot;
+   let a = 20
+
+   // 第一种拼接
+   print(&quot;\(str1)\(str2)\(a)&quot;)
+
+   // 第二种拼接
+   let str = str1 + str2
+   let strA = str1 + String(a)
+   print(str)
+   print(strA)
+</code></pre><p>截取子串 as 的使用</p>
+<pre><code>let subString = str1.substringToIndex(&quot;小程生生世世&quot;.endIndex);
+   print(subString)
+
+   let subStr = str1.substringFromIndex(&quot;听说&quot;.startIndex)
+   print(subStr)
+
+   let range = str1.rangeOfString(&quot;小程序&quot;)
+   let subStr1 = str1.substringWithRange(range!)
+
+   print(subStr1)
+
+   // 截取到某一个位置
+   let subStr2 = str1.substringFromIndex(str1.endIndex.advancedBy(-2))
+   print(subStr2)
+
+   // 限制截取几个字符
+   let subStr3 = str1.substringToIndex(str1.startIndex.advancedBy(5, limit: str1.characters.endIndex))
+   print(subStr3)
+String 和 NSString 之间的 使用 as 无缝转换
+let helloString = &quot;我们一起飞&quot;
+(helloString as NSString).substringWithRange(NSMakeRange(2, 3))
+数组
+</code></pre><p>可以放不同类型的元素<br>let不可变数组,var可变数组</p>
+<pre><code>// 初始化一个空数组 [String]声明是一个装有字符串的数组类型
+   var emptyArray: [String] = [String]()
+
+// 可变数组
+   var array = [&quot;哈哈&quot;,&quot;呵呵&quot;,&quot;嘿嘿&quot;]
+   array.append(&quot;咯咯&quot;)
+   print(&quot;array = \(array)&quot;)
+
+   // 不可变数组
+   let array2 = [&quot;可可&quot;,&quot;噗噗&quot;]
+
+   // 数组拼接
+   let arr = array + array2
+   print(&quot;arr = \(arr)&quot;)
+
+   array += array2
+   print(&quot;array = \(array)&quot;)
+</code></pre><p>数组遍历</p>
+<pre><code>// 1. 
+   for i in 0 ..&lt; tempArray.count {
+       print(tempArray[i])
+   }
+
+
+   // 2. 
+   for obj in tempArray {
+       print(&quot;第二种方法:\(obj)&quot;)
+   }
+
+
+   // 3. 快速便利
+   for (index,value) in tempArray.enumerate() {
+       print(&quot;index = \(index), value = \(value)&quot;)
+   }
+</code></pre><p>字典和OC类似</p>
+<p>函数调用</p>
+<p>必须在函数声明的下面调用内部函数</p>
+<p>可以定义函数的外部参数和内部参数</p>
+<p>可以在参数前面加上 ‘# ’ 表明函数的外部参数和内部参数名称一样 swift3.0 以后废弃</p>
+<p>无参无返回值<br>三种写法</p>
+<pre><code>func demo9() -&gt; Void {
+       print(&quot;无参无返回值第一种写法&quot;)
+   }
+
+
+   func demo_9() -&gt; () {
+       print(&quot;无参无返回值第二种写法&quot;)
+   }
+
+   func demo_99() {
+       print(&quot;无参无返回值第三种写法&quot;)
+   }
+</code></pre><p>有参有返回值</p>
+<pre><code>func demo10(width a: Int, height b: Int) -&gt; Int {
+   return a * b
+</code></pre><p>   }</p>
+<p>闭包</p>
+<p>和OC中block类似，<br>和在函数中调用一个内部函数原理相同<br>可当作参数传递<br>在需要时执行闭包实现回调</p>
+<pre><code>// 定义闭包
+let closure = {() -&gt; () in
+       print(&quot;闭包实现&quot;)
+   }
+
+   // 执行闭包
+   closure()
+</code></pre><p>注意循环引用</p>
+<p>只有两个对象相互强引用或者三个对象相互强引用形成闭环时才会形成循环引用</p>
+<p>weak 和 unsafe_unretained的区别</p>
+<p>__weak iOS5.0 推出，当对象被系统回收时，对象的地址会自动指向nil</p>
+<p>____unsafe_unretained iOS4.0 推出，当对象被系统回收时，对象的地址不会自动指向nil,会造成野指针访问<br>解决办法：(官方推荐)weak - strong -dance 解决循环引用，AFNetworking中</p>
+<p>尾随闭包</p>
+<p>函数的最后一个参数时闭包的时候，函数的参数 ‘()’可以提前关闭，闭包写在 ‘（）’后面，当作尾随闭包来使用</p>
+<p>swift 和 OC 区别</p>
+<p>swift 和 OC语法的快速的对比</p>
+<p>XXX.init(xxx) ==&gt; XXX.(xxx)<br>selector 类型 ==&gt; ‘函数名’<br>对象方法的调用 是 ‘.’ self是可以省略的<br>枚举 枚举名 + 枚举值的名 =&gt; .枚举值的名<br>常量 和变量</p>
+<p>let 声明常量 var 声明变量<br>变量/常量的类型是自动推到的<br>不同类型之间不能够直接运算 需要手动转换数据类型<br>可选项<br>‘?’ 表示表示可选项 可能有值 可能为 nil<br>可选项会自动带上 Optional 字样<br>可选项不能够直接参与运算 需要强制解包<br>‘!’ 表示强制解包 获取可选项中具体的值<br>‘??’ 快速判断可选项是否为nil 如果为 nil 就去取 ‘??’后面的默认值<br>控制流<br>if 没有非零即真的概念 必须制定明确的条件<br>if let 快速赋值 并且判断赋值对象是否为 nil 如果不为nil 就进入分之执行相关逻辑代码<br>guard let 作用和 if let 相反 好处: 可以减少一层分支嵌套<br>where 多重判断 注意 和 &amp;&amp; || 不一样的<br>循环</p>
+<p>for in<br>0..&lt;10<br>0…10<br>字符串</p>
+<p>更加轻量级 更加高效 是 结构体<br>支持快速遍历<br>长度<br>拼接<br>截取 as<br>集合 let 声明不可变的集合 var 声明可变的集合</p>
+<p>声明 []<br>声明一个 空的集合<br>增删改查<br>合并<br>遍历<br>函数</p>
+<p>func 函数名称(外部参数1 内部参数1: 类型, 外部参数2 内部参数2: 类型) -&gt; Int {执行的代码}<br>函数没有返回值的三种方式<br>函数内部函数<br>闭包 () -&gt; () 没有参数没有返回值的闭包类型</p>
+<p>提前准备好的一段可以执行代码块<br>可以当做参数传递<br>在需要的时候执行闭包产生回调的效果<br>在闭包中使用self 需要考虑循环引用<br>函数是一种特殊的闭包</p>
+<p>block 的循环引用的解除<br><strong>weak 和 weak关键字作用类似 当属性对象被回收是 会自动指向nil<br>_</strong>unsafeunretained 和 assgin关键字作用类似 当属性对象被回收是 不会自动指向nil, 会造成野指针访问 weak -strong - dance</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2017/03/05/Swift3.0学习(二)/" data-id="cjx92w8kx001j9bfyixst5jn2" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Swift3.0学习(一)" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/03/01/Swift3.0学习(一)/" class="article-date">
@@ -157,7 +425,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/03/01/Swift3.0学习(一)/" data-id="cjx3gfxxu001dxvfysv60z2f0" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/03/01/Swift3.0学习(一)/" data-id="cjx92w8kw001i9bfy784ka694" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
@@ -206,7 +474,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/02/20/OC与js交互学习/" data-id="cjx3gfxxj000oxvfy7e5yl7oy" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/02/20/OC与js交互学习/" data-id="cjx92w8ki000u9bfywq8cqbp1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OC-JS/">OC, JS</a></li></ul>
@@ -317,7 +585,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/02/08/SDWebImage学习/" data-id="cjx3gfxxp0015xvfymx1l5e4b" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/02/08/SDWebImage学习/" data-id="cjx92w8kr001a9bfyt0kyscp6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li></ul>
@@ -394,7 +662,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/02/02/iOS静态库动态库/" data-id="cjx3gfxyg002lxvfytlaxbu70" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/02/02/iOS静态库动态库/" data-id="cjx92w8lg002p9bfysa9pntcm" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WKWebView/">WKWebView</a></li></ul>
@@ -480,7 +748,7 @@ if (imageData != nil) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/01/18/异步下载图片/" data-id="cjx3gfxyn002vxvfyjwzxx566" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2017/01/18/异步下载图片/" data-id="cjx92w8lm00309bfy0ckqao10" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/异步/">异步</a></li></ul>
@@ -530,7 +798,7 @@ if (imageData != nil) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/12/10/Quartz2D绘制形状/" data-id="cjx3gfxxl000uxvfygszhxemf" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2016/12/10/Quartz2D绘制形状/" data-id="cjx92w8kk000x9bfyos89k5gl" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li></ul>
@@ -615,356 +883,10 @@ if (imageData != nil) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/12/05/GCD实现按钮定时亮起/" data-id="cjx3gfxxe000exvfy0nrvpvlt" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2016/12/05/GCD实现按钮定时亮起/" data-id="cjx92w8k7000h9bfykfbpsvpu" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GCD/">GCD</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Quartz2D绘制曲线" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/12/04/Quartz2D绘制曲线/" class="article-date">
-  <time datetime="2016-12-04T15:53:04.000Z" itemprop="datePublished">2016-12-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/04/Quartz2D绘制曲线/">Quartz2D绘制曲线</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>使用函数绘制曲线</p>
-<p>Quartz 2D提供了CGContextAddCurveToPoint() 函数和CGContextAddQuadCurveToPoint()两个函数来向当前上下文添加曲线，前者用于添加贝塞尔曲线，后者用于添加二次曲线。<br>确定一条贝塞尔曲线需要4个点：开始点、第一个控制点、第二个控制点和结束点。</p>
-<p>确定一条二次曲线需要三个点：开始点、控制点和结束点。</p>
-<p>添加贝塞尔曲线</p>
-<pre><code>CGContextAddCurveToPoint()
-
-CGContextRef ctx = UIGraphicsGetCurrentContext();
-
-// 添加曲线路径
-// 设置起点
-CGContextMoveToPoint(ctx, 0, 0);
-</code></pre><ul>
-<li>参数1: 上下文对象</li>
-<li>参数2: 控制点1X坐标</li>
-<li>参数3: 控制点1Y坐标</li>
-<li>参数4: 控制点2X坐标</li>
-<li>参数5: 控制点2Y坐标</li>
-<li>参数6: 终点x坐标</li>
-<li>参数7: 终点Y坐标</li>
-</ul>
-<p>code:</p>
-<pre><code>CGContextAddCurveToPoint(ctx, 30, 200, 300, 20, 300, 300);
-
-// 设置颜色
-[[UIColor magentaColor] setStroke];
-
-// 渲染
-CGContextStrokePath(ctx);
-
-// 关闭图形上下文
-CGContextClosePath(ctx);
-添加二次曲线
-CGContextAddQuadCurveToPoint()
-
-// 获取图形上下文
-CGContextRef ctx = UIGraphicsGetCurrentContext();
-
-// 起始点
-CGContextMoveToPoint(ctx, 20, 10);
-</code></pre><ul>
-<li>参数: 图形上下文</li>
-<li>参数: 控制点坐标</li>
-<li>参数: 结束点坐标</li>
-</ul>
-<p>添加二次曲线</p>
-<pre><code>CGContextAddQuadCurveToPoint(ctx, 30, 200, 200, 40);
-
-[[UIColor cyanColor] setStroke];
-CGContextStrokePath(ctx);
-// 关闭图形上下文
-CGContextClosePath(ctx);
-</code></pre><p>绘制形状</p>
-<p>使用绘制二次曲线的函数绘制花瓣</p>
-<p>程序中CGContextAddFlower代码分别添加5瓣花朵路径、6瓣花朵路径、7瓣花朵路径，然后使用不同的颜色来填充这些路径。注意到上面的程序并未在每次添加花朵路径后立即关闭，这也是允许的，而且每次填充路径时并不会再次填充前一次已经填充过的路径。这是因为只用程序绘制了CGContextRef当前所包含的路径，系统会自动清除已经绘制的路径。</p>
-<p><strong>注意：每次绘制完成后，CGContextRef会自动清除已经绘制完成的路径</strong></p>
-<p> 该方法负责绘制花朵。<br> n：该参数控制花朵的花瓣数；dx、dy：控制花朵的位置；size：控制花朵的大小；<br> length：控制花瓣的长度</p>
-<pre><code>void CGContextAddFlower(CGContextRef c , NSInteger n
-                        , CGFloat dx , CGFloat dy , CGFloat size , CGFloat length)
-{
-    CGContextMoveToPoint(c , dx , dy + size);  // 移动到指定点
-    CGFloat dig = 2 * M_PI / n;
-    // 采用循环添加n段二次曲线路径
-    for(int i = 1; i &lt; n + 1 ; i++)
-    {
-        // 计算控制点坐标
-        CGFloat ctrlX = sin((i - 0.5) * dig) * length + dx;
-        CGFloat ctrlY= cos((i - 0.5 ) * dig) * length + dy;
-        // 计算结束点的坐标
-        CGFloat x = sin(i * dig) * size + dx;
-        CGFloat y =cos(i * dig) * size + dy;
-        // 添加二次曲线路径
-        CGContextAddQuadCurveToPoint(c, ctrlX , ctrlY , x , y);
-    }
-}
-</code></pre><p>绘制花瓣</p>
-<pre><code>- (void)drawStar
-{
-    CGContextRef ctx = UIGraphicsGetCurrentContext();  // 获取绘图的CGContextRef
-    CGContextBeginPath(ctx);  // 开始添加路径
-    CGContextAddFlower(ctx , 5 , 50 , 100 , 30 , 80);  // 添加5瓣花朵的路径
-    CGContextSetRGBFillColor(ctx, 1, 0, 0, 1);  // 设置填充颜色
-    CGContextFillPath(ctx);
-    CGContextAddFlower(ctx , 6 , 160 , 100 , 30 , 80);  // 添加6瓣花朵的路径
-    CGContextSetRGBFillColor(ctx, 1, 1, 0, 1);  // 设置填充颜色
-    CGContextFillPath(ctx);
-    CGContextAddFlower(ctx , 7 , 270 , 100 , 30 , 80);  // 添加7瓣花朵的路径
-    CGContextSetRGBFillColor(ctx, 1, 0, 1, 1);  // 设置填充颜色
-    CGContextFillPath(ctx);
-    CGContextClosePath(ctx);  // 关闭路径
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/12/04/Quartz2D绘制曲线/" data-id="cjx3gfxxm000wxvfyg81rlo7n" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Quartz2D初识" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/12/04/Quartz2D初识/" class="article-date">
-  <time datetime="2016-12-04T05:34:28.000Z" itemprop="datePublished">2016-12-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/04/Quartz2D初识/">Quartz2D 初识</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Quartz2D 二维绘图引擎，支持iOS和Mac系统么，可以实现的功能有</strong></p>
-<ul>
-<li>绘制图形: 线条，三角形，矩形，圆，弧等</li>
-<li>绘制文字</li>
-<li>绘制图像或者图片</li>
-<li>读取生成PDF</li>
-<li>截图/裁剪图片</li>
-<li>自定义UI控件</li>
-<li>手势解锁</li>
-<li>图形上下文</li>
-</ul>
-<h2 id="保存绘图信息和状态"><a href="#保存绘图信息和状态" class="headerlink" title="保存绘图信息和状态"></a>保存绘图信息和状态</h2><p>确定输出目标(PDF,Bitmap或者显示器)</p>
-<pre><code>Bitmap Graphics Context
-PDF Granhics Context
-Window Graphics Context
-Layer Graphics Context
-</code></pre><p>绘制线段</p>
-<pre><code>- (void)drawLine {
-    // 获取图形上下文
-    // 所用的是UIGraphics上下文
-    CGContextRef ctx = UIGraphicsGetCurrentContext();
-
-    // 创建描述路径
-    CGMutablePathRef path = CGPathCreateMutable();
-    // 设置起点
-    // path : 表示给那个路径设置起点
-    CGPathMoveToPoint(path, NULL, 10, 10);
-    CGPathAddLineToPoint(path, NULL, 80, 80);
-
-    // 添加路径到上下文
-    CGContextAddPath(ctx, path);
-
-    // 渲染
-    CGContextStrokePath(ctx);
-}
-</code></pre><p>系统底层自动将路径添加到图形上下文</p>
-<pre><code>- (void)drawLine2 {
-
-    CGContextRef ctx = UIGraphicsGetCurrentContext();
-
-    // 描述路径
-    // 此方法底层会自动将路径添加到图形上下文
-    CGContextMoveToPoint(ctx, 50, 50);
-    CGContextAddLineToPoint(ctx, 100, 100);
-
-    CGContextSetLineWidth(ctx, 5);
-
-    [[UIColor redColor] set];
-    // 渲染
-    CGContextStrokePath(ctx);
-}
-</code></pre><p>使用C语言函数的封装</p>
-<pre><code>- (void)drawLine3 {
-    // 使用UIKit 已经封装的功能,面向对象
-    // 贝塞尔路径
-
-    UIBezierPath *path = [UIBezierPath bezierPath];
-    [path moveToPoint:CGPointMake(10, 10)];
-    [path addLineToPoint:CGPointMake(50, 50)];
-
-    // 绘制路径
-    [path stroke];
-}
-</code></pre><p>绘制多条线段</p>
-<ul>
-<li>绘制多条线,状态不好管理</li>
-<li>默认下一条线的起点是上一条线的终点</li>
-<li>绘制多天不连接的线时需要重新设置起点</li>
-<li>为了方便管理，应该让每一条线对应一条路径</li>
-<li>使用UIBeizerPath</li>
-</ul>
-<p>code:</p>
-<pre><code>- (void)drawMoreLine {
-    CGContextRef ctx = UIGraphicsGetCurrentContext();
-
-    // 描述路径
-    CGContextMoveToPoint(ctx, 20, 20);
-    CGContextAddLineToPoint(ctx, 100, 100);
-
-    // 设置第二条线的起点
-    CGContextMoveToPoint(ctx, 20, 30);
-    CGContextAddLineToPoint(ctx, 150, 100);
-
-    // 设置绘图状态要在渲染之前,都是给上下文设置
-    // 描边颜色
-    [[UIColor greenColor] setStroke];
-    // 线宽
-    CGContextSetLineWidth(ctx, 10);
-    // 连接样式
-    // kCGLineJoinMiter,    斜接
-    // kCGLineJoinRound,    圆角
-    // kCGLineJoinBevel     平切
-    CGContextSetLineJoin(ctx, kCGLineJoinBevel);
-    // 顶角样式,线的顶端效果
-    CGContextSetLineCap(ctx, kCGLineCapRound);
-
-    // 渲染
-    CGContextStrokePath(ctx);
-}
-</code></pre><p>使用UIBezierPath 绘制多条直线并设置不同状态</p>
-<pre><code>- (void)drawUIBezierPahtState {
-
-    // 第一条线
-    UIBezierPath *path = [UIBezierPath bezierPath];
-    [path moveToPoint:CGPointMake(10, 10)];
-    [path addLineToPoint:CGPointMake(80, 80)];
-
-    path.lineWidth = 20;
-    path.lineJoinStyle = kCGLineJoinRound;
-    path.lineCapStyle = kCGLineCapRound;
-    [[UIColor redColor] setStroke];
-
-    [path stroke];
-
-    // 第二条线
-    {
-        UIBezierPath *path = [UIBezierPath bezierPath];
-        [path moveToPoint:CGPointMake(40, 70)];
-        [path addLineToPoint:CGPointMake(150, 40)];
-
-        path.lineWidth = 20;
-        path.lineJoinStyle = kCGLineJoinRound;
-        path.lineCapStyle = kCGLineCapRound;
-        [[UIColor greenColor] setStroke];
-
-        [path stroke];
-    }
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/12/04/Quartz2D初识/" data-id="cjx3gfxxj000qxvfy7gh4vb2g" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-OC RunTime学习" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/11/22/OC RunTime学习/" class="article-date">
-  <time datetime="2016-11-22T03:10:31.000Z" itemprop="datePublished">2016-11-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/22/OC RunTime学习/">OC中运行时</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>RunTime<br>对于C语言，函数的调用在编译的时候会决定调用哪个函数，而对于面向对象的语言对于[调用某个对象的方法或函数]就叫「消息传递」。所以在 Java，C++ 这些语言里[调用某个对象的方法或函数]和 Objective-C 里[向某个对象发送消息]在概念上就是一样的事情,</p>
-<h3 id="RunTime-简介"><a href="#RunTime-简介" class="headerlink" title="RunTime 简介"></a>RunTime 简介</h3><ul>
-<li>RunTime 简称运行时，OC中通常叫运行时机制，主要的是消息机制</li>
-<li>消息机制：在OC中，属于动态调用，在编译的时候并不能决定真正调用哪个函数，只有在真正运行的时候才会根据函数的名称找到对应的函数来调用</li>
-</ul>
-<h3 id="RunTime-作用"><a href="#RunTime-作用" class="headerlink" title="RunTime 作用"></a>RunTime 作用</h3><ul>
-<li>发送消息：让对象发送消息</li>
-<li>交换方法</li>
-<li>动态添加方法</li>
-<li>动态获取属性和方法</li>
-<li>字典转模型</li>
-<li>给分类添加属性</li>
-</ul>
-<p>原理：给分类添加一个属性,重写了setter、getter方法，但是没有生成 _成员变量，需要通过运行时关联到分类中， 其本质上就是给这个类添加关联,存值和取值<br>code</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">self.oldurlPath = urlPath;</span><br><span class="line"></span><br><span class="line">- (void)setOldurlPath:(NSString *)oldurlPath &#123;</span><br><span class="line"></span><br><span class="line">// RunTime 关联</span><br><span class="line">// 第一个参数：给哪个对象添加关联</span><br><span class="line">// 第二个参数：关联的key，通过这个key获取</span><br><span class="line">// 第三个参数：关联的value</span><br><span class="line">// 第四个参数:关联的策略</span><br><span class="line">objc_setAssociatedObject(self, key, oldurlPath, OBJC_ASSOCIATION_COPY_NONATOMIC);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSString *)oldurlPath &#123;</span><br><span class="line">    return objc_getAssociatedObject(self, key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/11/22/OC RunTime学习/" data-id="cjx3gfxxi000mxvfypyqug5n0" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RunTime/">RunTime</a></li></ul>
 
     </footer>
   </div>
@@ -977,7 +899,7 @@ Layer Graphics Context
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/6/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/8/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/6/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/8/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -1023,23 +945,23 @@ Layer Graphics Context
       <ul>
         
           <li>
+            <a href="/2019/06/23/Flutter打包/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/23/Flutter中本地图片资源使用/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/20/Flutter页面导航/">(no title)</a>
+          </li>
+        
+          <li>
             <a href="/2019/06/19/Flutter中布局/">(no title)</a>
           </li>
         
           <li>
             <a href="/2019/06/18/Flutter中GridView组件/">GridView组件使用.md</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/18/第十章网络相关/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
           </li>
         
       </ul>
