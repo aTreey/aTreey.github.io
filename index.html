@@ -62,10 +62,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-第十三章算法面试" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Flutter打包" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/18/第十三章算法面试/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.192Z" itemprop="datePublished">2019-06-18</time>
+    <a href="/2019/06/23/Flutter打包/" class="article-date">
+  <time datetime="2019-06-23T14:24:39.809Z" itemprop="datePublished">2019-06-23</time>
 </a>
     
   </div>
@@ -74,14 +74,191 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>第十三章算法</p>
+        <h1 id="Flutter-打包"><a href="#Flutter-打包" class="headerlink" title="Flutter 打包"></a>Flutter 打包</h1><h3 id="app-图标替换"><a href="#app-图标替换" class="headerlink" title="app 图标替换"></a>app 图标替换</h3><h4 id="Android-图标更换"><a href="#Android-图标更换" class="headerlink" title="Android 图标更换"></a>Android 图标更换</h4><ul>
+<li>替换图中路径的图片资源即可，</li>
+<li>注意图片名字需要是 ic_launcher</li>
+<li>每个尺寸对应不同的文件大小<br><img src="http://ww2.sinaimg.cn/large/006tNc79ly1g4bgpxs583j30ko1000wv.jpg" alt></li>
+</ul>
+<ul>
+<li>如果要修改启动图片名称需要先在主配置文件中修改</li>
+</ul>
+<p><img src="http://ww4.sinaimg.cn/large/006tNc79ly1g4bgwlvax4j31li0o4aik.jpg" alt></p>
+<h4 id="iOS-图标更换"><a href="#iOS-图标更换" class="headerlink" title="iOS 图标更换"></a>iOS 图标更换</h4><h4 id="修改app图标名称"><a href="#修改app图标名称" class="headerlink" title="修改app图标名称"></a>修改app图标名称</h4><ul>
+<li>找到 Android 主配置文件</li>
+<li>修改 android:label=”app_flutter” 中名称<br><img src="http://ww4.sinaimg.cn/large/006tNc79ly1g4bgrcevo1j31kt0u0asy.jpg" alt></li>
+</ul>
+<h4 id="修改app-的名称"><a href="#修改app-的名称" class="headerlink" title="修改app 的名称"></a>修改app 的名称</h4><h3 id="打包"><a href="#打包" class="headerlink" title="打包"></a>打包</h3><h4 id="生成key"><a href="#生成key" class="headerlink" title="生成key"></a>生成key</h4>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/23/Flutter打包/" data-id="cjx92w8k2000b9bfy2mf27f3a" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Flutter中本地图片资源使用" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/23/Flutter中本地图片资源使用/" class="article-date">
+  <time datetime="2019-06-23T14:04:31.122Z" itemprop="datePublished">2019-06-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Flutter中本地图片资源使用"><a href="#Flutter中本地图片资源使用" class="headerlink" title="Flutter中本地图片资源使用"></a>Flutter中本地图片资源使用</h1><h2 id="新建图片文件目录"><a href="#新建图片文件目录" class="headerlink" title="新建图片文件目录"></a>新建图片文件目录</h2><p><img src="http://ww2.sinaimg.cn/large/006tNc79ly1g4bgdobfvvj30k80wy43y.jpg" alt></p>
+<h2 id="添加图片到项目"><a href="#添加图片到项目" class="headerlink" title="添加图片到项目"></a>添加图片到项目</h2><p>手动投入图片到新建的文件目录</p>
+<h2 id="声明图片资源"><a href="#声明图片资源" class="headerlink" title="声明图片资源"></a>声明图片资源</h2><p>找到项目中 pubspec.yaml 文件，找到 assets: 选项 按照注释代码格式声明图片路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">assets:</span><br><span class="line">  - lib/assets/ideaOne.png</span><br></pre></td></tr></table></figure>
+<h2 id="使用图片资源"><a href="#使用图片资源" class="headerlink" title="使用图片资源"></a>使用图片资源</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Image.asset(&apos;lib/assets/ideaOne.png&apos;)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/23/Flutter中本地图片资源使用/" data-id="cjx92w8jz00079bfy5vy2jm3o" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Flutter页面导航" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/20/Flutter页面导航/" class="article-date">
+  <time datetime="2019-06-20T15:36:45.226Z" itemprop="datePublished">2019-06-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Flutter页面导航"><a href="#Flutter页面导航" class="headerlink" title="Flutter页面导航"></a>Flutter页面导航</h1><h2 id="导航栏的使用"><a href="#导航栏的使用" class="headerlink" title="导航栏的使用"></a>导航栏的使用</h2><p>程序主入口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">class MyApp extends StatelessWidget &#123;</span><br><span class="line"></span><br><span class="line">  // 声明参数</span><br><span class="line">  final List&lt;String&gt; items;</span><br><span class="line"></span><br><span class="line">  // 构造函数</span><br><span class="line">  MyApp(&#123;Key key, @required this.items&#125;):super(key: key); // 调用父类的方法</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  // 重写</span><br><span class="line">  @override</span><br><span class="line"></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line"></span><br><span class="line">    // 返回一窗口</span><br><span class="line">    return MaterialApp(</span><br><span class="line">      title:&apos;Flutter --&apos;,</span><br><span class="line">      // 基础组件学习</span><br><span class="line">      // home: MyLearningFlutterHome(),</span><br><span class="line"></span><br><span class="line">      home: FirstScreen(),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="导航栏页面跳转参数传递"><a href="#导航栏页面跳转参数传递" class="headerlink" title="导航栏页面跳转参数传递"></a>导航栏页面跳转参数传递</h3><p>商品类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class Product &#123;</span><br><span class="line">  final String title; // 定义商品标题</span><br><span class="line">  final String description;</span><br><span class="line">  // 定义构造方法</span><br><span class="line">  Product(this.title, this.description);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>第一级页面<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">class FirstScreen extends StatelessWidget &#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return new Scaffold(</span><br><span class="line">      appBar: AppBar(</span><br><span class="line">        title: new Text(&apos;第一个页面&apos;),</span><br><span class="line">      ),</span><br><span class="line"></span><br><span class="line">      body: Center(</span><br><span class="line">        child: RaisedButton(</span><br><span class="line">          child: new Text(&apos;点击跳转详情页&apos;),</span><br><span class="line">          onPressed: ()&#123;</span><br><span class="line">            Navigator.push(context, new MaterialPageRoute(</span><br><span class="line">              builder: (context) =&gt; (new SecondScreen())</span><br><span class="line">              // builder: (context)&#123;</span><br><span class="line">              //   new SecondScreen();</span><br><span class="line">              // &#125;</span><br><span class="line">            ));</span><br><span class="line">          &#125;,</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>详情页面<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">class SecondScreen extends StatelessWidget &#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return Scaffold(</span><br><span class="line">      appBar: AppBar(</span><br><span class="line">        title: Text(&apos;详情页面&apos;)</span><br><span class="line">      ),</span><br><span class="line"></span><br><span class="line">      body: Center(</span><br><span class="line">        child: RaisedButton(</span><br><span class="line">          child: Text(&apos;返回上一级页面&apos;),</span><br><span class="line"></span><br><span class="line">          onPressed: () =&gt; (Navigator.pop(context)),</span><br><span class="line">          </span><br><span class="line">          // onPressed: ()&#123;</span><br><span class="line">          //   Navigator.pop(context);</span><br><span class="line">          // &#125;,</span><br><span class="line">        ), </span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="导航栏页面返回反向参数传递"><a href="#导航栏页面返回反向参数传递" class="headerlink" title="导航栏页面返回反向参数传递"></a>导航栏页面返回反向参数传递</h3><p>使用异步请求和等待</p>
+<p>商品列表页面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">class ProductListView extends StatelessWidget &#123;</span><br><span class="line">  // 定义变量，里面是一个对象</span><br><span class="line">  final List&lt;Product&gt; products;</span><br><span class="line">  </span><br><span class="line">  // 使用构造方法 函数的方式接受参数</span><br><span class="line">  ProductListView(&#123;Key key, @required this.products&#125;):super(key:key); // 设置必参，调用父类方法</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return Scaffold(</span><br><span class="line">      appBar: AppBar(</span><br><span class="line">        title: Text(&apos;商品列表&apos;),</span><br><span class="line">      ),</span><br><span class="line"></span><br><span class="line">      // 使用 ListView.builder 动态构建</span><br><span class="line">      body: ListView.builder(</span><br><span class="line">        itemCount: products.length,</span><br><span class="line">        itemBuilder: (context, index) &#123;</span><br><span class="line">          return ListTile(</span><br><span class="line">            title: Text(products[index].title),</span><br><span class="line">            onLongPress: ()&#123;</span><br><span class="line">              print(&quot;长按事件响应&quot;);</span><br><span class="line">            &#125;,</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            // 点击时传入参数</span><br><span class="line">            onTap: ()&#123;</span><br><span class="line">              print(&apos;点击事件&apos;);</span><br><span class="line">              Navigator.push(</span><br><span class="line">                context, </span><br><span class="line">                MaterialPageRoute(</span><br><span class="line">                  builder: (context) =&gt; ProducterDetailView(product:products[index])</span><br><span class="line">                )</span><br><span class="line">              );</span><br><span class="line">            &#125;,</span><br><span class="line">          );</span><br><span class="line">        &#125;,</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>商品详情页面点击按钮返回上一级页面，并带有参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">class ProducterDetailView extends StatelessWidget &#123;</span><br><span class="line">  final Product product;</span><br><span class="line"></span><br><span class="line">  ProducterDetailView(&#123;Key key, @required this.product&#125;):super(key:key);</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return Scaffold(</span><br><span class="line">      appBar: AppBar(</span><br><span class="line">        title: Text(&apos;Product $&#123;product.title&#125; 详情页面&apos;)</span><br><span class="line">      ),</span><br><span class="line">      </span><br><span class="line">      body: Center(</span><br><span class="line">        // 有多控件</span><br><span class="line">        child: Column(</span><br><span class="line">          children: &lt;Widget&gt;[</span><br><span class="line">            Text(&apos;Product $&#123;product.title&#125; desc $&#123;product.description&#125;&apos;),</span><br><span class="line">            RaisedButton(</span><br><span class="line">              child: Text(&apos;back Product List&apos;),</span><br><span class="line">              color: Colors.blue,</span><br><span class="line">              onPressed: ()&#123;</span><br><span class="line">                Navigator.pop(context, &apos;selected Id = $&#123;product.title&#125;&apos;);</span><br><span class="line">              &#125;,</span><br><span class="line">            )</span><br><span class="line">          ],</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第十三章算法面试/" data-id="cjx1wsds70034msfyh9v145rh" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/20/Flutter页面导航/" data-id="cjx92w8k4000c9bfygsocpozr" class="article-share-link">Share</a>
       
       
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Flutter中布局" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/19/Flutter中布局/" class="article-date">
+  <time datetime="2019-06-19T15:21:00.872Z" itemprop="datePublished">2019-06-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Flutter中布局"><a href="#Flutter中布局" class="headerlink" title="Flutter中布局"></a>Flutter中布局</h1><h2 id="线性布局"><a href="#线性布局" class="headerlink" title="线性布局"></a>线性布局</h2><h3 id="主轴、副轴"><a href="#主轴、副轴" class="headerlink" title="主轴、副轴"></a>主轴、副轴</h3><ul>
+<li><p>main轴：如果用column组件，垂直就是主轴，如果用Row组件，那水平就是主轴</p>
+</li>
+<li><p>cross轴：幅轴，是和主轴垂直的方向。用Row组件，那垂直就是幅轴，Column组件，水平方向就是副轴</p>
+</li>
+</ul>
+<h3 id="Row-水平方向布局组件"><a href="#Row-水平方向布局组件" class="headerlink" title="Row 水平方向布局组件"></a>Row 水平方向布局组件</h3><ul>
+<li>非自适应布局：根据元素本身大小来布局</li>
+<li>自适应布局：使用 Expanded 布局</li>
+</ul>
+<p>非自适应布局<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">class MyRowNoChangeLayout extends StatelessWidget &#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return new Container(</span><br><span class="line">         child: Row(</span><br><span class="line">           children: &lt;Widget&gt;[</span><br><span class="line">             new RaisedButton(</span><br><span class="line">               onPressed: ()&#123;</span><br><span class="line">                 print(&apos;点击了---- 红色&apos;);</span><br><span class="line">               &#125;,</span><br><span class="line"></span><br><span class="line">               color: Colors.red,</span><br><span class="line">               child: new Text(&apos;按钮一红色&apos;),</span><br><span class="line">               </span><br><span class="line">             ),</span><br><span class="line"></span><br><span class="line">             new RaisedButton(</span><br><span class="line">               onPressed: ()&#123;</span><br><span class="line">                 print(&apos;点击了---- 黄色&apos;);</span><br><span class="line">               &#125;,</span><br><span class="line"></span><br><span class="line">               color: Colors.yellow,</span><br><span class="line">               child: new Text(&apos;按钮一黄色&apos;),</span><br><span class="line">               </span><br><span class="line">             ),</span><br><span class="line">             new RaisedButton(</span><br><span class="line">               onPressed: ()&#123;</span><br><span class="line">                 print(&apos;点击了---- 绿色&apos;);</span><br><span class="line">               &#125;,</span><br><span class="line"></span><br><span class="line">               color: Colors.green,</span><br><span class="line">               child: new Text(&apos;按钮一绿色&apos;),</span><br><span class="line">               </span><br><span class="line">             )</span><br><span class="line">           ],</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>自适应布局</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">class MyRowAutoLayout extends StatelessWidget &#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return new Container(</span><br><span class="line">         child: Row(</span><br><span class="line">           children: &lt;Widget&gt;[</span><br><span class="line">             Expanded(</span><br><span class="line">               child: new RaisedButton(</span><br><span class="line">               onPressed: ()&#123;</span><br><span class="line">                 print(&apos;点击了---- 红色&apos;);</span><br><span class="line">               &#125;,</span><br><span class="line"></span><br><span class="line">               color: Colors.red,</span><br><span class="line">               child: new Text(&apos;按钮一红色&apos;),</span><br><span class="line">              ),</span><br><span class="line">             ),</span><br><span class="line"></span><br><span class="line">             Expanded(</span><br><span class="line">               child: new RaisedButton(</span><br><span class="line">               onPressed: ()&#123;</span><br><span class="line">                 print(&apos;点击了---- 黄色&apos;);</span><br><span class="line">               &#125;,</span><br><span class="line"></span><br><span class="line">               color: Colors.yellow,</span><br><span class="line">               child: new Text(&apos;按钮一黄色&apos;),</span><br><span class="line">               </span><br><span class="line">             )</span><br><span class="line">             ),</span><br><span class="line">             </span><br><span class="line">             Expanded(</span><br><span class="line">               child: new RaisedButton(</span><br><span class="line">               onPressed: ()&#123;</span><br><span class="line">                 print(&apos;点击了---- 绿色&apos;);</span><br><span class="line">               &#125;,</span><br><span class="line"></span><br><span class="line">               color: Colors.green,</span><br><span class="line">               child: new Text(&apos;按钮一绿色&apos;),</span><br><span class="line">               </span><br><span class="line">              )</span><br><span class="line">             )</span><br><span class="line">           ],</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>非自动布局和自动布局混合使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">class MyRowLayout extends StatelessWidget &#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return new Container(</span><br><span class="line">         child: Row(</span><br><span class="line">           children: &lt;Widget&gt;[</span><br><span class="line">             new RaisedButton(</span><br><span class="line">               onPressed: ()&#123;</span><br><span class="line">                 print(&apos;点击了---- 红色&apos;);</span><br><span class="line">               &#125;,</span><br><span class="line"></span><br><span class="line">               color: Colors.red,</span><br><span class="line">               child: new Text(&apos;按钮一红色&apos;),</span><br><span class="line">              ),</span><br><span class="line"></span><br><span class="line">             Expanded(</span><br><span class="line">               child: new RaisedButton(</span><br><span class="line">               onPressed: ()&#123;</span><br><span class="line">                 print(&apos;点击了---- 黄色&apos;);</span><br><span class="line">               &#125;,</span><br><span class="line"></span><br><span class="line">               color: Colors.yellow,</span><br><span class="line">               child: new Text(&apos;按钮一黄色&apos;),</span><br><span class="line">               </span><br><span class="line">             )</span><br><span class="line">             ),</span><br><span class="line">             </span><br><span class="line">             new RaisedButton(</span><br><span class="line">               onPressed: ()&#123;</span><br><span class="line">                 print(&apos;点击了---- 绿色&apos;);</span><br><span class="line">               &#125;,</span><br><span class="line"></span><br><span class="line">               color: Colors.green,</span><br><span class="line">               child: new Text(&apos;按钮一绿色&apos;),</span><br><span class="line">               </span><br><span class="line">              )</span><br><span class="line">           ],</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Column-垂直方向布局组件"><a href="#Column-垂直方向布局组件" class="headerlink" title="Column 垂直方向布局组件"></a>Column 垂直方向布局组件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">class MyColunmLayout extends StatelessWidget &#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return new Container(</span><br><span class="line">        color: Colors.cyan,</span><br><span class="line">         child: Column(</span><br><span class="line">           crossAxisAlignment: CrossAxisAlignment.stretch,</span><br><span class="line">           mainAxisSize: MainAxisSize.max,</span><br><span class="line">           // 设置主轴的对齐方式</span><br><span class="line">           mainAxisAlignment: MainAxisAlignment.center,</span><br><span class="line">           // 设置横轴的对齐方式</span><br><span class="line">           crossAxisAlignment: CrossAxisAlignment.start,</span><br><span class="line">           children: &lt;Widget&gt;[</span><br><span class="line">             new RaisedButton (</span><br><span class="line">               onPressed: ()&#123;</span><br><span class="line">                 print(&apos;点击了---- 红色&apos;);</span><br><span class="line">               &#125;,</span><br><span class="line"></span><br><span class="line">               color: Colors.red,</span><br><span class="line">               child: new Text(&apos;按钮一红色&apos;),</span><br><span class="line">              ),</span><br><span class="line">             </span><br><span class="line">             new RaisedButton(</span><br><span class="line">               onPressed: ()&#123;</span><br><span class="line">                 print(&apos;点击了---- 绿色&apos;);</span><br><span class="line">               &#125;,</span><br><span class="line">               color: Colors.green,</span><br><span class="line">               child: new Text(&apos;按钮一绿色&apos;),</span><br><span class="line">              ),</span><br><span class="line"></span><br><span class="line">              new Text(&apos;文字内容&apos;,</span><br><span class="line">                textAlign: TextAlign.center,</span><br><span class="line">              ),</span><br><span class="line">              new Text(&apos;测试文字&apos;,</span><br><span class="line">                textAlign: TextAlign.right,</span><br><span class="line">              )</span><br><span class="line">           ],</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="层叠布局"><a href="#层叠布局" class="headerlink" title="层叠布局"></a>层叠布局</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">// stack层叠布局</span><br><span class="line"></span><br><span class="line">class MyStackLayout extends StatelessWidget &#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    // 返回一个 Stack 布局</span><br><span class="line">    return new Stack(</span><br><span class="line">      // 设置位置</span><br><span class="line">      alignment: const FractionalOffset(0.5, .9),</span><br><span class="line">     // 圆角组件</span><br><span class="line">      children: &lt;Widget&gt;[</span><br><span class="line">        new CircleAvatar(</span><br><span class="line">          backgroundImage: new NetworkImage(&apos;https://p.ampmake.com/mall/product/26153760-b964-45d5-b811-7f2bf5844102.jpg&apos;),</span><br><span class="line">          // backgroundImage: new Image.network(&apos;https://p.ampmake.com/mall/product/26153760-b964-45d5-b811-7f2bf5844102.jpg&apos;),</span><br><span class="line">          radius: 100.0,</span><br><span class="line">        ),</span><br><span class="line">        </span><br><span class="line">        // 容器组件</span><br><span class="line">        new Container(</span><br><span class="line">        // 设置容器掩饰</span><br><span class="line">          decoration: BoxDecoration(</span><br><span class="line">            color: Colors.blue,</span><br><span class="line">            // border </span><br><span class="line">            border: Border.all(</span><br><span class="line">              color: Colors.red,</span><br><span class="line">              width: 3,</span><br><span class="line">            ),</span><br><span class="line">          ),</span><br><span class="line">          </span><br><span class="line">          padding: const EdgeInsets.all(10.0),</span><br><span class="line">          </span><br><span class="line">          child: new Text(&apos;stack 布局&apos;,</span><br><span class="line">            textAlign: TextAlign.center,</span><br><span class="line">            maxLines: 1,</span><br><span class="line">            // 文字样式</span><br><span class="line">            style: TextStyle(</span><br><span class="line">              color: Colors.yellow,</span><br><span class="line">              textBaseline: TextBaseline.ideographic,</span><br><span class="line">              // 下划线</span><br><span class="line">              decoration: TextDecoration.underline,</span><br><span class="line">              // 下划线颜色</span><br><span class="line">              decorationColor: Colors.orange,</span><br><span class="line">              // 下划线样式</span><br><span class="line">              decorationStyle: TextDecorationStyle.double,</span><br><span class="line">            ),</span><br><span class="line">          ),</span><br><span class="line">        )</span><br><span class="line">      ],</span><br><span class="line">      </span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Positioned组件"><a href="#Positioned组件" class="headerlink" title="Positioned组件"></a>Positioned组件</h3><ul>
+<li>bottom: 距离层叠组件下边的距离</li>
+<li>left：距离层叠组件左边的距离</li>
+<li>top：距离层叠组件上边的距离</li>
+<li>right：距离层叠组件右边的距离</li>
+<li>width: 层叠定位组件的宽度</li>
+<li>height: 层叠定位组件的高度</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">class MyMoreStackLayout extends StatelessWidget &#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return new Stack(</span><br><span class="line">      children: &lt;Widget&gt;[</span><br><span class="line">        new CircleAvatar(</span><br><span class="line">          backgroundImage: NetworkImage(&apos;https://p.ampmake.com/mall/product/26153760-b964-45d5-b811-7f2bf5844102.jpg&apos;),</span><br><span class="line">          radius: 100.0,</span><br><span class="line">        ),</span><br><span class="line"></span><br><span class="line">        new Positioned(</span><br><span class="line">          top: 5,</span><br><span class="line">          left: 50,</span><br><span class="line">          // right: 5,</span><br><span class="line">          width: 100,</span><br><span class="line">          child: new RaisedButton(</span><br><span class="line">            onPressed: ()&#123;</span><br><span class="line">              print(&quot;多个组件层叠布局&quot;);</span><br><span class="line">            &#125;,</span><br><span class="line">            </span><br><span class="line">            color: Colors.deepOrange,</span><br><span class="line">            child: Text(&apos;测试按钮&apos;),</span><br><span class="line">          ),</span><br><span class="line">        ),</span><br><span class="line">        </span><br><span class="line">        new Positioned(</span><br><span class="line">          bottom: 10,</span><br><span class="line">          right: 10,</span><br><span class="line">          left: 10,</span><br><span class="line">          child: new Text(&apos;flutter 多个试图 stack布局&apos;,</span><br><span class="line">            maxLines: 1,</span><br><span class="line">            textAlign: TextAlign.center,</span><br><span class="line">            style: TextStyle(</span><br><span class="line">              color: Colors.lightGreen,</span><br><span class="line">              fontSize: 20,</span><br><span class="line">              fontStyle: FontStyle.italic</span><br><span class="line">            ),</span><br><span class="line">          )</span><br><span class="line">        )</span><br><span class="line">      ],</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Card-布局"><a href="#Card-布局" class="headerlink" title="Card 布局"></a>Card 布局</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">class MyCardLayout extends StatelessWidget &#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return new Card(</span><br><span class="line">      child:  Column(</span><br><span class="line">        children: &lt;Widget&gt;[</span><br><span class="line">          new ListTile(</span><br><span class="line">            title: new Text(&apos;card 布局1&apos;),</span><br><span class="line">            subtitle: new Text(&apos;子标题1&apos;, </span><br><span class="line">              textAlign: TextAlign.right,</span><br><span class="line">              style: TextStyle(</span><br><span class="line">                color: Colors.lightGreen</span><br><span class="line">              ),</span><br><span class="line">            ),</span><br><span class="line">            leading: new Icon(Icons.account_balance, color: Colors.purple)</span><br><span class="line">          ),</span><br><span class="line">          </span><br><span class="line">          new Divider(</span><br><span class="line">            color: Colors.cyan</span><br><span class="line">          ),</span><br><span class="line"></span><br><span class="line">          new ListTile(</span><br><span class="line">            title: new Text(&apos;card 布局2&apos;),</span><br><span class="line">            subtitle: new Text(&apos;子标题2&apos;, </span><br><span class="line">              textAlign: TextAlign.right,</span><br><span class="line">              style: TextStyle(</span><br><span class="line">                color: Colors.lightGreen</span><br><span class="line">              ),</span><br><span class="line">            ),</span><br><span class="line">            leading: new Icon(Icons.account_box, color: Colors.yellow)</span><br><span class="line">          ),</span><br><span class="line"></span><br><span class="line">          new Divider(</span><br><span class="line">            color: Colors.red,</span><br><span class="line">          ),</span><br><span class="line"></span><br><span class="line">          new ListTile(</span><br><span class="line">            title: new Text(&apos;card 布局3&apos;),</span><br><span class="line">            subtitle: new Text(&apos;子标题3&apos;, </span><br><span class="line">              textAlign: TextAlign.right,</span><br><span class="line">              style: TextStyle(</span><br><span class="line">                color: Colors.lightGreen</span><br><span class="line">              ),</span><br><span class="line">            ),</span><br><span class="line">            leading: new Icon(Icons.account_circle, color: Colors.red)</span><br><span class="line">          ),</span><br><span class="line"></span><br><span class="line">          new Divider(</span><br><span class="line">            color: Colors.orangeAccent,</span><br><span class="line">          ),</span><br><span class="line"></span><br><span class="line">          new ListTile(</span><br><span class="line">            title: new Text(&apos;card 布局4&apos;),</span><br><span class="line">            subtitle: new Text(&apos;子标题4&apos;, </span><br><span class="line">              textAlign: TextAlign.right,</span><br><span class="line">              style: TextStyle(</span><br><span class="line">                color: Colors.lightGreen</span><br><span class="line">              ),</span><br><span class="line">            ),</span><br><span class="line">            leading: new Icon(Icons.camera_enhance, color: Colors.brown)</span><br><span class="line">          )</span><br><span class="line">        ],</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/19/Flutter中布局/" data-id="cjx92w8jv00049bfyug5t67ea" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Flutter中GridView组件" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/Flutter中GridView组件/" class="article-date">
+  <time datetime="2019-06-18T15:42:43.000Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/18/Flutter中GridView组件/">GridView组件使用.md</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="GridView-组件使用"><a href="#GridView-组件使用" class="headerlink" title="GridView 组件使用"></a>GridView 组件使用</h2><ul>
+<li>padding: const EdgeInsets.all(10.0) 设置边距为10</li>
+<li>crossAxisCount：横轴子元素的数量crossAxisCount。</li>
+<li>mainAxisSpacing：主轴方向的间距。</li>
+<li>crossAxisSpacing：横轴元素的间距。</li>
+<li>childAspectRatio：元素的宽高比</li>
+</ul>
+<p>简单例子代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">class MyGridView2 extends StatelessWidget&#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    // TODO: implement build</span><br><span class="line">    return Container(</span><br><span class="line">      child: new GridView(</span><br><span class="line">        // 设置边距</span><br><span class="line">        padding: const EdgeInsets.all(10.0),</span><br><span class="line">        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(</span><br><span class="line">          </span><br><span class="line">          // 横轴 数量</span><br><span class="line">          crossAxisCount: 3,</span><br><span class="line">          crossAxisSpacing: 10,</span><br><span class="line">          mainAxisSpacing: 10.0,  </span><br><span class="line">          // 宽高比：默认是1.0        </span><br><span class="line">          childAspectRatio: 1.5,</span><br><span class="line">        ),</span><br><span class="line"></span><br><span class="line">        children: &lt;Widget&gt;[</span><br><span class="line">          new Image.network(&apos;https://github.com/Jinxiansen/SwiftUI/raw/master/images/example/Text.png&apos;, fit: BoxFit.cover),</span><br><span class="line">        new Image.network(&apos;https://p.ampmake.com/mall/product/9666f00e-f02a-46ce-9b7c-090bf6aba9aa.png&apos;, fit: BoxFit.cover),</span><br><span class="line">        new Image.network(&apos;https://p.ampmake.com/mall/product/d6fdc891-eec3-47ce-b837-df726c73a9b8.png&apos;, fit: BoxFit.cover),</span><br><span class="line">        new Image.network(&apos;https://p.ampmake.com/mall/product/0cccf224-57d1-4a3e-bf06-9df5fed0f4e0.png&apos;, fit: BoxFit.cover),</span><br><span class="line">        new Image.network(&apos;https://p.ampmake.com/mall/product/2bf5c0d7-dc3a-45d2-ab1b-40fe737aa79a.jpg&apos;, fit: BoxFit.cover),</span><br><span class="line">        new Image.network(&apos;https://p.ampmake.com/mall/product/26153760-b964-45d5-b811-7f2bf5844102.jpg&apos;, fit: BoxFit.cover),</span><br><span class="line">        new Image.network(&apos;https://p.ampmake.com/mall/product/a20bb53c-b710-4b39-9607-91bef06ee54e.png&apos;, fit: BoxFit.cover),</span><br><span class="line">        ],</span><br><span class="line">      )</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以前的写法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">class MyGridView extends StatelessWidget &#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return Container(</span><br><span class="line">      child: new GridView.count(</span><br><span class="line">        padding: const EdgeInsets.all(15.0),</span><br><span class="line">        // 横轴 item 数量</span><br><span class="line">        crossAxisCount: 3,</span><br><span class="line">        // 横轴 间距</span><br><span class="line">        crossAxisSpacing: 10.0,</span><br><span class="line">        children: &lt;Widget&gt;[</span><br><span class="line">          const Text(&apos;我是第一个&apos;),</span><br><span class="line">          const Text(&apos;我是第二个&apos;),</span><br><span class="line">          const Text(&apos;我是第三个&apos;),</span><br><span class="line">          const Text(&apos;我是第四个&apos;),</span><br><span class="line">          const Text(&apos;我是第五个&apos;),</span><br><span class="line">          const Text(&apos;我是第六个&apos;),</span><br><span class="line">          const Text(&apos;我是第七个&apos;),</span><br><span class="line">        ],</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/Flutter中GridView组件/" data-id="cjx92w8k000089bfy3yb4kl2q" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flutter-GridView/">Flutter GridView</a></li></ul>
+
     </footer>
   </div>
   
@@ -92,7 +269,7 @@
     <article id="post-第十四章第三方库面试" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/第十四章第三方库面试/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.192Z" itemprop="datePublished">2019-06-18</time>
+  <time datetime="2019-06-18T15:30:19.020Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -124,7 +301,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第十四章第三方库面试/" data-id="cjx1wsds80035msfy9l93t7nx" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第十四章第三方库面试/" data-id="cjx92w8ly003h9bfyn1rmhyxw" class="article-share-link">Share</a>
       
       
     </footer>
@@ -134,10 +311,10 @@
 
 
   
-    <article id="post-第十二章架构和框架面试" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-第四章OC语言特性面试" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/18/第十二章架构和框架面试/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.192Z" itemprop="datePublished">2019-06-18</time>
+    <a href="/2019/06/18/第四章OC语言特性面试/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.020Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -146,91 +323,125 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>第十二章 架构和框架</p>
-<p>目的</p>
-<ul>
-<li>实现模块化</li>
-<li>分层</li>
-<li>解耦</li>
+        <h1 id="OC-语言特性"><a href="#OC-语言特性" class="headerlink" title="OC 语言特性"></a>OC 语言特性</h1><h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>由运行时来决议的，不同分类当中含有同名方法 谁最终生效取决于谁最终参与编译，最后参编译的同名分类方法会最终生效，假如分类方法中添加的方法和宿主类中的某一个方法名相同，分类中的方法会覆盖宿主类中的同名方法，覆盖是指在消息传递过程中优先查找数组靠前的元素，如果查找到了同名方法就直接调用，实际上宿主类的同名方法实现仍然是存在的，我们可可以通过一些手段调用到原有类的同名方法的实现 </p>
+<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
+<li>申明私有方法，分类的 .m 文件中申明私有方法啊，对外不暴露</li>
+<li>对类中的代码进行抽取分解</li>
+<li>把Framework的私有方法公开化</li>
 </ul>
-<h2 id="图片缓存"><a href="#图片缓存" class="headerlink" title="图片缓存"></a>图片缓存</h2><h3 id="图片缓存框架设计方案？"><a href="#图片缓存框架设计方案？" class="headerlink" title="图片缓存框架设计方案？"></a>图片缓存框架设计方案？</h3><p><img src="https://i.loli.net/2019/04/18/5cb8873419c28.jpg" alt></p>
-<h3 id="图片缓存时内存设计上需要考虑的问题"><a href="#图片缓存时内存设计上需要考虑的问题" class="headerlink" title="图片缓存时内存设计上需要考虑的问题"></a>图片缓存时内存设计上需要考虑的问题</h3><ul>
-<li><p>内存存储的size</p>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>运行时决议，运行时通过runtime 才把分类中的方法添加到了宿主类上</li>
+<li>可以为系统类添加方法</li>
+<li>有多个分类中存在同名方法时，最后编译的方法会最先生效</li>
+<li>分类中有和宿主类同名方法时，底层中通过内存copy将分类方法“覆盖”宿主类方法</li>
+<li>名字相同的分类编译会报错</li>
+</ul>
+<h3 id="分类中可以添加的内容"><a href="#分类中可以添加的内容" class="headerlink" title="分类中可以添加的内容"></a>分类中可以添加的内容</h3><ul>
+<li>实例方法</li>
+<li>类方法</li>
+<li>协议</li>
+<li>属性，实际上只是声明了 getter / setter 方法，并没有添加成员变量</li>
+</ul>
+<h3 id="关联对象技术"><a href="#关联对象技术" class="headerlink" title="关联对象技术"></a>关联对象技术</h3><p>关联对象由 AssocicationsManager 管理并在 AssociationsHashMap 上存储<br>所有对象的关联内容都在同一个全局容器中</p>
 <ul>
-<li>10kb的图片开辟的内存空间 50 张</li>
-<li>100kb图片的 20 张</li>
-<li>100kb 以上的 10 张<br>通过队列的方式存储，先进先出的方式淘汰</li>
+<li>给分类添加成员变量，通过关联对象的方式</li>
+</ul>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><h3 id="使用场景-1"><a href="#使用场景-1" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
+<li>声明私有属性</li>
+<li>声明私有方法</li>
+<li>声明私有成员变量</li>
+</ul>
+<h3 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>编译时决议</li>
+<li>只以声明的形式存在，多数情况下寄生在宿主类的.m中</li>
+<li>不能为系统添加扩展</li>
+</ul>
+<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><ul>
+<li>代理设计模式，传递方式是一对一</li>
+<li>使用weak 避免循环引用</li>
+</ul>
+<h2 id="通知"><a href="#通知" class="headerlink" title="通知"></a>通知</h2><p>使用观察者模式来实现的用于跨层传递消息的机制</p>
+<h2 id="KVO"><a href="#KVO" class="headerlink" title="KVO"></a>KVO</h2><p>KVO 是系统对观察者模式的又一实现，使用isa 混写技术（isa - swizzling）来动态运行时为某一个类添加一个子类重写了它的setter 方法，同时将原有类的isa指针指向了新创建的类上</p>
+<ul>
+<li>KVO 是OC对观察者模式的又一实现</li>
+<li>apple 使用isa 混写技术（isa - swizzling）来实现KVO<ul>
+<li>给我A类注册一个观察者时本质上是调用系统的 Observer for keyPath 方法，系统会创建一个NSKVONotifiying_A 的类</li>
 </ul>
 </li>
-<li><p>淘汰策略</p>
+<li>使用 setter 方法设置值KVO才能生效</li>
+<li>使用setValue:forKey: 改变值KVO才能生效</li>
+<li>使用下划线的成员变量直接修改值需要手动添加KVO才能生效（增加 willChangeValueForKey 和 didChangeValueForKey 两个方法）</li>
+</ul>
+<h2 id="KVC"><a href="#KVC" class="headerlink" title="KVC"></a>KVC</h2><p>apple提供的键值编码技术</p>
 <ul>
-<li>以队列先进先出的方式淘汰</li>
-<li>已LRU 算法 (如 30 min 之内是否使用过)</li>
+<li>(nullable id)valueForKey:(NSString *)key;</li>
+<li><p>(void)setValue:(nullable id)value forKey:(NSString *)key;</p>
+<p>  以上两个方法中的key是没有任何限制的，只要知道对应的成员变量名称，就可以对私有的成员变量设置和操作，这违背了面向对象的编程思想</p>
+</li>
+</ul>
+<p><strong>(void)setValue:(nullable id)value forKey:(NSString *)key; 方法调用流程</strong></p>
+<ul>
+<li>先判断是否有跟key 相关的setter 方法，如果有就直接调用，结束调用</li>
+<li>如果没有再判断是否存在实例变量，如果存在直接给赋值，结束调用</li>
+<li>如果说实例变量不存在，会去调用 <code>- (void)setValue:(nullable id)value forUndefinedKey:(NSString *)key;</code> 抛出异常</li>
+</ul>
+<h2 id="属性关键字"><a href="#属性关键字" class="headerlink" title="属性关键字"></a>属性关键字</h2><h3 id="读写权限"><a href="#读写权限" class="headerlink" title="读写权限"></a>读写权限</h3><ul>
+<li><p>readonly</p>
+</li>
+<li><p>readwrite 系统默认</p>
+</li>
+</ul>
+<h3 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h3><ul>
+<li>atomic （系统默认）保证赋值和获取（对成员属性的直接获取和赋值）时线程安全，并不代表操作和访问，如果atomic修饰的一个数组，只能保证独具改数组的读取和赋值时线程安全，并不能保证对数据操作（增加/删除数组元素）时是安全的</li>
+<li>nonatomic</li>
+</ul>
+<h3 id="引用技术"><a href="#引用技术" class="headerlink" title="引用技术"></a>引用技术</h3><ul>
+<li>assign <ul>
+<li>修饰基本数据类型，</li>
+<li>修饰对象时不改变其引用计数，</li>
+<li>会产生悬垂指针</li>
+</ul>
+</li>
+<li>weak  <ul>
+<li>不改变被修饰对象的引用计数，</li>
+<li>所指对象被释放之后指针自动置为nil</li>
 </ul>
 </li>
 </ul>
-<h3 id="磁盘设计考虑的问题"><a href="#磁盘设计考虑的问题" class="headerlink" title="磁盘设计考虑的问题"></a>磁盘设计考虑的问题</h3><ul>
-<li>存储方式</li>
-<li>大小限制</li>
-<li>淘汰策略(超过 7 天)</li>
-</ul>
-<h3 id="网络部分的设计需要考虑的问题"><a href="#网络部分的设计需要考虑的问题" class="headerlink" title="网络部分的设计需要考虑的问题"></a>网络部分的设计需要考虑的问题</h3><ul>
-<li>图片请求最大并发量</li>
-<li>请求超时策略，一旦超时了，可以重试，如果重试2次失败，是否还下载</li>
-<li>请求优先级，下载或者缓存的图片是否紧急需要</li>
-</ul>
-<h3 id="图片通过什么方式进行读写，过程是怎样的？"><a href="#图片通过什么方式进行读写，过程是怎样的？" class="headerlink" title="图片通过什么方式进行读写，过程是怎样的？"></a>图片通过什么方式进行读写，过程是怎样的？</h3><ul>
-<li>以图片的url 的单向哈希值作为key 存储</li>
-<li>读取过程</li>
-</ul>
-<p><img src="https://i.loli.net/2019/04/18/5cb887ab505f3.jpg" alt></p>
-<h3 id="图片解码"><a href="#图片解码" class="headerlink" title="图片解码"></a>图片解码</h3><ul>
-<li><p>对于不同格式的图片，解码采用什么方式来做？</p>
+<p><strong>两者区别：</strong></p>
 <ul>
-<li>应用策略模式对于不同图片格式进行解码</li>
+<li>weak可以修饰对象，而assign 既可以修饰对象也可以修饰基本数据类型</li>
+<li>assign 修饰的对象，对象释放后指针仍然指向原对象的内存地址，而weak 修饰的对象，释放后会自动置为nil</li>
 </ul>
-</li>
-<li><p>在那个阶段做图片解码处理？</p>
+<p><strong>问题1</strong> </p>
+<p>weak 修饰的对象为什么释放后会自动置为nil</p>
+<p><strong>问题2</strong></p>
+<p><code>@property (copy) NSMutableArray *array;</code> 有什么问题</p>
 <ul>
-<li>再磁盘读取后未解码或者网络请求返回后，解码后再放到内存中，可以减轻主线程的压力，解码在主线程中</li>
+<li>被copy修饰后，如果赋值过来的是NSMutableArray，copy之后就是NSArray，如果赋值过来的是NSAarray，copy 之后仍然是NSArray，有可能会调用array的添加元素方法会导致crash</li>
+</ul>
+<h3 id="copy-关键词"><a href="#copy-关键词" class="headerlink" title="copy 关键词"></a>copy 关键词</h3><p> <img src="https://ws2.sinaimg.cn/large/006tNc79ly1g1uh6lwwe2j320s0lm7bm.jpg" alt></p>
+<ul>
+<li>浅拷贝：内存地址的复制，让目标对象指针和源对象指向同一块内存空间，<ul>
+<li>会增加对象的引用计数</li>
+<li>并没有一个新的内存分配</li>
 </ul>
 </li>
 </ul>
-<h3 id="线程处理"><a href="#线程处理" class="headerlink" title="线程处理"></a>线程处理</h3><p> <img src="https://i.loli.net/2019/04/18/5cb8903ae7004.jpg" alt></p>
-<h2 id="阅读时长统计"><a href="#阅读时长统计" class="headerlink" title="阅读时长统计"></a>阅读时长统计</h2><h3 id="怎样设计一个时长统计框架？"><a href="#怎样设计一个时长统计框架？" class="headerlink" title="怎样设计一个时长统计框架？"></a>怎样设计一个时长统计框架？</h3><p><img src="https://i.loli.net/2019/04/18/5cb8915823482.jpg" alt></p>
-<h3 id="为何要有不同类型的记录器，处于什么考虑？"><a href="#为何要有不同类型的记录器，处于什么考虑？" class="headerlink" title="为何要有不同类型的记录器，处于什么考虑？"></a>为何要有不同类型的记录器，处于什么考虑？</h3><p>基于不同分类场景提供的关于记录的封装、适配</p>
-<h3 id="记录的数据由于程序杀死或者断电，关机等丢失，你是怎样处理的？"><a href="#记录的数据由于程序杀死或者断电，关机等丢失，你是怎样处理的？" class="headerlink" title="记录的数据由于程序杀死或者断电，关机等丢失，你是怎样处理的？"></a>记录的数据由于程序杀死或者断电，关机等丢失，你是怎样处理的？</h3><ul>
-<li>定时写磁盘</li>
-<li>限定内存缓存条数，超过该条数就写如磁盘</li>
-</ul>
-<h3 id="记录器上传-中延时上传的具体场景有哪些？上传时机如何把握？"><a href="#记录器上传-中延时上传的具体场景有哪些？上传时机如何把握？" class="headerlink" title="记录器上传 中延时上传的具体场景有哪些？上传时机如何把握？"></a>记录器上传 中延时上传的具体场景有哪些？上传时机如何把握？</h3><p>上传时机</p>
 <ul>
-<li>立刻上传</li>
-<li>延时上传</li>
-<li>定时上传</li>
+<li>深拷贝：目标对象指针和源对象指针分别指向两块内容相同的内存空间<ul>
+<li>不会增加源对象的引用计数</li>
+<li>有新对象的内存分配</li>
 </ul>
-<p>延时上传场景</p>
-<p>统计结果立即上传会重复调用接口导致资源浪费</p>
-<ul>
-<li>前后台切换</li>
-<li>从无网到有网的变化时</li>
-<li>通过其他的接口捎带着上传</li>
+</li>
 </ul>
-<h2 id="复杂页面的架构"><a href="#复杂页面的架构" class="headerlink" title="复杂页面的架构"></a>复杂页面的架构</h2><h3 id="MVVM-框架思想"><a href="#MVVM-框架思想" class="headerlink" title="MVVM 框架思想"></a>MVVM 框架思想</h3><p><img src="https://i.loli.net/2019/04/18/5cb894992c97c.jpg" alt></p>
-<h3 id="RN-的数据流思想"><a href="#RN-的数据流思想" class="headerlink" title="RN 的数据流思想"></a>RN 的数据流思想</h3><p><img src="https://i.loli.net/2019/04/18/5cb895a29c8e3.jpg" alt></p>
-<p>任何一个子节点是没有权力做自己的变化更新的，它必须把这个消息传递给根结点，根结点通过自顶向下的遍历查找需要更新的节点</p>
-<h3 id="系统UIView-更新机制的思想"><a href="#系统UIView-更新机制的思想" class="headerlink" title="系统UIView 更新机制的思想"></a>系统UIView 更新机制的思想</h3><h3 id="AsyncDisplayKit-关于预排版的设计思想"><a href="#AsyncDisplayKit-关于预排版的设计思想" class="headerlink" title="AsyncDisplayKit 关于预排版的设计思想"></a>AsyncDisplayKit 关于预排版的设计思想</h3><h2 id="客户端整体架构"><a href="#客户端整体架构" class="headerlink" title="客户端整体架构"></a>客户端整体架构</h2><p>需要独立于APP 的通用层<br>通用的业务层<br>中间层<br>业务层</p>
-<p><img src="https://i.loli.net/2019/04/18/5cb8962545202.jpg" alt></p>
-<p>业务之间的解耦通信方式</p>
-<ul>
-<li>OpenURL</li>
-<li>依赖注入方式， 在中间层通过代理 的方式实现业务A 和业务B之间的通信</li>
-</ul>
+<h2 id="MRC-重写-retain修饰的变量的setter-方法"><a href="#MRC-重写-retain修饰的变量的setter-方法" class="headerlink" title="MRC 重写 retain修饰的变量的setter 方法"></a>MRC 重写 retain修饰的变量的setter 方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- (void)setObj:(id)obj &#123;</span><br><span class="line">    if (_obj != obj) &#123;</span><br><span class="line">        [_obj release];</span><br><span class="line">    &#125;</span><br><span class="line">    _obj = [obj retain];</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>判断是为了防止异常处理，如果不做 if 判断，当传入的 obj 对象正好是原来的_obj 对象，对原对象尽行releas 操作，实际上也会对传入的对象进行releas 操作进行释放，此时如果再通过obj指针访问废弃的对象时就会导致carsh</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第十二章架构和框架面试/" data-id="cjx1wsds90036msfy44t645tm" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第四章OC语言特性面试/" data-id="cjx92w8lz003i9bfyek7w9b9a" class="article-share-link">Share</a>
       
       
     </footer>
@@ -243,7 +454,7 @@
     <article id="post-第十章网络相关" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/第十章网络相关/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.192Z" itemprop="datePublished">2019-06-18</time>
+  <time datetime="2019-06-18T15:30:19.020Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -402,7 +613,7 @@ max：10 最多发生多少个http请求和响应对
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第十章网络相关/" data-id="cjx1wsdsc0037msfywzztcl0g" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第十章网络相关/" data-id="cjx92w8m2003l9bfyuxswgiug" class="article-share-link">Share</a>
       
       
     </footer>
@@ -412,10 +623,10 @@ max：10 最多发生多少个http请求和响应对
 
 
   
-    <article id="post-第四章OC语言特性面试" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-第十一章设计模式面试" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/18/第四章OC语言特性面试/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.192Z" itemprop="datePublished">2019-06-18</time>
+    <a href="/2019/06/18/第十一章设计模式面试/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.019Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -424,125 +635,34 @@ max：10 最多发生多少个http请求和响应对
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="OC-语言特性"><a href="#OC-语言特性" class="headerlink" title="OC 语言特性"></a>OC 语言特性</h1><h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>由运行时来决议的，不同分类当中含有同名方法 谁最终生效取决于谁最终参与编译，最后参编译的同名分类方法会最终生效，假如分类方法中添加的方法和宿主类中的某一个方法名相同，分类中的方法会覆盖宿主类中的同名方法，覆盖是指在消息传递过程中优先查找数组靠前的元素，如果查找到了同名方法就直接调用，实际上宿主类的同名方法实现仍然是存在的，我们可可以通过一些手段调用到原有类的同名方法的实现 </p>
-<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
-<li>申明私有方法，分类的 .m 文件中申明私有方法啊，对外不暴露</li>
-<li>对类中的代码进行抽取分解</li>
-<li>把Framework的私有方法公开化</li>
-</ul>
-<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
-<li>运行时决议，运行时通过runtime 才把分类中的方法添加到了宿主类上</li>
-<li>可以为系统类添加方法</li>
-<li>有多个分类中存在同名方法时，最后编译的方法会最先生效</li>
-<li>分类中有和宿主类同名方法时，底层中通过内存copy将分类方法“覆盖”宿主类方法</li>
-<li>名字相同的分类编译会报错</li>
-</ul>
-<h3 id="分类中可以添加的内容"><a href="#分类中可以添加的内容" class="headerlink" title="分类中可以添加的内容"></a>分类中可以添加的内容</h3><ul>
-<li>实例方法</li>
-<li>类方法</li>
-<li>协议</li>
-<li>属性，实际上只是声明了 getter / setter 方法，并没有添加成员变量</li>
-</ul>
-<h3 id="关联对象技术"><a href="#关联对象技术" class="headerlink" title="关联对象技术"></a>关联对象技术</h3><p>关联对象由 AssocicationsManager 管理并在 AssociationsHashMap 上存储<br>所有对象的关联内容都在同一个全局容器中</p>
+        <p>第十一章 设计模式</p>
+<h2 id="六大设计原则"><a href="#六大设计原则" class="headerlink" title="六大设计原则"></a>六大设计原则</h2><p>单一职责原则：一个类只负责一件事</p>
+<p>开闭原则： 对修改关闭，对扩展开放</p>
+<p>接口隔离原则：使用多个专门的协议，而不是一个庞大臃肿的协议，iOS系统的UITableView的数据和代理协议分开</p>
+<p>依赖倒置原则：抽象不应该依赖于具体实现，具体实现可以依赖于抽象</p>
+<p>里氏替换原则：父类可以被子类无缝替换，且原有功能不受任何影响，iOS系统 的 KVO 机制遵守了这一原则，当调用 addObserver 方法时，因为系统在动态运行时为我们创建了一个子类，直观感受是仍然使用的是父类，实际上系统已经替换为创建的子类，所以KVO 机制 不但使用了管擦这模式，并且遵从了 里氏替换原则</p>
+<p>迪米特法则： 一个对象应对其他对象有尽可能少的了解，平时所说的高内聚，低耦合</p>
+<h2 id="常用设计模式"><a href="#常用设计模式" class="headerlink" title="常用设计模式"></a>常用设计模式</h2><h3 id="责任链"><a href="#责任链" class="headerlink" title="责任链"></a>责任链</h3><p>有三个业务分别为A/B/C，以前的调用顺序为 A -&gt; B -&gt; C ，现在顺序有调整，</p>
+<p>定义某一个类，有一个成员变量他的类型跟原有类类型一致，组成一个责任链，让处理具体业务的责任者去处理</p>
+<p><img src="https://i.loli.net/2019/04/18/5cb85694cd028.jpg" alt></p>
+<h3 id="桥接模式"><a href="#桥接模式" class="headerlink" title="桥接模式"></a>桥接模式</h3><p>业务解耦的问题：同一个列表和多套数据显示，多套数据通过后端来控制是共存，</p>
+<p><img src="https://i.loli.net/2019/04/18/5cb857a83803d.jpg" alt></p>
+<p>类构成</p>
+<p>抽象类A ——&gt; class B </p>
+<p><img src="https://i.loli.net/2019/04/18/5cb85da6d46b6.jpg" alt></p>
+<h3 id="适配器模式"><a href="#适配器模式" class="headerlink" title="适配器模式"></a>适配器模式</h3><p>一个现有类需要适应变化的问题， 年代比较久远的类或者对象</p>
+<p>类构成<br><img src="https://i.loli.net/2019/04/18/5cb8600aa067b.jpg" alt></p>
 <ul>
-<li>给分类添加成员变量，通过关联对象的方式</li>
+<li>对象适配</li>
+<li>类适配</li>
 </ul>
-<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><h3 id="使用场景-1"><a href="#使用场景-1" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
-<li>声明私有属性</li>
-<li>声明私有方法</li>
-<li>声明私有成员变量</li>
-</ul>
-<h3 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h3><ul>
-<li>编译时决议</li>
-<li>只以声明的形式存在，多数情况下寄生在宿主类的.m中</li>
-<li>不能为系统添加扩展</li>
-</ul>
-<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><ul>
-<li>代理设计模式，传递方式是一对一</li>
-<li>使用weak 避免循环引用</li>
-</ul>
-<h2 id="通知"><a href="#通知" class="headerlink" title="通知"></a>通知</h2><p>使用观察者模式来实现的用于跨层传递消息的机制</p>
-<h2 id="KVO"><a href="#KVO" class="headerlink" title="KVO"></a>KVO</h2><p>KVO 是系统对观察者模式的又一实现，使用isa 混写技术（isa - swizzling）来动态运行时为某一个类添加一个子类重写了它的setter 方法，同时将原有类的isa指针指向了新创建的类上</p>
-<ul>
-<li>KVO 是OC对观察者模式的又一实现</li>
-<li>apple 使用isa 混写技术（isa - swizzling）来实现KVO<ul>
-<li>给我A类注册一个观察者时本质上是调用系统的 Observer for keyPath 方法，系统会创建一个NSKVONotifiying_A 的类</li>
-</ul>
-</li>
-<li>使用 setter 方法设置值KVO才能生效</li>
-<li>使用setValue:forKey: 改变值KVO才能生效</li>
-<li>使用下划线的成员变量直接修改值需要手动添加KVO才能生效（增加 willChangeValueForKey 和 didChangeValueForKey 两个方法）</li>
-</ul>
-<h2 id="KVC"><a href="#KVC" class="headerlink" title="KVC"></a>KVC</h2><p>apple提供的键值编码技术</p>
-<ul>
-<li>(nullable id)valueForKey:(NSString *)key;</li>
-<li><p>(void)setValue:(nullable id)value forKey:(NSString *)key;</p>
-<p>  以上两个方法中的key是没有任何限制的，只要知道对应的成员变量名称，就可以对私有的成员变量设置和操作，这违背了面向对象的编程思想</p>
-</li>
-</ul>
-<p><strong>(void)setValue:(nullable id)value forKey:(NSString *)key; 方法调用流程</strong></p>
-<ul>
-<li>先判断是否有跟key 相关的setter 方法，如果有就直接调用，结束调用</li>
-<li>如果没有再判断是否存在实例变量，如果存在直接给赋值，结束调用</li>
-<li>如果说实例变量不存在，会去调用 <code>- (void)setValue:(nullable id)value forUndefinedKey:(NSString *)key;</code> 抛出异常</li>
-</ul>
-<h2 id="属性关键字"><a href="#属性关键字" class="headerlink" title="属性关键字"></a>属性关键字</h2><h3 id="读写权限"><a href="#读写权限" class="headerlink" title="读写权限"></a>读写权限</h3><ul>
-<li><p>readonly</p>
-</li>
-<li><p>readwrite 系统默认</p>
-</li>
-</ul>
-<h3 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h3><ul>
-<li>atomic （系统默认）保证赋值和获取（对成员属性的直接获取和赋值）时线程安全，并不代表操作和访问，如果atomic修饰的一个数组，只能保证独具改数组的读取和赋值时线程安全，并不能保证对数据操作（增加/删除数组元素）时是安全的</li>
-<li>nonatomic</li>
-</ul>
-<h3 id="引用技术"><a href="#引用技术" class="headerlink" title="引用技术"></a>引用技术</h3><ul>
-<li>assign <ul>
-<li>修饰基本数据类型，</li>
-<li>修饰对象时不改变其引用计数，</li>
-<li>会产生悬垂指针</li>
-</ul>
-</li>
-<li>weak  <ul>
-<li>不改变被修饰对象的引用计数，</li>
-<li>所指对象被释放之后指针自动置为nil</li>
-</ul>
-</li>
-</ul>
-<p><strong>两者区别：</strong></p>
-<ul>
-<li>weak可以修饰对象，而assign 既可以修饰对象也可以修饰基本数据类型</li>
-<li>assign 修饰的对象，对象释放后指针仍然指向原对象的内存地址，而weak 修饰的对象，释放后会自动置为nil</li>
-</ul>
-<p><strong>问题1</strong> </p>
-<p>weak 修饰的对象为什么释放后会自动置为nil</p>
-<p><strong>问题2</strong></p>
-<p><code>@property (copy) NSMutableArray *array;</code> 有什么问题</p>
-<ul>
-<li>被copy修饰后，如果赋值过来的是NSMutableArray，copy之后就是NSArray，如果赋值过来的是NSAarray，copy 之后仍然是NSArray，有可能会调用array的添加元素方法会导致crash</li>
-</ul>
-<h3 id="copy-关键词"><a href="#copy-关键词" class="headerlink" title="copy 关键词"></a>copy 关键词</h3><p> <img src="https://ws2.sinaimg.cn/large/006tNc79ly1g1uh6lwwe2j320s0lm7bm.jpg" alt></p>
-<ul>
-<li>浅拷贝：内存地址的复制，让目标对象指针和源对象指向同一块内存空间，<ul>
-<li>会增加对象的引用计数</li>
-<li>并没有一个新的内存分配</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li>深拷贝：目标对象指针和源对象指针分别指向两块内容相同的内存空间<ul>
-<li>不会增加源对象的引用计数</li>
-<li>有新对象的内存分配</li>
-</ul>
-</li>
-</ul>
-<h2 id="MRC-重写-retain修饰的变量的setter-方法"><a href="#MRC-重写-retain修饰的变量的setter-方法" class="headerlink" title="MRC 重写 retain修饰的变量的setter 方法"></a>MRC 重写 retain修饰的变量的setter 方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- (void)setObj:(id)obj &#123;</span><br><span class="line">    if (_obj != obj) &#123;</span><br><span class="line">        [_obj release];</span><br><span class="line">    &#125;</span><br><span class="line">    _obj = [obj retain];</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>判断是为了防止异常处理，如果不做 if 判断，当传入的 obj 对象正好是原来的_obj 对象，对原对象尽行releas 操作，实际上也会对传入的对象进行releas 操作进行释放，此时如果再通过obj指针访问废弃的对象时就会导致carsh</p>
+<h3 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h3><h3 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h3><p>行为参数化</p>
+<p>降低代码重合度</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第四章OC语言特性面试/" data-id="cjx1wsdsd0038msfyljku5fat" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第十一章设计模式面试/" data-id="cjx92w8lu003d9bfy6uupy6nm" class="article-share-link">Share</a>
       
       
     </footer>
@@ -552,10 +672,10 @@ max：10 最多发生多少个http请求和响应对
 
 
   
-    <article id="post-第三章UI视图响应链离屏渲染面试" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-第十二章架构和框架面试" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/18/第三章UI视图响应链离屏渲染面试/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.191Z" itemprop="datePublished">2019-06-18</time>
+    <a href="/2019/06/18/第十二章架构和框架面试/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.019Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -564,343 +684,91 @@ max：10 最多发生多少个http请求和响应对
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="UITableView-相关"><a href="#UITableView-相关" class="headerlink" title="UITableView 相关"></a>UITableView 相关</h2><ul>
-<li>重用机制</li>
-<li><p>并发访问，数据拷贝问题：主线程删除了一条数据，子线程数据由删除之前的数据源copy而来，子线程网络请求，数据解析，预排版等操作后，回到主线程刷新时已经删除的数据又会重现</p>
+        <p>第十二章 架构和框架</p>
+<p>目的</p>
 <ul>
-<li><p>主线程数据源删除时对数据进行记录，子线程的数据回来后再进行一次同步删除操作，然后再刷新数据</p>
-</li>
-<li><p>使用GCD中的串行队列，将数据删除和数据解析在此队列中进行</p>
-</li>
+<li>实现模块化</li>
+<li>分层</li>
+<li>解耦</li>
 </ul>
-</li>
-</ul>
-<h2 id="UIView-和CALayer-的关系"><a href="#UIView-和CALayer-的关系" class="headerlink" title="UIView 和CALayer 的关系"></a>UIView 和CALayer 的关系</h2><ul>
-<li>UIView 为 CALayer 提供内容，负责处理触摸事件，参与响应链</li>
-<li>CALayer 负责显示内容，分工明确，UIView 的Layer 实际上就是CALayer， backgroundColor 等属性本质是对CALayer 做了一层包装</li>
-</ul>
-<h2 id="事件传递"><a href="#事件传递" class="headerlink" title="事件传递"></a>事件传递</h2><p><img src="https://ws3.sinaimg.cn/large/006tKfTcly1g1omq41fi4j31hn0u0n3a.jpg" alt></p>
+<h2 id="图片缓存"><a href="#图片缓存" class="headerlink" title="图片缓存"></a>图片缓存</h2><h3 id="图片缓存框架设计方案？"><a href="#图片缓存框架设计方案？" class="headerlink" title="图片缓存框架设计方案？"></a>图片缓存框架设计方案？</h3><p><img src="https://i.loli.net/2019/04/18/5cb8873419c28.jpg" alt></p>
+<h3 id="图片缓存时内存设计上需要考虑的问题"><a href="#图片缓存时内存设计上需要考虑的问题" class="headerlink" title="图片缓存时内存设计上需要考虑的问题"></a>图片缓存时内存设计上需要考虑的问题</h3><ul>
+<li><p>内存存储的size</p>
 <ul>
-<li>hitTest 方法是返回响应时间的试图</li>
-<li>pointInside withEvent 方法判断点击位置是否在当前视图范围内</li>
-<li>倒序遍历最终响应事件的试图，最后添加的试图会最优先被遍历到</li>
-</ul>
-<p><strong>需求案例</strong></p>
-<p>只让正方形的view中圆形区域内可以响应事件，四个角的位置不响应事件<br><img src="https://ws1.sinaimg.cn/large/006tKfTcly1g1onklz0k8j309q0a674h.jpg" alt></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">class CircularAreaResponseButton: UIButton &#123;</span><br><span class="line">    </span><br><span class="line">    override func hitTest(_ point: CGPoint, with event: UIEvent?) -&gt; UIView? &#123;</span><br><span class="line">        if self.isHidden || !self.isUserInteractionEnabled ||  self.alpha &lt;= 0.01 &#123;</span><br><span class="line">            return nil</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        var hitView: UIView?</span><br><span class="line">        if self.point(inside: point, with: event) &#123;</span><br><span class="line">            // 遍历当前视图的子试图</span><br><span class="line">            for subView in subviews &#123;</span><br><span class="line">                // 坐标转换</span><br><span class="line">                let convertPoint = self.convert(point, to: subView)</span><br><span class="line">                if let hitTestView = subView.hitTest(convertPoint, with: event) &#123;</span><br><span class="line">                    // 找到了最终响应事件的试图</span><br><span class="line">                    hitView = hitTestView</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            if hitView != nil &#123;</span><br><span class="line">                return hitView</span><br><span class="line">            &#125;</span><br><span class="line">            return self</span><br><span class="line">        &#125;</span><br><span class="line">        return nil</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    override func point(inside point: CGPoint, with event: UIEvent?) -&gt; Bool &#123;</span><br><span class="line">        let x1 = point.x</span><br><span class="line">        let y1 = point.y</span><br><span class="line">        </span><br><span class="line">        let x2 = self.frame.width / 2.0</span><br><span class="line">        let y2 = self.frame.height / 2.0</span><br><span class="line">        // 使用平面内两点见距离公式计算距离, 并且判断是否 &lt;= 圆的半径</span><br><span class="line">        return sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)) &lt;= x2</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="视图响应"><a href="#视图响应" class="headerlink" title="视图响应"></a>视图响应</h2><p>UIView 都继承于 UIResponder，都有以下方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func touchesBegan(_ touches: Set&lt;UITouch&gt;, with event: UIEvent?)</span><br><span class="line">func touchesMoved(_ touches: Set&lt;UITouch&gt;, with event: UIEvent?) </span><br><span class="line">func touchesEnded(_ touches: Set&lt;UITouch&gt;, with event: UIEvent?)</span><br><span class="line">func touchesCancelled(_ touches: Set&lt;UITouch&gt;, with event: UIEvent?)</span><br></pre></td></tr></table></figure>
-<p>如果事件沿着视图响应链一直传递到 UIApplicationDelegate 仍然没有任何一个视图处理事件，程序将会发生什么？</p>
-<ul>
-<li>忽略掉了这个事件当作什么都没有发生</li>
-</ul>
-<h2 id="图像显示原理"><a href="#图像显示原理" class="headerlink" title="图像显示原理"></a>图像显示原理</h2><p>CALayer 的 contents 是位图</p>
-<p><img src="https://ws1.sinaimg.cn/large/006tKfTcly1g1oqxcw9dvj32260n041w.jpg" alt></p>
-<ul>
-<li><p>CPU的工作</p>
-<p>  Layout   | Display   | Prepare    | Commite |<br>  ———|———–|————|———|<br>  UI布局      | 绘制         | 图片编解码  | 提交位图 |<br>  文本计算  | </p>
-</li>
-<li><p>GPU渲染管线</p>
-<p>  定点着色 | 图元转配 | 光栅化 | 片段着色 | 片段处理 |<br>  ——–|——–|——-|———|———|</p>
-</li>
-</ul>
-<pre><code>提交到帧缓冲区（frameBuffer）
-</code></pre><h2 id="UI卡顿掉帧的原因"><a href="#UI卡顿掉帧的原因" class="headerlink" title="UI卡顿掉帧的原因"></a>UI卡顿掉帧的原因</h2><p>1/60 ms 时间内， 由cpu 和GPU 协同产生最终的数据，当 CPU UI布局，文本计算所用的时间较长时，留给GPU渲染，提交到帧缓冲区的时间就会变短，这样以来就会发生掉帧情况</p>
-<h3 id="UIView-的绘制原理"><a href="#UIView-的绘制原理" class="headerlink" title="UIView 的绘制原理"></a>UIView 的绘制原理</h3><p><strong>CPU优化方案</strong></p>
-<ul>
-<li>对象的创建、调整、销毁放在子线程，节省cpu的一部分时间</li>
-<li>预排版（布局计算，文本计算）放在子线程中</li>
-<li>预渲染（文本等异步绘制，图片编解码）等</li>
-</ul>
-<p><strong>GPU优化方案</strong></p>
-<h2 id="在屏渲染"><a href="#在屏渲染" class="headerlink" title="在屏渲染"></a>在屏渲染</h2><p>指GPU的渲染操作是在当前用于显示的屏幕缓冲区域中进行</p>
-<h2 id="离屏渲染"><a href="#离屏渲染" class="headerlink" title="离屏渲染"></a>离屏渲染</h2><p>指GPU在当前屏幕缓冲区域外新开劈了一个缓冲区域进行渲染操作<br>指定了UI视图图层的某些属性，标记为视图在未预合成之前不能用于在当前屏幕上直接显示的时候就会发生离屏渲染，例如图层的圆角设置和蒙层设置</p>
-<ul>
-<li><p>离屏渲染何时触发</p>
-<ul>
-<li>设置layer 的圆角并且和 maskToBounds 一起使用时</li>
-<li>图层蒙版</li>
-<li>阴影</li>
-<li>光栅化</li>
+<li>10kb的图片开辟的内存空间 50 张</li>
+<li>100kb图片的 20 张</li>
+<li>100kb 以上的 10 张<br>通过队列的方式存储，先进先出的方式淘汰</li>
 </ul>
 </li>
-<li><p>为何要避免离屏渲染</p>
+<li><p>淘汰策略</p>
 <ul>
-<li>离屏渲染，会增加 GPU 的工作量，GPU工作量的增加就很有可能导致CPU和GPU的总耗时超过1/60s，导致UI卡顿和掉帧 </li>
+<li>以队列先进先出的方式淘汰</li>
+<li>已LRU 算法 (如 30 min 之内是否使用过)</li>
 </ul>
 </li>
-<li><p>避免离屏渲染</p>
+</ul>
+<h3 id="磁盘设计考虑的问题"><a href="#磁盘设计考虑的问题" class="headerlink" title="磁盘设计考虑的问题"></a>磁盘设计考虑的问题</h3><ul>
+<li>存储方式</li>
+<li>大小限制</li>
+<li>淘汰策略(超过 7 天)</li>
+</ul>
+<h3 id="网络部分的设计需要考虑的问题"><a href="#网络部分的设计需要考虑的问题" class="headerlink" title="网络部分的设计需要考虑的问题"></a>网络部分的设计需要考虑的问题</h3><ul>
+<li>图片请求最大并发量</li>
+<li>请求超时策略，一旦超时了，可以重试，如果重试2次失败，是否还下载</li>
+<li>请求优先级，下载或者缓存的图片是否紧急需要</li>
+</ul>
+<h3 id="图片通过什么方式进行读写，过程是怎样的？"><a href="#图片通过什么方式进行读写，过程是怎样的？" class="headerlink" title="图片通过什么方式进行读写，过程是怎样的？"></a>图片通过什么方式进行读写，过程是怎样的？</h3><ul>
+<li>以图片的url 的单向哈希值作为key 存储</li>
+<li>读取过程</li>
+</ul>
+<p><img src="https://i.loli.net/2019/04/18/5cb887ab505f3.jpg" alt></p>
+<h3 id="图片解码"><a href="#图片解码" class="headerlink" title="图片解码"></a>图片解码</h3><ul>
+<li><p>对于不同格式的图片，解码采用什么方式来做？</p>
+<ul>
+<li>应用策略模式对于不同图片格式进行解码</li>
+</ul>
+</li>
+<li><p>在那个阶段做图片解码处理？</p>
+<ul>
+<li>再磁盘读取后未解码或者网络请求返回后，解码后再放到内存中，可以减轻主线程的压力，解码在主线程中</li>
+</ul>
 </li>
 </ul>
-<p>###异步绘制</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tKfTcly1g1osowi1dtj31l70u0ag5.jpg" alt></p>
+<h3 id="线程处理"><a href="#线程处理" class="headerlink" title="线程处理"></a>线程处理</h3><p> <img src="https://i.loli.net/2019/04/18/5cb8903ae7004.jpg" alt></p>
+<h2 id="阅读时长统计"><a href="#阅读时长统计" class="headerlink" title="阅读时长统计"></a>阅读时长统计</h2><h3 id="怎样设计一个时长统计框架？"><a href="#怎样设计一个时长统计框架？" class="headerlink" title="怎样设计一个时长统计框架？"></a>怎样设计一个时长统计框架？</h3><p><img src="https://i.loli.net/2019/04/18/5cb8915823482.jpg" alt></p>
+<h3 id="为何要有不同类型的记录器，处于什么考虑？"><a href="#为何要有不同类型的记录器，处于什么考虑？" class="headerlink" title="为何要有不同类型的记录器，处于什么考虑？"></a>为何要有不同类型的记录器，处于什么考虑？</h3><p>基于不同分类场景提供的关于记录的封装、适配</p>
+<h3 id="记录的数据由于程序杀死或者断电，关机等丢失，你是怎样处理的？"><a href="#记录的数据由于程序杀死或者断电，关机等丢失，你是怎样处理的？" class="headerlink" title="记录的数据由于程序杀死或者断电，关机等丢失，你是怎样处理的？"></a>记录的数据由于程序杀死或者断电，关机等丢失，你是怎样处理的？</h3><ul>
+<li>定时写磁盘</li>
+<li>限定内存缓存条数，超过该条数就写如磁盘</li>
+</ul>
+<h3 id="记录器上传-中延时上传的具体场景有哪些？上传时机如何把握？"><a href="#记录器上传-中延时上传的具体场景有哪些？上传时机如何把握？" class="headerlink" title="记录器上传 中延时上传的具体场景有哪些？上传时机如何把握？"></a>记录器上传 中延时上传的具体场景有哪些？上传时机如何把握？</h3><p>上传时机</p>
+<ul>
+<li>立刻上传</li>
+<li>延时上传</li>
+<li>定时上传</li>
+</ul>
+<p>延时上传场景</p>
+<p>统计结果立即上传会重复调用接口导致资源浪费</p>
+<ul>
+<li>前后台切换</li>
+<li>从无网到有网的变化时</li>
+<li>通过其他的接口捎带着上传</li>
+</ul>
+<h2 id="复杂页面的架构"><a href="#复杂页面的架构" class="headerlink" title="复杂页面的架构"></a>复杂页面的架构</h2><h3 id="MVVM-框架思想"><a href="#MVVM-框架思想" class="headerlink" title="MVVM 框架思想"></a>MVVM 框架思想</h3><p><img src="https://i.loli.net/2019/04/18/5cb894992c97c.jpg" alt></p>
+<h3 id="RN-的数据流思想"><a href="#RN-的数据流思想" class="headerlink" title="RN 的数据流思想"></a>RN 的数据流思想</h3><p><img src="https://i.loli.net/2019/04/18/5cb895a29c8e3.jpg" alt></p>
+<p>任何一个子节点是没有权力做自己的变化更新的，它必须把这个消息传递给根结点，根结点通过自顶向下的遍历查找需要更新的节点</p>
+<h3 id="系统UIView-更新机制的思想"><a href="#系统UIView-更新机制的思想" class="headerlink" title="系统UIView 更新机制的思想"></a>系统UIView 更新机制的思想</h3><h3 id="AsyncDisplayKit-关于预排版的设计思想"><a href="#AsyncDisplayKit-关于预排版的设计思想" class="headerlink" title="AsyncDisplayKit 关于预排版的设计思想"></a>AsyncDisplayKit 关于预排版的设计思想</h3><h2 id="客户端整体架构"><a href="#客户端整体架构" class="headerlink" title="客户端整体架构"></a>客户端整体架构</h2><p>需要独立于APP 的通用层<br>通用的业务层<br>中间层<br>业务层</p>
+<p><img src="https://i.loli.net/2019/04/18/5cb8962545202.jpg" alt></p>
+<p>业务之间的解耦通信方式</p>
+<ul>
+<li>OpenURL</li>
+<li>依赖注入方式， 在中间层通过代理 的方式实现业务A 和业务B之间的通信</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第三章UI视图响应链离屏渲染面试/" data-id="cjx1wsdrw002umsfyk3ylnrnw" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-第九章Runloop面试" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/第九章Runloop面试/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.191Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>RunLop</p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNc79ly1g21ckps89dj31vy03cq56.jpg" alt></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第九章Runloop面试/" data-id="cjx1wsdry002xmsfyx3zq9uud" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-第五章Runtime相关面试" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/第五章Runtime相关面试/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.191Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Runtime-相关问题"><a href="#Runtime-相关问题" class="headerlink" title="Runtime 相关问题"></a>Runtime 相关问题</h1><h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><h3 id="objc-object-结构体"><a href="#objc-object-结构体" class="headerlink" title="objc_object 结构体"></a>objc_object 结构体</h3><h3 id="objc-class"><a href="#objc-class" class="headerlink" title="objc_class"></a>objc_class</h3><h4 id="对象、类对象、元类对象的区别"><a href="#对象、类对象、元类对象的区别" class="headerlink" title="对象、类对象、元类对象的区别"></a>对象、类对象、元类对象的区别</h4><ul>
-<li>类对象存储实例方法列表等信息</li>
-<li>元类对象存锤类方法列表等信息</li>
-</ul>
-<h2 id="消息传递"><a href="#消息传递" class="headerlink" title="消息传递"></a>消息传递</h2><p><code>void objc_msgSend(void /* id self, SEL op, ... */)</code></p>
-<p>经过编译器转变后<br><code>[self class]</code> &lt;==&gt;  <code>objc_msgSend(self, @selector(class))</code><br>第一个参数是消息传递的接收者self, 第二个参数是传递的消息名称（选择器）</p>
-<p><code>void objc_msgSendSuper(void /* struct objc_super *super, SEL op, ... */)</code><br>第一个参数是一个结构体指针</p>
-<p>//<br>struuch objc_super {<br>    __unsafe_unretained id receiver; // 就是当前的对象<br>}</p>
-<p><code>[superclass]</code> &lt;==&gt;  <code>objc_msgSendSuper(super, @selector(class))</code></p>
-<p>无论调用[super class] 还是 [self class] 最终这条消息的接收者都是当前对象</p>
-<p>图1</p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNc79ly1g1viq97z3cj31k90u0qd3.jpg" alt></p>
-<h2 id="消息传递过程"><a href="#消息传递过程" class="headerlink" title="消息传递过程"></a>消息传递过程</h2><p>图2</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1g1vigugmvmj31qu0u07a4.jpg" alt></p>
-<p>问题1</p>
-<p><img src="https://ws1.sinaimg.cn/large/006tNc79ly1g1vikx3a6wj31hp0u0dmw.jpg" alt></p>
-<p><code>打印结果都是 Phone</code></p>
-<p>原因:</p>
-<ul>
-<li>无论调用[super class] 还是 [self class] 最终这条消息的接收者都是当前对象</li>
-<li>[self class] 在Phone的类对象中查找class 方法，没有去父类查找，父类也没有，如图1顺次往上查找到根类，调用根类中class 的具体实现</li>
-<li>[super class]只是跨越了当前类，直接从当前类的父类中查找 class 方法，父类中没有class 方法，如图1所示只能继续往上查找到根类对象，在NSObject 中有class 方法实现，所以接受者任然是当前的对象</li>
-</ul>
-<h3 id="缓存查找"><a href="#缓存查找" class="headerlink" title="缓存查找"></a>缓存查找</h3><p>根据给定的SEL（方法选择器）通过一个函数来映射出bucket_t 在数组当中的位置，本质上是哈希查找</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1g1vj2xha6gj318i0jc76s.jpg" alt></p>
-<h3 id="当前类中查找"><a href="#当前类中查找" class="headerlink" title="当前类中查找"></a>当前类中查找</h3><p>当前类中存在着对应的方法列表</p>
-<ul>
-<li>对于已经排序好的列表，采用二分查找算法查找对应的执行函数</li>
-<li>对于没有排序的列表，采用一般遍历查找方法查找对应的执行函数</li>
-</ul>
-<h3 id="父类逐级查找"><a href="#父类逐级查找" class="headerlink" title="父类逐级查找"></a>父类逐级查找</h3><p>图3<br><img src="https://ws1.sinaimg.cn/large/006tNc79ly1g1vkkjffglj31xm0ssgpn.jpg" alt></p>
-<ul>
-<li>最关键是通过当前类的 superclass 成员变量去查找父类，或者访问父类</li>
-<li>curClass 的父类是否为 nil？如果是NSObject 类，他的父类为空，所以会结束查找</li>
-<li>如果当前类有父类就要去该父类的缓存中查找，如果在缓存中命中，那么就结束查找，如果缓存中没有，就需要遍历当前类的父类的方法列表，如果没有就遍历父类的父类查找，沿着superclass指针逐级向上查找，直到查找到NSObject，再去Superclass。如果还是没有为nil时就结束父类逐级查找</li>
-</ul>
-<h2 id="消息转发"><a href="#消息转发" class="headerlink" title="消息转发"></a>消息转发</h2><h3 id="resolveInstanceMethod"><a href="#resolveInstanceMethod" class="headerlink" title="resolveInstanceMethod:"></a>resolveInstanceMethod:</h3><ul>
-<li>该方法是类方法不是实例方法，参数是SEL 方法选择器类型</li>
-<li>返回值是一个BOOL值</li>
-<li>告诉系统是否要解决当前实例方法的实现</li>
-<li>如果返回YES，结束消息转发</li>
-<li>如果返回NO，系统会给第二次机会处理这个消息，会回掉forwardingTargetForSelector:</li>
-</ul>
-<h3 id="forwardingTargetForSelector："><a href="#forwardingTargetForSelector：" class="headerlink" title="forwardingTargetForSelector："></a>forwardingTargetForSelector：</h3><ul>
-<li>参数是 SEL 方法选择器</li>
-<li>返回值是 id 类型，说明有哪个对象来处理，转发的对象是谁，如果返回了转发目标就会结束当前调用</li>
-<li>如果返回为nil，系统会调用 methodSignatureForSelector:方法，最后一次机会处理这个消息</li>
-</ul>
-<h3 id="methodSignatureForSelector："><a href="#methodSignatureForSelector：" class="headerlink" title="methodSignatureForSelector："></a>methodSignatureForSelector：</h3><ul>
-<li>参数是 SEL 方法选择器</li>
-<li>返回值是一个对象，实际上这个对象是对<code>methodSignatureForSelector</code> 方法的参数，参数个数，参数类型和返回值的包装</li>
-<li>如果返回一个方法签名的话，就会调用 forwardInvocation: 方法</li>
-<li>如果返回为nil，标记为消息无法处理，程序crash</li>
-</ul>
-<h3 id="forwardInvocation："><a href="#forwardInvocation：" class="headerlink" title="forwardInvocation："></a>forwardInvocation：</h3><ul>
-<li>如果此方法不能处理消息，程序crash</li>
-</ul>
-<p>代码示例</p>
-<p>.h 文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@interface RunTimeObject : NSObject</span><br><span class="line">// 只声明，不实现，验证消息转发机制</span><br><span class="line">- (void)test;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-<p>.m 文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">@implementation RunTimeObject</span><br><span class="line"></span><br><span class="line">// 实现消息转发流程 中的方法</span><br><span class="line">/**</span><br><span class="line"> 是否要解决当前实例方法的实现</span><br><span class="line"> */</span><br><span class="line">+ (BOOL)resolveInstanceMethod:(SEL)sel &#123;</span><br><span class="line">    if (sel == @selector(test)) &#123;</span><br><span class="line">        NSLog(@&quot;resolveInstanceMethod:&quot;);</span><br><span class="line">        // 如果返回YES，消息转发就会结束</span><br><span class="line">//        return YES;</span><br><span class="line">        </span><br><span class="line">        return NO;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;super resolveInstanceMethod:&quot;);</span><br><span class="line">        // 返回父类的默认调用</span><br><span class="line">        return [super resolveInstanceMethod:sel];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> - 参数是 SEL 方法选择器</span><br><span class="line"> - 返回值是 id 类型，说明有哪个对象来处理，转发的对象是谁，如果返回了转发目标就会结束当前调用</span><br><span class="line"> - 如果返回为nil，系统会调用 methodSignatureForSelector:方法，最后一次机会处理这个消息</span><br><span class="line"> */</span><br><span class="line">- (id)forwardingTargetForSelector:(SEL)aSelector &#123;</span><br><span class="line">    NSLog(@&quot; forwardingTargetForSelector: &quot;);</span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> - 参数是 SEL 方法选择器</span><br><span class="line"> - 返回值是一个对象，实际上这个对象是对`methodSignatureForSelector` 方法的参数，参数个数，参数类型和返回值的包装</span><br><span class="line"> - 如果返回一个方法签名的话，就会调用 forwardInvocation: 方法</span><br><span class="line"> - 如果返回为nil，标记为消息无法处理，程序crash</span><br><span class="line"> </span><br><span class="line"> */</span><br><span class="line">- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector &#123;</span><br><span class="line">    if (aSelector == @selector(test)) &#123;</span><br><span class="line">        NSLog(@&quot;methodSignatureForSelector:&quot;);</span><br><span class="line">        /**</span><br><span class="line">         v: 表示这个方法返回值是 void</span><br><span class="line">         </span><br><span class="line">         固定参数@: 表示参数类型是 id, 即self</span><br><span class="line">         固定参数`:` : 表示参数类型是选择器类型，即 @selector(test)</span><br><span class="line">         */</span><br><span class="line">        return [NSMethodSignature signatureWithObjCTypes:&quot;v@:&quot;];</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;super methodSignatureForSelector:&quot;);</span><br><span class="line">        // 返回父类的默认调用</span><br><span class="line">        return [super methodSignatureForSelector:aSelector];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">- (void)forwardInvocation:(NSInvocation *)anInvocation &#123;</span><br><span class="line">    NSLog(@&quot;forwardInvocation:&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-<p>调用 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)runTiemTest &#123;</span><br><span class="line">    RunTimeObject *obj = [[RunTimeObject alloc] init];</span><br><span class="line">    [obj test];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">resolveInstanceMethod:</span><br><span class="line">forwardingTargetForSelector:</span><br><span class="line">methodSignatureForSelector:</span><br><span class="line">super resolveInstanceMethod:</span><br><span class="line">forwardInvocation:</span><br></pre></td></tr></table></figure>
-<h2 id="为类动态添加方法"><a href="#为类动态添加方法" class="headerlink" title="为类动态添加方法"></a>为类动态添加方法</h2><p>methond Swizzling</p>
-<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
-<li>页面中的进出添加统计信息，使用 methond Swizzling 替换viewillAppear 方法</li>
-</ul>
-<h3 id="动态添加方法"><a href="#动态添加方法" class="headerlink" title="动态添加方法"></a>动态添加方法</h3><ul>
-<li>perforSelector: 实际上是考察class_addMethod 的方法使用</li>
-</ul>
-<h3 id="动态方法解析"><a href="#动态方法解析" class="headerlink" title="动态方法解析"></a>动态方法解析</h3><ul>
-<li>@dynamic关键字</li>
-<li>动态运行时语言将函数决议推迟到运行时</li>
-<li>编译时不生成setter/getter 方法，而是在运行时才添加具体的执行函数</li>
-</ul>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="obj-foo-和-obj-msgSend-函数之间有什么关系？"><a href="#obj-foo-和-obj-msgSend-函数之间有什么关系？" class="headerlink" title="[obj foo] 和 obj_msgSend()函数之间有什么关系？"></a>[obj foo] 和 obj_msgSend()函数之间有什么关系？</h3><ul>
-<li><code>[obj foo]</code>经过编译器处理过后会变成 <code>obj_msgSend()</code>有两个参数，一个是obj，第二个参数是foo 选择器</li>
-</ul>
-<h3 id="runtime-如何通过Selector找到对应的IMP地址的？"><a href="#runtime-如何通过Selector找到对应的IMP地址的？" class="headerlink" title="runtime 如何通过Selector找到对应的IMP地址的？"></a>runtime 如何通过Selector找到对应的IMP地址的？</h3><p>消息传递机制</p>
-<h3 id="能否向编译后的类增加实例变量"><a href="#能否向编译后的类增加实例变量" class="headerlink" title="能否向编译后的类增加实例变量"></a>能否向编译后的类增加实例变量</h3><p>编译之前就完成了实例变量的布局，<br>runtime_r_t 表示是readonly 的，编译后的类是不能添加实例变量的，可以向动态添加的类中添加实例变量</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第五章Runtime相关面试/" data-id="cjx1wsds2002zmsfy3xa773ss" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-第六章内存管理面试" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/第六章内存管理面试/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.191Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h1><h2 id="内存布局"><a href="#内存布局" class="headerlink" title="内存布局"></a>内存布局</h2><p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1g1mabhcs20j31cb0u0n2p.jpg" alt></p>
-<ul>
-<li>stack 栈是从高地址向低地址扩展，所以栈是向下增长的，对象和block copy 后都会放在堆上</li>
-<li>heap 堆区向上增长</li>
-</ul>
-<ul>
-<li><p>散列表方式</p>
-<ul>
-<li>自旋锁<ul>
-<li>自旋锁是“忙等” 的锁</li>
-</ul>
-</li>
-<li>引用计数表</li>
-<li>弱应用表</li>
-</ul>
-</li>
-</ul>
-<h2 id="内存管理方案"><a href="#内存管理方案" class="headerlink" title="内存管理方案"></a>内存管理方案</h2><ul>
-<li>小对象使用 TaggedPointer </li>
-<li>64 位架构下面使用的是 NONPONINT_ISA 内存管理方案，非指针型的 isa，内部存储了一些 </li>
-<li>散列表结构 （Side Tables() 结构）<ul>
-<li>自旋锁</li>
-<li>引用计数表</li>
-<li>弱引用表</li>
-<li>Side Tables() 结构</li>
-</ul>
-</li>
-</ul>
-<h3 id="为什么不是一个SideTable，而是多个组成了Side-Tables"><a href="#为什么不是一个SideTable，而是多个组成了Side-Tables" class="headerlink" title="为什么不是一个SideTable，而是多个组成了Side Tables"></a>为什么不是一个SideTable，而是多个组成了Side Tables</h3><p>如果所有对象的存储都放在一张大表当中，因为每个对象是在不同的线程中创建的，要操作其中一个对象时，需要将表加锁处理保证数据安全，要等锁释放之后才能操作下一个对象，此时存在效率问题，引入分离锁技术方案</p>
-<ul>
-<li>分离锁：把引用计数表分成多张表进行，</li>
-<li>Side Tables 本质是一张Hash 表</li>
-</ul>
-<p><img src="https://ws4.sinaimg.cn/large/006tNc79ly1g1wp3j6obfj310u07g0tn.jpg" alt></p>
-<h3 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h3><p>是“忙等”的锁，如果当前锁已被其他线程获取，当前线程会不断探测是否被释放，会第一时间获取，而其他锁比如信号量当它获取不到锁时，会把自己的线程阻塞休眠，等到其他线程释放这个锁时再唤醒这个锁</p>
-<ul>
-<li>适用于轻量访问</li>
-</ul>
-<h3 id="引用计数表"><a href="#引用计数表" class="headerlink" title="引用计数表"></a>引用计数表</h3><p>使用过Hash表来实现，hash查找提高了查找高效率，插入和获取是通过Hash 算法来是实现的，避免了for循环</p>
-<h4 id="alloc-实现"><a href="#alloc-实现" class="headerlink" title="alloc 实现"></a>alloc 实现</h4><p>经过一系列调用，最终调用了C函数 calloc， 并没有引用计数+1</p>
-<h4 id="retain-实现"><a href="#retain-实现" class="headerlink" title="retain 实现"></a>retain 实现</h4><p>底层经过了2次Hash表查找 </p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNc79ly1g1wq0qej61j31kg0dmtca.jpg" alt></p>
-<h4 id="release-实现"><a href="#release-实现" class="headerlink" title="release 实现"></a>release 实现</h4><p>和 retain 实现相反</p>
-<h4 id="dealloc-实现原理"><a href="#dealloc-实现原理" class="headerlink" title="dealloc 实现原理"></a>dealloc 实现原理</h4><p><img src="https://ws1.sinaimg.cn/large/006tNc79ly1g1wqa1mub5j31df0u0gqo.jpg" alt></p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNc79ly1g1wqvau8guj316u0rwmz9.jpg" alt></p>
-<h4 id="objc-destructInstance-实现"><a href="#objc-destructInstance-实现" class="headerlink" title="objc_destructInstance() 实现"></a>objc_destructInstance() 实现</h4><p><img src="https://ws2.sinaimg.cn/large/006tNc79ly1g1wqvfecquj315t0u0n1e.jpg" alt></p>
-<h4 id="clearDeallocating-实现"><a href="#clearDeallocating-实现" class="headerlink" title="clearDeallocating() 实现"></a>clearDeallocating() 实现</h4><p><img src="https://ws2.sinaimg.cn/large/006tNc79ly1g1wqvivtonj31la0tqdke.jpg" alt></p>
-<h4 id="MRC"><a href="#MRC" class="headerlink" title="MRC"></a>MRC</h4><p>手动引用计数 </p>
-<h4 id="ARC"><a href="#ARC" class="headerlink" title="ARC"></a>ARC</h4><ul>
-<li><p>编译器在对应位置自动插入retain 和 release 操作，并和runtime协作达到自动引用计数管理内存的效果</p>
-</li>
-<li><p>ARC 中禁止手动调用  retain/release </p>
-</li>
-<li>ARC 中新增 weeak、strong 等关键字</li>
-</ul>
-<h3 id="弱引用管理"><a href="#弱引用管理" class="headerlink" title="弱引用管理"></a>弱引用管理</h3><p>被声明为__weak 的对象指针经过编译后会进过调用以下方法，在最终的weak_register_no_lock() 方法中进行弱引用变量的添加。添加的位置是通过Hash算法查找的</p>
-<p><img src="https://ws1.sinaimg.cn/large/006tNc79ly1g1wr6cz3ctj31ac0hijtf.jpg" alt>  </p>
-<h3 id="weak-修饰的对象，释放时置为nil-如何实现的"><a href="#weak-修饰的对象，释放时置为nil-如何实现的" class="headerlink" title="weak 修饰的对象，释放时置为nil 如何实现的"></a>weak 修饰的对象，释放时置为nil 如何实现的</h3><p>当一个对象被 dealloc 之后，在dealloc内部实现当中会调用弱引用清除的相关函数，在相关函数当中会根据当前对象指针查找弱引用表，把当前对象下对应的弱应用都取出，遍历弱应用指针并置为nil。</p>
-<h3 id="自动释放池"><a href="#自动释放池" class="headerlink" title="自动释放池"></a>自动释放池</h3><p>是以栈为结点通过双向链表的形式组合而成，和线程一一对应</p>
-<p>Autoreleasepool </p>
-<h2 id="循环引用"><a href="#循环引用" class="headerlink" title="循环引用"></a>循环引用</h2><h3 id="自循环引用"><a href="#自循环引用" class="headerlink" title="自循环引用"></a>自循环引用</h3><p>一个对象中有拥有一个 强持有他的 obj，如果给 obj 赋值为原对象就会造成自循环引用</p>
-<h3 id="相互循环引用"><a href="#相互循环引用" class="headerlink" title="相互循环引用"></a>相互循环引用</h3><ul>
-<li>代理</li>
-<li>Block</li>
-<li>NSTimer</li>
-<li>大环多循环</li>
-</ul>
-<h3 id="多循环引用"><a href="#多循环引用" class="headerlink" title="多循环引用"></a>多循环引用</h3><p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1g1ws3as0wdj31sa0rwae5.jpg" alt></p>
-<h2 id="解决循环引用的方案"><a href="#解决循环引用的方案" class="headerlink" title="解决循环引用的方案"></a>解决循环引用的方案</h2><h3 id="weak"><a href="#weak" class="headerlink" title="__weak"></a>__weak</h3><p>解决相互循环引用</p>
-<h3 id="block"><a href="#block" class="headerlink" title="__block"></a>__block</h3><p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1g1wscj9qnij320o09igq4.jpg" alt></p>
-<h3 id="unsafe-unretained"><a href="#unsafe-unretained" class="headerlink" title="__unsafe_unretained"></a>__unsafe_unretained</h3><p>一般不建议使用</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1g1wsdln9jrj31iq0a041v.jpg" alt></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第六章内存管理面试/" data-id="cjx1wsds40031msfykff76jvu" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-第八章多线程面试" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/第八章多线程面试/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.191Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>第三章多线程面试</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/第八章多线程面试/" data-id="cjx1wsds50032msfytfob2ur4" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/第十二章架构和框架面试/" data-id="cjx92w8lx003f9bfyh8cz9zs0" class="article-share-link">Share</a>
       
       
     </footer>
@@ -914,7 +782,7 @@ max：10 最多发生多少个http请求和响应对
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -928,7 +796,7 @@ max：10 最多发生多少个http请求和响应对
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flutter/">Flutter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flutter-GridView/">Flutter GridView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
     </div>
   </div>
 
@@ -938,7 +806,7 @@ max：10 最多发生多少个http请求和响应对
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
+      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/Flutter/" style="font-size: 10px;">Flutter</a> <a href="/tags/Flutter-GridView/" style="font-size: 10px;">Flutter GridView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
     </div>
   </div>
 
@@ -960,23 +828,23 @@ max：10 最多发生多少个http请求和响应对
       <ul>
         
           <li>
-            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
+            <a href="/2019/06/23/Flutter打包/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
+            <a href="/2019/06/23/Flutter中本地图片资源使用/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
+            <a href="/2019/06/20/Flutter页面导航/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/18/第十章网络相关/">(no title)</a>
+            <a href="/2019/06/19/Flutter中布局/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
+            <a href="/2019/06/18/Flutter中GridView组件/">GridView组件使用.md</a>
           </li>
         
       </ul>

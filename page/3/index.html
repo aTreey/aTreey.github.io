@@ -62,10 +62,647 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-swift中强引用循环和weak关键字" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/swift中强引用循环和weak关键字/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.014Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Swift中内存管理</p>
+<h3 id="强引用循环和-weak-关键字"><a href="#强引用循环和-weak-关键字" class="headerlink" title="强引用循环和 weak 关键字"></a>强引用循环和 weak 关键字</h3><p>房东</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Landlord &#123;</span><br><span class="line">    var name: String</span><br><span class="line">    var house: House?</span><br><span class="line">    </span><br><span class="line">    init(name: String) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    deinit &#123;</span><br><span class="line">        print(&quot;Landlord内存释放&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>房子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class House &#123;</span><br><span class="line">    var name: String</span><br><span class="line">    var landlord: Landlord?</span><br><span class="line">    </span><br><span class="line">    init(person: String) &#123;</span><br><span class="line">        self.name = person</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    deinit &#123;</span><br><span class="line">        print(&quot;House内存释放&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>循环引用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">func strongRetain() &#123;</span><br><span class="line">    var landlord: Landlord? = Landlord(name: &quot;老李&quot;)</span><br><span class="line">    var house: House? = House(person: &quot;望京府邸&quot;)</span><br><span class="line">    // 房东有个房子</span><br><span class="line">    landlord?.house = house</span><br><span class="line">    // 房子有个主人</span><br><span class="line">    house?.landlord = landlord</span><br><span class="line">    </span><br><span class="line">    landlord = nil</span><br><span class="line">    house = nil</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>虽然 landlord = nil 和 house = nil，但是 Landlord 和 House 内存空间并没有释放 （并未执行 deinit 函数）</p>
+</li>
+<li><p>原因：因为两个内存空间相互引用，引用计数不为0，形成了强循环引用</p>
+</li>
+<li><p>解决办法：使用weak 关键字来修饰两者中其中一个变量</p>
+<ul>
+<li>使用weak修饰的变量必须是可选类型，可以赋值为nil</li>
+<li>使用weak修饰必须是var 类型变量</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class House &#123;</span><br><span class="line">    var name: String</span><br><span class="line">    weak var landlord: Landlord?</span><br><span class="line">    </span><br><span class="line">    init(person: String) &#123;</span><br><span class="line">        self.name = person</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    deinit &#123;</span><br><span class="line">        print(&quot;House内存释放&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="unowned-关键字的使用"><a href="#unowned-关键字的使用" class="headerlink" title="unowned 关键字的使用"></a>unowned 关键字的使用</h3><h4 id="相互循环引用的两个变量有一个是可选的"><a href="#相互循环引用的两个变量有一个是可选的" class="headerlink" title="相互循环引用的两个变量有一个是可选的"></a>相互循环引用的两个变量有一个是可选的</h4><p>有个身份证的类，每个身份证肯定对应一个人</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class ID &#123;</span><br><span class="line">    var number: String</span><br><span class="line">    let person: Landlord</span><br><span class="line">    </span><br><span class="line">    init(person: Landlord, number: String) &#123;</span><br><span class="line">        self.person = person</span><br><span class="line">        self.number = number</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    deinit &#123;</span><br><span class="line">        print(&quot;ID内存释放&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">房东</span><br></pre></td></tr></table></figure>
+<p>class Landlord {<br>    var name: String<br>    var house: House?<br>    /// 身份证可以为nil，<br>    var id: ID?</p>
+<pre><code>init(name: String) {
+    self.name = name
+}
+
+deinit {
+    print(&quot;Landlord内存释放&quot;)
+}
+</code></pre><p>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">循环引用</span><br></pre></td></tr></table></figure>
+<p>func unownedTest() {<br>    var person: Landlord? = Landlord(name: “老王”)<br>    var id: ID? = ID(person: person!, number: “10010”)</p>
+<pre><code>person?.id = id
+person = nil
+id = nil
+</code></pre><p>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">-  person 和 id 之间有强引用关系</span><br><span class="line">-  每个id必须有一个对应的人并且是固定的只能使用let 修饰，不能为nil, 而id可以为空 </span><br><span class="line">- 	unowned和 weak 作用相同都是弱引用，只是unowned 修改的变量不能是nil （可选型的）</span><br><span class="line">-  unowned只能使用在 class 类型上，不能修饰函数类型，例如闭包存在循环引用时不能使用unowned修饰</span><br><span class="line">-  解决方法：</span><br><span class="line">	-  此时可以通过使用 weak 修饰 id 的方式，因为 id 可以为nil</span><br><span class="line">	-  let 修饰并且不能为nil 这种情况可以使用 unowned 修饰解决</span><br></pre></td></tr></table></figure>
+<pre><code>class ID {
+    var number: String
+    unowned let person: Landlord
+
+    init(person: Landlord, number: String) {
+        self.person = person
+        self.number = number
+    }
+
+    deinit {
+        print(&quot;ID内存释放&quot;)
+    }
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">**unowned有一定的危险性** </span><br><span class="line"></span><br><span class="line">因为unowned 修饰的对象不能赋值为nil，所以执行下面的代码会crash，</span><br></pre></td></tr></table></figure>
+</code></pre><p>func unownedTest() {<br>        var person: Landlord? = Landlord(name: “老王”)<br>        var id: ID? = ID(person: person!, number: “10010”)</p>
+<pre><code>person?.id = id
+
+// 提前释放 person 内存
+person = nil
+
+// 获取身份证对应的人
+print(id?.person) // 此处奔溃，
+let owner = id?.person
+id = nil
+</code></pre><p> }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">正确的写法因该是先将🆔设置为nil，再将 Person 设置为nil，再调用 print(id?.person) 就不会再报错</span><br></pre></td></tr></table></figure></p>
+<p>func unownedTest() {<br>        var person: Landlord? = Landlord(name: “老王”)<br>        var id: ID? = ID(person: person!, number: “10010”)</p>
+<pre><code>person?.id = id
+
+id = nil
+
+// 提前释放 person 内存
+person = nil
+
+// 获取身份证对应的人
+print(id?.person) // 此处奔溃，
+let owner = id?.person
+</code></pre><p> }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 相互循环引用的两个变量都不是可选的</span><br><span class="line"></span><br><span class="line">使用隐式可选类型</span><br><span class="line"></span><br><span class="line">### 闭包中的强引用循环</span><br><span class="line"></span><br><span class="line">- 并不是所有的闭包都会产生循环引用，只有相互引用的两个对象会产生循环引用</span><br><span class="line"></span><br><span class="line">- 使用swift闭包捕获列表，在闭包的声明参数之前使用 [unowned self], 不需要解包</span><br><span class="line"></span><br><span class="line">- 使用 unowned表示这个对象不能为空，可能存在风险，如果对象为空就会crash</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">使用 unowned 对象不能为空，可能存在风险</span><br></pre></td></tr></table></figure></p>
+<p>class Closure {<br>    var closure: ((Int) -&gt; Void)?</p>
+<pre><code>init() {
+    closure = { [unowned self] index in
+        print(self)
+        print(index)
+    }
+}
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">使用 weak, 此时需要解包</span><br></pre></td></tr></table></figure></p>
+<p>closure = { [weak self] index in<br>            // 解包<br>            if let <code>self</code> = self {<br>                print(self)<br>                print(index)<br>            }<br>        }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">强制解包</span><br></pre></td></tr></table></figure></p>
+<p>closure = { [weak self] index in<br>            // 强制解包<br>            print(self!)<br>            print(index)<br>        }<br><code>`</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/swift中强引用循环和weak关键字/" data-id="cjx92w8lj002v9bfyq40dojrv" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-typescripe 安装及语法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/typescripe 安装及语法/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.014Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="ReactNative-中使用-TypeScript"><a href="#ReactNative-中使用-TypeScript" class="headerlink" title="ReactNative 中使用 TypeScript"></a>ReactNative 中使用 TypeScript</h2><blockquote>
+<p>从RN0.57版本开始已经可以直接支持typescript，无需任何配置。在保留根入口文件index.js的前提下，其他文件都可以直接使用.ts或.tsx后缀。但这一由babel进行的转码过程并不进行实际的类型检查，因此仍然需要编辑器和插件来共同进行类型检查</p>
+</blockquote>
+<h3 id="TypeScript和JavaScript对比"><a href="#TypeScript和JavaScript对比" class="headerlink" title="TypeScript和JavaScript对比"></a>TypeScript和JavaScript对比</h3><p><a href="https://juejin.im/entry/5a52ed336fb9a01cbd586f9f" target="_blank" rel="noopener">两者深度对比</a></p>
+<p>最大的区别：</p>
+<ul>
+<li>TypeScript是强类型语⾔和静态类型语⾔（需要指定类型）</li>
+<li>JavaScript是弱类型语⾔和动态类型语⾔（不需要指定类型）</li>
+</ul>
+<h3 id="TypeScript"><a href="#TypeScript" class="headerlink" title="TypeScript"></a>TypeScript</h3><p>由微软开发的自由和开源的编程语言，是JavaScript的一个严格超集，并添加了可选的静态类型和基于类的面向对象编程</p>
+<p><a href="https://zh.wikipedia.org/wiki/TypeScript" target="_blank" rel="noopener">TypeScript定义</a></p>
+<h3 id="安装及语法"><a href="#安装及语法" class="headerlink" title="安装及语法"></a>安装及语法</h3><p><a href="https://www.tslang.cn/docs/home.html" target="_blank" rel="noopener">教程</a></p>
+<h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g typescript</span><br></pre></td></tr></table></figure>
+<h5 id="安装-typescript-依赖管理器-typings"><a href="#安装-typescript-依赖管理器-typings" class="headerlink" title="安装 typescript 依赖管理器 typings"></a>安装 typescript 依赖管理器 typings</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g typings</span><br></pre></td></tr></table></figure>
+<h5 id="安装-typings-依赖"><a href="#安装-typings-依赖" class="headerlink" title="安装 typings 依赖"></a>安装 typings 依赖</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">typings install npm~react --save</span><br><span class="line">typings install dt~react-native --globals --save</span><br></pre></td></tr></table></figure>
+<h5 id="使用-yarn-安装"><a href="#使用-yarn-安装" class="headerlink" title="使用 yarn 安装"></a>使用 yarn 安装</h5><p>如果已经安装了 yarn 安装如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yarn add tslib @types/react @types/react-native</span><br><span class="line">yarn add --dev react-native-typescript-transformer typescript</span><br></pre></td></tr></table></figure>
+<h5 id="创建-tsconfig-json-配置文件"><a href="#创建-tsconfig-json-配置文件" class="headerlink" title="创建 tsconfig.json 配置文件"></a>创建 tsconfig.json 配置文件</h5><ul>
+<li><p>cd 到 ReactNative 项目根文件夹下</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tsc --init</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改 tsconfig.json 文件 </p>
+<p>  如果一个目录下存在一个tsconfig.json文件，那么它意味着这个目录是TypeScript项目的根目录。 tsconfig.json文件中指定了用来编译这个项目的根文件和编译选项</p>
+<p>  <a href="https://www.tslang.cn/docs/handbook/tsconfig-json.html" target="_blank" rel="noopener">tsconfig.json文件配置详解</a></p>
+<p>  <a href="https://github.com/hstarorg/HstarDoc/blob/master/%E5%89%8D%E7%AB%AF%E7%9B%B8%E5%85%B3/TypeScript%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6tsconfig%E7%AE%80%E6%9E%90.md">TypeScript配置文件tsconfig简析</a></p>
+<p>  <strong>务必设置”jsx”:”react”<br>注意多余的注释可能会不兼容，需要移除</strong></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;compilerOptions&quot;: &#123;</span><br><span class="line">        &quot;target&quot;: &quot;es6&quot;,</span><br><span class="line">        &quot;allowJs&quot;: true,</span><br><span class="line">        &quot;jsx&quot;: &quot;react&quot;,</span><br><span class="line">        &quot;outDir&quot;: &quot;./dist&quot;,</span><br><span class="line">        &quot;sourceMap&quot;: true,</span><br><span class="line">        &quot;noImplicitAny&quot;: false</span><br><span class="line">    &#125;,</span><br><span class="line">    </span><br><span class="line">    // &quot;files&quot;属性 ：指定一个包含相对或绝对文件路径的列表。 &quot;include&quot;和&quot;exclude&quot;属性指定一个文件glob匹配模式列表</span><br><span class="line">    </span><br><span class="line">    &quot;include&quot;: [</span><br><span class="line">        &quot;typings/**/*.d.ts&quot;,</span><br><span class="line">        &quot;src/**/*.ts&quot;,</span><br><span class="line">        &quot;src/**/*.tsx&quot;</span><br><span class="line">    ],</span><br><span class="line">    &quot;exclude&quot;: [</span><br><span class="line">        &quot;node_modules&quot;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>cd 到项目根目录中新建存放 typescripe 源代码的文件夹</p>
+</li>
+</ul>
+<h5 id="建立-rn-cli-config-js-文件，使用支持typescript的transfomer"><a href="#建立-rn-cli-config-js-文件，使用支持typescript的transfomer" class="headerlink" title="建立 rn-cli.config.js 文件，使用支持typescript的transfomer"></a>建立 rn-cli.config.js 文件，使用支持typescript的transfomer</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">module.exports = &#123;</span><br><span class="line">  getTransformModulePath() &#123;</span><br><span class="line">    return require.resolve(&apos;react-native-typescript-transformer&apos;);</span><br><span class="line">  &#125;,</span><br><span class="line">  getSourceExts() &#123;</span><br><span class="line">    return [&apos;ts&apos;, &apos;tsx&apos;];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="修改-babelrc-文件"><a href="#修改-babelrc-文件" class="headerlink" title="修改 .babelrc 文件"></a>修改 .babelrc 文件</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"> &quot;presets&quot;: [&quot;react-native&quot;],</span><br><span class="line"> &quot;plugins&quot;: [&quot;transform-decorators-legacy&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="修改项目中文件导入"><a href="#修改项目中文件导入" class="headerlink" title="修改项目中文件导入"></a>修改项目中文件导入</h5><ul>
+<li>入口<code>index.js</code>和<code>App.js</code>的文件名请不要修改，项目根目录下新建<code>src</code>文件夹</li>
+<li>在<code>src</code>文件夹下新建 <code>.tsx</code> 后缀的文件</li>
+<li><p><code>.tsx</code> 后缀的文件引用react的写法有所区别</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import * as React from &apos;react&apos;</span><br><span class="line">import &#123; Text, View &#125; from &apos;react-native&apos;;</span><br><span class="line">import &#123; Component &#125; from &apos;react&apos;;</span><br><span class="line"></span><br><span class="line">export default class HelloWorld extends Component&#123;</span><br><span class="line">    render() &#123;</span><br><span class="line">        return (</span><br><span class="line">            &lt;View&gt;</span><br><span class="line">                &lt;Text&gt;Hello!&lt;/Text&gt;</span><br><span class="line">                &lt;Text&gt;Typescript&lt;/Text&gt;</span><br><span class="line">            &lt;/View&gt;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在<code>App.js</code>中使用</p>
+<ul>
+<li><p><code>App.js</code> 导入方式修改为如下方式</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">	import &apos;./src&apos;;</span><br><span class="line">	``` </span><br><span class="line">	</span><br><span class="line">- 导入 .tsx 类型的组建</span><br></pre></td></tr></table></figure>
+<p>  import HelloWorld from “./src/HelloWorld”;</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 配置jsconfig</span><br><span class="line"></span><br><span class="line">`jsconfig.json`目录中存在文件表明该目录是JavaScript项目的根目录。该jsconfig.json文件指定根文件和JavaScript语言服务提供的功能选项</span><br><span class="line"></span><br><span class="line">[jsconfig详解](https://code.visualstudio.com/docs/languages/jsconfig)</span><br><span class="line"></span><br><span class="line">[jsconfig.json](https://jeasonstudio.gitbooks.io/vscode-cn-doc/content/md/%E8%AF%AD%E8%A8%80/javascript.html?q=)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">##### 新建 `jsconfig.json` 文件</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<p>touch jsconfig.json<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### 编辑 `jsconfig.json` 文件</span><br></pre></td></tr></table></figure></p>
+<p>{<br>    “compilerOptions”: {<br>    “allowJs”: true,<br>    “allowSyntheticDefaultImports”: true,<br>    “emitDecoratorMetadata”: true<br>    },<br>    “exclude”: [<br>    “node_modules”,<br>    “rnApp/Tools” // 项目根目录下新建的存放RN中所用的一些工具类<br>    ]<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">### package.json 文件配置</span><br></pre></td></tr></table></figure>
+<p>{<br>  “name”: “RNProject”,<br>  “version”: “0.0.1”,<br>  “private”: true,<br>  “scripts”: { // 通过设置这个可以使npm调用一些命令脚本，封装一些功能<br>    “start”: “node node_modules/react-native/local-cli/cli.js start”,<br>    “test”: “jest”<br>  },<br>  “dependencies”: { // 发布后依赖的包<br>    “@types/react”: “^16.4.16”,<br>    “@types/react-native”: “^0.57.4”,<br>    “react”: “16.5.0”,<br>    “react-native”: “0.57.2”,<br>    “react-transform-hmr”: “^1.0.4”,<br>    “tslib”: “^1.9.3”<br>  },</p>
+<p>  “devDependencies”: { // 开发中依赖的其它包<br>    “babel-jest”: “23.6.0”,<br>    “jest”: “23.6.0”,<br>    “metro-react-native-babel-preset”: “0.48.0”,<br>    “react-native-typescript-transformer”: “^1.2.10”,<br>    “react-test-renderer”: “16.5.0”,<br>    “typescript”: “^3.1.2”<br>  },</p>
+<p>  “jest”: { // JavaScript 的单元测试框架<br>    “preset”: “react-native”<br>  }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### `–save` 和 `-–save-dev` 区别</span><br><span class="line"></span><br><span class="line">- --save参数表示将该模块写入dependencies属性，</span><br><span class="line">- --save-dev表示将该模块写入devDependencies属性。</span><br><span class="line"></span><br><span class="line">##### 添加开发依赖库</span><br><span class="line"></span><br><span class="line">- 类型检查</span><br></pre></td></tr></table></figure></p>
+<pre><code>npm install @types/jest --save-dev
+npm install @types/react --save-dev
+npm install @types/react-native --save-dev 
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- 装饰器转化核心插件</span><br></pre></td></tr></table></figure>
+
+npm install babel-plugin-transform-decorators-legacy --save-dev
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">- 测试框架</span><br></pre></td></tr></table></figure>
+
+npm install react-addons-test-utils --save-dev
+npm install react-native-mock --save-dev
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### 删除依赖库</span><br></pre></td></tr></table></figure>
+</code></pre><p>npm uninstall @types/jest –save<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<p>npm uninstall @types/jest –save-dev<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### 彻底删除，-d 表示 devDependencies， -O 表示 optionalDependencies 中</span><br></pre></td></tr></table></figure></p>
+<p>npm uninstall -s -D -O @types/jest</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 报错汇总</span><br><span class="line"></span><br><span class="line">##### 错误1 `Cannot find module &apos;react-transform-hmr/lib/index.js&apos;`</span><br><span class="line"></span><br><span class="line"> [解决1](https://stackoverflow.com/questions/50142561/cannot-find-module-react-transform-hmr-lib-index-js?noredirect=1&amp;lq=1)</span><br><span class="line">	</span><br><span class="line"> [解决2](https://github.com/facebook/react-native/issues/21530)</span><br><span class="line"></span><br><span class="line">- 安装 `react-transform-hmr`</span><br></pre></td></tr></table></figure>
+<pre><code>npm install react-transform-hmr --save
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 清除缓存重新启动服务</span><br></pre></td></tr></table></figure>
+
+npm start --reset-cache
+```
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/typescripe 安装及语法/" data-id="cjx92w8lk002x9bfy0a7v5m67" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-《52个方法第一章》" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/《52个方法第一章》/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.014Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>《52个方法-第一章》</p>
+<h3 id="一、OC起源"><a href="#一、OC起源" class="headerlink" title="一、OC起源"></a>一、OC起源</h3><ul>
+<li>OC使用的是“消息结构”而不是“函数调用”</li>
+<li>两者区别：<ul>
+<li>消息结构：在运行时所执行的代码由运行环境来决定，无论是否多态总会在运行时才会去查找所要执行的方法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NSObject *objc = [NSObject new];</span><br><span class="line">[objc performWith: parameter1 and: parameter2];</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>- 函数调用：由编译器决定，如果函数多态，编译时就要查处到底应该执行那个函数实现
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Object *objc = new Object;</span><br><span class="line">   objc -&gt; perform(parameter1, parameter2);</span><br></pre></td></tr></table></figure>
+</code></pre><ul>
+<li>消息结构中编译器不会关心接收消息的对象是何种类型，接收消息的对象问题也要在运行时处理，此过程叫做“动态绑定”</li>
+</ul>
+<p><strong>要点：</strong></p>
+<ol>
+<li>OC语言使用的动态绑定的消息结构，在运行时所执行的代码由运行环境来决定，无论是否多态总会在运行时才会去查找所要执行的方法，</li>
+<li>OC 中对象总是分配在“堆空间”，而绝不会分配在”栈“上，不带 “*”的变量或者结构体等可能会使用“栈空间”</li>
+</ol>
+<h3 id="二、类头文件尽量少导入其他头文件"><a href="#二、类头文件尽量少导入其他头文件" class="headerlink" title="二、类头文件尽量少导入其他头文件"></a>二、类头文件尽量少导入其他头文件</h3><p><strong>要点：</strong></p>
+<ol>
+<li>除非必要，否则不要引入头文件，使用向前声明降低类之间的耦合</li>
+<li>有时无法使用向前声明，应该把该类遵守协议的声明放到“class-continuation分类”（匿名分类）中。</li>
+<li>如果“class-continuation分类”也不行的话，就把协议单独放在一个文件中，再将其引入### 三、多用字面量语法，少用与之等价的方法</li>
+</ol>
+<h3 id="三、多用字面量语法，少用与之等价的方法"><a href="#三、多用字面量语法，少用与之等价的方法" class="headerlink" title="三、多用字面量语法，少用与之等价的方法"></a>三、多用字面量语法，少用与之等价的方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">- (void)tempMethond &#123;</span><br><span class="line">    // OC1.0 起，支持简单方式创建基本类型对象</span><br><span class="line">    </span><br><span class="line">    // - 使用字符串字面量：简介易读</span><br><span class="line">    NSString *someString = @&quot;Effective Objective-C 2.0&quot;;</span><br><span class="line">    // 传统方式</span><br><span class="line">    NSString *someStrongOld = [NSString stringWithFormat:@&quot;Effective Objective-C 2.0&quot;];</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    // - 字面数值</span><br><span class="line">    NSNumber *someNumber = @1;</span><br><span class="line">    NSNumber *floatNumber = @2.5f;</span><br><span class="line">    NSNumber *doubleNumber = @3.1415926;</span><br><span class="line">    NSNumber *boolNumber = @YES;</span><br><span class="line">    NSNumber *charNumber = @&apos;a&apos;;</span><br><span class="line">    // 字面量语法用于表达式</span><br><span class="line">    int x = 5;</span><br><span class="line">    float y = 6.23f;</span><br><span class="line">    NSNumber *expressionNumber = @(x * y);</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    // - 字面量数组</span><br><span class="line">    NSArray *animals = @[@&quot;cat&quot;, @&quot;dog&quot;, @&quot;mouse&quot;, @&quot;badger&quot;];</span><br><span class="line">    NSString *dog = animals[1];</span><br><span class="line">    </span><br><span class="line">    // arrayWithObjects 和 字面量 的区别:</span><br><span class="line">    // arrayWithObjects 方法依次处理各个参数，直到发现nil为止</span><br><span class="line">    // 字面量数组遇到nil直接抛出异常</span><br><span class="line">    NSArray *animalsOld = [NSArray arrayWithObjects:@&quot;cat&quot;, @&quot;dog&quot;, @&quot;mouse&quot;, @&quot;badger&quot;, nil];</span><br><span class="line">    NSString *dogOld = [animalsOld objectAtIndex:1];</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    // - 字面量字典</span><br><span class="line">    // 如果有nil直接抛出异常</span><br><span class="line">    NSDictionary *personData = @&#123;@&quot;firtName&quot;: @&quot;Matt&quot;,</span><br><span class="line">                                 @&quot;lastName&quot;: @&quot;Galloway&quot;,</span><br><span class="line">                                 @&quot;age&quot;: @28&#125;;</span><br><span class="line">    NSString *lastName = personData[@&quot;lastName&quot;];</span><br><span class="line">    </span><br><span class="line">    // dictionaryWithObjectsAndKeys 方法依次处理各个参数，直到发现nil为止</span><br><span class="line">    NSDictionary *personDataOld = [NSDictionary dictionaryWithObjectsAndKeys:@&quot;Matt&quot;,@&quot;firtName&quot;,</span><br><span class="line">                                     @&quot;Galloway&quot;, @&quot;lastName&quot;,</span><br><span class="line">                                     [NSNumber numberWithInteger:28], @&quot;age&quot;, nil];</span><br><span class="line">    </span><br><span class="line">    NSString *lastNameOld = [personData objectForKey:@&quot;lastName&quot;];</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    // - 可变数组和字典</span><br><span class="line">    NSMutableArray *mutableArray = animals.mutableCopy;</span><br><span class="line">    mutableArray[1] = @&quot;dog&quot;;</span><br><span class="line">    </span><br><span class="line">    NSMutableDictionary *mutableDict = [personData mutableCopy];</span><br><span class="line">    mutableDict[@&quot;lastName&quot;] = @&quot;Galloway&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>要点：</strong></p>
+<ol>
+<li>使用字面量语法创建字符串，数值，数组，字典简明扼要</li>
+<li>通过下标操作获取数组，字典对应的元素</li>
+<li>使用字面量创建数组，字典时若有nil ，会抛出异常，确保值里不含nil### 五、用枚举表示状态、选项、状态码</li>
+</ol>
+<h3 id="四、多用类型常量，少用-define预处理指令"><a href="#四、多用类型常量，少用-define预处理指令" class="headerlink" title="四、多用类型常量，少用#define预处理指令"></a>四、多用类型常量，少用#define预处理指令</h3><h5 id="宏定义"><a href="#宏定义" class="headerlink" title="宏定义"></a>宏定义</h5><ul>
+<li>缺点：<ul>
+<li>可以把所有相同的字符串值都替换为定义的值，<ul>
+<li>定义出来的常量没有具体的类型信息</li>
+<li>如果有人重新定义了宏定义，不会有警告或者提醒，导致程序中值不一样</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="类型常量"><a href="#类型常量" class="headerlink" title="类型常量"></a>类型常量</h5><ul>
+<li><p>命名规则：</p>
+<ul>
+<li>如果只是在实现文件.m 中使用，则在前面加字母k</li>
+<li>如果此常量在类之外也可见，则以类名为前缀，（第19条详细了解命名习惯）</li>
+</ul>
+</li>
+<li><p>声明位置：</p>
+<ul>
+<li>总是喜欢在头文件中声明宏定义，可能和常量名冲突，</li>
+<li>所有引入这个头文件的类都会出现宏定义或者常量，相当于声明了一个名叫kAnimationDuration的全局变量</li>
+<li>应该加上前缀，表明其所属的具体类，例如：EOCViewClassAnimationDuration</li>
+</ul>
+</li>
+<li><p>常量从右往左解读依次是: 具体类型，不可修改</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">	// const 修饰的是常量不希望别人修改， NSString * 指向NSString对象</span><br><span class="line">	extern NSString *const EOCStringConstant; </span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	//	两者写法都可以</span><br><span class="line">	extern const NSTimeInterval EOCAnimatedViewAnimationDuration;</span><br><span class="line">	extern NSTimeInterval const EOCAnimatedViewAnimationDuration1;</span><br><span class="line">	```	</span><br><span class="line"></span><br><span class="line">- 如果不打算公开常量，可以定义在 .m 实现文件里</span><br></pre></td></tr></table></figure>
+<p>  static const NSTimeInterval kAnimationDuration = 0.3;</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- static关键字</span><br><span class="line">	- static 修饰意味着该变量仅在定义此变量的编译单元（实现文件.m）中可见，作用域就是当前.m文件</span><br></pre></td></tr></table></figure>
+<pre><code>static const NSTimeInterval kAnimationDuration = 0.3;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- 如果需要声明一个外部可见的常值变量，需要在头文件中声明并使用 extern 关键词修饰 &quot;extern </span><br><span class="line"></span><br><span class="line">	在 .h 文件中</span><br></pre></td></tr></table></figure>
+
+extern NSString *const EOCStringConstant;
+
+// 两者写法都可以
+extern const NSTimeInterval EOCAnimatedViewAnimationDuration;
+extern NSTimeInterval const EOCAnimatedViewAnimationDuration1;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">在 .m 文件中</span><br></pre></td></tr></table></figure>
+
+NSString *const EOCStringConstant = @&quot;VALUE&quot;;
+const NSTimeInterval EOCAnimatedViewAnimationDuration = 0.3;
+NSTimeInterval const EOCAnimatedViewAnimationDuration1 = 0.3;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">**要点：**</span><br><span class="line"></span><br><span class="line">1. 定义常量时static const定义编译单元（实现文件.m)中可见的常量，无需为其名称加前缀</span><br><span class="line">2. 在头文件中使用extern 声明全局常量，并在实现文件中定义其值，这种常量要出现在全局符号表中，所以加相关类作为前缀</span><br><span class="line"></span><br><span class="line">### 五、用枚举表示状态、选项、状态码</span><br><span class="line"></span><br><span class="line">- 普通枚举</span><br></pre></td></tr></table></figure>
+</code></pre><p>  enum EOCConnectionState {</p>
+<pre><code>EOCConnectionStateDisconnected, // 断开连接
+EOCConnectionStateConnecting,   // 连接中...
+EOCConnectionStateConnected,    // 已连接
+</code></pre><p>  };</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">普通枚举如果要使用如下：</span><br></pre></td></tr></table></figure>
+<p>  enum EOCConnectionState status = EOCConnectionStateConnected;</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">如果每次都不需要输入enum关键字，只需要typedef关键字重新定义枚举类型</span><br></pre></td></tr></table></figure>
+<p>  EOCConnectionState status1 = EOCConnectionStateConnecting;</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 设置枚举的初始值</span><br></pre></td></tr></table></figure>
+<p>  enum EOCConnectionStateConnectionState {</p>
+<pre><code>EOCConnectionStateConnectionStateDisconnected = 1, // 断开连接
+EOCConnectionStateConnectionStateConnecting,   // 连接中...
+EOCConnectionStateConnectionStateConnected,    // 已连接
+</code></pre><p>  };</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 可选枚举</span><br><span class="line"></span><br><span class="line">	- &lt;&lt; 位操作符(左移)， 表示往左移动N位，使用 位运算符 | (或)来组合使用</span><br><span class="line">	- 使用位运算符 &amp;（与） 判断是否开启了某个选项</span><br></pre></td></tr></table></figure>
+<p>  enum UIViewAutoresizing {</p>
+<pre><code>UIViewAutoresizingNone                 = 0,
+UIViewAutoresizingFlexibleLeftMargin   = 1 &lt;&lt; 0,
+UIViewAutoresizingFlexibleWidth        = 1 &lt;&lt; 1,
+UIViewAutoresizingFlexibleRightMargin  = 1 &lt;&lt; 2,
+UIViewAutoresizingFlexibleTopMargin    = 1 &lt;&lt; 3,
+UIViewAutoresizingFlexibleHeight       = 1 &lt;&lt; 4,
+UIViewAutoresizingFlexibleBottomMargin = 1 &lt;&lt; 5
+</code></pre><p>  }</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 使用宏定义枚举</span><br><span class="line"></span><br><span class="line">	普通枚举类型（老式语法定义枚举）</span><br></pre></td></tr></table></figure>
+<p>  typedef enum : NSUInteger {</p>
+<pre><code>EOCConnectionState2DisConnected,
+EOCConnectionState2DisConnecting,
+EOCConnectionState2Connected,
+</code></pre><p>  } EOCConnectionState2;</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">NS_ENUM 宏定义的枚举展开后：</span><br></pre></td></tr></table></figure>
+<p>  typedef enum EOCConnectionState_3 : NSUInteger EOCConnectionState_3;<br>  enum EOCConnectionState_3 : NSUInteger {</p>
+<pre><code>EOCConnectionState_3DisConnected,
+EOCConnectionState_3DisConnecting,
+EOCConnectionState_3Connected,
+</code></pre><p>  };</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 定义新特性枚举</span><br></pre></td></tr></table></figure>
+<p>  typedef NS_ENUM(NSUInteger, EOCConnectionState3) {</p>
+<pre><code>EOCConnectionState3DisConnected,
+EOCConnectionState3DisConnecting,
+EOCConnectionState3Connected,
+</code></pre><p>  };</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 枚举使用</span><br><span class="line"></span><br><span class="line">	.h文件</span><br></pre></td></tr></table></figure>
+<p>  #import &lt;UIKit/UIKit.h&gt;</p>
+<p>  typedef enum EOCConnectionState EOCConnectionState;</p>
+<p>  typedef NS_ENUM(NSUInteger, EOCConnectionState3) {</p>
+<pre><code>EOCConnectionState3DisConnected,
+EOCConnectionState3DisConnecting,
+EOCConnectionState3Connected,
+</code></pre><p>  };</p>
+</li>
+</ul>
+<pre><code>@interface EOCEnum : NSObject
+@property (nonatomic, assign) enum EOCConnectionState state;
+@property (nonatomic, assign) EOCConnectionState3 state3;
+@end
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">.m 文件中</span><br></pre></td></tr></table></figure>
+
+#import &quot;EOCEnum.h&quot;
+
+@implementation EOCEnum
+
+- (void)testEnum {
+    // 未使用typedef 关键字
+    enum EOCConnectionState status = EOCConnectionStateConnected;
+    NSLog(@&quot;%u&quot;, status);
+
+    // 使用typedef 关键字
+    EOCConnectionState status1 = EOCConnectionStateConnecting;
+    NSLog(@&quot;%u&quot;, status1);
+
+    UIViewAutoresizing resizing = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    if (resizing &amp; UIViewAutoresizingFlexibleWidth) {
+        // 设置了 UIViewAutoresizingFlexibleWidth 约束
+    }
+}
+
+// UIKit 试图所支持的设置显示方向
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskLandscapeLeft;
+}
+
+// 枚举使用
+- (void)userEnum {
+    switch (_state3) {
+        case EOCConnectionState3DisConnected:
+            // ...
+            break;
+
+        case EOCConnectionState3DisConnecting:
+            // ...
+            break;
+
+        case EOCConnectionState3Connected:
+            // ...
+            break;
+
+        default: // 最好不用，防止以后增加一种状态机之后，编译器不发出警告
+            break;
+    }
+}
+
+@end
+```
+</code></pre><p><strong>要点：</strong></p>
+<ol>
+<li>使用枚举表示状态机的状态、传递给方法的选项以及状态码等值，给枚举值起名时要注重易懂</li>
+<li>如果一个类型可以使用状态机的状态来表示，并且多个选项可同时使用，那么就定义为可选的枚举类型，枚举各值定义为2的幂，以便通过“按位或”操作组合</li>
+<li>使用NS_ENUM 和 NS_OPTIONS 宏来定义枚举，并指明底层的数据类型。这样可以确保枚举是用开发者所选的底层数据类型实现出来的，而不会采用编译器所选的类型</li>
+<li>switch语句处理枚举类型时不要实现default 分支，如果以后加入枚举的新状态之后，编译器会发出警告</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/《52个方法第一章》/" data-id="cjx92w8ll002y9bfyua5gv8rf" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-iOS通过URL获取HTML中标题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/iOS通过URL获取HTML中标题/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.013Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>iOS通过URL获取HTML中标题</p>
+<h3 id="获取标题"><a href="#获取标题" class="headerlink" title="获取标题"></a>获取标题</h3><h5 id="String扩展一个方法"><a href="#String扩展一个方法" class="headerlink" title="String扩展一个方法"></a>String扩展一个方法</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">private let patternTitle = &quot;(?&lt;=title&gt;).*(?=&lt;/title)&quot;</span><br><span class="line">extension String &#123;</span><br><span class="line">    static func parseHTMLTitle(_ urlString: String) -&gt; String? &#123;</span><br><span class="line">        let url = URL(string: urlString)!</span><br><span class="line">        do &#123;</span><br><span class="line">            let html = try String(contentsOf: url, encoding: .utf8)</span><br><span class="line">            let range = html.range(of: patternTitle, options: String.CompareOptions.regularExpression, range: html.startIndex..&lt;html.endIndex, locale: nil)</span><br><span class="line">            guard let tempRange = range else &#123; return &quot;&quot; &#125;</span><br><span class="line">            let titleStr = html[tempRange]</span><br><span class="line">            return String(titleStr)</span><br><span class="line">        &#125; catch &#123;</span><br><span class="line">            return &quot;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="iOS-中简单正则表达式"><a href="#iOS-中简单正则表达式" class="headerlink" title="iOS 中简单正则表达式"></a>iOS 中简单正则表达式</h5><p>iOS 中 正则表达式中的\ 需要使用 \\ 来表示</p>
+<pre><code>// 获取
+let testStr = &quot;我到底是[iOS]开发还是[产品]经理&quot;
+
+// 获取 &quot;[&quot; 和 &quot;]&quot; 之间的所有内容, 左边[ 起一直到 右边 ] 结束的所有内容 
+let pattern1 = &quot;\\[.*\\]&quot; // [iOS]开发还是[产品]
+
+// 获取 &quot;[&quot; 和 &quot;]&quot; 之间的所有内容，包括[]
+let pattern2 = &quot;\\[.*?\\]&quot;    // [iOS]
+
+// 获取第一个 &quot;[&quot; 和 &quot;]&quot; 之间的所有内容 不包括[] 
+let pattern3 = &quot;(?&lt;=\\[).*?(?=\\])&quot; // iOS
+
+// 获取html中 title 标签中内容
+let pattern5 = &quot;(?&lt;=title&gt;).*(?=&lt;/title)&quot; 
+</code></pre><h5 id="获取范围截取子串"><a href="#获取范围截取子串" class="headerlink" title="获取范围截取子串"></a>获取范围截取子串</h5><pre><code>let testRange1 = testStr.range(of: pattern1, options: String.CompareOptions.regularExpression, range: testStr.startIndex..&lt;testStr.endIndex, locale: nil)
+    let result1 = String(testStr[testRange1!])
+
+
+let testRange2 = testStr.range(of: pattern2, options: String.CompareOptions.regularExpression, range: testStr.startIndex..&lt;testStr.endIndex, locale: nil)
+let result2 = String(testStr[testRange2!])
+
+
+let testRange3 = testStr.range(of: pattern3, options: String.CompareOptions.regularExpression, range: testStr.startIndex..&lt;testStr.endIndex, locale: nil)
+let result3 = String(testStr[testRange3!])
+
+print(result1) 
+print(result2) 
+print(result3) 
+</code></pre><h5 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h5><p>通过URL解析html中的标题</p>
+<ul>
+<li>获取html字符串</li>
+<li>正则匹配</li>
+<li>生成字符串Range</li>
+<li>截取字符串</li>
+</ul>
+<p>匹配一次直接返回结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// 生成表达式</span><br><span class="line">let regular = try NSRegularExpression(pattern: pattern5, options: .caseInsensitive) </span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">// 开始匹配  </span><br><span class="line">let matchResult1 = regular.firstMatch(in: html, options: NSRegularExpression.MatchingOptions.reportProgress, range: NSMakeRange(0, html.count))</span><br><span class="line"></span><br><span class="line">// 获取匹配结果范围</span><br><span class="line">let matchRange = matchResult1?.range</span><br><span class="line">let range = Range(matchRange!)!</span><br><span class="line">    </span><br><span class="line">// 生成String.Index 类型范围 </span><br><span class="line">let startIndex = html.index(html.startIndex, offsetBy: range.lowerBound)</span><br><span class="line">let endIndex = html.index(html.startIndex, offsetBy: range.upperBound)</span><br><span class="line">let range3 = Range(uncheckedBounds: (lower: startIndex, upper: endIndex))</span><br><span class="line"></span><br><span class="line">// 截取字符串</span><br><span class="line">let result1 = String(html[range3])</span><br><span class="line">print(result1)</span><br></pre></td></tr></table></figure>
+<p>全部匹配后返回结果时一个集合</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let matchResult2 = regular.matches(in: html, options: .reportProgress, range: NSMakeRange(0, html.count))</span><br><span class="line">            matchResult2.forEach &#123; (result) in</span><br><span class="line">let range = Range(result.range)!</span><br><span class="line">    </span><br><span class="line">let startIndex = html.index(html.startIndex, offsetBy: range.lowerBound)</span><br><span class="line">let endIndex = html.index(html.startIndex, offsetBy: range.upperBound)</span><br><span class="line">    </span><br><span class="line">let subStr2 = html[Range(uncheckedBounds: (startIndex, endIndex))]</span><br><span class="line">print(String(subStr2))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>将匹配到的内容提还</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let str3 = regular.stringByReplacingMatches(in: html, options: .reportProgress, range: NSMakeRange(0, html.count), withTemplate: &quot;====&quot;)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/iOS通过URL获取HTML中标题/" data-id="cjx92w8lf002n9bfyo2rdikqu" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-iOS面试OC语言特性" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/iOS面试OC语言特性/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.013Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="OC-语言特性"><a href="#OC-语言特性" class="headerlink" title="OC 语言特性"></a>OC 语言特性</h1><h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>由运行时来决议的，不同分类当中含有同名方法 谁最终生效取决于谁最终参与编译，最后参编译的同名分类方法会最终生效，假如分类方法中添加的方法和宿主类中的某一个方法名相同，分类中的方法会覆盖宿主类中的同名方法，覆盖是指在消息传递过程中优先查找数组靠前的元素，如果查找到了同名方法就直接调用，实际上宿主类的同名方法实现仍然是存在的，我们可可以通过一些手段调用到原有类的同名方法的实现 </p>
+<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
+<li>申明私有方法，分类的 .m 文件中申明私有方法啊，对外不暴露</li>
+<li>对类中的代码进行抽取分解</li>
+<li>把Framework的私有方法公开化</li>
+</ul>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>运行时决议，运行时通过runtime 才把分类中的方法添加到了宿主类上</li>
+<li>可以为系统类添加方法</li>
+<li>有多个分类中存在同名方法时，最后编译的方法会最先生效</li>
+<li>分类中有和宿主类同名方法时，底层中通过内存copy将分类方法“覆盖”宿主类方法</li>
+<li>名字相同的分类编译会报错</li>
+</ul>
+<h3 id="分类中可以添加的内容"><a href="#分类中可以添加的内容" class="headerlink" title="分类中可以添加的内容"></a>分类中可以添加的内容</h3><ul>
+<li>实例方法</li>
+<li>类方法</li>
+<li>协议</li>
+<li>属性，实际上只是声明了 getter / setter 方法，并没有添加成员变量</li>
+</ul>
+<h3 id="关联对象技术"><a href="#关联对象技术" class="headerlink" title="关联对象技术"></a>关联对象技术</h3><p>关联对象由 AssocicationsManager 管理并在 AssociationsHashMap 上存储<br>所有对象的关联内容都在同一个全局容器中</p>
+<ul>
+<li>给分类添加成员变量，通过关联对象的方式</li>
+</ul>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><h3 id="使用场景-1"><a href="#使用场景-1" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
+<li>声明私有属性</li>
+<li>声明私有方法</li>
+<li>声明私有成员变量</li>
+</ul>
+<h3 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>编译时决议</li>
+<li>只以声明的形式存在，多数情况下寄生在宿主类的.m中</li>
+<li>不能为系统添加扩展</li>
+</ul>
+<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><ul>
+<li>代理设计模式，传递方式是一对一</li>
+<li>使用weak 避免循环引用</li>
+</ul>
+<h2 id="通知"><a href="#通知" class="headerlink" title="通知"></a>通知</h2><p>使用观察者模式来实现的用于跨层传递消息的机制</p>
+<h2 id="KVO"><a href="#KVO" class="headerlink" title="KVO"></a>KVO</h2><p>KVO 是系统对观察者模式的又一实现，使用isa 混写技术（isa - swizzling）来动态运行时为某一个类添加一个子类重写了它的setter 方法，同时将原有类的isa指针指向了新创建的类上</p>
+<ul>
+<li>KVO 是OC对观察者模式的又一实现</li>
+<li>apple 使用isa 混写技术（isa - swizzling）来实现KVO<ul>
+<li>给我A类注册一个观察者时本质上是调用系统的 Observer for keyPath 方法，系统会创建一个NSKVONotifiying_A 的类</li>
+</ul>
+</li>
+<li>使用 setter 方法设置值KVO才能生效</li>
+<li>使用setValue:forKey: 改变值KVO才能生效</li>
+<li>使用下划线的成员变量直接修改值需要手动添加KVO才能生效（增加 willChangeValueForKey 和 didChangeValueForKey 两个方法）</li>
+</ul>
+<h2 id="KVC"><a href="#KVC" class="headerlink" title="KVC"></a>KVC</h2><p>apple提供的键值编码技术</p>
+<ul>
+<li>(nullable id)valueForKey:(NSString *)key;</li>
+<li><p>(void)setValue:(nullable id)value forKey:(NSString *)key;</p>
+<p>  以上两个方法中的key是没有任何限制的，只要知道对应的成员变量名称，就可以对私有的成员变量设置和操作，这违背了面向对象的编程思想</p>
+</li>
+</ul>
+<p><strong>(void)setValue:(nullable id)value forKey:(NSString *)key; 方法调用流程</strong></p>
+<ul>
+<li>先判断是否有跟key 相关的setter 方法，如果有就直接调用，结束调用</li>
+<li>如果没有再判断是否存在实例变量，如果存在直接给赋值，结束调用</li>
+<li>如果说实例变量不存在，会去调用 <code>- (void)setValue:(nullable id)value forUndefinedKey:(NSString *)key;</code> 抛出异常</li>
+</ul>
+<h2 id="属性关键字"><a href="#属性关键字" class="headerlink" title="属性关键字"></a>属性关键字</h2><h3 id="读写权限"><a href="#读写权限" class="headerlink" title="读写权限"></a>读写权限</h3><ul>
+<li><p>readonly</p>
+</li>
+<li><p>readwrite 系统默认</p>
+</li>
+</ul>
+<h3 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h3><ul>
+<li>atomic （系统默认）保证赋值和获取（对成员属性的直接获取和赋值）时线程安全，并不代表操作和访问，如果atomic修饰的一个数组，只能保证独具改数组的读取和赋值时线程安全，并不能保证对数据操作（增加/删除数组元素）时是安全的</li>
+<li>nonatomic</li>
+</ul>
+<h3 id="引用技术"><a href="#引用技术" class="headerlink" title="引用技术"></a>引用技术</h3><ul>
+<li>assign <ul>
+<li>修饰基本数据类型，</li>
+<li>修饰对象时不改变其引用计数，</li>
+<li>会产生悬垂指针</li>
+</ul>
+</li>
+<li>weak  <ul>
+<li>不改变被修饰对象的引用计数，</li>
+<li>所指对象被释放之后指针自动置为nil</li>
+</ul>
+</li>
+</ul>
+<p><strong>两者区别：</strong></p>
+<ul>
+<li>weak可以修饰对象，而assign 既可以修饰对象也可以修饰基本数据类型</li>
+<li>assign 修饰的对象，对象释放后指针仍然指向原对象的内存地址，而weak 修饰的对象，释放后会自动置为nil</li>
+</ul>
+<p><strong>问题1</strong> </p>
+<p>weak 修饰的对象为什么释放后会自动置为nil</p>
+<p><strong>问题2</strong></p>
+<p><code>@property (copy) NSMutableArray *array;</code> 有什么问题</p>
+<ul>
+<li>被copy修饰后，如果赋值过来的是NSMutableArray，copy之后就是NSArray，如果赋值过来的是NSAarray，copy 之后仍然是NSArray，有可能会调用array的添加元素方法会导致crash</li>
+</ul>
+<h3 id="copy-关键词"><a href="#copy-关键词" class="headerlink" title="copy 关键词"></a>copy 关键词</h3><p> <img src="https://ws2.sinaimg.cn/large/006tNc79ly1g1uh6lwwe2j320s0lm7bm.jpg" alt></p>
+<ul>
+<li>浅拷贝：内存地址的复制，让目标对象指针和源对象指向同一块内存空间，<ul>
+<li>会增加对象的引用计数</li>
+<li>并没有一个新的内存分配</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>深拷贝：目标对象指针和源对象指针分别指向两块内容相同的内存空间<ul>
+<li>不会增加源对象的引用计数</li>
+<li>有新对象的内存分配</li>
+</ul>
+</li>
+</ul>
+<h2 id="MRC-重写-retain修饰的变量的setter-方法"><a href="#MRC-重写-retain修饰的变量的setter-方法" class="headerlink" title="MRC 重写 retain修饰的变量的setter 方法"></a>MRC 重写 retain修饰的变量的setter 方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- (void)setObj:(id)obj &#123;</span><br><span class="line">    if (_obj != obj) &#123;</span><br><span class="line">        [_obj release];</span><br><span class="line">    &#125;</span><br><span class="line">    _obj = [obj retain];</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>判断是为了防止异常处理，如果不做 if 判断，当传入的 obj 对象正好是原来的_obj 对象，对原对象尽行releas 操作，实际上也会对传入的对象进行releas 操作进行释放，此时如果再通过obj指针访问废弃的对象时就会导致carsh</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/iOS面试OC语言特性/" data-id="cjx92w8li002u9bfyc6lz356i" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-iOS 动态设置TableHeaderView高度" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/iOS 动态设置TableHeaderView高度/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.185Z" itemprop="datePublished">2019-06-18</time>
+  <time datetime="2019-06-18T15:30:19.011Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -94,7 +731,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/iOS 动态设置TableHeaderView高度/" data-id="cjx1wsdpr0024msfyqf8akfk1" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/iOS 动态设置TableHeaderView高度/" data-id="cjx92w8lc002g9bfy0ik7fnoa" class="article-share-link">Share</a>
       
       
     </footer>
@@ -107,7 +744,7 @@
     <article id="post-iOS开发_于鸿鹏" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/iOS开发_于鸿鹏/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.185Z" itemprop="datePublished">2019-06-18</time>
+  <time datetime="2019-06-18T15:30:19.011Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -170,7 +807,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/iOS开发_于鸿鹏/" data-id="cjx1wsdpu0029msfyct9quj6c" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/iOS开发_于鸿鹏/" data-id="cjx92w8le002k9bfy9ouvisax" class="article-share-link">Share</a>
       
       
     </footer>
@@ -180,10 +817,10 @@
 
 
   
-    <article id="post-flutter 安装" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Xcode中使用Debug Memory Graph检查内存泄漏" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/18/flutter 安装/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.183Z" itemprop="datePublished">2019-06-18</time>
+    <a href="/2019/06/18/Xcode中使用Debug Memory Graph检查内存泄漏/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.009Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -192,100 +829,43 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">// 导入头文件</span><br><span class="line">import &apos;package:flutter/material.dart&apos;;</span><br><span class="line"></span><br><span class="line">void main() =&gt; (MyApp());</span><br><span class="line"></span><br><span class="line">// 定义类, 继承</span><br><span class="line"></span><br><span class="line">class MyApp extends StatelessWidget &#123;</span><br><span class="line">  // 重写</span><br><span class="line">  @override</span><br><span class="line"></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line"></span><br><span class="line">    // 返回一窗口</span><br><span class="line">    return MaterialApp(</span><br><span class="line">      title:&apos;Flutter&apos;,</span><br><span class="line">      home: Scaffold(</span><br><span class="line">        appBar: AppBar(</span><br><span class="line">          title: Text(&apos;flutter 初体验&apos;)</span><br><span class="line">        ),</span><br><span class="line"></span><br><span class="line">        body: Center(</span><br><span class="line">          child: Text(&apos;flutter 学习之路&apos;),</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h1 id="Xcode中使用Debug-Memory-Graph检查内存泄漏"><a href="#Xcode中使用Debug-Memory-Graph检查内存泄漏" class="headerlink" title="Xcode中使用Debug Memory Graph检查内存泄漏"></a>Xcode中使用Debug Memory Graph检查内存泄漏</h1><h2 id="勾选如下图所示选项"><a href="#勾选如下图所示选项" class="headerlink" title="勾选如下图所示选项"></a>勾选如下图所示选项</h2><p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1g1xy4gg3b5j31ds0s0q7u.jpg" alt></p>
+<h2 id="运行程序后点击"><a href="#运行程序后点击" class="headerlink" title="运行程序后点击"></a>运行程序后点击</h2><p><img src="https://diycode.b0.upaiyun.com/photo/2018/18f8590ab4f9d33296a379a94ae94ccb.png" alt></p>
+<h2 id="内存泄露定位"><a href="#内存泄露定位" class="headerlink" title="内存泄露定位"></a>内存泄露定位</h2><p><img src="https://ws1.sinaimg.cn/large/006tNc79ly1g1xyo08z80j31yu0u00zf.jpg" alt></p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1g1xyovrs7kj321q0u0tln.jpg" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2019/06/18/Xcode中使用Debug Memory Graph检查内存泄漏/" data-id="cjx92w8l9002a9bfylcq3x9xq" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-flutter安装" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/18/flutter安装/" class="article-date">
+  <time datetime="2019-06-18T15:30:19.009Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>flutter安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">// 导入头文件</span><br><span class="line">import &apos;package:flutter/material.dart&apos;;</span><br><span class="line"></span><br><span class="line">void main() =&gt; (MyApp());</span><br><span class="line"></span><br><span class="line">// 定义类, 继承</span><br><span class="line"></span><br><span class="line">class MyApp extends StatelessWidget &#123;</span><br><span class="line">  // 重写</span><br><span class="line">  @override</span><br><span class="line"></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line"></span><br><span class="line">    // 返回一窗口</span><br><span class="line">    return MaterialApp(</span><br><span class="line">      title:&apos;Flutter&apos;,</span><br><span class="line">      home: Scaffold(</span><br><span class="line">        appBar: AppBar(</span><br><span class="line">          title: Text(&apos;flutter 初体验&apos;)</span><br><span class="line">        ),</span><br><span class="line"></span><br><span class="line">        body: Center(</span><br><span class="line">          child: Text(&apos;flutter 学习之路&apos;),</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import &apos;package:flutter/material.dart&apos;;</span><br><span class="line"></span><br><span class="line">void main() =&gt; runApp(MyApp());</span><br><span class="line"></span><br><span class="line">class MyApp extends StatelessWidget &#123;</span><br><span class="line">  // This widget is the root of your application.</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return MaterialApp(</span><br><span class="line">      title: &apos;Flutter Demo&apos;,</span><br><span class="line">      theme: ThemeData(</span><br><span class="line">        // This is the theme of your application.</span><br><span class="line">        //</span><br><span class="line">        // Try running your application with &quot;flutter run&quot;. You&apos;ll see the</span><br><span class="line">        // application has a blue toolbar. Then, without quitting the app, try</span><br><span class="line">        // changing the primarySwatch below to Colors.green and then invoke</span><br><span class="line">        // &quot;hot reload&quot; (press &quot;r&quot; in the console where you ran &quot;flutter run&quot;,</span><br><span class="line">        // or simply save your changes to &quot;hot reload&quot; in a Flutter IDE).</span><br><span class="line">        // Notice that the counter didn&apos;t reset back to zero; the application</span><br><span class="line">        // is not restarted.</span><br><span class="line">        primarySwatch: Colors.blue,</span><br><span class="line">      ),</span><br><span class="line">      home: MyHomePage(title: &apos;Flutter Demo Home Page&apos;),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class MyHomePage extends StatefulWidget &#123;</span><br><span class="line">  MyHomePage(&#123;Key key, this.title&#125;) : super(key: key);</span><br><span class="line"></span><br><span class="line">  // This widget is the home page of your application. It is stateful, meaning</span><br><span class="line">  // that it has a State object (defined below) that contains fields that affect</span><br><span class="line">  // how it looks.</span><br><span class="line"></span><br><span class="line">  // This class is the configuration for the state. It holds the values (in this</span><br><span class="line">  // case the title) provided by the parent (in this case the App widget) and</span><br><span class="line">  // used by the build method of the State. Fields in a Widget subclass are</span><br><span class="line">  // always marked &quot;final&quot;.</span><br><span class="line"></span><br><span class="line">  final String title;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  _MyHomePageState createState() =&gt; _MyHomePageState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class _MyHomePageState extends State&lt;MyHomePage&gt; &#123;</span><br><span class="line">  int _counter = 0;</span><br><span class="line"></span><br><span class="line">  void _incrementCounter() &#123;</span><br><span class="line">    setState(() &#123;</span><br><span class="line">      // This call to setState tells the Flutter framework that something has</span><br><span class="line">      // changed in this State, which causes it to rerun the build method below</span><br><span class="line">      // so that the display can reflect the updated values. If we changed</span><br><span class="line">      // _counter without calling setState(), then the build method would not be</span><br><span class="line">      // called again, and so nothing would appear to happen.</span><br><span class="line">      _counter++;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    // This method is rerun every time setState is called, for instance as done</span><br><span class="line">    // by the _incrementCounter method above.</span><br><span class="line">    //</span><br><span class="line">    // The Flutter framework has been optimized to make rerunning build methods</span><br><span class="line">    // fast, so that you can just rebuild anything that needs updating rather</span><br><span class="line">    // than having to individually change instances of widgets.</span><br><span class="line">    return Scaffold(</span><br><span class="line">      appBar: AppBar(</span><br><span class="line">        // Here we take the value from the MyHomePage object that was created by</span><br><span class="line">        // the App.build method, and use it to set our appbar title.</span><br><span class="line">        title: Text(widget.title),</span><br><span class="line">      ),</span><br><span class="line">      body: Center(</span><br><span class="line">        // Center is a layout widget. It takes a single child and positions it</span><br><span class="line">        // in the middle of the parent.</span><br><span class="line">        child: Column(</span><br><span class="line">          // Column is also layout widget. It takes a list of children and</span><br><span class="line">          // arranges them vertically. By default, it sizes itself to fit its</span><br><span class="line">          // children horizontally, and tries to be as tall as its parent.</span><br><span class="line">          //</span><br><span class="line">          // Invoke &quot;debug painting&quot; (press &quot;p&quot; in the console, choose the</span><br><span class="line">          // &quot;Toggle Debug Paint&quot; action from the Flutter Inspector in Android</span><br><span class="line">          // Studio, or the &quot;Toggle Debug Paint&quot; command in Visual Studio Code)</span><br><span class="line">          // to see the wireframe for each widget.</span><br><span class="line">          //</span><br><span class="line">          // Column has various properties to control how it sizes itself and</span><br><span class="line">          // how it positions its children. Here we use mainAxisAlignment to</span><br><span class="line">          // center the children vertically; the main axis here is the vertical</span><br><span class="line">          // axis because Columns are vertical (the cross axis would be</span><br><span class="line">          // horizontal).</span><br><span class="line">          mainAxisAlignment: MainAxisAlignment.center,</span><br><span class="line">          children: &lt;Widget&gt;[</span><br><span class="line">            Text(</span><br><span class="line">              &apos;你可以点击按钮来修改文字，我是热重载的结果&apos;,</span><br><span class="line">            ),</span><br><span class="line">            Text(</span><br><span class="line">              &apos;$_counter&apos;,</span><br><span class="line">              style: Theme.of(context).textTheme.display1,</span><br><span class="line">            ),</span><br><span class="line">          ],</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">      floatingActionButton: FloatingActionButton(</span><br><span class="line">        onPressed: _incrementCounter,</span><br><span class="line">        tooltip: &apos;Increment&apos;,</span><br><span class="line">        child: Icon(Icons.add),</span><br><span class="line">      ), // This trailing comma makes auto-formatting nicer for build methods.</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/flutter 安装/" data-id="cjx1wsdpq0022msfyjuvrudpf" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-docs/Flutter入门" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/docs/Flutter入门/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.182Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="flutter-安装"><a href="#flutter-安装" class="headerlink" title="flutter 安装"></a>flutter 安装</h2><h2 id="flutter-项目代码"><a href="#flutter-项目代码" class="headerlink" title="flutter 项目代码"></a>flutter 项目代码</h2><p>fluter 中一切皆是组件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">// 导入头文件</span><br><span class="line">import &apos;package:flutter/material.dart&apos;;</span><br><span class="line"></span><br><span class="line">// 程序的入口，main 函数</span><br><span class="line">void main() =&gt; (MyApp());</span><br><span class="line"></span><br><span class="line">// 定义类, 继承</span><br><span class="line"></span><br><span class="line">class MyApp extends StatelessWidget &#123;</span><br><span class="line">  // 重写</span><br><span class="line">  @override</span><br><span class="line"></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line"></span><br><span class="line">    // 返回一窗口</span><br><span class="line">    return MaterialApp(</span><br><span class="line">      title:&apos;Flutter&apos;,</span><br><span class="line">      home: Scaffold(</span><br><span class="line">        appBar: AppBar(</span><br><span class="line">          title: Text(&apos;flutter 初体验&apos;)</span><br><span class="line">        ),</span><br><span class="line"></span><br><span class="line">        body: Center(</span><br><span class="line">          child: Text(&apos;flutter 学习之路&apos;),</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import &apos;package:flutter/material.dart&apos;;</span><br><span class="line"></span><br><span class="line">void main() =&gt; runApp(MyApp());</span><br><span class="line"></span><br><span class="line">class MyApp extends StatelessWidget &#123;</span><br><span class="line">  // This widget is the root of your application.</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return MaterialApp(</span><br><span class="line">      title: &apos;Flutter Demo&apos;,</span><br><span class="line">      theme: ThemeData(</span><br><span class="line">        // This is the theme of your application.</span><br><span class="line">        //</span><br><span class="line">        // Try running your application with &quot;flutter run&quot;. You&apos;ll see the</span><br><span class="line">        // application has a blue toolbar. Then, without quitting the app, try</span><br><span class="line">        // changing the primarySwatch below to Colors.green and then invoke</span><br><span class="line">        // &quot;hot reload&quot; (press &quot;r&quot; in the console where you ran &quot;flutter run&quot;,</span><br><span class="line">        // or simply save your changes to &quot;hot reload&quot; in a Flutter IDE).</span><br><span class="line">        // Notice that the counter didn&apos;t reset back to zero; the application</span><br><span class="line">        // is not restarted.</span><br><span class="line">        primarySwatch: Colors.blue,</span><br><span class="line">      ),</span><br><span class="line">      home: MyHomePage(title: &apos;Flutter Demo Home Page&apos;),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class MyHomePage extends StatefulWidget &#123;</span><br><span class="line">  MyHomePage(&#123;Key key, this.title&#125;) : super(key: key);</span><br><span class="line"></span><br><span class="line">  // This widget is the home page of your application. It is stateful, meaning</span><br><span class="line">  // that it has a State object (defined below) that contains fields that affect</span><br><span class="line">  // how it looks.</span><br><span class="line"></span><br><span class="line">  // This class is the configuration for the state. It holds the values (in this</span><br><span class="line">  // case the title) provided by the parent (in this case the App widget) and</span><br><span class="line">  // used by the build method of the State. Fields in a Widget subclass are</span><br><span class="line">  // always marked &quot;final&quot;.</span><br><span class="line"></span><br><span class="line">  final String title;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  _MyHomePageState createState() =&gt; _MyHomePageState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class _MyHomePageState extends State&lt;MyHomePage&gt; &#123;</span><br><span class="line">  int _counter = 0;</span><br><span class="line"></span><br><span class="line">  void _incrementCounter() &#123;</span><br><span class="line">    setState(() &#123;</span><br><span class="line">      // This call to setState tells the Flutter framework that something has</span><br><span class="line">      // changed in this State, which causes it to rerun the build method below</span><br><span class="line">      // so that the display can reflect the updated values. If we changed</span><br><span class="line">      // _counter without calling setState(), then the build method would not be</span><br><span class="line">      // called again, and so nothing would appear to happen.</span><br><span class="line">      _counter++;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    // This method is rerun every time setState is called, for instance as done</span><br><span class="line">    // by the _incrementCounter method above.</span><br><span class="line">    //</span><br><span class="line">    // The Flutter framework has been optimized to make rerunning build methods</span><br><span class="line">    // fast, so that you can just rebuild anything that needs updating rather</span><br><span class="line">    // than having to individually change instances of widgets.</span><br><span class="line">    return Scaffold(</span><br><span class="line">      appBar: AppBar(</span><br><span class="line">        // Here we take the value from the MyHomePage object that was created by</span><br><span class="line">        // the App.build method, and use it to set our appbar title.</span><br><span class="line">        title: Text(widget.title),</span><br><span class="line">      ),</span><br><span class="line">      body: Center(</span><br><span class="line">        // Center is a layout widget. It takes a single child and positions it</span><br><span class="line">        // in the middle of the parent.</span><br><span class="line">        child: Column(</span><br><span class="line">          // Column is also layout widget. It takes a list of children and</span><br><span class="line">          // arranges them vertically. By default, it sizes itself to fit its</span><br><span class="line">          // children horizontally, and tries to be as tall as its parent.</span><br><span class="line">          //</span><br><span class="line">          // Invoke &quot;debug painting&quot; (press &quot;p&quot; in the console, choose the</span><br><span class="line">          // &quot;Toggle Debug Paint&quot; action from the Flutter Inspector in Android</span><br><span class="line">          // Studio, or the &quot;Toggle Debug Paint&quot; command in Visual Studio Code)</span><br><span class="line">          // to see the wireframe for each widget.</span><br><span class="line">          //</span><br><span class="line">          // Column has various properties to control how it sizes itself and</span><br><span class="line">          // how it positions its children. Here we use mainAxisAlignment to</span><br><span class="line">          // center the children vertically; the main axis here is the vertical</span><br><span class="line">          // axis because Columns are vertical (the cross axis would be</span><br><span class="line">          // horizontal).</span><br><span class="line">          mainAxisAlignment: MainAxisAlignment.center,</span><br><span class="line">          children: &lt;Widget&gt;[</span><br><span class="line">            Text(</span><br><span class="line">              &apos;你可以点击按钮来修改文字，我是热重载的结果&apos;,</span><br><span class="line">            ),</span><br><span class="line">            Text(</span><br><span class="line">              &apos;$_counter&apos;,</span><br><span class="line">              style: Theme.of(context).textTheme.display1,</span><br><span class="line">            ),</span><br><span class="line">          ],</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">      floatingActionButton: FloatingActionButton(</span><br><span class="line">        onPressed: _incrementCounter,</span><br><span class="line">        tooltip: &apos;Increment&apos;,</span><br><span class="line">        child: Icon(Icons.add),</span><br><span class="line">      ), // This trailing comma makes auto-formatting nicer for build methods.</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/docs/Flutter入门/" data-id="cjx1wsdsy003bmsfytjvinkae" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-docs/Flutter常用组件" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/docs/Flutter常用组件/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.182Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="flutter-常用组件"><a href="#flutter-常用组件" class="headerlink" title="flutter 常用组件"></a>flutter 常用组件</h2><h2 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h2><ul>
-<li>StatefulWidget<ul>
-<li>具有可变状态的窗口部件，使用应用时可随时变化，例如进度条</li>
-</ul>
-</li>
-<li>StatelessWidget <ul>
-<li>不可变窗口部件</li>
-</ul>
-</li>
-</ul>
-<h2 id="Text-组件"><a href="#Text-组件" class="headerlink" title="Text 组件"></a>Text 组件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//  Text 组件</span><br><span class="line">class MyText extends StatelessWidget&#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context)&#123;</span><br><span class="line">    return Text(&apos;reacctNative、 flutter 学习之路是非常坚信不疑的，作为一个程序员，因该对于技术有着追求，不断的提高自己才是王道，可是道理都懂依然过不好这一生&apos;,</span><br><span class="line">      maxLines: 2,</span><br><span class="line">      overflow: TextOverflow.fade,</span><br><span class="line">      textAlign: TextAlign.center,</span><br><span class="line">      style: TextStyle(</span><br><span class="line">        fontSize: 20.0,</span><br><span class="line">        color: Colors.deepOrange,</span><br><span class="line">        decoration: TextDecoration.underline,</span><br><span class="line">        decorationColor: Colors.redAccent,</span><br><span class="line">        decorationStyle: TextDecorationStyle.dotted</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="COntainer-组件"><a href="#COntainer-组件" class="headerlink" title="COntainer 组件"></a>COntainer 组件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">// Container容器组件</span><br><span class="line">class MyContainer extends StatelessWidget &#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return Container(</span><br><span class="line">      child: Text(&apos;Container 容器中有文字&apos;,</span><br><span class="line">        style: TextStyle(</span><br><span class="line">          backgroundColor: Colors.cyan,</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">      alignment: Alignment.center, // 容器中内容对其方式</span><br><span class="line">      width: 300.0,</span><br><span class="line">      height: 200.0,</span><br><span class="line">      padding: const EdgeInsets.all(10), // 容器内边距</span><br><span class="line">      margin: const EdgeInsets.fromLTRB(10, 5, 10, 5), // container 和外部控件的边距</span><br><span class="line">      decoration: new BoxDecoration(</span><br><span class="line">        gradient: const LinearGradient(</span><br><span class="line">          colors: [Colors.lightBlue, Colors.greenAccent, Colors.yellow]</span><br><span class="line">        ),</span><br><span class="line"></span><br><span class="line">        // 设置 border 的宽度</span><br><span class="line">        border: Border.all(width: 5, color: Colors.black) </span><br><span class="line"></span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Image-组件"><a href="#Image-组件" class="headerlink" title="Image 组件"></a>Image 组件</h2><h3 id="fit属性"><a href="#fit属性" class="headerlink" title="fit属性"></a>fit属性</h3><ul>
-<li>BoxFit.fill:全图显示，图片会被拉伸，并充满父容器。</li>
-<li>BoxFit.contain:全图显示，显示原比例，可能会有空隙。</li>
-<li>BoxFit.cover：显示可能拉伸，可能裁切，充满（图片要充满整个容器，还不变形）。</li>
-<li>BoxFit.fitWidth：宽度充满（横向充满），显示可能拉伸，可能裁切。</li>
-<li>BoxFit.fitHeight ：高度充满（竖向充满）,显示可能拉伸，可能裁切。</li>
-<li>BoxFit.scaleDown：效果和contain差不多，但是此属性不允许显示超过源图片大小，可小不可大。</li>
-</ul>
-<h3 id="图片的混合模式"><a href="#图片的混合模式" class="headerlink" title="图片的混合模式"></a>图片的混合模式</h3><ul>
-<li>color：是要混合的颜色，如果你只设置color是没有意义的。</li>
-<li>colorBlendMode: 是混合模式。</li>
-</ul>
-<h3 id="repeat-图片填充模式"><a href="#repeat-图片填充模式" class="headerlink" title="repeat 图片填充模式"></a>repeat 图片填充模式</h3><ul>
-<li>ImageRepeat.repeat : 横向和纵向都进行重复，直到铺满整个画布。</li>
-<li>ImageRepeat.repeatX: 横向重复，纵向不重复。</li>
-<li>ImageRepeat.repeatY：纵向重复，横向不重复</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">class MyImage extends StatelessWidget &#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context)&#123;</span><br><span class="line">    return Container(</span><br><span class="line">      child: new Image.network(</span><br><span class="line">        // &apos;https://images.xiaozhuanlan.com/photo/2019/28ed76123023e46483fcf0ae5c2ba11b.png&apos;,</span><br><span class="line">        &apos;https://p.ampmake.com/mall/product/9666f00e-f02a-46ce-9b7c-090bf6aba9aa.png&apos;,</span><br><span class="line"></span><br><span class="line">        // 1. 设置填充模式</span><br><span class="line">        // fit: BoxFit.scaleDown,</span><br><span class="line">        // fit: BoxFit.none,</span><br><span class="line">        // fit: BoxFit.fill,</span><br><span class="line">        // fit: BoxFit.fitHeight,</span><br><span class="line">        // fit: BoxFit.fitWidth,</span><br><span class="line"></span><br><span class="line">        // 保持原图比例</span><br><span class="line">        // fit: BoxFit.contain,</span><br><span class="line"></span><br><span class="line">        // 充满整个容器，图片被裁切</span><br><span class="line">        // fit: BoxFit.cover,</span><br><span class="line">        // scale: 1.0,</span><br><span class="line"></span><br><span class="line">        // 2. 图片混合</span><br><span class="line">        color: Colors.red,</span><br><span class="line">        colorBlendMode: BlendMode.overlay,</span><br><span class="line">        </span><br><span class="line">        // 3. reap</span><br><span class="line">        repeat: ImageRepeat.repeat,</span><br><span class="line">      ),</span><br><span class="line">      width: 300.0,</span><br><span class="line">      height: 200.0,</span><br><span class="line">      color: Colors.lightBlue,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="ListView-列表组件"><a href="#ListView-列表组件" class="headerlink" title="ListView 列表组件"></a>ListView 列表组件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">class MyListView extends StatelessWidget&#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext contex)&#123;</span><br><span class="line">    </span><br><span class="line">    return ListView(</span><br><span class="line">      children: &lt;Widget&gt;[</span><br><span class="line">        new ListTile(</span><br><span class="line">              leading: new Icon(Icons.camera),</span><br><span class="line">              title: Text(&apos;相册&apos;),</span><br><span class="line">            ),</span><br><span class="line">            </span><br><span class="line">            new ListTile(</span><br><span class="line">              leading: new Icon(Icons.camera_alt),</span><br><span class="line">              title: Text(&apos;相机&apos;),</span><br><span class="line">            ),</span><br><span class="line"></span><br><span class="line">            new ListTile(</span><br><span class="line">              leading: new Icon(Icons.camera_enhance),</span><br><span class="line">              title: Text(&apos;相机1&apos;),</span><br><span class="line">            ),</span><br><span class="line"></span><br><span class="line">            new ListTile(</span><br><span class="line">              leading: new Icon(Icons.camera_front),</span><br><span class="line">              title: Text(&apos;相机2&apos;),</span><br><span class="line">            ),</span><br><span class="line"></span><br><span class="line">            new ListTile(</span><br><span class="line">              leading: new Icon(Icons.camera_rear),</span><br><span class="line">              title: Text(&apos;相机3&apos;),</span><br><span class="line">            ),</span><br><span class="line">      ],</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="ListView-builder-适合列表项比较多（或者无限）的情况"><a href="#ListView-builder-适合列表项比较多（或者无限）的情况" class="headerlink" title="ListView.builder 适合列表项比较多（或者无限）的情况"></a>ListView.builder 适合列表项比较多（或者无限）的情况</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class MyListViewBuilder extends StatelessWidget &#123;</span><br><span class="line">  </span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context)&#123;</span><br><span class="line">    return ListView.builder(</span><br><span class="line">      itemCount: 100, // 数量</span><br><span class="line">      itemExtent: 40, // Tile 高度</span><br><span class="line">      itemBuilder: (BuildContext context, int index)&#123;</span><br><span class="line">        return ListTile(title: Text(&quot;$index&quot;));</span><br><span class="line">      &#125;</span><br><span class="line">    ); </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="横向列表"><a href="#横向列表" class="headerlink" title="横向列表"></a>横向列表</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">class MyHorizontalListView extends StatelessWidget &#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return Container(</span><br><span class="line">      height: 100,</span><br><span class="line">      child: ListView(</span><br><span class="line">        // 设置滚动方式</span><br><span class="line">        scrollDirection: Axis.horizontal,</span><br><span class="line">        children: &lt;Widget&gt;[</span><br><span class="line">          new Container(</span><br><span class="line">            width: 180.0,</span><br><span class="line">            color: Colors.green,</span><br><span class="line">          ),</span><br><span class="line">          new Container(</span><br><span class="line">            width: 180.0,</span><br><span class="line">            color: Colors.yellow,</span><br><span class="line">          ),</span><br><span class="line">          new Container(</span><br><span class="line">            width: 180.0,</span><br><span class="line">            color: Colors.blue,</span><br><span class="line">          ),</span><br><span class="line">          new Container(</span><br><span class="line">            width: 180.0,</span><br><span class="line">            color: Colors.cyan,</span><br><span class="line">          ),</span><br><span class="line">          new Container(</span><br><span class="line">            width: 180.0,</span><br><span class="line">            color: Colors.purple,</span><br><span class="line">          ),</span><br><span class="line">        ],</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="动态列表和构造方法的创建"><a href="#动态列表和构造方法的创建" class="headerlink" title="动态列表和构造方法的创建"></a>动态列表和构造方法的创建</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class MyDynamicListView extends StatelessWidget &#123;</span><br><span class="line">  // 声明参数</span><br><span class="line">  final List&lt;String&gt; items;</span><br><span class="line">  // 构造方法</span><br><span class="line">  MyDynamicListView(&#123;Key key, @required this.items&#125;):super(key:key);</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return Container(</span><br><span class="line">      child: new ListView.builder(</span><br><span class="line">          itemCount: items.length,</span><br><span class="line">          itemBuilder: (context, index)&#123;</span><br><span class="line">            return ListTile(</span><br><span class="line">              title: new Text(&apos;通过构造方法创建的动态列表$&#123;items[index]&#125;&apos;),</span><br><span class="line">            );</span><br><span class="line">          &#125;,</span><br><span class="line">        ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="GridView-网格列表的使用"><a href="#GridView-网格列表的使用" class="headerlink" title="GridView 网格列表的使用"></a>GridView 网格列表的使用</h2>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/docs/Flutter常用组件/" data-id="cjx1wsdt0003cmsfy40kbctkp" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/flutter安装/" data-id="cjx92w8la002d9bfyb3ulua4z" class="article-share-link">Share</a>
       
       
     </footer>
@@ -298,7 +878,7 @@
     <article id="post-Swift项目中集成RN" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/18/Swift项目中集成RN/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.181Z" itemprop="datePublished">2019-06-18</time>
+  <time datetime="2019-06-18T15:30:19.007Z" itemprop="datePublished">2019-06-18</time>
 </a>
     
   </div>
@@ -337,178 +917,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift项目中集成RN/" data-id="cjx1wsdnl001umsfysp3tztwk" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Xcode中使用Debug Memory Graph检查内存泄漏" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/Xcode中使用Debug Memory Graph检查内存泄漏/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.181Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Xcode中使用Debug-Memory-Graph检查内存泄漏"><a href="#Xcode中使用Debug-Memory-Graph检查内存泄漏" class="headerlink" title="Xcode中使用Debug Memory Graph检查内存泄漏"></a>Xcode中使用Debug Memory Graph检查内存泄漏</h1><h2 id="勾选如下图所示选项"><a href="#勾选如下图所示选项" class="headerlink" title="勾选如下图所示选项"></a>勾选如下图所示选项</h2><p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1g1xy4gg3b5j31ds0s0q7u.jpg" alt></p>
-<h2 id="运行程序后点击"><a href="#运行程序后点击" class="headerlink" title="运行程序后点击"></a>运行程序后点击</h2><p><img src="https://diycode.b0.upaiyun.com/photo/2018/18f8590ab4f9d33296a379a94ae94ccb.png" alt></p>
-<h2 id="内存泄露定位"><a href="#内存泄露定位" class="headerlink" title="内存泄露定位"></a>内存泄露定位</h2><p><img src="https://ws1.sinaimg.cn/large/006tNc79ly1g1xyo08z80j31yu0u00zf.jpg" alt></p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1g1xyovrs7kj321q0u0tln.jpg" alt></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Xcode中使用Debug Memory Graph检查内存泄漏/" data-id="cjx1wsdo0001zmsfyxaamp20f" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Swift协议扩展" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/Swift协议扩展/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.180Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Swift协议扩展</p>
-<h3 id="定义结构体"><a href="#定义结构体" class="headerlink" title="定义结构体"></a>定义结构体</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">struct Point &#123;</span><br><span class="line">    var x = 0.0</span><br><span class="line">    var y = 0.0</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Size &#123;</span><br><span class="line">    var height = 0.0</span><br><span class="line">    var width = 0.0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Rectangle &#123;</span><br><span class="line">    var origin = Point()</span><br><span class="line">    var size = Size()</span><br><span class="line">    </span><br><span class="line">    init(origin: Point, size: Size) &#123;</span><br><span class="line">        self.origin = origin</span><br><span class="line">        self.size = size</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><ul>
-<li>扩展方法</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">extension Rectangle &#123;</span><br><span class="line">    mutating func translate(x: Double, y: Double) &#123;</span><br><span class="line">        self.origin.x += x</span><br><span class="line">        self.origin.y += y</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>只能扩展计算型的属性，不能扩展存储型属性, 存储型属性需要在定义类或者结构体时声明</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">extension Rectangle &#123;</span><br><span class="line">    var center: Point &#123;</span><br><span class="line">        get &#123;</span><br><span class="line">            let center_x = origin.x + size.width / 2.0</span><br><span class="line">            let center_y = origin.y + size.height / 2.0</span><br><span class="line">            return Point(x: center_x, y: center_y)</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        set &#123;</span><br><span class="line">            origin.x = newValue.x - size.width / 2.0</span><br><span class="line">            origin.y = newValue.y - size.height / 2.0</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>扩展构造方法</p>
-<ul>
-<li>类中不能扩展指定构造方法，只能在结构体中扩展</li>
-<li>结构体中不能扩展便利构造方法m，只能在类中扩展</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">extension Rectangle &#123;</span><br><span class="line">    init(center: Point, size: Size) &#123;</span><br><span class="line">        let origin_x = center.x - size.width / 2.0</span><br><span class="line">        let origin_y = center.y - size.height / 2.0</span><br><span class="line">        self.origin = Point(x: origin_x, y: origin_y)</span><br><span class="line">        self.size = size</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 结构体中不能扩展便利构造函数 Delegating initializers in structs are not marked with &apos;convenience&apos;</span><br><span class="line">//    convenience init(center: Point, size: Size) &#123;</span><br><span class="line">//        let origin_x = center.x - size.width / 2.0</span><br><span class="line">//        let origin_y = center.y - size.height / 2.0</span><br><span class="line">//        self.origin = Point(x: origin_x, y: origin_y)</span><br><span class="line">//        self.size = size</span><br><span class="line">//    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>扩展嵌套类型</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">extension Rectangle &#123;</span><br><span class="line">    enum Vertex: Int &#123;</span><br><span class="line">        case left_top</span><br><span class="line">        case left_bottom</span><br><span class="line">        case right_bottom</span><br><span class="line">        case right_top</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 获取某一个顶点坐标</span><br><span class="line">    func point(of vertex: Vertex) -&gt; Point &#123;</span><br><span class="line">        switch vertex &#123;</span><br><span class="line">        case .left_top:</span><br><span class="line">            return origin</span><br><span class="line">        case .left_bottom:</span><br><span class="line">            return Point(x: origin.x, y: origin.y + size.height)</span><br><span class="line">        case .right_bottom:</span><br><span class="line">            return Point(x: origin.x + size.width, y: origin.y + size.height)</span><br><span class="line">        case .right_top:</span><br><span class="line">            return Point(x: origin.x + size.width, y: origin.y)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>扩展下标,根据传入的索引获取对应顶点坐标</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">extension Rectangle &#123;</span><br><span class="line">    subscript(index: Int) -&gt; Point? &#123;</span><br><span class="line">        assert(0 &lt;= index &amp;&amp; index &lt; 4, &quot;传入值非法&quot;)</span><br><span class="line">        return point(of: Vertex(rawValue: index)!)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="扩展系统方法"><a href="#扩展系统方法" class="headerlink" title="扩展系统方法"></a>扩展系统方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">extension Int &#123;</span><br><span class="line">    /// 平方</span><br><span class="line">    var square: Int &#123;</span><br><span class="line">        return self * self</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 立方</span><br><span class="line">    var cube: Int &#123;</span><br><span class="line">        return self * self * self</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 判断数组是否在某一个范围内</span><br><span class="line">    func inRange(clousedLeft left: Int, openRight right: Int) -&gt; Bool &#123;</span><br><span class="line">        return self &gt;= left &amp;&amp; self &gt; right</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 重复执行操作</span><br><span class="line">    func repeatitions(task: () -&gt; ()) &#123;</span><br><span class="line">        for _ in 0..&lt;self &#123;</span><br><span class="line">            task()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 变长函数</span><br><span class="line">    func stride(from: Int, to: Int, by: Int, task: () -&gt; ()) &#123;</span><br><span class="line">        // 系统变长函数</span><br><span class="line">        for i in Swift.stride(from: 0, to: 21, by: 3) &#123;</span><br><span class="line">            print(i)</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        for _ in Swift.stride(from: from, to: to, by: by) &#123;</span><br><span class="line">            task()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>扩展后使用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">print(2.square)</span><br><span class="line">print(3.cube)</span><br><span class="line">print(4.inRange(clousedLeft: 0, openRight: 4))</span><br><span class="line">4.repeatitions &#123;</span><br><span class="line">    print(&quot;extension&quot;)</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">// 使用变长函数</span><br><span class="line">4.stride(from: 0, to: 8, by: 4) &#123;</span><br><span class="line">    print(&quot;stride&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift协议扩展/" data-id="cjx1wsdnh001omsfy7vxhet0y" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Swift泛型" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/Swift泛型/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.180Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Swift-泛型"><a href="#Swift-泛型" class="headerlink" title="Swift 泛型"></a>Swift 泛型</h2><h3 id="泛型定义–wikipedia"><a href="#泛型定义–wikipedia" class="headerlink" title="泛型定义–wikipedia"></a>泛型定义–<code>wikipedia</code></h3><ol>
-<li>在程序编码中一些包含类型参数的类型，也就是说泛型的参数只可以代表类，不能代表个别对象。（这是当今较常见的定义）</li>
-<li>在程序编码中一些包含参数的类。其参数可以代表类或对象等等。（现在人们大多把这称作模板）</li>
-</ol>
-<h3 id="泛型的用处"><a href="#泛型的用处" class="headerlink" title="泛型的用处"></a>泛型的用处</h3><p>泛型可以实现传入一个指定类型后做一些操作然后返回后还是原来指定的类型，你可以指定特定的类型（特定是指约束）</p>
-<h3 id="泛型和-Any-的区别"><a href="#泛型和-Any-的区别" class="headerlink" title="泛型和 Any 的区别"></a>泛型和 <code>Any</code> 的区别</h3><p>区别：<code>Any</code>能代表任何类型，但是不能返回某个具体的类型，都需要使用 as 去转化，而泛型正好相反</p>
-<ul>
-<li>Any 可以代表任何类型，除了class之外还可以代表struct，enum，</li>
-<li><code>AnyObject</code> 可以代码任何 <code>class</code> 的类型, swift 中基本类型， <code>Array</code> 和 <code>Dictionary</code> 都是 <code>struct</code> 类型，都不能使用 <code>AnyObject</code> 来接受</li>
-</ul>
-<p><a href="http://swifter.tips/any-anyobject/" target="_blank" rel="noopener">Swift中Any 和 AnyObject用法</a></p>
-<h3 id="泛型函数和泛型参数"><a href="#泛型函数和泛型参数" class="headerlink" title="泛型函数和泛型参数"></a>泛型函数和泛型参数</h3><p><code>swapTwoValues</code>是一个泛型函数，可以接收或者返回任何类型</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">func swapTwoValues&lt;T&gt;(inout a: T, inout b: T) &#123;</span><br><span class="line">    let temporaryA = a</span><br><span class="line">    a = b</span><br><span class="line">    b = temporaryA</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p><code>swapTwoValues</code> 函数名后面的 <code>&lt;T&gt;</code> 表示这个 <code>T</code> 类型是函数所定义的一个类型, <code>T</code> 只是一个类型的占位符，不用关心具体类型</p>
-</li>
-<li><p><code>(inout a: T, inout b: T)</code> 中a和b两个参数类型<code>T</code>是泛型参数</p>
-</li>
-</ul>
-<h3 id="类型约束"><a href="#类型约束" class="headerlink" title="类型约束"></a>类型约束</h3><p>两个泛型参数的泛型函数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">func someFunction&lt;T: SomeClass, U: SomeProtocol&gt;(someT: T, someU: U) &#123;</span><br><span class="line">    // function body goes here</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>泛型参数<code>T</code>约束条件：必须是<code>SomeClass</code>类的子类</li>
-<li>泛型参数<code>U</code>约束条件：必须遵守<code>SomeProtocol</code>协议</li>
-<li>使用where指定约束</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift泛型/" data-id="cjx1wsdni001qmsfyvfy7fa30" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Swift错误处理" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/18/Swift错误处理/" class="article-date">
-  <time datetime="2019-06-18T14:24:32.180Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Swift 中错误处理</p>
-<h3 id="assert-断言"><a href="#assert-断言" class="headerlink" title="assert 断言"></a>assert 断言</h3><p>只在debug 模式下程序会自动退出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public func assert(_ condition: @autoclosure () -&gt; Bool, _ message: @autoclosure () -&gt; String = default, file: StaticString = #file, line: UInt = #line)</span><br></pre></td></tr></table></figure>
-<h3 id="assertionFailure-断言错误"><a href="#assertionFailure-断言错误" class="headerlink" title="assertionFailure 断言错误"></a>assertionFailure 断言错误</h3><p>只在debug 模式下程序会自动退出, 没有条件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public func assertionFailure(_ message: @autoclosure () -&gt; String = default, file: StaticString = #file, line: UInt = #line)</span><br></pre></td></tr></table></figure>
-<h3 id="precondition"><a href="#precondition" class="headerlink" title="precondition"></a>precondition</h3><p>releas 模式程序也会退出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public func precondition(_ condition: @autoclosure () -&gt; Bool, _ message: @autoclosure () -&gt; String = default, file: StaticString = #file, line: UInt = #line)</span><br></pre></td></tr></table></figure>
-<h3 id="throw"><a href="#throw" class="headerlink" title="throw"></a>throw</h3>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2019/06/18/Swift错误处理/" data-id="cjx1wsdnj001rmsfyidcp5s6t" class="article-share-link">Share</a>
+      <a data-url="https://github.com/aTreey/2019/06/18/Swift项目中集成RN/" data-id="cjx92w8l600259bfyp32ghjau" class="article-share-link">Share</a>
       
       
     </footer>
@@ -522,7 +931,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -536,7 +945,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamofire/">Alamofire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AlertView/">AlertView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flutter/">Flutter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flutter-GridView/">Flutter GridView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OC-JS/">OC, JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz-2D/">Quartz 2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunTime/">RunTime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDWebImage/">SDWebImage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TableView/">TableView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WKWebView/">WKWebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
     </div>
   </div>
 
@@ -546,7 +955,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
+      <a href="/tags/AES-Base64-MD5/" style="font-size: 10px;">AES, Base64, MD5</a> <a href="/tags/Alamofire/" style="font-size: 10px;">Alamofire</a> <a href="/tags/AlertView/" style="font-size: 10px;">AlertView</a> <a href="/tags/Flutter/" style="font-size: 10px;">Flutter</a> <a href="/tags/Flutter-GridView/" style="font-size: 10px;">Flutter GridView</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/OC-JS/" style="font-size: 10px;">OC, JS</a> <a href="/tags/Quartz-2D/" style="font-size: 10px;">Quartz 2D</a> <a href="/tags/Quartz2D/" style="font-size: 15px;">Quartz2D</a> <a href="/tags/RunTime/" style="font-size: 10px;">RunTime</a> <a href="/tags/SDWebImage/" style="font-size: 10px;">SDWebImage</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/TableView/" style="font-size: 10px;">TableView</a> <a href="/tags/WKWebView/" style="font-size: 20px;">WKWebView</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/swift/" style="font-size: 15px;">swift</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/本地缓存/" style="font-size: 10px;">本地缓存</a>
     </div>
   </div>
 
@@ -568,23 +977,23 @@
       <ul>
         
           <li>
-            <a href="/2019/06/18/第十三章算法面试/">(no title)</a>
+            <a href="/2019/06/23/Flutter打包/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/18/第十四章第三方库面试/">(no title)</a>
+            <a href="/2019/06/23/Flutter中本地图片资源使用/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/18/第十二章架构和框架面试/">(no title)</a>
+            <a href="/2019/06/20/Flutter页面导航/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/18/第十章网络相关/">(no title)</a>
+            <a href="/2019/06/19/Flutter中布局/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/06/18/第四章OC语言特性面试/">(no title)</a>
+            <a href="/2019/06/18/Flutter中GridView组件/">GridView组件使用.md</a>
           </li>
         
       </ul>
